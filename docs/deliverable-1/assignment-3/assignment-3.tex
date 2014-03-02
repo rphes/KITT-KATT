@@ -9,53 +9,105 @@
 
 \chapter*{Assignment 3}
 \section*{Design}
-As stated in the Student Manual, the imaginary part of the impedance in each current loop (primary and secondary) is desired to be zero, for optimum power transfer. From this equation the following can be derived for both the primary and secondary side:
+The amount of power transferred to the load is desired to be as high as possible. One can see that by minimizing the impedance seen by a voltage source, the drawn power is maximized. It is therefore desired to compensate the impedance of the coils by making use of compensating capacitors. By equating the impedances of the coils and their capacitors, the capacitance of these capacitors can be calculated. This relationship is given by
 
 \begin{equation}
 \label{eq:ass3-compensation}
-C = \frac{1}{\omega^2L}
+C = \frac{1}{(2 \pi f)^2 L}.
 \end{equation}
 
-Using \ref{eq:ass3-compensation} we obtain values of \SI{26.8}{nF} for the primary side and \SI{100.1}{nF} for the secondary side. Using a series combination of three times a parellel combination of two \SI{22}{nF} and one \SI{33}{nF} capacitor, all with a small deviation for the primary side and a parallel combination of a \SI{33}{nF} and a \SI{67}{nF} capacitor for the secondary side, we obtained real-world values of \SI{26.4}{nF} for de primary side and \SI{100.0}{nF} for the secondary side.
+Using Equation~\ref{eq:ass3-compensation} we obtain values of \SI{26.8}{nF} for the primary side and \SI{100.1}{nF} for the secondary side. Using a series combination of three times a parellel combination of two \SI{22}{nF} and one \SI{33}{nF} capacitor, all with a small deviation for the primary side and a parallel combination of a \SI{33}{nF} and a \SI{67}{nF} capacitor for the secondary side, we obtained real-world values of \SI{26.4}{nF} for de primary side and \SI{100.0}{nF} for the secondary side.
 
-%TODO transfer function
+Expanding the model used in assignment 2 with the compensating capacitors we derive
+
+\begin{equation} \label{eq:ass3-model-compensated}
+	\mathbf{\vec{I}} \mathbf{Z}=
+	\begin{bmatrix}
+		I_{source} \\
+		I_{load}
+	\end{bmatrix}
+	\begin{bmatrix}
+		R_1 + j \omega L_1 + (j \omega C_1)^{-1}  & j \omega M\\
+		j \omega M & R_2 + j \omega L_2 + (j \omega C_2)^{-1}  + R_L
+	\end{bmatrix}
+	= \mathbf{\vec{V}} =
+	\begin{bmatrix}
+		V_{source} \\
+		0
+	\end{bmatrix} .
+\end{equation}
+
+The values of the compensating capacitors are denoted by $C_1$ and $C_2$. The results of the simulation are displayed in Table~\ref{tab:ass3-power-sim}.
+
+\begin{table}[H]
+	\centering
+	\caption{Power transfer simulations - compensated}
+	\label{tab:ass3-power-sim}
+	\begin{tabular}{c c c c c c c}
+		\hline\hline
+		Distance & Source voltage & Source current & Source power & Load voltage & Load power & Efficiency \\
+		\hline
+		\SI{0}{cm} & \SI{20}{V} & \SI{0.5353}{A} & \SI{10.70}{W} & \SI{10.32}{V} & \SI{10.38}{W} & \SI{97}{\percent} \\
+		\SI{2}{cm} & \SI{20}{V} & \SI{1.9639}{A} & \SI{39.27}{W} & \SI{19.59}{V} & \SI{37.39}{W} & \SI{95}{\percent} \\
+		\SI{4}{cm} & \SI{20}{V} & \SI{5.6343}{A} & \SI{112.68}{W} & \SI{32.27}{V} & \SI{101.46}{W} & \SI{90}{\percent} \\
+		\SI{6}{cm} & \SI{20}{V} & \SI{9.4482}{A} & \SI{188.96}{W} & \SI{38.86}{V} & \SI{147.18}{W} & \SI{78}{\percent} \\
+		\hline
+		\end{tabular}
+\end{table}
+
+Rewriting Equation~\ref{eq:ass3-model-compensated} results in the transfer function given by
+
+\begin{equation} \label{eq:ass3-transfer-function}
+	|H(s)| = \frac{s M Z_L}{(s M)^2 - (s L_2 + R_2 + (s C_2)^{-1} + Z_L) ( s L_1 + R1 + (s C_1)^{-1}))} .
+\end{equation}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{images/transfer_function.pdf}
+	\end{center}
+	\caption{Transfer function with and without compensation}
+	\label{fig:ass3-transfer-function}
+\end{figure}
+
+Graphically evaluating Equation~\ref{eq:ass3-transfer-function} results in Figure~\ref{fig:ass3-transfer-function}. It is clear that one can maximize the power transfer after adding the compensating capacitors. This optimum is an equilibrium between the losses of the increasing leakage inductances and increased power drawn from the voltage source. The power drawn from the voltage source is proportional to the current drawn. The current drawn is proportional to the impedance seen by the voltage source, which decreases if the mutual inductance decreases. Therefore, the power drawn increases if the mutual inductance decreases.
 
 \section*{Results}
-To test our design, we studied its waveforms using the oscilloscope. Screenshots of this are included in appendix 
+To test our design, we studied its waveforms using the oscilloscope. Screenshots of this are included in Appendix~\ref{}. 
 %TODO add screenshots to appendix and insert reference
 From this waveforms may be concluded that the inverter will generate a correct DC-signal when rectified.
 %TODO insert actual rectified output screenshot
-We also performed the same power transfer measurements as with the uncompensated converter, the results are in Table~\ref{tab:ass3-power}
+We also performed the same power transfer measurements as with the uncompensated converter, whose results are displayed in Table~\ref{tab:ass3-power}.
 
 \begin{table}[H]
 	\centering
 	\caption{Power transfer measurements - compensated}
 	\label{tab:ass3-power}
-	\begin{tabular}{c c c c c c}
+	\begin{tabular}{c c c c c c c}
 		\hline\hline
-		Source voltage & Source current & Source power & Load voltage & Load power & Efficiency \\
+		Distance & Source voltage & Source current & Source power & Load voltage & Load power & Efficiency \\
 		\hline
-		\SI{19.998}{V} & \SI{1.2472}{A} & \SI{24.942}{W} & \SI{14.8}{V} & \SI{21.3}{W} & \SI{85.6}{\percent} \\
+		\SI{2}{cm} & \SI{19.998}{V} & \SI{1.2472}{A} & \SI{24.942}{W} & \SI{14.8}{V} & \SI{21.3}{W} & \SI{85.6}{\percent} \\
 		\hline
 		\end{tabular}
 \end{table}
 
-If we compare these results with Table~\ref{tab:ass2-power} from the uncompensated converter, we the delivered power is more than fifty times higher, while the efficiency more than tripled.
-With the compensated converter, charging the supercapacitor bank took us little under 3 minutes.
+If we compare these results with Table~\ref{tab:ass2-power} from the uncompensated converter, we see that the delivered power is more than fifty times higher, while the efficiency more than tripled. However, the measured values deviate a lot from the simulated values. This is due to the sensibility of the setup to external factors, such as mechanical placement. With the compensated converter, charging the supercapacitor bank took us little under three minutes.
 
 \section*{Questions}
 \begin{enumerate}
 \item
-? %TODO
+Performing Fourier analysis to a square wave reveals that the fundamental sinus, which is a sinus with the same frequency of the square, is most influential. The system we are analysing is linear. Therefore, we can conclude that the reponse to the square wave can be approximated by the reponse to its fundamental sinus.
 
 \item
-The imaginary part of both of the converter's sides should equal zero. This way power transfer is maximized, because leakage inductances are compensated for, thus the power factor is increased. This can be accomplished by compensating both coils with a capacitance.
+%The imaginary part of both of the converter's sides should equal zero. This way power transfer is maximized, because leakage inductances are compensated for, thus the power factor is increased. This can be accomplished by compensating both coils with a capacitance.
+In a voltage oriented system, the power transfer can be maximized by maximizing the current. By compensating the impedance of the coils, we can minimize the impedance seen by the voltage source and consequently maximize the power transfer.
+% TODO: choose one of the two explanations
 
 \item
 When the secondary coil is not present, the equivalent circuit reduces to a single loop with a tiny resistance, capacitance and inductance. Since the capacitance and inductance are designed to be in resonance, the impedance of the loop is very low. This allows for a very high current to flow, which could overload the converter and its power source.
 
 \item
-To overcome this problem an overcurrent protection circuit is built in. This circuit measures the voltage over a shunt resistance and compares this to a reference voltage. When the shunt voltage (and thus the source current) exceeds the reference voltage, the circuit will trigger via positive feedback (being a Schmitt-trigger), so the output of the circuit becomes a logical `1'. This output signal is connected to the UC3525's \textit{shutdown}-input, so it will stop generating the PWM-signal. This way the converter is turned of, until the reset button is pressed.
+To overcome this problem an overcurrent protection circuit is built in. This circuit measures the voltage over a shunt resistance and compares this to a reference voltage. When the shunt voltage (and thus the source current) exceeds the reference voltage, the circuit will trigger via positive feedback (being a Schmitt-trigger), so the output of the circuit becomes a logical `1'. This output signal is connected to the UC3525's \textit{shutdown}-input, so it will stop generating the PWM-signal. This way the converter is turned off, until the reset button is pressed.
 %TODO check this + estimate maximum current
 \end{enumerate}
 \end{document}

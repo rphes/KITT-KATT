@@ -9,7 +9,7 @@
 
 \chapter*{Assignment 2}
 \section*{Calculation}
-By using this calculator: \url{http://deepfriedneon.com/tesla_f_calcspiral.html}; we obtained acceptable inductances for our coils at the coil parameters as given in Table~\ref{tab:ass2-coil-params-calc}. Target parameters were an inner diameter of \SI{50}{mm} for both coils and inductances of \SI{22}{\micro H} for the secondary coil and \SI{100}{\micro H} for the primary coil. The diameter of the given Litz-wire is \SI{1.8}{mm} and we estimated an average wire spacing of \SI{0.5}{mm} between each winding.
+By using the online calculator located on \url{http://deepfriedneon.com/tesla_f_calcspiral.html}, we obtained acceptable inductances for our coils at the coil parameters as given in Table~\ref{tab:ass2-coil-params-calc}. Target parameters were an inner diameter of \SI{50}{mm} for both coils and inductances of \SI{22}{\micro H} for the secondary coil and \SI{100}{\micro H} for the primary coil. The diameter of the given Litz-wire is \SI{1.8}{mm} and we estimated an average wire spacing of \SI{0.5}{mm} between each winding.
 
 \begin{table}[H]
 	\centering
@@ -53,41 +53,78 @@ This meant measuring the inductance of both of the coils while connected in \tex
 		\hline\hline
 		Distance & Aiding inductance & Opposing inductance & Mutual inductance & Coupling factor \\
 		\hline
-		\SI{0}{cm} & \SI{184.3}{\micro H} & \SI{58.6}{\micro H} & \SI{314.2}{\micro H} & 0.6443 \\
-		\SI{2}{cm} & \SI{151.5}{\micro H} & \SI{86.8}{\micro H} & \SI{161.8}{\micro H} & 0.3318 \\
-		\SI{4}{cm} & \SI{135.6}{\micro H} & \SI{100.0}{\micro H} & \SI{88.9}{\micro H} & 0.1823 \\
-		\SI{6}{cm} & \SI{127.5}{\micro H} & \SI{107.0}{\micro H} & \SI{51.2}{\micro H} & 0.1051 \\
+		\SI{0}{cm} & \SI{184.3}{\micro H} & \SI{58.6}{\micro H} & \SI{314.2}{\micro H} & 0.64 \\
+		\SI{2}{cm} & \SI{151.5}{\micro H} & \SI{86.8}{\micro H} & \SI{161.8}{\micro H} & 0.33 \\
+		\SI{4}{cm} & \SI{135.6}{\micro H} & \SI{100.0}{\micro H} & \SI{88.9}{\micro H} & 0.18 \\
+		\SI{6}{cm} & \SI{127.5}{\micro H} & \SI{107.0}{\micro H} & \SI{51.2}{\micro H} & 0.11 \\
 		\hline
 		\end{tabular}
 \end{table}
 
-%TODO insert power transfer equations+characteristics, overleg
+By making use of an equivalent circuit we were able to calculate the theoretical power transfer to the load. The equivalent circuit translated to a mathematical relationship is given by
 
-Lastly, we performed some measurements on the entire converter, including coils, to see how much power could be delivered to a \SI{10.08}{\ohm} load, with a distance of \SI{2}{cm} between the coils:
+\begin{equation}
+	\mathbf{\vec{I}} \mathbf{Z}=
+	\begin{bmatrix}
+		I_{source} \\
+		I_{load}
+	\end{bmatrix}
+	\begin{bmatrix}
+		R_1 + j \omega L_1 & j \omega M \\
+		j \omega M & R_2 + j \omega L_2 + R_L
+	\end{bmatrix}
+	= \mathbf{\vec{V}} =
+	\begin{bmatrix}
+		V_{source} \\
+		0
+	\end{bmatrix} .
+\end{equation}
+
+Here the internal resistances of the coils are denoted by $R_1$ and $R_2$, the mutual inductance by $M$, the inductances by $L_1$ and $L_2$, the voltage source current by $I_{source}$ and the load current by $I_{load}$. By using this relationship, we tried to approximate the power transfer characterics. The calculated values are given in Table~\ref{tab:ass2-power-sim}.
+
+\begin{table}[H]
+	\centering
+	\caption{Power transfer simulations}
+	\label{tab:ass2-power-sim}
+	\begin{tabular}{c c c c c c c}
+		\hline\hline
+		Distance & Source voltage & Source current & Source power & Load voltage & Load power & Efficiency \\
+		\hline
+		\SI{0}{cm} & \SI{20}{V} & \SI{0.1210}{A} & \SI{2.42}{W} & \SI{4.87}{V} & \SI{2.31}{W} & \SI{96}{\percent} \\
+		\SI{2}{cm} & \SI{20}{V} & \SI{0.0216}{A} & \SI{0.43}{W} & \SI{2.00}{V} & \SI{0.39}{W} & \SI{90}{\percent} \\
+		\SI{4}{cm} & \SI{20}{V} & \SI{0.0069}{A} & \SI{0.13}{W} & \SI{1.04}{V} & \SI{0.11}{W} & \SI{77}{\percent} \\
+		\SI{6}{cm} & \SI{20}{V} & \SI{0.0032}{A} & \SI{0.06}{W} & \SI{0.59}{V} & \SI{0.03}{W} & \SI{53}{\percent} \\
+		\hline
+		\end{tabular}
+\end{table}
+
+Our equivalent circuit only incorporates the losses of the internal resistances of the coils. We therefore expect the calculated efficiency and source power and consequently current to be inaccurate. Finally, we performed some measurements on the entire converter, including coils, to see how much power could be delivered to a \SI{10.08}{\ohm} load, with a distance of \SI{2}{cm} between the coils.
 
 \begin{table}[H]
 	\centering
 	\caption{Power transfer measurements}
 	\label{tab:ass2-power}
-	\begin{tabular}{c c c c c c}
+	\begin{tabular}{c c c c c c c}
 		\hline\hline
-		Source voltage & Source current & Source power & Load voltage & Load power & Efficiency \\
+		Distance & Source voltage & Source current & Source power & Load voltage & Load power & Efficiency \\
 		\hline
-		\SI{19.998}{V} & \SI{0.0835}{A} & \SI{1.67}{W} & \SI{2.02}{V} & \SI{0.405}{W} & \SI{24.2}{\percent} \\
+		\SI{2}{cm} & \SI{19.998}{V} & \SI{0.0835}{A} & \SI{1.67}{W} & \SI{2.02}{V} & \SI{0.405}{W} & \SI{24.2}{\percent} \\
 		\hline
 		\end{tabular}
 \end{table}
 
+As expected, the effiency and source power and current do not match the calculated values. However, the transferred power does match the result of the simulation.
+
 \section*{Questions}
 \begin{enumerate}
 \item
-The open and short circuit test is not well suited for the air core transformer, because that method depends on the coupling factor being very high and thus leakage flux being really low. For a ferrite-core transformer this assumption may hold, but for an air core transformer it does not, since the coupling factor decreases very fast, as the distance between the coils increases (see table \ref{tab:ass2-coil-mutual}).
+The open and short circuit test is not well suited for the air core transformer, because that method depends on the coupling factor being very high and thus leakage flux being really low. For a ferrite-core transformer this assumption may hold, but for an air core transformer it does not, since the coupling factor decreases very fast, as the distance between the coils increases (this can be seen in Table~\ref{tab:ass2-coil-mutual}).
 
 \item
-? %TODO
+To determine the mutual inductance of two coils, one can use the series-opposing and series-aiding method. This method makes use of the fact in both a series-aiding and series-opposing configuration, the influence of the inductance of the coils in the total inductance, that means also incorporating the mutual inductance, is the same. Thus, by substracting the measured values of the total inductance in a series aiding and series opposing configuration, one is able to substract the value of the mutual inductance because the influence of the inductances of the two coils is filtered out. However, the mutual inductance and the inductance of the two coils is heavily influenced by external factors. This should be kept in mind. 
 
 \item
-As the distance between the two coils increases, less flux lines go through the secondary coil. Because of this, the magnetising inductance decreases while the leaking inductance increases. %TODO check this
+As the distance increases, the coupling factor $k$ decreases. Because the magnetising inductance $M$ is given by $k \sqrt{L_1 L_2}$, the magnetising inductance thus also decreases. Consequently, the leakage inductances $L_{L1}$ and $L_{L2}$ increase because they are given by $L_{Li}=(1-k) L_{i}$. This result can also be obtained by arguing that the leakage flux increases by increasing the distance between the coils. An increase in leakage flux corresponds with an increase of $L_{L1}$ and a decrease of $L_{M}$.
 
 \item
 As shown in Table~\ref{tab:ass2-power}, the power transfer of the transformer is very low. This is due to the low coupling factor, especially at higher distances between the two coils.
