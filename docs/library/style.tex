@@ -2,18 +2,24 @@
 \setmathfont{Asana Math}
 \setmonofont{Lucida Console}
 
-\usepackage{titlesec, blindtext, color}
-\renewcommand{\familydefault}{\sfdefault}
-\renewcommand{\arraystretch}{1.2}
-\setlength\parindent{0pt}
-\hypersetup{
+\usepackage{titlesec, color}
+\renewcommand{\familydefault}{\sfdefault} %set font family
+\renewcommand{\arraystretch}{1.2} %set table vertical spacing
+\setlength\parindent{0pt} %no paragraph indent
+\hypersetup{ %setup hyperlinks
     colorlinks,
     citecolor=black,
     filecolor=black,
     linkcolor=black,
     urlcolor=black
 }
-\renewcommand{\UrlFont}{\ttfamily\footnotesize}
+\renewcommand{\UrlFont}{\ttfamily\footnotesize} %reduce url font size
+
+%redesign chapter headings
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\chapternumber}{\thechapter}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\chapternumber\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
 
 %For code listings
 \definecolor{black}{rgb}{0,0,0}
