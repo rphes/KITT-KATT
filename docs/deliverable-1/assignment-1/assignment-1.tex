@@ -1,0 +1,65 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+
+\chapter*{Assignment 1}
+The first step in designing our DC/DC converter meant we had to incorporate the used UC3525 Regulating Pulse Width Modulator and IRS2001PBF Gate Drivers into a full bridge converter (the DC/AC step), while at the same time integrating the given overcurrent protection circuit in the correct way. Since connection schemes for both the UC3525 and the IRS2001PBF were given in their respective datasheets \cite{uc3525a-datasheet,irs2001pbf-datasheet}, this did not pose much of a problem. Because the focus was not on calculating resistor and capacitor values, we will not discuss our choice in this report.
+We will, however discuss our choice of the used MOSFET transistors and Diodes. The most important factors in picking the correct transistor for our application were static and dynamic power dissipation.
+
+\section*{MOSFET choice}
+All three of the MOSFETs (IPP50CN10N, IPP028N08N3G, PSMN017) were viable options, because our circuit parameters were well within their given margins. To pick one of the three, we calculated the power loss of each one, to see which one of them would do best.
+Static power dissipation can be calculated using:
+
+\begin{equation}
+P_{s} = I_{DS}R_{DS(on)}D
+\end{equation}
+
+Where $I_{DS}$ is the drain-source current through the transistor, $R_{DS(on)}$ is the transistors drain-source resistance, when switched on and $D$ is the duty-cycle of the PWM control signal. We estimated $I_{DS}$ to be approximately \SI{2}{A} and chose $D$ to be \num{0.5}. $R_{DS(on)}$ is a transistor parameter which can be found in each datasheet.
+Dynamical power dissipation is the power that is lost charging the in- and output capacitances of the transistors (both found in transistor datasheets \cite{IPP50CN10N-datasheet,IPP028N08N3G-datasheet,PSMN017-datasheet}) and thus is given by:
+
+\begin{equation}
+P_{d} = (C_{in}V_{GS}^2 + C_{out}V_{DS}^2)f_{s}
+\end{equation}
+
+Where $C_{in}$ and $C_{out}$ are the transistor's in- and output capacitances $V_{GS}$ is the gate-source voltage on the transitor (estimated to be \SI{15}{V} in our calculations), $V_{DS}$ is the drain-source voltage on the transistor (also \SI{15}{V}) and $f_{s}$ is the switching frequency, which is \SI{100}{kHz}.
+The total power dissipation thus becomes:
+
+\begin{equation}
+P = P_{s} + P_{d} = I_{DS}R_{DS(on)}D + (C_{in}V_{GS}^2 + C_{out}V_{DS}^2)f_{s}
+\end{equation}
+
+Using this equation yields the following results for each of the three transistors to pick from:
+
+\begin{table}[H]
+	\centering
+	\caption{MOSFET power loss calculations}
+	\label{tab:ass1-power-loss}
+	\begin{tabular}{c c c c c c c}
+		\hline\hline
+		MOSFET & $R_{DS(on)}$ & $C_{in}$ & $C_{out}$ & Static loss & Dynamic loss & Total loss \\
+		\hline
+		IPP50CN10N & \SI{49}{m\ohm} & \SI{822}{pF} & \SI{120}{pF} & \SI{0.098}{W} & \SI{0.021}{W} & \SI{0.119}{W} \\
+		IPP028N08N3G & \SI{2.8}{m\ohm} & \SI{10700}{pF} & \SI{2890}{pF} & \SI{0.006}{W} & \SI{0.306}{W} & \SI{0.311}{W} \\
+		PSMN017 & \SI{13.7}{m\ohm} & \SI{1573}{pF} & \SI{154}{pF} & \SI{0.027}{W} & \SI{0.039}{W} & \SI{0.066}{W} \\
+		\hline
+		\end{tabular}
+\end{table}
+
+From Table~\ref{tab:ass1-power-loss} we concluded the PSMN017 would be the best transistor to use.
+
+\section*{Diode choice}
+In choosing one of the two given diodes (SB540 and SF61), we decided that the forward voltage would be the most important factor, as all other parameters were well within their margins. Because the SB540 has a forward voltage of \SI{0.55}{V}, which is lower than the forward voltage of the SF61 (\SI{0.975}{V}) we picked the SB540. \cite{SB540-datasheet,SF61-datasheet}
+
+\section*{Final design and testing}
+Implementing the PWM-generator, gate drivers (2x), overcurrent protection circuit and rectifier with overvoltage buzzer circuit resulted in the schematics found in Appendix \ref{app:schematics}. %TODO fix these appendix references
+\\
+After soldering the PCB we got from our consultant we hooked it up to an oscilloscope, on which we then measured tidy square waves for the gate drivers and power outputs, whose frequency and duty-cycle could be varied by changing the values of the two potmeters in the design. While inspecting the rectifier output waveform, we obtained a nice DC-signal, with very little ripple, due to the high switching frequency (i.e. compared to for example the rectifier used during EPO1 at \SI{50}{Hz}).
+%TODO include quantitative comparison to datasheet?
+\\
+Actual waveforms of the entire converter, including air transformer and compensation, can be found in Appendix \ref{app:waveforms}.
+\end{document}

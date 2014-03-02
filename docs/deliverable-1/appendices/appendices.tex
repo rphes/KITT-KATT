@@ -1,0 +1,17 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../library/bibliography.bib}
+
+\begin{document}
+\chapter*{Appendices}
+\section*{Inverter Schematics}
+\label{app:schematics}
+\includepdf[pages={1-6}]{resource/schematics.pdf}
+
+\section*{Inverter Waveforms}
+\label{app:waveforms}
+
+\end{document}

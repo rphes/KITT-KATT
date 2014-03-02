@@ -1,0 +1,95 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+
+\chapter*{Assignment 2}
+\section*{Calculation}
+By using this calculator: \url{http://deepfriedneon.com/tesla_f_calcspiral.html}; we obtained acceptable inductances for our coils at the coil parameters as given in Table~\ref{tab:ass2-coil-params-calc}. Target parameters were an inner diameter of \SI{50}{mm} for both coils and inductances of \SI{22}{\micro H} for the secondary coil and \SI{100}{\micro H} for the primary coil. The diameter of the given Litz-wire is \SI{1.8}{mm} and we estimated an average wire spacing of \SI{0.5}{mm} between each winding.
+
+\begin{table}[H]
+	\centering
+	\caption{Calculated coil parameters}
+	\label{tab:ass2-coil-params-calc}
+	\begin{tabular}{c c c c c}
+		\hline\hline
+		Coil & Windings & Inductance & Outer diameter & Total wire length \\
+		\hline
+		Primary & \num{30} & \SI{101.6}{\micro H} & \SI{188}{mm} & \SI{11.2}{m} \\
+		Secondary & \num{15} & \SI{22}{\micro H} & \SI{119}{mm} & \SI{4}{m} \\
+		\hline
+		\end{tabular}
+\end{table}
+
+\section*{Measurements}
+After winding these coils we obtained the following inductances for the individual coils using an LCR-meter:
+
+\begin{table}[H]
+	\centering
+	\caption{Measured coil parameters}
+	\label{tab:ass2-coil-params-meas}
+	\begin{tabular}{c c c}
+		\hline\hline
+		Coil & Inductance & DC-resistance \\
+		\hline
+		Primary & \SI{94.5}{\micro H} & \SI{250}{m\ohm} \\
+		Secondary & \SI{25.2}{\micro H} & \SI{65}{m\ohm} \\
+		\hline
+		\end{tabular}
+\end{table}
+
+Then, we calculated the coils' mutual inductance and coupling factor via the ostrich approach as given in the Student Manual. \cite{epo4-manual}
+This meant measuring the inductance of both of the coils while connected in \textit{series-aiding} and \textit{series-opposing} at a varying distance between the coils. The results are shown in Table~\ref{tab:ass2-coil-mutual}.
+
+\begin{table}[H]
+	\centering
+	\caption{Mutual inductance and coupling factor at varying distance}
+	\label{tab:ass2-coil-mutual}
+	\begin{tabular}{c c c c c}
+		\hline\hline
+		Distance & Aiding inductance & Opposing inductance & Mutual inductance & Coupling factor \\
+		\hline
+		\SI{0}{cm} & \SI{184.3}{\micro H} & \SI{58.6}{\micro H} & \SI{314.2}{\micro H} & 0.6443 \\
+		\SI{2}{cm} & \SI{151.5}{\micro H} & \SI{86.8}{\micro H} & \SI{161.8}{\micro H} & 0.3318 \\
+		\SI{4}{cm} & \SI{135.6}{\micro H} & \SI{100.0}{\micro H} & \SI{88.9}{\micro H} & 0.1823 \\
+		\SI{6}{cm} & \SI{127.5}{\micro H} & \SI{107.0}{\micro H} & \SI{51.2}{\micro H} & 0.1051 \\
+		\hline
+		\end{tabular}
+\end{table}
+
+%TODO insert power transfer equations+characteristics, overleg
+
+Lastly, we performed some measurements on the entire converter, including coils, to see how much power could be delivered to a \SI{10.08}{\ohm} load, with a distance of \SI{2}{cm} between the coils:
+
+\begin{table}[H]
+	\centering
+	\caption{Power transfer measurements}
+	\label{tab:ass2-power}
+	\begin{tabular}{c c c c c c}
+		\hline\hline
+		Source voltage & Source current & Source power & Load voltage & Load power & Efficiency \\
+		\hline
+		\SI{19.998}{V} & \SI{0.0835}{A} & \SI{1.67}{W} & \SI{2.02}{V} & \SI{0.405}{W} & \SI{24.2}{\percent} \\
+		\hline
+		\end{tabular}
+\end{table}
+
+\section*{Questions}
+\begin{enumerate}
+\item
+The open and short circuit test is not well suited for the air core transformer, because that method depends on the coupling factor being very high and thus leakage flux being really low. For a ferrite-core transformer this assumption may hold, but for an air core transformer it does not, since the coupling factor decreases very fast, as the distance between the coils increases (see table \ref{tab:ass2-coil-mutual}).
+
+\item
+? %TODO
+
+\item
+As the distance between the two coils increases, less flux lines go through the secondary coil. Because of this, the magnetising inductance decreases while the leaking inductance increases. %TODO check this
+
+\item
+As shown in Table~\ref{tab:ass2-power}, the power transfer of the transformer is very low. This is due to the low coupling factor, especially at higher distances between the two coils.
+\end{enumerate}
+\end{document}

@@ -1,0 +1,61 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+
+\chapter*{Assignment 3}
+\section*{Design}
+As stated in the Student Manual, the imaginary part of the impedance in each current loop (primary and secondary) is desired to be zero, for optimum power transfer. From this equation the following can be derived for both the primary and secondary side:
+
+\begin{equation}
+\label{eq:ass3-compensation}
+C = \frac{1}{\omega^2L}
+\end{equation}
+
+Using \ref{eq:ass3-compensation} we obtain values of \SI{26.8}{nF} for the primary side and \SI{100.1}{nF} for the secondary side. Using a series combination of three times a parellel combination of two \SI{22}{nF} and one \SI{33}{nF} capacitor, all with a small deviation for the primary side and a parallel combination of a \SI{33}{nF} and a \SI{67}{nF} capacitor for the secondary side, we obtained real-world values of \SI{26.4}{nF} for de primary side and \SI{100.0}{nF} for the secondary side.
+
+%TODO transfer function
+
+\section*{Results}
+To test our design, we studied its waveforms using the oscilloscope. Screenshots of this are included in appendix 
+%TODO add screenshots to appendix and insert reference
+From this waveforms may be concluded that the inverter will generate a correct DC-signal when rectified.
+%TODO insert actual rectified output screenshot
+We also performed the same power transfer measurements as with the uncompensated converter, the results are in Table~\ref{tab:ass3-power}
+
+\begin{table}[H]
+	\centering
+	\caption{Power transfer measurements - compensated}
+	\label{tab:ass3-power}
+	\begin{tabular}{c c c c c c}
+		\hline\hline
+		Source voltage & Source current & Source power & Load voltage & Load power & Efficiency \\
+		\hline
+		\SI{19.998}{V} & \SI{1.2472}{A} & \SI{24.942}{W} & \SI{14.8}{V} & \SI{21.3}{W} & \SI{85.6}{\percent} \\
+		\hline
+		\end{tabular}
+\end{table}
+
+If we compare these results with Table~\ref{tab:ass2-power} from the uncompensated converter, we the delivered power is more than fifty times higher, while the efficiency more than tripled.
+With the compensated converter, charging the supercapacitor bank took us little under 3 minutes.
+
+\section*{Questions}
+\begin{enumerate}
+\item
+? %TODO
+
+\item
+The imaginary part of both of the converter's sides should equal zero. This way power transfer is maximized, because leakage inductances are compensated for, thus the power factor is increased. This can be accomplished by compensating both coils with a capacitance.
+
+\item
+When the secondary coil is not present, the equivalent circuit reduces to a single loop with a tiny resistance, capacitance and inductance. Since the capacitance and inductance are designed to be in resonance, the impedance of the loop is very low. This allows for a very high current to flow, which could overload the converter and its power source.
+
+\item
+To overcome this problem an overcurrent protection circuit is built in. This circuit measures the voltage over a shunt resistance and compares this to a reference voltage. When the shunt voltage (and thus the source current) exceeds the reference voltage, the circuit will trigger via positive feedback (being a Schmitt-trigger), so the output of the circuit becomes a logical `1'. This output signal is connected to the UC3525's \textit{shutdown}-input, so it will stop generating the PWM-signal. This way the converter is turned of, until the reset button is pressed.
+%TODO check this + estimate maximum current
+\end{enumerate}
+\end{document}
