@@ -1,0 +1,48 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+
+\section{Analysis of the forces on a car}
+From the motor's perspective, the moment of intertia seen is
+
+\begin{equation}
+	J_{eq} = J_m + \frac{1}{N^2} J_L
+\end{equation}
+
+in which $N$ represents the gear ratio, $J_m$ the moment of intertia of the motor and $J_L$ the moment of intertia of the load. If an external force, such as air resistance, is applied ot the car, then the torque which the motor has to deliver is given by
+
+\begin{equation} \label{eq:ass-4-eq-torque}
+	\tau_{m} = \alpha_m (J_m + \frac{1}{N^2} J_L) + \frac{1}{N} \tau_{ex} =
+	\frac{a_v N}{r_{wheel}} (J_m + \frac{1}{N^2} J_{wheels}) + \frac{F_{ex}}{r_{wheel} N}.
+\end{equation}
+
+Here the acceleration of the moment is denoted by $\alpha_m$, the external torque by $\tau_{ex}$, the acceleration of the vehicle by $a_v$, the radius of the wheels by $r_{wheel}$, the moment of inertia of the wheels by $J_{wheels}$ and the external force by $F_{ex}$. Letting the external force be the aerodynamic drag, gravitational force and rolling resistance yields
+
+\begin{equation}
+	\tau_{m} =
+	\frac{a_v N}{r_{wheel}} (J_m + \frac{1}{N^2} J_{wheels}) + \frac{
+		m_v g \cos{(\theta)} +
+		m_v g \sin{(\theta)} C_r +
+		\frac{1}{2} C_w \rho A_f v_{rel}^2
+	}{r_{wheel} N}.
+\end{equation}
+
+Here the rolling resistance coefficient is denoted by $C_r$, the aerodynamic drag coefficient by $C_w$, the mass of the vehicle by $m_v$, the frontal area by $A_f$, the vehicle's speed relative to the wind $v_{rel}$ and the angle of the inclination of the road by $\theta$. If the motor's efficiency is $\eta$ and the vehicle is moving at a speed $v$, then the total power the motor has to deliver is
+
+\begin{equation}
+	P_{m} = \frac{\omega_m \tau_{m}}{\eta} =
+	\frac{N v}{r_{wheel} \eta} \left(
+		\frac{a_v N}{r_{wheel}} (J_m + \frac{1}{N^2} J_{wheels}) + \frac{
+			m_v g \cos{(\theta)} +
+			m_v g \sin{(\theta)} C_r +
+			\frac{1}{2} C_w \rho A_f v_{rel}^2
+		}{r_{wheel} N}
+	\right).
+\end{equation}
+
+\end{document}
