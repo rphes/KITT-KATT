@@ -7,8 +7,8 @@
 
 \begin{document}
 
-\chapter*{Assignment 2}
-\section*{Calculation}
+\chapter{Assignment 2}
+\section{Calculation}
 By using the online calculator located on \url{http://deepfriedneon.com/tesla_f_calcspiral.html}, we obtained acceptable inductances for our coils at the coil parameters as given in Table~\ref{tab:ass2-coil-params-calc}. Target parameters were an inner diameter of \SI{50}{mm} for both coils and inductances of \SI{22}{\micro H} for the secondary coil and \SI{100}{\micro H} for the primary coil. The diameter of the given Litz-wire is \SI{1.8}{mm} and we estimated an average wire spacing of \SI{0.5}{mm} between each winding.
 
 \begin{table}[H]
@@ -25,7 +25,7 @@ By using the online calculator located on \url{http://deepfriedneon.com/tesla_f_
 		\end{tabular}
 \end{table}
 
-\section*{Measurements}
+\section{Measurements}
 After winding these coils we obtained the following inductances for the individual coils using an LCR-meter:
 
 \begin{table}[H]
@@ -115,7 +115,7 @@ Our equivalent circuit only incorporates the losses of the internal resistances 
 
 As expected, the effiency and source power and current do not match the calculated values. However, the transferred power does match the result of the simulation.
 
-\section*{Questions}
+\section{Questions}
 \begin{enumerate}
 \item
 The open and short circuit test is not well suited for the air core transformer, because that method depends on the coupling factor being very high and thus leakage flux being really low. For a ferrite-core transformer this assumption may hold, but for an air core transformer it does not, since the coupling factor decreases very fast, as the distance between the coils increases (this can be seen in Table~\ref{tab:ass2-coil-mutual}).
@@ -124,7 +124,7 @@ The open and short circuit test is not well suited for the air core transformer,
 To determine the mutual inductance of two coils, one can use the series-opposing and series-aiding method. This method makes use of the fact in both a series-aiding and series-opposing configuration, the influence of the inductance of the coils in the total inductance, that means also incorporating the mutual inductance, is the same. Thus, by substracting the measured values of the total inductance in a series aiding and series opposing configuration, one is able to substract the value of the mutual inductance because the influence of the inductances of the two coils is filtered out. However, the mutual inductance and the inductance of the two coils is heavily influenced by external factors. This should be kept in mind. 
 
 \item
-As the distance increases, the coupling factor $k$ decreases. Because the magnetising inductance $M$ is given by $k \sqrt{L_1 L_2}$, the magnetising inductance thus also decreases. Consequently, the leakage inductances $L_{L1}$ and $L_{L2}$ increase because they are given by $L_{Li}=(1-k) L_{i}$. This result can also be obtained by arguing that the leakage flux increases by increasing the distance between the coils. An increase in leakage flux corresponds with an increase of $L_{L1}$ and a decrease of $L_{M}$.
+As the distance increases, the coupling factor $k$ decreases. Because the magnetising inductance $M$ is given by $k \sqrt{L_1 L_2}$, the magnetising inductance thus also decreases. Consequently, the leakage inductances $L_{L1}$ and $L_{L2}$ increase, because they are given by $L_{Li}=(1-k) L_{i}$. This result can also be obtained by arguing that the leakage flux increases by increasing the distance between the coils. An increase in leakage flux corresponds with an increase of $L_{L1}$ and a decrease of $L_{M}$.
 
 \item
 As shown in Table~\ref{tab:ass2-power}, the power transfer of the transformer is very low. This is due to the low coupling factor, especially at higher distances between the two coils.

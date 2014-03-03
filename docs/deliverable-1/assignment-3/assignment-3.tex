@@ -7,8 +7,8 @@
 
 \begin{document}
 
-\chapter*{Assignment 3}
-\section*{Design}
+\chapter{Assignment 3}
+\section{Design}
 The amount of power transferred to the load is desired to be as high as possible. One can see that by minimizing the impedance seen by a voltage source, the drawn power is maximized. It is therefore desired to compensate the impedance of the coils by making use of compensating capacitors. By equating the impedances of the coils and their capacitors, the capacitance of these capacitors can be calculated. This relationship is given by
 
 \begin{equation}
@@ -63,7 +63,7 @@ Rewriting Equation~\ref{eq:ass3-model-compensated} results in the transfer funct
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[width=0.8\linewidth]{images/transfer_function.pdf}
+		\includegraphics[width=0.8\linewidth]{resource/transfer_function-rc.pdf}
 	\end{center}
 	\caption{Transfer function with and without compensation}
 	\label{fig:ass3-transfer-function}
@@ -71,7 +71,7 @@ Rewriting Equation~\ref{eq:ass3-model-compensated} results in the transfer funct
 
 Graphically evaluating Equation~\ref{eq:ass3-transfer-function} results in Figure~\ref{fig:ass3-transfer-function}. It is clear that one can maximize the power transfer after adding the compensating capacitors. This optimum is an equilibrium between the losses of the increasing leakage inductances and increased power drawn from the voltage source. The power drawn from the voltage source is proportional to the current drawn. The current drawn is proportional to the impedance seen by the voltage source, which decreases if the mutual inductance decreases. Therefore, the power drawn increases if the mutual inductance decreases.
 
-\section*{Results}
+\section{Results}
 To test our design, we studied its waveforms using the oscilloscope. Screenshots of this are included in Appendix~\ref{}. 
 %TODO add screenshots to appendix and insert reference
 From this waveforms may be concluded that the inverter will generate a correct DC-signal when rectified.
@@ -93,7 +93,7 @@ We also performed the same power transfer measurements as with the uncompensated
 
 If we compare these results with Table~\ref{tab:ass2-power} from the uncompensated converter, we see that the delivered power is more than fifty times higher, while the efficiency more than tripled. However, the measured values deviate a lot from the simulated values. This is due to the sensibility of the setup to external factors, such as mechanical placement. With the compensated converter, charging the supercapacitor bank took us little under three minutes.
 
-\section*{Questions}
+\section{Questions}
 \begin{enumerate}
 \item
 Performing Fourier analysis to a square wave reveals that the fundamental sinus, which is a sinus with the same frequency of the square, is most influential. The system we are analysing is linear. Therefore, we can conclude that the reponse to the square wave can be approximated by the reponse to its fundamental sinus.
