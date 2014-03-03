@@ -72,14 +72,12 @@ in which the junction capacitance is represented by $C_j$. Combining equations \
 
 
 \section{Design and testing}
-Implementing the PWM-generator, two gate drivers, the overcurrent protection circuit and the rectifier with overvoltage buzzer circuit resulted in the schematics found in Appendix \ref{app:schematics}. %TODO fix these appendix references
-After soldering the PCB we got from our consultant we hooked it up to an oscilloscope, on which we then measured tidy square waves for the gate drivers and power outputs, whose frequency and duty-cycle could be varied by changing the values of the two potmeters in the design. While inspecting the rectifier output waveform, we obtained a nice DC-signal, with very little ripple, due to the high switching frequency (i.e. compared to for example the rectifier used during EPO1 at \SI{50}{Hz}).
+Implementing the PWM-generator, two gate drivers, the overcurrent protection circuit and the rectifier with overvoltage buzzer circuit resulted in the schematics found in Appendix \ref{app:schematics}. After soldering the PCB we got from our consultant we hooked it up to an oscilloscope, on which we then measured tidy square waves for the gate drivers and power outputs, whose frequency and duty-cycle could be varied by changing the values of the two potmeters in the design. While inspecting the rectifier output waveform, we obtained a nice DC-signal, with very little ripple, due to the high switching frequency (i.e. compared to for example the rectifier used during EPO1 at \SI{50}{Hz}).
 %TODO include quantitative comparison to datasheet?
 Actual waveforms of the entire converter, including air transformer and compensation, can be found in Appendix \ref{app:waveforms}.
 
 \section{PCB design}
-After finishing the schematics, we implemented these on a printable circuit board (PCB). Figure~\ref{fig:ass1-pcb-3d} contains a 3D view of the developed PCB. More detailed information can be found in Appendix~\ref{app:pcb_layout}. %TODO fix references
-The PCB is designed with a feature size of \SI{0.2}{mm} to deliver a nominal output current of \SI{6}{A}.
+After finishing the schematics, we implemented these on a printable circuit board (PCB). Figure~\ref{fig:ass1-pcb-3d} contains a 3D view of the developed PCB. More detailed information can be found in Appendix~\ref{app:pcb_layout}. The PCB is designed with a feature size of \SI{0.2}{mm} to deliver a nominal output current of \SI{6}{A}.
 
 \begin{figure}[H]
 	\begin{center}
