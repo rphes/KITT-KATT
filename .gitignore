@@ -216,7 +216,7 @@ pip-log.txt
 
 #LaTeX crap
 *.aux
-*.bib
+*-blx.bib
 *.glo
 *.idx
 *.log
