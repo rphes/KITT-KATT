@@ -18,21 +18,22 @@ The following pages will contain a two dimensional view of each layer of the PCB
 % \includepdf[pages={1-3}]{resource/pcb-layout-rc.pdf}
 
 \section{Inverter Waveforms}
-Figure~\ref{fig:app-osc-coil-primary} and Figure~\ref{fig:app-osc-coil-secondary} show the results of the measurements of the inverter. 
+Figure~\ref{fig:app-osc-coil-primary} and Figure~\ref{fig:app-osc-coil-secondary} show the results of the measurements of the inverter.
 \label{app:waveforms}
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[width=0.5\linewidth]{resource/osc-coil-primary.png}
+		\begin{subfigure}[h]{0.48\textwidth}
+			\includegraphics[width=\textwidth]{resource/osc-coil-primary.png}
+			\caption{Voltage of the two ends of the primary coil with respect to ground}
+			\label{fig:app-osc-coil-primary}
+		\end{subfigure}
+		\quad
+		\begin{subfigure}[h]{0.48\textwidth}
+			\includegraphics[width=\textwidth]{resource/osc-coil-secondary.png}
+			\caption{Voltage of the two ends of the secondary coil with respect to ground}
+			\label{fig:app-osc-coil-secondary}
+		\end{subfigure}
 	\end{center}
-	\caption{Voltage of the two ends of the primary coil with respect to ground}
-	\label{fig:app-osc-coil-primary}
+	\caption{Inverter voltage waveforms at primary and secondary side}
 \end{figure}
-\begin{figure}[H]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{resource/osc-coil-secondary.png}
-	\end{center}
-	\caption{Voltage of the two ends of the secondary coil with respect to ground}
-	\label{fig:app-osc-coil-secondary}
-\end{figure}
-
 \end{document}
