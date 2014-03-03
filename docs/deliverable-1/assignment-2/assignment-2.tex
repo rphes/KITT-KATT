@@ -61,7 +61,15 @@ This meant measuring the inductance of both of the coils while connected in \tex
 		\end{tabular}
 \end{table}
 
-By making use of an equivalent circuit we were able to approximate the power transfer to the load. The equivalent circuit translated to a mathematical relationship given by
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.6\linewidth]{resource/cpt-equivalent-circuit-uncompensated-rc.pdf}
+	\end{center}
+	\caption{Equivalent circuit}
+	\label{fig:ass2-eq-circ}
+\end{figure}
+
+By making use of the equivalent circuit shown in Figure~\ref{fig:ass2-eq-circ} we were able to approximate the power transfer to the load. The equivalent circuit translated to a mathematical relationship given by
 
 \begin{equation}
 	\mathbf{\vec{I}} \mathbf{Z}=
@@ -80,7 +88,7 @@ By making use of an equivalent circuit we were able to approximate the power tra
 	\end{bmatrix} .
 \end{equation}
 
-Here the internal resistances of the coils are denoted by $R_1$ and $R_2$, the mutual inductance by $M$, the inductances by $L_1$ and $L_2$, the voltage source current by $I_{source}$ and the load current by $I_{load}$. By using this relationship, we tried to approximate the power transfer characterics. The calculated values are given in Table~\ref{tab:ass2-power-sim}.
+Here the internal resistances of the coils are denoted by $R_1$ and $R_2$, the mutual inductance by $M$, the inductances by $L_1$ and $L_2$, the voltage source current by $I_{source}$ (denoted in Figure \ref{fig:ass2-eq-circ} by I1) and the load current by $I_{load}$ (denoted in Figure~\ref{fig:ass2-eq-circ} by I2). By using this relationship, we tried to approximate the power transfer characterics. The calculated values are given in Table~\ref{tab:ass2-power-sim}.
 
 \begin{table}[H]
 	\centering

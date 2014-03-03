@@ -18,7 +18,16 @@ C = \frac{1}{(2 \pi f)^2 L}.
 
 Using Equation~\ref{eq:ass3-compensation} we obtain values of \SI{26.8}{nF} for the primary side and \SI{100.1}{nF} for the secondary side. Using a series combination of three times a parellel combination of two \SI{22}{nF} and one \SI{33}{nF} capacitor, all with a small deviation for the primary side and a parallel combination of a \SI{33}{nF} and a \SI{67}{nF} capacitor for the secondary side, we obtained real-world values of \SI{26.4}{nF} for de primary side and \SI{100.0}{nF} for the secondary side.
 
-Expanding the model used in assignment 2 with the compensating capacitors we derive
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{resource/cpt-equivalent-circuit-rc.pdf}
+	\end{center}
+	\caption{Equivalent circuit with compensation}
+	\label{fig:ass3-eq-circ}
+\end{figure}
+
+
+Figure~\ref{fig:ass3-eq-circ} shows the model of Assignment 2 with compensation capacitors. Using this model, we derive the mathematical relationship
 
 \begin{equation} \label{eq:ass3-model-compensated}
 	\mathbf{\vec{I}} \mathbf{Z}=
@@ -37,7 +46,7 @@ Expanding the model used in assignment 2 with the compensating capacitors we der
 	\end{bmatrix} .
 \end{equation}
 
-The values of the compensating capacitors are denoted by $C_1$ and $C_2$. The results of the simulation are displayed in Table~\ref{tab:ass3-power-sim}.
+The values of the compensating capacitors are denoted by $C_1$ and $C_2$. The results of the simulation are displayed in Table~\ref{tab:ass3-power-sim}. 
 
 \begin{table}[H]
 	\centering
@@ -72,11 +81,7 @@ Rewriting Equation~\ref{eq:ass3-model-compensated} results in the transfer funct
 Graphically evaluating Equation~\ref{eq:ass3-transfer-function} results in Figure~\ref{fig:ass3-transfer-function}. It is clear that one can maximize the power transfer after adding the compensating capacitors. This optimum is an equilibrium between the losses of the increasing leakage inductances and increased power drawn from the voltage source. The power drawn from the voltage source is proportional to the current drawn. The current drawn is proportional to the impedance seen by the voltage source, which decreases if the mutual inductance decreases. Therefore, the power drawn increases if the mutual inductance decreases.
 
 \section{Results}
-To test our design, we studied its waveforms using the oscilloscope. Screenshots of this are included in Appendix~\ref{}. 
-%TODO add screenshots to appendix and insert reference
-From this waveforms may be concluded that the inverter will generate a correct DC-signal when rectified.
-%TODO insert actual rectified output screenshot
-We also performed the same power transfer measurements as with the uncompensated converter, whose results are displayed in Table~\ref{tab:ass3-power}.
+To test our design, we studied its waveforms using the oscilloscope. Screenshots of this are included in Appendix~\ref{app:waveforms}. From this waveforms may be concluded that the inverter generates a correct waveform and this waveform is transferred correctly by the two coils. We measured a steady DC-signal at the load. We also performed the same power transfer measurements as with the uncompensated converter, whose results are displayed in Table~\ref{tab:ass3-power}.
 
 \begin{table}[H]
 	\centering
@@ -96,18 +101,17 @@ If we compare these results with Table~\ref{tab:ass2-power} from the uncompensat
 \section{Questions}
 \begin{enumerate}
 \item
-Performing Fourier analysis to a square wave reveals that the fundamental sinus, which is a sinus with the same frequency of the square, is most influential. The system we are analysing is linear. Therefore, we can conclude that the reponse to the square wave can be approximated by the reponse to its fundamental sinus.
+Performing Fourier analysis to a square wave reveals that the fundamental sinus, which is a sinus with the same frequency of the square, is most influential. The system we are analysing is linear. By combining these two facts, we can conclude that the reponse to the square wave can be approximated by the reponse to its fundamental sinus.
 
 \item
 %The imaginary part of both of the converter's sides should equal zero. This way power transfer is maximized, because leakage inductances are compensated for, thus the power factor is increased. This can be accomplished by compensating both coils with a capacitance.
-In a voltage oriented system, the power transfer can be maximized by maximizing the current. By compensating the impedance of the coils, we can minimize the impedance seen by the voltage source and consequently maximize the power transfer.
+In a voltage-oriented system, the power transfer can be maximized by maximizing the current. By compensating the impedance of the coils, we can minimize the impedance seen by the voltage source and consequently maximize the power transfer.
 % TODO: choose one of the two explanations
 
 \item
 When the secondary coil is not present, the equivalent circuit reduces to a single loop with a tiny resistance, capacitance and inductance. Since the capacitance and inductance are designed to be in resonance, the impedance of the loop is very low. This allows for a very high current to flow, which could overload the converter and its power source.
 
 \item
-To overcome this problem an overcurrent protection circuit is built in. This circuit measures the voltage over a shunt resistance and compares this to a reference voltage. When the shunt voltage (and thus the source current) exceeds the reference voltage, the circuit will trigger via positive feedback (being a Schmitt-trigger), so the output of the circuit becomes a logical `1'. This output signal is connected to the UC3525's \textit{shutdown}-input, so it will stop generating the PWM-signal. This way the converter is turned off, until the reset button is pressed.
-%TODO check this + estimate maximum current
+To overcome this problem an overcurrent protection circuit is built in. This circuit measures the voltage over a shunt resistance and compares this to a reference voltage. When the shunt voltage (and thus the source current) exceeds the reference voltage, the circuit will trigger via positive feedback (being a Schmitt-trigger), so the output of the circuit becomes a logical `1'. This output signal is connected to the UC3525's \textit{shutdown}-input, so it will stop generating the PWM-signal. This way the converter is turned off, until the reset button is pressed. We estimated the overcurrent circuit to trigger when the current exceeds approximately \SI{4}{A}.
 \end{enumerate}
 \end{document}
