@@ -7,7 +7,97 @@
 
 \begin{document}
 
-\chapter*{Assignment 4}
-bla
+\chapter{Assignment 4}
+\section{Task 1}
+
+\begin{enumerate}
+\item
+	\begin{itemize}
+		\item
+		Simulation results indicate the Nissan Leaf is able to accelerate from \num{0} to \SI{60}{mph} (\SI{96.6}{km/h}) in about \num{7.8} seconds. This is lower than the manufacturer's claim, which is peculiar, since manufacturer's claims tend to be quite optimistic. This could be due to the fact the actual transmission efficiency is unknown, but assumed to be \SI{90}{\percent} in our simulation. This, along with other assumptions while simplifying the model, could add up to result in the difference in acceleration times we observe.
+
+		\item
+		When looking at the various simulation output graphs, we could see that the engine's torque immediately saturates at its maximum value of \SI{280}{Nm}. Would this value have been higher, the car would have accelerated faster. The electric motor in the car is therefore the limiting component.
+
+		\item
+		In de Simulink model, an amplifier (`Driver') with an `infinite' gain is used to determine if the car should accelerate or brake. Since this amplifier has an actual gain of `only' \num{1000}, the car stops accelerating a little under the requested velocity, causing a small steady-state error.
+	\end{itemize}
+
+\item
+	\begin{itemize}
+		%TODO insert graphs
+		\item
+		When looking at the various resistance graphs we observe nothing out of the ordinary. Aerodynamic drag in- and decreases nicely with vehicle speed, friction is a constant value when vehicle velocity is greater than zero and zero otherwise, where gravitational force is at a constant zero, since there is no inclination in our simulation.
+		\item
+		We see motor torque (and thus wheel torque) instantly changing whenever the car accelerates, only limited by the reference speed (the amount of throttle). Compared to accelerating, the torque needed to maintain a certain speed is relatively low. When there is no acceleration we see resistance forces imposing a small negative torque, on both engine and wheels (of cource).
+		\item
+		Where torque immediately changes to a relatively constant value, we see motor output power increase very rapidly at first due to the fast increase in torque. After this vehicle velocity becomes the dominant factor to determine motor power, which explains the lower (linear) increase in power.
+		\item
+		Naturally, battery output power is directly related to motor output power, which explains their respective graphs looking alike so much.
+	\end{itemize}
+
+\item
+	%TODO insert graphs
+	Since aerodynamic drag increases quadratically with vehicle velocity we notice that power also increases approximately quadratically with vehicle velocity. Further, it is worth noticing that, especially at low velocities, driving on a road with \SI{3}{\percent} inclination, requires a lot (about \num{2.75} times) more power than driving on a road without any inclination.
+
+\item
+	Because manufacturer claims only hold in optimal conditions, it is safe to say the maximum driving range will only be reached when driving with a very light right foot, without any headwinds, on a perfect road without inclination and in a climate (temperature) that is optimal for battery life.
+\end{enumerate}
+
+\section{Task 2}
+%TODO
+
+\section{Analysis of the forces on a car}
+From the motor's perspective, the moment of intertia seen is
+
+\begin{equation}
+	J_{eq} = J_m + \frac{1}{N^2} J_L
+\end{equation}
+
+in which $N$ represents the gear ratio, $J_m$ the moment of intertia of the motor and $J_L$ the moment of intertia of the load. If an external force, such as air resistance, is applied to the car, then the torque which the motor has to deliver is given by
+
+\begin{equation} \label{eq:ass-4-eq-torque}
+	\tau_{m} = \alpha_m (J_m + \frac{1}{N^2} J_L) + \frac{1}{N} \tau_{ex} =
+	\frac{a_v N}{r_{wheel}} (J_m + \frac{1}{N^2} J_{wheels}) + \frac{F_{ex}}{r_{wheel} N}.
+\end{equation}
+
+Here the acceleration of the moment is denoted by $\alpha_m$, the external torque by $\tau_{ex}$, the acceleration of the vehicle by $a_v$, the radius of the wheels by $r_{wheel}$, the moment of inertia of the wheels by $J_{wheels}$ and the external force by $F_{ex}$. Letting the external force be the aerodynamic drag, gravitational force and rolling resistance yields
+
+\begin{equation}
+	\tau_{m} =
+	\frac{a_v N}{r_{wheel}} (J_m + \frac{1}{N^2} J_{wheels}) + \frac{
+		m_v g \sin{(\theta)} +
+		m_v g \cos{(\theta)} C_r +
+		\frac{1}{2} C_w \rho A_f v_{rel}^2
+	}{r_{wheel} N}.
+\end{equation}
+
+Here the rolling resistance coefficient is denoted by $C_r$, the aerodynamic drag coefficient by $C_w$, the mass of the vehicle and passengers by $m_v$, the frontal area by $A_f$, the vehicle's speed relative to the wind $v_{rel}$ and the angle of the inclination of the road by $\theta$. If the power transmission's efficiency is $\eta$ and the vehicle is moving at a speed $v$, then the total power the motor has to deliver is
+
+\begin{equation} \label{eq:ass-3-driving}
+	P_{m} = \frac{\omega_m \tau_{m}}{\eta} =
+	\frac{N v}{r_{wheel} \eta} \left(
+		\frac{a_v N}{r_{wheel}} (J_m + \frac{1}{N^2} J_{wheels}) + \frac{
+			m_v g \sin{(\theta)} +
+			m_v g \cos{(\theta)} C_r +
+			\frac{1}{2} C_w \rho A_f v_{rel}^2
+		}{r_{wheel} N}
+	\right).
+\end{equation}
+
+However, this equation is invalid if the car breaks regeneratively. In this case, the external torque drives the motor. If the efficiency of the power transmission is $\eta_r$, then the power delivered to the motor is given by
+
+\begin{equation} \label{eq:ass-3-regen}
+	P_{mr} = \eta_r \omega_m \tau_{m} =
+	\frac{N v \eta_r}{r_{wheel}} \left(
+		\frac{a_v N}{r_{wheel}} (J_m + \frac{1}{N^2} J_{wheels}) + \frac{
+			m_v g \sin{(\theta)} +
+			m_v g \cos{(\theta)} C_r +
+			\frac{1}{2} C_w \rho A_f v_{rel}^2
+		}{r_{wheel} N}
+	\right).
+\end{equation}
+
+Here the power delivered to the motor is denoted by $P_{mr}$. One should keep in mind that the acceleration of the vehicle should be negative is the vehicle is breaking. Using Equations~\ref{eq:ass-3-driving} and \ref{eq:ass-3-regen}, we were able to solve the questions asked in Exercise 3. We assumed that the rolling resistance coefficient was approximately \num{0.01}, the aerodynamic drag coefficient approximately \num{0.25}, the speed of the wind was \SI{0}{m/s} and there was no inclination of the road. The power needed to for the car to drive at \SI{10}{m/s} and accelerating at \SI{5}{m/s^2} is approximately \SI{21}{kW}. The power gained from regenerative breaking with an acceleration of \SI{-2}{m/s} at \SI{30}{m/s} is approximately \SI{64}{kW}.
 
 \end{document}
