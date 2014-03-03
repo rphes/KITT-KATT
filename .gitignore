@@ -240,5 +240,7 @@ pip-log.txt
 *.mtc
 *.mtc1
 *.out
+*.pdf
+!*-rc.pdf
 *.run.xml
 *.synctex.gz
