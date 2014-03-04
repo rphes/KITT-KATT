@@ -38,6 +38,16 @@
 \usepackage{import}
 \usepackage[backend=bibtexu,texencoding=utf8,bibencoding=utf8,style=ieee,sortlocale=en_GB,language=auto]{biblatex}
 \usepackage[strict,autostyle]{csquotes}
-\usepackage{pdfpages}
+\usepackage[final]{pdfpages}
 \usepackage{subcaption}
+\usepackage{ifplatform}
 %\captionsetup[table]{skip=10pt}
+
+% Fix for includepdf bug in Mac OS X
+\newcommand{\insertpdfpath}[1]{
+	\ifwindows
+	\newcommand{\insertpdf}[2]{\includepdf[pages=##1]{##2}}
+	\else
+	\newcommand{\insertpdf}[2]{\includepdf[pages=##1]{#1/##2}}
+	\fi
+}
