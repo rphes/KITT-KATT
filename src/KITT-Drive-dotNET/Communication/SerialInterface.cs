@@ -5,8 +5,9 @@ using System.IO.Ports;
 namespace KITT_Drive_dotNET
 {
     public class SerialInterface : ISerial, IDisposable
-    {
-        string port;
+	{
+		#region Data members
+		string port;
         int baudrate;
         SerialPort serialPort;
         public string lastError = "";
@@ -32,7 +33,10 @@ namespace KITT_Drive_dotNET
                 return serialPort.BytesToRead;
             }
         }
-        public SerialInterface(string _port)
+		#endregion
+
+		#region Construction/Destruction
+		public SerialInterface(string _port)
         {
             port = _port;
             baudrate = 115200;
@@ -108,28 +112,37 @@ namespace KITT_Drive_dotNET
                 return 1;
             }
         }
-        public void SendByte(Byte data)
+		#endregion
+
+		#region Transmission
+		public void SendByte(Byte data)
         {
             byte[] buf = {data};
             serialPort.Write(buf,0,1);
 			System.Diagnostics.Debug.WriteLine("Serial byte sent: {0:X}", data);
         }
+
 		public void RequestStatus()
 		{
 			char[] buf = { 'S', '\n' };
 			serialPort.Write(buf, 0, buf.Length);
 		}
+
 		public void DoDrive(int dir, int speed)
 		{
 			char[] buf = { 'D', (char)dir, (char)speed, '\n'};
 			serialPort.Write(buf, 0, buf.Length);
 		}
+
 		public void ToggleAudio(int enable)
 		{
 			char[] buf = { 'A', (char)enable, '\n'};
 			serialPort.Write(buf, 0, buf.Length);
 		}
-        void serialPort_PinChanged(object sender, SerialPinChangedEventArgs e)
+		#endregion
+
+		#region Serial event handling
+		void serialPort_PinChanged(object sender, SerialPinChangedEventArgs e)
         {
             serialPort.Close();
             serialPort.Open();
@@ -161,6 +174,7 @@ namespace KITT_Drive_dotNET
             {
                 SerialDataEvent(this, e);
             }
-        }
-    }
+		}
+		#endregion
+	}
 }
