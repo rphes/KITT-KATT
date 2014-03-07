@@ -1,9 +1,9 @@
-﻿using System.Windows;
-using MLApp;
+﻿using System;
 using System.IO.Ports;
-using System;
-using System.Windows.Input;
+using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
+using System.Windows.Input;
 
 namespace KITT_Drive_dotNET
 {
@@ -12,6 +12,12 @@ namespace KITT_Drive_dotNET
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		#region Data members
+		private DispatcherTimer throttleTimer, steerTimer;
+		private Key throttleTimerKey, steerTimerKey;
+		#endregion
+
+		#region Construction
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -19,14 +25,21 @@ namespace KITT_Drive_dotNET
 			GroupBox_Control.DataContext = Data.Ctr;
 
 			Data.Ctr.PropertyChanged += Drive_PropertyChanged;
+
+			throttleTimer = new DispatcherTimer();
+			throttleTimer.Tick += ThrottleTimer_Tick;
+			steerTimer = new DispatcherTimer();
+			steerTimer.Tick += SteerTimer_Tick;
+			throttleTimer.Interval = steerTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
 		}
+		#endregion
 
 		#region Command transmission
 		private void Drive_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			if (Data.Com != null && Data.Com.IsOpen)
 			{
-				Data.Com.DoDrive(Data.Ctr.Heading, Data.Ctr.Speed);
+				Data.Com.DoDrive(Data.Ctr.PWMHeading, Data.Ctr.PWMSpeed);
 				System.Diagnostics.Debug.Print(Data.Ctr.Speed.ToString() + ' ' + Data.Ctr.Heading.ToString());
 			}
 		}
@@ -36,6 +49,7 @@ namespace KITT_Drive_dotNET
 		private void ComboBox_COM_DropDownOpened(object sender, System.EventArgs e)
 		{
 			string[] ports = SerialPort.GetPortNames();
+			ComboBox_COM.Items.Clear();
 
 			foreach (string port in ports)
 			{
@@ -47,22 +61,32 @@ namespace KITT_Drive_dotNET
 		{
 			string port = ((string)ComboBox_COM.SelectedValue);
 
-			if (port.Substring(0, 3) == "COM")
+			if (Data.Com == null || !Data.Com.IsOpen)
 			{
-				Data.Com = new SerialInterface(port);
-				if (Data.Com.OpenPort() != 0)
+				if (port.Substring(0, 3) == "COM")
 				{
-					MessageBox.Show(Data.Com.lastError, "Could not open port", MessageBoxButton.OK, MessageBoxImage.Error);
+					Data.Com = new SerialInterface(port);
+					if (Data.Com.OpenPort() != 0)
+					{
+						MessageBox.Show(Data.Com.lastError, "Could not open port", MessageBoxButton.OK, MessageBoxImage.Error);
+					}
+					else
+					{
+						Button_Connect.Content = "Disconnect";
+						ComboBox_COM.IsEnabled = false;
+					}
 				}
 				else
 				{
-					ComboBox_COM.IsEnabled = false;
-					Button_Connect.IsEnabled = false;
+					MessageBox.Show("Please select a COM-port", "No port selected", MessageBoxButton.OK, MessageBoxImage.Error);
 				}
 			}
 			else
 			{
-				MessageBox.Show("Please select a COM-port", "No port selected", MessageBoxButton.OK, MessageBoxImage.Error);
+				Data.Com.Dispose();
+				Data.Com = null;
+				Button_Connect.Content = "Connect";
+				ComboBox_COM.IsEnabled = true;
 			}
 		}
 		#endregion
@@ -70,37 +94,80 @@ namespace KITT_Drive_dotNET
 		#region Key vehicle controls
 		private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
 		{
-			if (Data.Com == null || !Data.Com.IsOpen) return;
+			if (Data.Com == null || !Data.Com.IsOpen || e.IsRepeat) return;
 
 			Key key = e.Key;
-			bool initial = !e.IsRepeat;
 
-			switch (key)
+			if (key == Key.W || key == Key.S)
 			{
-				case Key.W:
-					Data.Ctr.Throttle(Direction.up, initial);
-					break;
-				case Key.A:
-					Data.Ctr.Steer(Direction.left, initial);
-					break;
-				case Key.S:
-					Data.Ctr.Throttle(Direction.down, initial);
-					break;
-				case Key.D:
-					Data.Ctr.Steer(Direction.right, initial);
-					break;	
-				default:
-					break;
-			}
-		}
+				if (throttleTimerKey != Key.None)
+					return;
 
+				if (key == Key.W)
+					Data.Ctr.Throttle(Direction.up, true);
+				else if (key == Key.S)
+					Data.Ctr.Throttle(Direction.down, true);
+
+				throttleTimer.Start();
+				Data.Ctr.speedDecrementTimer.Stop();
+				throttleTimerKey = key;
+			}
+
+			if (key == Key.A || key == Key.D)
+			{
+				if (steerTimerKey != Key.None)
+					return;
+
+				if (key == Key.A)
+					Data.Ctr.Steer(Direction.left, true);
+				else if (key == Key.D)
+					Data.Ctr.Steer(Direction.right, true);
+
+				steerTimer.Start();
+				Data.Ctr.headingDecrementTimer.Stop();
+				steerTimerKey = key;
+			}
+
+			if (key == Key.Q)
+				Data.Ctr.Stop();
+		}
 
 		private void Window_KeyUp(object sender, KeyEventArgs e)
 		{
-			if (Data.Com == null || !Data.Com.IsOpen) return;
-			//Data.Ctr.DecrementTimer.Start();
+			Key key = e.Key;
+
+			if (Data.Com == null || !Data.Com.IsOpen || !(key == Key.W || key == Key.A || key == Key.S || key == Key.D))
+				return;
+
+			if (key == Key.W || key == Key.S)
+			{
+				throttleTimer.Stop();
+				Data.Ctr.speedDecrementTimer.Start();
+				throttleTimerKey = Key.None;
+			}
+			else if (key == Key.A || key == Key.D)
+			{
+				steerTimer.Stop();
+				Data.Ctr.headingDecrementTimer.Start();
+				steerTimerKey = Key.None;
+			}
 		}
 
+		private void SteerTimer_Tick(object sender, System.EventArgs e)
+		{
+			if (steerTimerKey == Key.A)
+				Data.Ctr.Steer(Direction.left, false);
+			else if (steerTimerKey == Key.D)
+				Data.Ctr.Steer(Direction.right, false);
+		}
+
+		private void ThrottleTimer_Tick(object sender, System.EventArgs e)
+		{
+			if (throttleTimerKey == Key.W)
+				Data.Ctr.Throttle(Direction.up, false);
+			else if (throttleTimerKey == Key.S)
+				Data.Ctr.Throttle(Direction.down, false);
+		}
 		#endregion
 
 		#region Button vehicle controls
@@ -127,8 +194,21 @@ namespace KITT_Drive_dotNET
 			if (Data.Com == null || !Data.Com.IsOpen) return;
 			Data.Ctr.Steer(Direction.right, true);
 		}
+
+
+		private void Button_Status_Click(object sender, RoutedEventArgs e)
+		{
+			Data.Com.RequestStatus();
+		}
+
+		private void Button_STOP_Click(object sender, RoutedEventArgs e)
+		{
+			Data.Ctr.Speed = Control.SpeedDefault;
+			Data.Ctr.Heading = Control.HeadingDefault;
+		}
 		#endregion
 
+		#region Slider vehicle controls
 		private void Slider_Speed_DragCompleted(object sender, DragCompletedEventArgs e)
 		{
 			Data.Ctr.Speed = (int)Slider_Speed.Value;
@@ -138,5 +218,6 @@ namespace KITT_Drive_dotNET
 		{
 			Data.Ctr.Heading = (int)Slider_Heading.Value;
 		}
+		#endregion
 	}
 }

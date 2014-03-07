@@ -17,109 +17,178 @@ namespace KITT_Drive_dotNET
 	public class Control : INotifyPropertyChanged
 	{
 		#region Data members
-		const int speedIncrement = 2;
-		const int speedIncrementInitial = 10;
-		const int directionIncrement = 2;
-		const int directionIncrementInitial = 10;
-		const double decrementMultiplier = 0.001;
+		//Default conditions:
+		public const int SpeedDefault = 0; //include offset
+		public const int HeadingDefault = 0; //include offset
+		public const int PWMOffset = 150;
+		//Range
+		public int SpeedMin { get { return -15; } }
+		public int SpeedMax { get { return 15; } }
+		public int HeadingMin { get { return -50; } }
+		public int HeadingMax { get { return 50; } }
+		//Increment values
+		const double speedIncrement = 1;
+		const double speedIncrementInitial = 6;
+		const double headingIncrement = 5;
+		const double headingIncrementInitial = 20;
+		//Decrement multiplier
+		const double decrementMultiplier = 0.9;
 
-		private int _speed;
+		private double _speed;
 
-		public int Speed
+		public double Speed
 		{
 			get { return _speed; }
 			set
 			{
-				_speed = Clamp(value, 100, 200);
+				_speed = Clamp(value, SpeedMin, SpeedMax);
 				NotifyPropertyChanged("Speed");
 			}
 		}
 
-		private int _heading;
+		public int PWMSpeed
+		{
+			get { return (int)Math.Round(_speed + PWMOffset); }
+		}
 
-		public int Heading
+		private double _heading;
+
+		public double Heading
 		{
 			get { return _heading; }
 			set 
 			{
-				_heading = Clamp(value, 100, 200);
+				_heading = Clamp(value, HeadingMin, HeadingMax);
 				NotifyPropertyChanged("Heading");
 			}
 		}
 
-		public DispatcherTimer DecrementTimer;
+		public int PWMHeading
+		{
+			get { return (int)Math.Round(_heading + PWMOffset); }
+		}
+
+		public DispatcherTimer speedDecrementTimer;
+		public DispatcherTimer headingDecrementTimer;
 		#endregion
 
 		#region Construction
 		public Control()
 		{
-			Speed = 150;
-			Heading = 150;
-			DecrementTimer = new DispatcherTimer();
-			DecrementTimer.Tick += new EventHandler(DecrementTimer_Tick);
-			DecrementTimer.Interval = new TimeSpan(0, 0, 0, 0, 20);
-		}
-
-		private void DecrementTimer_Tick(object sender, EventArgs e)
-		{
-			//Broken
-			if (Speed != 150)
-				Speed = (int)Math.Round(Speed - Math.Pow(Speed - 150, 2) * decrementMultiplier);
-			if (Heading != 150)
-				Heading = (int)(Heading - Math.Sign(Heading - 150) * decrementMultiplier);
-
-			if (Heading == 150 && Speed == 150)
-				DecrementTimer.Stop();
+			Speed = SpeedDefault;
+			Heading = HeadingDefault;
+			speedDecrementTimer = new DispatcherTimer();
+			speedDecrementTimer.Tick += new EventHandler(speedDecrementTimer_Tick);
+			headingDecrementTimer = new DispatcherTimer();
+			headingDecrementTimer.Tick += new EventHandler(headingDecrementTimer_Tick);
+			speedDecrementTimer.Interval = headingDecrementTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
 		}
 		#endregion
 
+		#region UI Helpers
+		private void speedDecrementTimer_Tick(object sender, EventArgs e)
+		{
+			if (Speed != SpeedDefault)
+			{
+				double delta = SpeedDefault - Speed;
+				Speed = Speed * decrementMultiplier;
+
+				Speed = Snap(Speed, SpeedDefault, -speedIncrement, speedIncrement);
+			}
+
+			if (Speed == SpeedDefault)
+				speedDecrementTimer.Stop();
+		}
+
+		private void headingDecrementTimer_Tick(object sender, EventArgs e)
+		{
+			if (Heading != HeadingDefault)
+			{
+				double delta = HeadingDefault - Heading;
+				Heading = Heading * decrementMultiplier;
+
+				Heading = Snap(Heading, HeadingDefault, -headingIncrement, headingIncrement);
+			}
+
+			if (Heading == HeadingDefault)
+				headingDecrementTimer.Stop();
+		}
+		#endregion
+		
 		#region Control methods
+		public void Throttle(double increment)
+		{
+			Speed += increment;
+		}
+
 		public void Throttle(Direction d)
 		{
-			if (d == Direction.up)
-				Speed += speedIncrement;
-			else if (d == Direction.down)
-				Speed -= speedIncrement;
+			Throttle(d, false);
 		}
 
 		public void Throttle(Direction d, bool initial)
 		{
-			if (!initial)
+			double increment = 0;
+
+			if (initial)
 			{
-				Throttle(d);
-				return;
+				if (d == Direction.up)
+					increment = speedIncrementInitial;
+				else if (d == Direction.down)
+					increment = -speedIncrementInitial;
+			}
+			else
+			{
+				if (d == Direction.up)
+					increment = speedIncrement;
+				else if (d == Direction.down)
+					increment = -speedIncrement;
 			}
 
-			if (d == Direction.up)
-				Speed += speedIncrementInitial;
-			else if (d == Direction.down)
-				Speed -= speedIncrementInitial;
+			Throttle(increment);
+		}
+
+		public void Steer(double increment)
+		{
+			Heading += increment;
 		}
 
 		public void Steer(Direction d)
 		{
-			if (d == Direction.left)
-				Heading -= directionIncrement;
-			else if (d == Direction.right)
-				Heading += directionIncrement;
+			Steer(d, false);
 		}
 
 		public void Steer(Direction d, bool initial)
 		{
-			if (!initial)
+			double increment = 0;
+
+			if (Heading == HeadingDefault && initial)
 			{
-				Steer(d);
-				return;
+				if (d == Direction.right)
+					increment = headingIncrementInitial;
+				else if (d == Direction.left)
+					increment = -headingIncrementInitial;
+			}
+			else
+			{
+				if (d == Direction.right)
+					increment = headingIncrement;
+				else if (d == Direction.left)
+					increment = -headingIncrement;
 			}
 
-			if (d == Direction.left)
-				Heading -= directionIncrementInitial;
-			else if (d == Direction.right)
-				Heading += directionIncrementInitial;
+			Steer(increment);
+		}
+
+		public void Stop()
+		{
+			Heading = HeadingDefault;
+			Speed = SpeedDefault;
 		}
 		#endregion
 
-		public int Clamp(int value, int min, int max)
+		#region Utility methods
+		public double Clamp(double value, double min, double max)
 		{
 			if (value > max)
 				return max;
@@ -127,6 +196,15 @@ namespace KITT_Drive_dotNET
 				return min;
 			return value;
 		}
+
+		public double Snap(double value, double snap, double min, double max)
+		{
+			if (value < max && value > min)
+				return snap;
+			else
+				return value;
+		}
+		#endregion
 
 		#region Property change event handling
 		public event PropertyChangedEventHandler PropertyChanged;

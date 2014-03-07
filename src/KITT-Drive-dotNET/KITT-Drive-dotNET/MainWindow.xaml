@@ -10,14 +10,16 @@
 				<Button Name="Button_ThrottleDown" Content="Down" HorizontalAlignment="Center" Margin="0,0,0,50" VerticalAlignment="Center" Width="50" Height="50" Click="Button_ThrottleDown_Click"/>
 				<Button Name="Button_SteerLeft" Content="Left" HorizontalAlignment="Center" Margin="0,0,125,50" VerticalAlignment="Center" Width="50" Height="50" Click="Button_SteerLeft_Click"/>
 				<Button Name="Button_SteerRight" Content="Right" HorizontalAlignment="Center" Margin="125,0,0,50" VerticalAlignment="Center" Width="50" Height="50" Click="Button_SteerRight_Click"/>
+				<Button Name="Button_Status" Content="Status" HorizontalAlignment="Center" Margin="0,0,125,175" VerticalAlignment="Center" Width="50" Height="50" Click="Button_Status_Click"/>
+				<Button Name="Button_STOP" Content="STOP" HorizontalAlignment="Center" Margin="125,0,0,175" VerticalAlignment="Center" Width="50" Height="50" Click="Button_STOP_Click"/>
 				<ComboBox Name="ComboBox_COM" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="120" DropDownOpened="ComboBox_COM_DropDownOpened">
 					<ComboBoxItem Content="COM-port..." IsSelected="true"/>
 				</ComboBox>
 				<Button Name="Button_Connect" Content="Connect" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="70" Height="22" Click="Button_Connect_Click"/>
 				<Label Content="Speed" HorizontalAlignment="Center" Margin="20,80,20,0" VerticalAlignment="Center"/>
 				<Label Content="Heading" HorizontalAlignment="Center" Margin="20,155,20,0" VerticalAlignment="Center"/>
-				<Slider Name="Slider_Speed" HorizontalAlignment="Stretch" Margin="20,50,20,0" VerticalAlignment="Center" Minimum="100" Maximum="200" Value="{Binding Path=Speed, Mode=OneWay}" Focusable="False" Thumb.DragCompleted="Slider_Speed_DragCompleted"/>
-				<Slider Name="Slider_Heading" HorizontalAlignment="Stretch" Margin="20,125,20,0" VerticalAlignment="Center" Minimum="100" Maximum="200" Value="{Binding Path=Heading, Mode=OneWay}" Focusable="False" Thumb.DragCompleted="Slider_Heading_DragCompleted"/>
+				<Slider Name="Slider_Speed" HorizontalAlignment="Stretch" Margin="20,50,20,0" VerticalAlignment="Center" Minimum="{Binding Path=SpeedMin}" Maximum="{Binding Path=SpeedMax}" Value="{Binding Path=Speed, Mode=OneWay}" Focusable="False" Thumb.DragCompleted="Slider_Speed_DragCompleted"/>
+				<Slider Name="Slider_Heading" HorizontalAlignment="Stretch" Margin="20,125,20,0" VerticalAlignment="Center" Minimum="{Binding Path=HeadingMin}" Maximum="{Binding Path=HeadingMax}" Value="{Binding Path=Heading, Mode=OneWay}" Focusable="False" Thumb.DragCompleted="Slider_Heading_DragCompleted"/>
 			</Grid>
 		</GroupBox>
 		<GroupBox Header="Vehicle status" HorizontalAlignment="Right" Margin="0,10,10,10" VerticalAlignment="Stretch" Width="230">

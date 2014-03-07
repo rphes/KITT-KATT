@@ -52,8 +52,6 @@ namespace KITT_Drive_dotNET
             serialPort.WriteTimeout = 500;
             serialPort.DataReceived += serialPort_DataReceived;
             serialPort.ErrorReceived += serialPort_ErrorReceived;
-            serialPort.PinChanged += serialPort_PinChanged;
-            
         }
         public void Dispose()
         {
@@ -130,8 +128,12 @@ namespace KITT_Drive_dotNET
 
 		public void DoDrive(int dir, int speed)
 		{
-			char[] buf = { 'D', (char)dir, (char)speed, '\n'};
-			serialPort.Write(buf, 0, buf.Length);
+			string dirstring = dir.ToString();
+			string speedstring = speed.ToString();
+			string stringbuffer = 'D' + dirstring + ' ' + speedstring + '\n';
+			System.Diagnostics.Debug.WriteLine("Sending string: " + stringbuffer);
+			char[] buf = stringbuffer.ToCharArray();
+			//serialPort.Write(buf, 0, buf.Length);
 		}
 
 		public void ToggleAudio(int enable)
@@ -142,12 +144,6 @@ namespace KITT_Drive_dotNET
 		#endregion
 
 		#region Serial event handling
-		void serialPort_PinChanged(object sender, SerialPinChangedEventArgs e)
-        {
-            serialPort.Close();
-            serialPort.Open();
-        }
-
         void serialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {            
             //MessageBox.Show();
