@@ -10,7 +10,7 @@
 \chapter{Assignment 2}
 Text.
 
-\section{Using the Doppler effect to increase measurement accuracy}
+\section{Using the Doppler effect to 	increase measurement accuracy}
 Let us consider KITT driving with velocity $v'$ at a non-moving object at distance $x$. One can use the classical Doppler effect to accurately determine the distance to this non-moving object. The wavelength $\lambda'$ of the wave, which will be sent out by KITT's ultrasonic sensor, is given by
 
 \begin{equation}
@@ -59,7 +59,7 @@ Substituting Equations \ref{eq:ass-2-vel-car} and \ref{eq:ass-2-pre-dist-car} yi
 	x_{car} = \frac{v}{4 T} \left((T'+T) T_s + 2 T_p (T'-T)  \right).
 \end{equation}
 
-The linearized relative inaccuracy, given by
+The linearized relative uncertainty, given by
 
 \begin{equation}
 	u_{d,rel} = \frac{1}{x_{car}} \left( \frac{d x_{car}}{d T} \Delta T + \frac{d x_{car}}{d T'} \Delta T' + \frac{d x_{car}}{d T_p} \Delta T_p + \frac{d x_{car}}{d T_s} \Delta T_s \right),
@@ -81,6 +81,6 @@ If one can assume that
 	\frac{u_T}{T} = \frac{u_{T'}}{T'} = \frac{u_{T_p}}{T_p} = \frac{u_{T_s}}{T_s}=r,
 \end{equation}
 
-then the linearized relative inaccuracy $u_{d,rel}$ magically simplifies to $r$. \textit{Mathematica 9 Student Edition} was used for aid in algebraic manipulation and simplification of the equations.
+then the linearized relative uncertainty $u_{d,rel}$ magically simplifies to $r$. \textit{Mathematica 9 Student Edition} was used for aid in algebraic manipulation and simplification of the equations. Unfortunately, signal processing of ultrasonic sensors is handled by KITT.
 
 \end{document}
