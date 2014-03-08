@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace KITT_Drive_dotNET
 {
-	public class ObservableObject : INotifyPropertyChanged
+	public abstract class ObservableObject : INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
