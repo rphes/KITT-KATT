@@ -83,4 +83,21 @@ If one can assume that
 
 then the linearized relative uncertainty $u_{d,rel}$ magically simplifies to $r$. \textit{Mathematica 9 Student Edition} was used for aid in algebraic manipulation and simplification of the equations. Unfortunately, signal processing of ultrasonic sensors is handled by KITT.
 
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}[american voltages] \draw
+	(0,0)
+		to[C=\SI{2}{\milli\farad}, i>=$i_C$] (4,0)
+		to[R, l=$R_1$, v<=$v_R$] (4,4)
+		to[american voltage source, l^=$V_1$] (0,4)
+		-- (0,0)
+	(4,1)
+		-- (6,1)
+		to[L] (6,3)
+		-- (4,3)
+	;
+	\end{circuitikz}
+	\caption{Circuitjeee}
+\end{figure}
+
 \end{document}
