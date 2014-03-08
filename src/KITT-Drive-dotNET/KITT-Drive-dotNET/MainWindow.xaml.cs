@@ -21,8 +21,9 @@ namespace KITT_Drive_dotNET
 		public MainWindow()
 		{
 			InitializeComponent();
-			
+
 			GroupBox_Control.DataContext = Data.Ctr;
+			GroupBox_Status.DataContext = Data.Car;
 
 			Data.Ctr.PropertyChanged += Drive_PropertyChanged;
 
@@ -37,7 +38,7 @@ namespace KITT_Drive_dotNET
 		#region Command transmission
 		private void Drive_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-			if (Data.Com != null && Data.Com.IsOpen)
+			if (Data.Com != null && Data.Com.IsOpen && (e.PropertyName == "SpeedString" || e.PropertyName == "HeadingString"))
 			{
 				Data.Com.DoDrive(Data.Ctr.PWMHeading, Data.Ctr.PWMSpeed);
 				System.Diagnostics.Debug.Print(Data.Ctr.Speed.ToString() + ' ' + Data.Ctr.Heading.ToString());
@@ -203,8 +204,8 @@ namespace KITT_Drive_dotNET
 
 		private void Button_STOP_Click(object sender, RoutedEventArgs e)
 		{
-			Data.Ctr.Speed = Control.SpeedDefault;
-			Data.Ctr.Heading = Control.HeadingDefault;
+			Data.Ctr.Speed = Data.SpeedDefault;
+			Data.Ctr.Heading = Data.HeadingDefault;
 		}
 		#endregion
 

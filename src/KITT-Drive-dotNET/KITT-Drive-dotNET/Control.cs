@@ -9,23 +9,10 @@ using System.Windows.Threading;
 
 namespace KITT_Drive_dotNET
 {
-	public enum Direction
-	{
-	      up, down, left, right
-	}
-
-	public class Control : INotifyPropertyChanged
+	public class Control : ObservableObject
 	{
 		#region Data members
-		//Default conditions:
-		public const int SpeedDefault = 0; //include offset
-		public const int HeadingDefault = 0; //include offset
-		public const int PWMOffset = 150;
-		//Range
-		public int SpeedMin { get { return -15; } }
-		public int SpeedMax { get { return 15; } }
-		public int HeadingMin { get { return -50; } }
-		public int HeadingMax { get { return 50; } }
+		
 		//Increment values
 		const double speedIncrement = 1;
 		const double speedIncrementInitial = 6;
@@ -41,32 +28,60 @@ namespace KITT_Drive_dotNET
 			get { return _speed; }
 			set
 			{
-				_speed = Clamp(value, SpeedMin, SpeedMax);
+				_speed = Clamp(value, Data.SpeedMin, Data.SpeedMax);
 				NotifyPropertyChanged("Speed");
+
+				int intspeed = (int)Math.Round(_speed) + Data.PWMOffset;
+				if (intspeed != PWMSpeed)
+					PWMSpeed = intspeed;
 			}
 		}
 
+		private int _pwmSpeed;
+
 		public int PWMSpeed
 		{
-			get { return (int)Math.Round(_speed + PWMOffset); }
+			get { return _pwmSpeed; }
+			protected set
+			{
+				_pwmSpeed = value;
+				NotifyPropertyChanged("PWMSpeed");
+				NotifyPropertyChanged("SpeedString");
+			}
 		}
+
+		public string SpeedString { get { return "Speed: " + (PWMSpeed - Data.PWMOffset); } }
 
 		private double _heading;
 
 		public double Heading
 		{
 			get { return _heading; }
-			set 
+			set
 			{
-				_heading = Clamp(value, HeadingMin, HeadingMax);
+				_heading = Clamp(value, Data.HeadingMin, Data.HeadingMax);
 				NotifyPropertyChanged("Heading");
+
+				int intheading = (int)Math.Round(_heading) + Data.PWMOffset;
+				if (intheading != PWMHeading)
+					PWMHeading = intheading;
 			}
 		}
 
+		private int _pwmHeading;
+
 		public int PWMHeading
 		{
-			get { return (int)Math.Round(_heading + PWMOffset); }
+			get { return _pwmHeading; }
+			protected set
+			{
+				_pwmHeading = value;
+				NotifyPropertyChanged("PWMHeading");
+				NotifyPropertyChanged("HeadingString");
+			}
 		}
+
+		public string HeadingString { get { return "Heading: " + (PWMHeading - Data.PWMOffset); } }
 
 		public DispatcherTimer speedDecrementTimer;
 		public DispatcherTimer headingDecrementTimer;
@@ -75,8 +90,8 @@ namespace KITT_Drive_dotNET
 		#region Construction
 		public Control()
 		{
-			Speed = SpeedDefault;
-			Heading = HeadingDefault;
+			Speed = Data.SpeedDefault;
+			Heading = Data.HeadingDefault;
 			speedDecrementTimer = new DispatcherTimer();
 			speedDecrementTimer.Tick += new EventHandler(speedDecrementTimer_Tick);
 			headingDecrementTimer = new DispatcherTimer();
@@ -88,29 +103,29 @@ namespace KITT_Drive_dotNET
 		#region UI Helpers
 		private void speedDecrementTimer_Tick(object sender, EventArgs e)
 		{
-			if (Speed != SpeedDefault)
+			if (Speed != Data.SpeedDefault)
 			{
-				double delta = SpeedDefault - Speed;
+				double delta = Data.SpeedDefault - Speed;
 				Speed = Speed * decrementMultiplier;
 
-				Speed = Snap(Speed, SpeedDefault, -speedIncrement, speedIncrement);
+				Speed = Snap(Speed, Data.SpeedDefault, -speedIncrement, speedIncrement);
 			}
 
-			if (Speed == SpeedDefault)
+			if (Speed == Data.SpeedDefault)
 				speedDecrementTimer.Stop();
 		}
 
 		private void headingDecrementTimer_Tick(object sender, EventArgs e)
 		{
-			if (Heading != HeadingDefault)
+			if (Heading != Data.HeadingDefault)
 			{
-				double delta = HeadingDefault - Heading;
+				double delta = Data.HeadingDefault - Heading;
 				Heading = Heading * decrementMultiplier;
 
-				Heading = Snap(Heading, HeadingDefault, -headingIncrement, headingIncrement);
+				Heading = Snap(Heading, Data.HeadingDefault, -headingIncrement, headingIncrement);
 			}
 
-			if (Heading == HeadingDefault)
+			if (Heading == Data.HeadingDefault)
 				headingDecrementTimer.Stop();
 		}
 		#endregion
@@ -162,7 +177,7 @@ namespace KITT_Drive_dotNET
 		{
 			double increment = 0;
 
-			if (Heading == HeadingDefault && initial)
+			if (Heading == Data.HeadingDefault && initial)
 			{
 				if (d == Direction.right)
 					increment = headingIncrementInitial;
@@ -182,8 +197,8 @@ namespace KITT_Drive_dotNET
 
 		public void Stop()
 		{
-			Heading = HeadingDefault;
-			Speed = SpeedDefault;
+			Heading = Data.HeadingDefault;
+			Speed = Data.SpeedDefault;
 		}
 		#endregion
 
@@ -203,18 +218,6 @@ namespace KITT_Drive_dotNET
 				return snap;
 			else
 				return value;
-		}
-		#endregion
-
-		#region Property change event handling
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-		{
-			if (PropertyChanged != null)
-			{
-				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 		#endregion
 	}
