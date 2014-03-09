@@ -60,11 +60,11 @@ namespace KITT_Drive_dotNET
 
 		private void Button_Connect_Click(object sender, RoutedEventArgs e)
 		{
-			string port = ((string)ComboBox_COM.SelectedValue);
+			string port = Convert.ToString(ComboBox_COM.SelectedValue);
 
 			if (Data.Com == null || !Data.Com.IsOpen)
 			{
-				if (port.Substring(0, 3) == "COM")
+				if (!String.IsNullOrEmpty(port) && port.Substring(0, 3) == "COM")
 				{
 					Data.Com = new SerialInterface(port);
 					if (Data.Com.OpenPort() != 0)
@@ -174,36 +174,68 @@ namespace KITT_Drive_dotNET
 		#region Button vehicle controls
 		private void Button_ThrottleUp_Click(object sender, RoutedEventArgs e)
 		{
-			if (Data.Com == null || !Data.Com.IsOpen) return;
+            if (Data.Com == null || !Data.Com.IsOpen)
+            {
+                MessageBox.Show("Please first connect to KITT", "Unconnected", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
 			Data.Ctr.Throttle(Direction.up, true);
 		}
 
 		private void Button_ThrottleDown_Click(object sender, RoutedEventArgs e)
 		{
-			if (Data.Com == null || !Data.Com.IsOpen) return;
-			Data.Ctr.Throttle(Direction.down, true);
+            if (Data.Com == null || !Data.Com.IsOpen)
+            {
+                MessageBox.Show("Please first connect to KITT", "Unconnected", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            Data.Ctr.Throttle(Direction.down, true);
 		}
 
 		private void Button_SteerLeft_Click(object sender, RoutedEventArgs e)
 		{
-			if (Data.Com == null || !Data.Com.IsOpen) return;
-			Data.Ctr.Steer(Direction.left, true);
+            if (Data.Com == null || !Data.Com.IsOpen)
+            {
+                MessageBox.Show("Please first connect to KITT", "Unconnected", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            Data.Ctr.Steer(Direction.left, true);
 		}
 
 		private void Button_SteerRight_Click(object sender, RoutedEventArgs e)
 		{
-			if (Data.Com == null || !Data.Com.IsOpen) return;
-			Data.Ctr.Steer(Direction.right, true);
+            if (Data.Com == null || !Data.Com.IsOpen)
+            {
+                MessageBox.Show("Please first connect to KITT", "Unconnected", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            Data.Ctr.Steer(Direction.right, true);
 		}
 
 
 		private void Button_Status_Click(object sender, RoutedEventArgs e)
 		{
+            if (Data.Com == null || !Data.Com.IsOpen)
+            {
+                MessageBox.Show("Please first connect to KITT", "Unconnected", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
 			Data.Com.RequestStatus();
 		}
 
 		private void Button_STOP_Click(object sender, RoutedEventArgs e)
 		{
+            if (Data.Com == null || !Data.Com.IsOpen)
+            {
+                MessageBox.Show("Please first connect to KITT", "Unconnected", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
 			Data.Ctr.Speed = Data.SpeedDefault;
 			Data.Ctr.Heading = Data.HeadingDefault;
 		}
