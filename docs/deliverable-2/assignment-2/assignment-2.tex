@@ -8,9 +8,51 @@
 \begin{document}
 
 \chapter{Assignment 2}
-Text.
+\section{Distance measurement}
+KITT uses two ultrasonic HC-SR04 modules for distance measurement. These modules send out ultrasonic waves, whose frequency is above \SI{20}{kHz}. When these waves come across an obstacle, they partially reflect. These reflections are thereupon sensed by KITT's sensors. Using the time the waves travelled in combination with the frequency shift allows one to accurately determine the distance to the object. However, in such calculations, KITT's speed must be taking into account; in the time between transmission and reception of the waves, KITT will have travelled a short distance. Also, the time which is needed to process the received waves, is a factor which cannot be ignored.
 
-\section{Using the Doppler effect to 	increase measurement accuracy}
+\usetikzlibrary{shapes,arrows}
+\tikzstyle{block} = [
+	rectangle,
+	draw,
+	fill=blue!20, 
+    text width=7em, 
+    text centered,
+    rounded corners,
+    minimum height=4em
+]
+\tikzstyle{every edge} = [
+	draw,
+	>=triangle 90
+]
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[node distance = 5cm, auto]
+		% Nodes
+		\node [block] (transmission) {Transmission of waves};
+		\node [block, right of=transmission] (reflection) {Reflection of waves};
+		\node [block, right of=reflection] (reception) {Reception of waves};
+		\node [block, below of=reception, node distance=3cm] (processing) {Begin processing of signals};
+		\node [block, left of=processing] (done) {Use of obtained information};
+		% Edges
+		\path (reflection) edge [->] node {Car moves} (reception);
+		\path (transmission) edge [->] node {Car moves} (reflection);
+		\path (transmission) edge [bend left=30, <->] node {Time $T_s$} (reception);
+		\path (reception) edge [->] (processing);
+		\path (processing) edge [->] node {Car moves} (done);
+		\path (processing) edge [bend right=-30, <->] node {Time $T_p$} (done);
+		\path (transmission) edge [<->, anchor=north east] node {Time $T_s + T_p$} (done);
+	\end{tikzpicture}
+	\caption{Event-based scheme of the ultrasonic sensors}
+	\label{fig:ass-2-chain}
+\end{figure}
+
+Figure~\ref{fig:ass-2-chain} shows an event-based scheme of the ultrasonic sensors. As shown in this figure, the movement of the car must be compensated for, in order to obtain an accurate measurement. The processing of information, which includes transmission of information wirelessly, is estimated to be \SI{100}{ms}. However, this value is dependent on external factors and will thus fluctuate.
+
+Another factor which must be considered, are the unwanted reflections to environmental objects. These reflections result in measurement values which do not correspond with the measured object. Also, one must realize that the intensity of the reflected waves are dependent on the frontal surface and angle of the object. 
+
+\section{Calculating an accurate position with the obtained information}
 Let us consider KITT driving with velocity $v'$ at a non-moving object at distance $x$. One can use the classical Doppler effect to accurately determine the distance to this non-moving object. The wavelength $\lambda'$ of the wave, which will be sent out by KITT's ultrasonic sensor, is given by
 
 \begin{equation}
@@ -81,23 +123,61 @@ If one can assume that
 	\frac{u_T}{T} = \frac{u_{T'}}{T'} = \frac{u_{T_p}}{T_p} = \frac{u_{T_s}}{T_s}=r,
 \end{equation}
 
-then the linearized relative uncertainty $u_{d,rel}$ magically simplifies to $r$. \textit{Mathematica 9 Student Edition} was used for aid in algebraic manipulation and simplification of the equations. Unfortunately, signal processing of ultrasonic sensors is handled by KITT.
+then the linearized relative uncertainty $u_{d,rel}$ magically simplifies to $r$. The attentive reader would be able to obtain this result by inspection. \textit{Mathematica 9 Student Edition} was used for aid in algebraic manipulation and simplification of the equations. Unfortunately, signal processing of ultrasonic sensors is handled by KITT.
+
+\section{Static measurements}
+bla
+
+\section{Dynamic measurements}
+To test the dynamic performance of the system, KITT was programmed to drive at a wall, measuring the distance to this wall at a fixed, and compensated for, time interval. If the measured distance would be below a certain value, KITT would stop. Using the fact that the time interval used to measure the distance was programmed to be very precise, one would be able to calculate the speed and acceleration. Figure~\ref{fig:ass-2-dyn-dist} shows measured distances with respect to time.
 
 \begin{figure}[H]
-	\centering
-	\begin{circuitikz} \draw
-	(0,0)
-		to[C=\SI{2}{\milli\farad}, i>=$i_C$] (4,0)
-		to[R, l=$R_1$, v<=$v_R$] (4,4)
-		to[american voltage source, l^=$V_1$] (0,4)
-		-- (0,0)
-	(4,1)
-		-- (6,1)
-		to[L] (6,3)
-		-- (4,3)
-	;
-	\end{circuitikz}
-	\caption{Circuitjeee}
+	\begin{center}
+		\includegraphics[width=0.6\linewidth]{resource/distance.pdf}
+	\end{center}
+	\caption{Distances measured in the dynamic measurements}
+	\label{fig:ass-2-dyn-dist}
 \end{figure}
+
+Using the data graphically illustrated in Figure~\ref{fig:ass-2-dyn-dist}, the velocity and acceleration of KITT can be calculated. This is illustrated in Figure \ref{fig:ass-2-dyn-vel} and \ref{fig:ass-2-dyn-acc}.
+
+\begin{figure}[H]
+	\begin{subfigure}{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{resource/speed.pdf}
+		\end{center}
+		\caption{Velocity measured in the dynamic measurements}
+		\label{fig:ass-2-dyn-vel}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{resource/acceleration.pdf}
+		\end{center}
+		\caption{Acceleration measured in the dynamic measurements}
+		\label{fig:ass-2-dyn-acc}
+	\end{subfigure}
+	\caption{Velocity and acceleration results of the dynamic measurements}
+\end{figure}
+
+Figure \ref{fig:ass-2-dyn-dist} shows that time and distance are approximately linearily related, which would indicate a near constant velocity. This agrees with our experiment, as we programmed KITT to drive at a constant velocity. However, Figure \ref{eq:ass-2-vel-car} shows a somewhat fluctuating speed which decreases with time. This is due to the decrease of the battery voltage and the low speed of KITT. We programmed KITT to drive at a minimal speed, in order to obtain the most information. However, at such a low speed, KITT's motors did just not supply enough torque to maintain this speed. At last, the average acceleration is zero. This resembles our expectancy, as a constant duty cycle of the PWM signal of the motor produces a constant torque.
+
+\section{Signal filtering}
+bla
+
+\section{Datasheet}
+We filled out the blank field in KITT's datasheet as depicted in Table \ref{tab:ass2-datasheet}.
+
+\begin{table}[H]
+	\centering
+	\caption{Blank fields of KITT's datasheet}
+	\label{tab:ass2-datasheet}
+	\begin{tabular}{c c}
+		\hline\hline
+		Field & Value \\
+		\hline
+		hey & lol \\
+		\hline
+		\end{tabular}
+\end{table}
 
 \end{document}
