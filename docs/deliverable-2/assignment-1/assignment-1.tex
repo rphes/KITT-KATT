@@ -9,7 +9,9 @@
 
 \chapter{Assignment 1}
 \section{Testing the Bluetooth connection}
-Before testing the Bluetooth connection could be begun, a MATLAB module for serial communication that would work on every computer had to be made. This script is found in Appendix~\ref{app:matlab-kittserial}. With this working, the \textit{ping} (round trip time) and maximum range of the modules were tested.
+For communication between our PC and KITT, wireless Bluetooth (most likely version 2.1) connection is used. The Bluetooth protocol operates at frequencies from \num{2.4} to \SI{2.4835}{Hz}. \cite{bluetooth-specs}
+\\
+Before testing the Bluetooth connection could begin, a MATLAB module for serial communication that would work on every computer had to be made. This script is found in Appendix~\ref{app:matlab-kittserial}. With this working, the \textit{ping} (round trip time) and maximum range of the modules were tested.
 \\
 For testing the connection's latency, we sent KITT \num{200} status requests with a sufficient interval, to measure the time it took to receive its response. We then repeated this experiment on a number of distances, to see if the increase in distance had a significant impact on performance. The results of these measurements are displayed in Figure~\ref{fig:ass1-ping}. In this figure, each box statistically represents the \num{200} measurements we performed at a certain distance. Furthermore, it is good to note that only the measurements from \num{1} to \SI{5}{m} were performed with an open \textit{line-of-sight}, whereas the other measurements were performed with one or more walls, windows, doors or other objects in the signal path. All measurements were performed indoors.
 
@@ -20,10 +22,10 @@ For testing the connection's latency, we sent KITT \num{200} status requests wit
 	\label{fig:ass1-ping}
 \end{figure}
 
-During these measurements we found that the maximum indoor range with acceptable stability was around \SI{25}{m}. Within this margin, we observe almost constant mean latencies throughout each of the distances. However, it is worth noting the increase in outliers and outlier amplitude (some even over \SI{1500}{ms} for $d = \SI{24}{m}$, not shown in graph) as measurement distance increases near the maximum range.
+During these measurements we found that the maximum indoor range with acceptable stability was around \SI{25}{m}. Within this margin, we observe almost constant mean latencies throughout each of the distances. However, it is worth noting the increase in outliers and outlier amplitude (some even over \SI{1500}{ms} for $d = \SI{24}{m}$, not shown in graph) as measurement distance increases near the maximum range. Compared to the given maximum ranges in datasheets of both the USB-module and KITT's onboard chip, \SI{110}{m} and \SI{100}{m} respectively, our measured maximum range of \SI{25}{m} seems somewhat small. This is however due to the fact that we measured indoors, where the range in free space could be significantly higher. \cite{lm506-datasheet,rn41-datasheet}
 
 \section{Controlling KITT}
-Controlling KITT meant and (graphical) interface had to be built. Because of MATLAB's tendency to not handle serial communication (e.g. opening/closing ports) very well and the fact that creating a GUI-program is not as simple as we would like it to be, we decided to build our GUI in C\# (WPF). This program will then handle the serial communication, while operations that require MATLAB are done via MATLAB's COM interface. This way the GUI will have direct access to MATLAB's workspace, and is able to run functions, like FFTs or plots. This way we believe we have the best of both worlds.
+Controlling KITT meant and (graphical) interface had to be built. Because of MATLAB's tendency to not handle serial communication (e.g. opening/closing ports) very well and the fact that creating a GUI-program in MATLAB is not as simple as we would like it to be, we decided to build our GUI in C\# (WPF). This program will then handle the serial communication, while operations that require MATLAB are done via MATLAB's COM interface. This way the GUI will have direct access to MATLAB's workspace, and is able to run functions, like FFTs or plots. This way we believe we have the best of both worlds.
 
 \begin{figure}[H]
 	\centering
@@ -32,6 +34,6 @@ Controlling KITT meant and (graphical) interface had to be built. Because of MAT
 	\label{fig:ass1-kitt-drive}
 \end{figure}
 
-In Figure~\ref{fig:ass1-kitt-drive} the current state of \textir{KITT-Drive} is shown. The status pane is to be expanded with ultrasonic sensor, battery and audio information.
+In Figure~\ref{fig:ass1-kitt-drive} the current state of \textit{KITT-Drive} is shown. The status pane is to be expanded with ultrasonic sensor, battery and audio information.
 
 \end{document}
