@@ -158,7 +158,7 @@ To test to static performance of the sensors, the maximum angle at which the sen
 	}
 \end{table}
 
-The results show that the distance measured to objects at an angle are slightly erroneous. Also, the maximum angle at which a sensor is able to sense an object heavily varies per sensor. 
+The results show that the distance measured to objects at an angle is slightly erroneous. Also, the maximum angle at which a sensor is able to sense an object heavily varies per sensor. 
 
 \section{Dynamic measurements}
 To test the dynamic performance of the system, KITT was programmed to drive at a wall, measuring the distance to this wall at a fixed, and compensated for, time interval. If the measured distance would be below a certain value, KITT would stop. Using the fact that the time interval used to measure the distance was programmed to be very precise, one would be able to calculate the speed and acceleration. Figure~\ref{fig:ass-2-dyn-dist} shows measured distances with respect to time.
@@ -197,7 +197,7 @@ Figure \ref{fig:ass-2-dyn-dist} shows that time and distance are approximately l
 Environmental reflections result in invalid measurement values. These invalid values unfold as weird distances measured. If one approximately knows the position of the vehicle, one can, using an in advance calculated standard deviation of sensor output, calculate the chance of each outputted distance. If this chance is below a certain signifance level, the sensor output should be rejected. The values which pass this test should then be Kalman-filtered. This way, the chance on erroneous results can be lowered.
 
 \section{Datasheet}
-We filled out the blank fields in KITT's datasheet as depicted in Table \ref{tab:ass2-datasheet}.
+We filled out the blank fields in KITT's datasheet as depicted in Table \ref{tab:ass2-datasheet}. We interpreted the maximum command refresh time as the maximum time interval between two consecutive commands.
 
 \begin{table}[H]
 	\centering
@@ -212,7 +212,7 @@ We filled out the blank fields in KITT's datasheet as depicted in Table \ref{tab
 		Ultrasonic sensor resolution & \SI{1}{cm} \\
 		Ultrasonic sensor distance & \SI{3.1}{m} \\
 		Turning radius & \SI{0.65}{m} \\
-		Maximum command refresh time & \SI{250}{ms} \\
+		Maximum command refresh time & \SI{2}{s} \\
 		\hline
 		\end{tabular}
 \end{table}
