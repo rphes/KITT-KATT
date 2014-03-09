@@ -11,7 +11,7 @@
 \section{Testing the Bluetooth connection}
 For communication between our PC and KITT, wireless Bluetooth (most likely version 2.1) connection is used. The Bluetooth protocol operates at frequencies from \num{2.4} to \SI{2.4835}{Hz}. \cite{bluetooth-specs}
 \\
-Before testing the Bluetooth connection could begin, a MATLAB module for serial communication that would work on every computer had to be made. This script is found in Appendix~\ref{app:matlab-kittserial}. With this working, the \textit{ping} (round trip time) and maximum range of the modules were tested.
+Before testing the Bluetooth connection could begin, a MATLAB module for serial communication that would work on every computer had to be made. With this working, the \textit{ping} (round trip time) and maximum range of the modules were tested.
 \\
 For testing the connection's latency, we sent KITT \num{200} status requests with a sufficient interval, to measure the time it took to receive its response. We then repeated this experiment on a number of distances, to see if the increase in distance had a significant impact on performance. The results of these measurements are displayed in Figure~\ref{fig:ass1-ping}. In this figure, each box statistically represents the \num{200} measurements we performed at a certain distance. Furthermore, it is good to note that only the measurements from \num{1} to \SI{5}{m} were performed with an open \textit{line-of-sight}, whereas the other measurements were performed with one or more walls, windows, doors or other objects in the signal path. All measurements were performed indoors.
 
