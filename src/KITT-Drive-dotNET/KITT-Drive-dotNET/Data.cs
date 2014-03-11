@@ -9,8 +9,8 @@ namespace KITT_Drive_dotNET
 	public static class Data
 	{
 		#region Global constants
-		public static int SpeedMin { get { return -15; } }
-		public static int SpeedMax { get { return 15; } }
+		public static int SpeedMin { get { return -10; } }
+		public static int SpeedMax { get { return 10; } }
 		public static int HeadingMin { get { return -50; } }
 		public static int HeadingMax { get { return 50; } }
 		public static int SpeedDefault { get { return 0; } }
@@ -27,7 +27,7 @@ namespace KITT_Drive_dotNET
 		#region Modules
 		public static Control Ctr = new Control();
 		public static Vehicle Car = new Vehicle();
-		public static SerialInterface Com;
+		public static SerialInterface Com = new SerialInterface();
 		#endregion
 	}
 

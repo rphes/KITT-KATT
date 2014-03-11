@@ -38,10 +38,9 @@ namespace KITT_Drive_dotNET
 		#region Command transmission
 		private void Drive_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-			if (Data.Com != null && Data.Com.IsOpen && (e.PropertyName == "SpeedString" || e.PropertyName == "HeadingString"))
+			if (Data.Com != null && Data.Com.SerialPort.IsOpen && (e.PropertyName == "SpeedString" || e.PropertyName == "HeadingString"))
 			{
 				Data.Com.DoDrive(Data.Ctr.PWMHeading, Data.Ctr.PWMSpeed);
-				System.Diagnostics.Debug.Print(Data.Ctr.Speed.ToString() + ' ' + Data.Ctr.Heading.ToString());
 			}
 		}
 		#endregion
@@ -62,14 +61,14 @@ namespace KITT_Drive_dotNET
 		{
 			string port = Convert.ToString(ComboBox_COM.SelectedValue);
 
-			if (Data.Com == null || !Data.Com.IsOpen)
+			if (!Data.Com.SerialPort.IsOpen)
 			{
 				if (!String.IsNullOrEmpty(port) && port.Substring(0, 3) == "COM")
 				{
-					Data.Com = new SerialInterface(port);
+					Data.Com.SerialPort.PortName = port;
 					if (Data.Com.OpenPort() != 0)
 					{
-						MessageBox.Show(Data.Com.lastError, "Could not open port", MessageBoxButton.OK, MessageBoxImage.Error);
+						MessageBox.Show(Data.Com.LastError, "Could not open port", MessageBoxButton.OK, MessageBoxImage.Error);
 					}
 					else
 					{
@@ -84,8 +83,7 @@ namespace KITT_Drive_dotNET
 			}
 			else
 			{
-				Data.Com.Dispose();
-				Data.Com = null;
+				Data.Com.SerialPort.Close();
 				Button_Connect.Content = "Connect";
 				ComboBox_COM.IsEnabled = true;
 			}
@@ -95,7 +93,7 @@ namespace KITT_Drive_dotNET
 		#region Key vehicle controls
 		private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
 		{
-			if (Data.Com == null || !Data.Com.IsOpen || e.IsRepeat) return;
+			if (Data.Com == null || !Data.Com.SerialPort.IsOpen || e.IsRepeat) return;
 
 			Key key = e.Key;
 
@@ -137,7 +135,7 @@ namespace KITT_Drive_dotNET
 		{
 			Key key = e.Key;
 
-			if (Data.Com == null || !Data.Com.IsOpen || !(key == Key.W || key == Key.A || key == Key.S || key == Key.D))
+			if (Data.Com == null || !Data.Com.SerialPort.IsOpen || !(key == Key.W || key == Key.A || key == Key.S || key == Key.D))
 				return;
 
 			if (key == Key.W || key == Key.S)
@@ -174,68 +172,32 @@ namespace KITT_Drive_dotNET
 		#region Button vehicle controls
 		private void Button_ThrottleUp_Click(object sender, RoutedEventArgs e)
 		{
-            if (Data.Com == null || !Data.Com.IsOpen)
-            {
-                MessageBox.Show("Please first connect to KITT", "Unconnected", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
 			Data.Ctr.Throttle(Direction.up, true);
 		}
 
 		private void Button_ThrottleDown_Click(object sender, RoutedEventArgs e)
 		{
-            if (Data.Com == null || !Data.Com.IsOpen)
-            {
-                MessageBox.Show("Please first connect to KITT", "Unconnected", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
             Data.Ctr.Throttle(Direction.down, true);
 		}
 
 		private void Button_SteerLeft_Click(object sender, RoutedEventArgs e)
 		{
-            if (Data.Com == null || !Data.Com.IsOpen)
-            {
-                MessageBox.Show("Please first connect to KITT", "Unconnected", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
             Data.Ctr.Steer(Direction.left, true);
 		}
 
 		private void Button_SteerRight_Click(object sender, RoutedEventArgs e)
 		{
-            if (Data.Com == null || !Data.Com.IsOpen)
-            {
-                MessageBox.Show("Please first connect to KITT", "Unconnected", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
             Data.Ctr.Steer(Direction.right, true);
 		}
 
 
 		private void Button_Status_Click(object sender, RoutedEventArgs e)
 		{
-            if (Data.Com == null || !Data.Com.IsOpen)
-            {
-                MessageBox.Show("Please first connect to KITT", "Unconnected", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
 			Data.Com.RequestStatus();
 		}
 
 		private void Button_STOP_Click(object sender, RoutedEventArgs e)
 		{
-            if (Data.Com == null || !Data.Com.IsOpen)
-            {
-                MessageBox.Show("Please first connect to KITT", "Unconnected", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
 			Data.Ctr.Speed = Data.SpeedDefault;
 			Data.Ctr.Heading = Data.HeadingDefault;
 		}

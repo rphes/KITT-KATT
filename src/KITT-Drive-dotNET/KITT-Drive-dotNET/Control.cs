@@ -180,16 +180,16 @@ namespace KITT_Drive_dotNET
 			if (Heading == Data.HeadingDefault && initial)
 			{
 				if (d == Direction.right)
-					increment = headingIncrementInitial;
-				else if (d == Direction.left)
 					increment = -headingIncrementInitial;
+				else if (d == Direction.left)
+					increment = headingIncrementInitial;
 			}
 			else
 			{
 				if (d == Direction.right)
-					increment = headingIncrement;
-				else if (d == Direction.left)
 					increment = -headingIncrement;
+				else if (d == Direction.left)
+					increment = headingIncrement;
 			}
 
 			Steer(increment);
