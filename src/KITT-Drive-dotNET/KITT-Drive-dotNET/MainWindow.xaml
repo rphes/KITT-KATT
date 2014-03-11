@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:local="clr-namespace:KITT_Drive_dotNET"
-        Title="KITT-Drive" Height="350" Width="500" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp">
+        Title="KITT-Drive" Height="380" Width="500" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" ResizeMode="NoResize">
 	<Grid>
 
 		<GroupBox Name="GroupBox_Control" Header="Vehicle controls" HorizontalAlignment="Left" Margin="10,10,0,10" VerticalAlignment="Stretch" Width="230">
@@ -13,7 +13,7 @@
 				<Button Name="Button_SteerRight" Content="Right" HorizontalAlignment="Center" Margin="125,0,0,50" VerticalAlignment="Center" Width="50" Height="50" Click="Button_SteerRight_Click"/>
 				<Button Name="Button_Status" Content="Status" HorizontalAlignment="Center" Margin="0,0,125,175" VerticalAlignment="Center" Width="50" Height="50" Click="Button_Status_Click"/>
 				<Button Name="Button_STOP" Content="STOP" HorizontalAlignment="Center" Margin="125,0,0,175" VerticalAlignment="Center" Width="50" Height="50" Click="Button_STOP_Click"/>
-
+				
 				<Slider Name="Slider_Speed" HorizontalAlignment="Stretch" Margin="20,50,20,0" VerticalAlignment="Center" Minimum="{Binding Source={x:Static local:Data.SpeedMin}}" Maximum="{Binding Source={x:Static local:Data.SpeedMax}}" Value="{Binding Path=Speed, Mode=OneWay}" Focusable="False" Thumb.DragCompleted="Slider_Speed_DragCompleted"/>
 				<Label Content="{Binding Path=SpeedString}" Target="{Binding ElementName=Slider_Speed}" HorizontalAlignment="Center" Margin="20,80,20,0" VerticalAlignment="Center"/>
 				<Slider Name="Slider_Heading" HorizontalAlignment="Stretch" Margin="20,125,20,0" VerticalAlignment="Center" Minimum="{Binding Source={x:Static local:Data.HeadingMin}}" Maximum="{Binding Source={x:Static local:Data.HeadingMax}}" Value="{Binding Path=Heading, Mode=OneWay}" Focusable="False" Thumb.DragCompleted="Slider_Heading_DragCompleted"/>
@@ -27,12 +27,30 @@
 		</GroupBox>
 		<GroupBox Name="GroupBox_Status" Header="Vehicle status" HorizontalAlignment="Right" Margin="0,10,10,10" VerticalAlignment="Stretch" Width="230">
 			<Grid>
-				<Slider Name="Slider_ActualPWMSpeed" HorizontalAlignment="Stretch" Margin="20,20,20,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Data.PWMSpeedMin}}" Maximum="{Binding Source={x:Static local:Data.PWMSpeedMax}}" Value="{Binding Path=ActualPWMSpeed, Mode=OneWay}" Focusable="False" IsEnabled="False" Thumb.DragCompleted="Slider_Speed_DragCompleted"/>
-				<Label Content="{Binding Path=ActualPWMSpeedString}" Target="{Binding ElementName=Slider_ActualPWMSpeed}" HorizontalAlignment="Left" Margin="20,35,20,0" VerticalAlignment="Top"/>
-				<Slider Name="Slider_ActualPWMHeading" HorizontalAlignment="Stretch" Margin="20,60,20,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Data.PWMHeadingMin}}" Maximum="{Binding Source={x:Static local:Data.PWMHeadingMax}}" Value="{Binding Path=ActualPWMHeading, Mode=OneWay}" Focusable="False" IsEnabled="False" Thumb.DragCompleted="Slider_Heading_DragCompleted"/>
-				<Label Content="{Binding Path=ActualPWMHeadingString}" Target="{Binding ElementName=Slider_ActualPWMHeading}" HorizontalAlignment="Left" Margin="20,75,20,0" VerticalAlignment="Top"/>
+				<GroupBox Name="GroupBox_Movement" Header="Vehicle direction" HorizontalAlignment="Stretch" Margin="5,5,5,0" VerticalAlignment="Top" Height="115">
+					<Grid>
+						<Slider Name="Slider_ActualPWMSpeed" HorizontalAlignment="Stretch" Margin="10,10,10,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Data.PWMSpeedMin}}" Maximum="{Binding Source={x:Static local:Data.PWMSpeedMax}}" Value="{Binding Path=ActualPWMSpeed, Mode=OneWay}" Focusable="False" IsEnabled="False"/>
+						<Label Content="{Binding Path=ActualPWMSpeedString}" Target="{Binding ElementName=Slider_ActualPWMSpeed}" HorizontalAlignment="Left" Margin="10,25,20,0" VerticalAlignment="Top"/>
+						<Slider Name="Slider_ActualPWMHeading" HorizontalAlignment="Stretch" Margin="10,50,10,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Data.PWMHeadingMin}}" Maximum="{Binding Source={x:Static local:Data.PWMHeadingMax}}" Value="{Binding Path=ActualPWMHeading, Mode=OneWay}" Focusable="False" IsEnabled="False"/>
+						<Label Content="{Binding Path=ActualPWMHeadingString}" Target="{Binding ElementName=Slider_ActualPWMHeading}" HorizontalAlignment="Left" Margin="10,65,20,0" VerticalAlignment="Top"/>
+					</Grid>
+				</GroupBox>
+				<GroupBox Name="GroupBox_Sensors" Header="Sensor readings" HorizontalAlignment="Stretch" Margin="5,125,5,0" VerticalAlignment="Top" Height="75">
+					<Grid>
+						<Slider Name="Slider_SensorLeft" HorizontalAlignment="Stretch" Margin="10,10,100,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Data.SensorMinRange}}" Maximum="{Binding Source={x:Static local:Data.SensorMaxRange}}" Value="{Binding Path=SensorDistanceLeft, Mode=OneWay}" Focusable="False" IsEnabled="False"/>
+						<Label Content="{Binding Path=SensorDistanceLeftString}" Target="{Binding ElementName=Slider_SensorLeft}" HorizontalAlignment="Center" Margin="0,25,90,0" VerticalAlignment="Top"/>
+						<Slider Name="Slider_SensorRight" HorizontalAlignment="Stretch" Margin="100,10,10,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Data.SensorMinRange}}" Maximum="{Binding Source={x:Static local:Data.SensorMaxRange}}" Value="{Binding Path=SensorDistanceRight, Mode=OneWay}" Focusable="False" IsEnabled="False"/>
+						<Label Content="{Binding Path=SensorDistanceRightString}" Target="{Binding ElementName=Slider_SensorRight}" HorizontalAlignment="Center" Margin="90,25,0,0" VerticalAlignment="Top"/>
+					</Grid>
+				</GroupBox>
+				<GroupBox Name="GroupBox_Battery" Header="Battery" HorizontalAlignment="Stretch" Margin="5,205,5,0" VerticalAlignment="Top" Height="85">
+					<Grid>
+						<ProgressBar Name="ProgressBar_Battery" HorizontalAlignment="Stretch" Margin="10,10,10,0" VerticalAlignment="Top" Height="22" Minimum="{Binding Source={x:Static local:Data.BatteryVoltageMin}}" Maximum="{Binding Source={x:Static local:Data.BatteryVoltageMax}}" Value="{Binding Path=BatteryVoltage}"/>
+						<Label Content="{Binding Path=BatteryPercentageString}" Target="{Binding ElementName=ProgressBar_Battery}" HorizontalAlignment="Center" Margin="0,8,0,0" VerticalAlignment="Top"/>
+						<Label Content="{Binding Path=BatteryVoltageString}" Target="{Binding ElementName=ProgressBar_Battery}" HorizontalAlignment="Center" Margin="0,35,0,0" VerticalAlignment="Top"/>
+					</Grid>
+				</GroupBox>
 			</Grid>
 		</GroupBox>
-
 	</Grid>
 </Window>

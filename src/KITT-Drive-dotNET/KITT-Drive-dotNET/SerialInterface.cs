@@ -153,97 +153,53 @@ namespace KITT_Drive_dotNET
 		}
 		#endregion
 
+		#region Reception
 		private void parseResponse(string response)
 		{
 			char responseType = response[0];
 
-			if (responseType == 'D')
+			if (responseType == 'D' || responseType == 'U')
 			{
-				//current drive commands
+				int value1, value2;
 				string[] data = response.Substring(1).Split(' ');
-				Data.Car
+
+				if (int.TryParse(data[0], out value1) && int.TryParse(data[1], out value2))
+				{
+					if (responseType == 'D')
+					{
+						//current drive commands
+						Data.Car.ActualPWMHeading = value1;
+						Data.Car.ActualPWMSpeed = value2;
+					}
+					else if (responseType == 'U')
+					{
+						//ultrasonic sensor readout
+						Data.Car.SensorDistanceLeft = value1;
+						Data.Car.SensorDistanceRight = value2;
+					}
+				}
+			}
+			else if (responseType == 'A')
+			{
+				//battery voltage readout
+				int voltage;
+				string data = response.Substring(1);
+
+				if (int.TryParse(data, out voltage))
+					Data.Car.BatteryVoltage = voltage;
+			}
+			else if (response.Substring(0, 5) == "Audio")
+			{
+				//audio status readout
+				bool audiostatus = response[-1] != 0;
+				Data.Car.AudioStatus = audiostatus;
 			}
 		}
-
-		//#region Reception
-		//private string RetrieveAnswer()
-		//{
-		//	char[] charRead = new char[1];
-		//	StringBuilder answer = new StringBuilder();
-
-		//	// Read while a character not equal to end of
-		//	// transmission is read
-
-		//	SerialPort.Read(charRead, 0, 1); // Read first character
-
-		//	while (Convert.ToInt16(charRead[0]) != 4) // Check for EoT
-		//	{
-		//		answer.Append(charRead);
-
-		//		SerialPort.Read(charRead, 0, 1); // Read next character
-		//	}
-
-		//	return answer.ToString();
-		//}
-
-		//public struct AnswerStatus
-		//{
-		//	public bool valid;
-
-		//	public int drive, steering;
-		//	public int sensorLeft, sensorRight;
-		//	public int batteryVoltage;
-		//	public bool audioStatus;
-		//}
-
-		//private AnswerStatus ConvertStatusAnswer(string answer)
-		//{
-		//	AnswerStatus status = new AnswerStatus();
-
-		//	String stripped;
-		//	String[] splitted;
-
-		//	String[] answerSplitted = answer.Split('\n'); // Split on newline
-
-		//	// Check if the number of lines returned is correct
-		//	if (answerSplitted.Length != 4)
-		//	{
-		//		status.valid = false;
-		//		return status;
-		//	}
-		//	else
-		//	{
-		//		status.valid = true;
-		//	}
-
-		//	// Find drive and steering value
-		//	stripped = answerSplitted[0].Substring(1, answer.Length - 1); // Strip 'D' from the beginning
-		//	splitted = stripped.Split(' ');
-		//	status.drive = Convert.ToInt16(splitted[0]);
-		//	status.steering = Convert.ToInt16(splitted[1]);
-
-		//	// Find sensor values
-		//	stripped = answerSplitted[1].Substring(1, answer.Length - 1); // Strip 'S' from the beginning
-		//	splitted = stripped.Split(' ');
-		//	status.sensorLeft = Convert.ToInt16(splitted[0]);
-		//	status.sensorRight = Convert.ToInt16(splitted[1]);
-
-		//	// Find battery voltage
-		//	stripped = answerSplitted[2].Substring(1, answer.Length - 1); // Strip 'A' from the beginning
-		//	status.batteryVoltage = Convert.ToInt16(stripped);
-
-		//	// Find audio status
-		//	stripped = answerSplitted[3].Substring(6, answer.Length - 1); // Strip 'Audio ' from the beginning
-		//	status.audioStatus = Convert.ToBoolean(stripped);
-
-		//	return status;
-		//}
-		//#endregion
+		#endregion
 
 		#region Serial event handling
 		void serialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
 		{
-			//MessageBox.Show();
 			throw new NotImplementedException();
 		}
 

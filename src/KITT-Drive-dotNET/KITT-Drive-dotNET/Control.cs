@@ -62,7 +62,7 @@ namespace KITT_Drive_dotNET
 				_heading = Clamp(value, Data.HeadingMin, Data.HeadingMax);
 				NotifyPropertyChanged("Heading");
 
-				int intheading = (int)Math.Round(_heading) + Data.PWMOffset;
+				int intheading = (int)Math.Round(-_heading) + Data.PWMOffset; //compensate for reverse steering
 				if (intheading != PWMHeading)
 					PWMHeading = intheading;
 			}
@@ -81,7 +81,7 @@ namespace KITT_Drive_dotNET
 			}
 		}
 
-		public string HeadingString { get { return "Heading: " + (PWMHeading - Data.PWMOffset); } }
+		public string HeadingString { get { return "Heading: " + (-PWMHeading + Data.PWMOffset); } } //undo reverse steering compensation
 
 		public DispatcherTimer speedDecrementTimer;
 		public DispatcherTimer headingDecrementTimer;
@@ -180,16 +180,16 @@ namespace KITT_Drive_dotNET
 			if (Heading == Data.HeadingDefault && initial)
 			{
 				if (d == Direction.right)
-					increment = -headingIncrementInitial;
-				else if (d == Direction.left)
 					increment = headingIncrementInitial;
+				else if (d == Direction.left)
+					increment = -headingIncrementInitial;
 			}
 			else
 			{
 				if (d == Direction.right)
-					increment = -headingIncrement;
-				else if (d == Direction.left)
 					increment = headingIncrement;
+				else if (d == Direction.left)
+					increment = -headingIncrement;
 			}
 
 			Steer(increment);

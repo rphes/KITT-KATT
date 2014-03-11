@@ -74,6 +74,7 @@ namespace KITT_Drive_dotNET
 					{
 						Button_Connect.Content = "Disconnect";
 						ComboBox_COM.IsEnabled = false;
+						Data.Com.RequestStatus();
 					}
 				}
 				else
