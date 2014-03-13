@@ -251,7 +251,7 @@ whose rank is also obviously two. Therefore, the simplified state-space model is
 
 \section{System identification}
 \subsection{Signal filtering}
-For us to obtain decent measurement values, the sensor output would have to be stable. However, every now and then, the sensors would output unrealistic values. To overcome this problem, we have created a FIR filter which would predict the next measured value. If the measured value would very differ from the predicted value, the measured value would be replaced.
+For us to obtain decent measurement values, the sensor output would have to be stable. However, every now and then, the sensors would output unrealistic values. To overcome this problem, we have created a finite impulse response filter which would predict the next measured value. If the measured value would very differ from the predicted value, the measured value would be replaced.
 
 Let the measured distances be $x_i$ with $i \in [0,n]$. If the sample time is $T$, then the current observed speed is given by
 
