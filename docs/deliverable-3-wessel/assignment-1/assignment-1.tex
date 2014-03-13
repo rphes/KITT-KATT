@@ -75,7 +75,7 @@ The eigenvalues with corresponding eigenvectors of our state-space model are
 	\end{bmatrix}.
 \end{equation}
 
-Since we have two independent eigenvectors, $\lambda_2 < 0$ and $\lambda_1 = 0$, our system is marginally stable. To investigate the controllability and observability of a one-dimensional output system, we used the fact that a pair $(\mat{A},\mat{B})$ is controllable if $\mat{V}$ is a square matrix whose colums consist of different eigenvectors of $\mat{A}$, and every element of the vector $\mat{V}^{-1} \mat{B}$ is non-zero. Since
+Since we have two independent eigenvectors, $\lambda_2 < 0$ and $\lambda_1 = 0$, our system is marginally stable. To investigate the controllability and observability of a one-dimensional output system, we used the fact that a pair $(\mat{A},\mat{B})$ is controllable if $\mat{V}$ is a square matrix whose colums consist of different eigenvectors of $\mat{A}$, and every element of the vector $\mat{V}^{-1} \mat{B}$ is non-zero. If an element was to be zero, then the controllability matrix can not have full rank. Since
 
 \begin{equation}
 	\left[\vec{v}_1 \vec{v}_2 \right]^{-1} \mat{B} = \begin{bmatrix}
@@ -254,5 +254,47 @@ whose rank is obviously two. Therefore, the simplified state-space model is cont
 \end{equation}
 
 whose rank is also obviously two. Therefore, the simplified state-space model is also observable.
+
+\section{System identification}
+\subsection{Signal filtering}
+For us to obtain decent measurement values, the sensor output would have to be stable. However, every now and then, the sensors would output unrealistic values. To overcome this problem, we have created a FIR filter which would predict the next measured value. If the measured value would very differ from the predicted value, the measured value would be replaced.
+
+Let the measured distances be $x_i$ with $i \in [0,n]$. If the sample time is $T$, then the current observed speed is given by
+
+\begin{equation}
+	v_n = \frac{x_{n} - x_{n-1}}{T}.
+\end{equation}
+
+The current observed acceleration is given by
+
+\begin{equation}
+	a_n = \frac{v_n - v_{n-1}}{T} = \frac{x_{n} - 2 x_{n-1} + x_{n-2}}{T^2}.
+\end{equation}
+
+If one assumes constant speed and acceleration, then the predicted next distance is given by
+
+\begin{equation}
+	y_{n+1} = x_{n} + v_n T + \frac{1}{2} a T^2 = \frac{5}{2} x_n - 2 x_{n-1} + \frac{1}{2} x_{n-2}= x_n \ast h_n
+\end{equation}
+
+in which
+
+\begin{equation}
+	h_n = \left\{
+	\begin{array}{l l}
+		\frac{5}{2} & \quad n = 0, \\
+		-2 & \quad n = 1, \\
+		\frac{1}{2} & \quad n = 2, \\
+		0 & \quad \text{elsewhere}.
+	\end{array}
+	\right.
+\end{equation}
+
+Note that
+
+\begin{equation}
+	E[y_n] = \left( \sum_{n=-\infty}^{\infty} h_n \right) E[x_n] = E[x_n].
+\end{equation}
+
 
 \end{document}
