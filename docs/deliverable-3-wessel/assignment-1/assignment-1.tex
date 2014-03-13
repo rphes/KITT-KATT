@@ -250,7 +250,7 @@ whose rank is obviously two. Therefore, the simplified state-space model is cont
 whose rank is also obviously two. Therefore, the simplified state-space model is also observable.
 
 \section{System identification}
-\subsection{Signal filtering}
+\subsection{Unrealistic value filtering}
 For us to obtain decent measurement values, the sensor output would have to be stable. However, every now and then, the sensors would output unrealistic values. To overcome this problem, we have created a finite impulse response filter which would predict the next measured value. If the measured value would differ too much from the predicted value, the measured value would be replaced.
 
 Let the measured distances be $x_i$ with $i \in [0,n]$. If the sample time is $T$, then the current observed speed is given by
@@ -290,5 +290,56 @@ Note that
 	E[y_n] = \left( \sum_{n=-\infty}^{\infty} h_n \right) E[x_n] = E[x_n].
 \end{equation}
 
+\subsection{Noise filtering}
+
+Consider a ordinary second-order low pass filter with transfer function
+
+\begin{equation}
+	\frac{Y(s)}{X(s)}=\frac{1}{(1+(2 \pi f_{fall})^{-1} s)^2}.
+\end{equation}
+
+Defining
+
+\begin{equation}
+	\alpha = (2 \pi f_{fall} T_s)^{-1}
+\end{equation}
+
+and rewriting the transfer function yields
+
+\begin{equation}
+	Y(s) \left(\frac{\alpha^2}{T_s^2} s^2 + 2 \frac{\alpha}{T_s} s + 1 \right) = X(s)
+\end{equation}
+
+Inverse LaPlace transforming and converting to discrete time using
+
+\begin{equation}
+	\frac{d}{dt}f(t) = \frac{f_n - f_{n-1}}{T_s}
+\end{equation}
+
+yields us a second-order discrete time infinite impulse response low pass filter given by
+
+\begin{equation}
+	y_{n+1} = c_1 y_n + c_2 y_{n-1} + c_3 x_{n+1}
+\end{equation}
+
+in which
+
+\begin{align}
+	c_1 &= \frac{2 \alpha^2 + 2 \alpha}{\alpha^2 + 2 \alpha + 1}, \\
+	c_2 &= \frac{-\alpha^2}{\alpha^2 + 2 \alpha + 1}\text{ and} \\
+	c_3 &= \frac{1}{\alpha^2+2 \alpha + 1}.
+\end{align}
+
+Note that
+
+\begin{equation}
+	c_1 + c_2 + c_3 = 1.
+\end{equation}
+
+It is important to realize that applying such a filter introduces delay. The delay $T(f)$ could be estimated by calculating the phase shift $\phi(f)$ of the transfer function and using
+
+\begin{equation}
+	T(f) = \frac{-1}{2 \pi f} \phi(f).
+\end{equation}
 
 \end{document}
