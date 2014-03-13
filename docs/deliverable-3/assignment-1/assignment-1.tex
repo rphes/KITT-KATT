@@ -1,0 +1,24 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+
+\chapter{Assignment 1}
+\section{Car model}
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[node distance=2cm]
+		\bgComponentNoBond{Se}{$S_e:u$}
+		\bgComponent{}{1-1}{1}{right of=}{Se}{inbond}
+		\bgComponent{}{mass}{$I:m$}{above of=}{1-1}{inbond}
+		\bgComponent{}{res}{$R:\rho$}{right of=}{1-1}{inbond}
+	\end{tikzpicture}
+	\caption{Bond graph representation of the car model}
+	\label{fig:ass-1-bond-simple}
+\end{figure}
+
+\end{document}
