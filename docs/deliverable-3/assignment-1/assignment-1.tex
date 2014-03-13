@@ -46,7 +46,7 @@ The second-order state-space model fitting the bond graph drawn in Figure~\ref{f
 	\begin{bmatrix}
 		0 \\
 		\frac{1}{m}
-	\end{bmatrix} u \\
+	\end{bmatrix} u, \\
 	\vec{y} = q_m &= \mat{C} \vec{x} + \mat{D} \vec{u} =
 	\begin{bmatrix}
 		1 & 0
@@ -64,7 +64,7 @@ The eigenvalues with corresponding eigenvectors of our state-space model are
 	\vec{v}_1 = \begin{bmatrix}
 		1 \\
 		0
-	\end{bmatrix},
+	\end{bmatrix}\text{ and}
 \end{equation}
 
 \begin{equation}
@@ -81,8 +81,8 @@ Since we have two independent eigenvectors, $\lambda_2 < 0$ and $\lambda_1 = 0$,
 	\left[\vec{v}_1 \vec{v}_2 \right]^{-1} \mat{B} = \begin{bmatrix}
 		\frac{1}{m} \\
 		\frac{1}{\rho}
-	\end{bmatrix}
-\end{equation},
+	\end{bmatrix},
+\end{equation}
 
 we can conclude controllability. Recall that a system is observable, if $(\tr{\mat{A}},\tr{\mat{C}})$ is controllable. Let $\vec{u}_1$ and $\vec{u}_2$ denote the eigenvectors of $\tr{\mat{A}}$, then
 
@@ -90,12 +90,72 @@ we can conclude controllability. Recall that a system is observable, if $(\tr{\m
 	\left[\vec{u}_1 \vec{u}_2 \right]^{-1} \tr{\mat{C}} = \begin{bmatrix}
 		-\frac{m}{\rho} \\
 		\frac{m}{\rho}
-	\end{bmatrix}
-\end{equation}.
+	\end{bmatrix}.
+\end{equation}
 
 Now we can also conclude observability.
 
+\section{Extended car model}
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[node distance=2cm]
+		\bgComponentNoBond{bat}{$S_e:v$}
+		\bgComponent{}{1-1}{1}{right of=}{bat}{inbond}
+		\bgComponent{}{ind}{$I:L$}{above of=}{1-1}{inbond}
+		\bgComponent{}{res1}{$R:R$}{below of=}{1-1}{inbond}
+
+		\bgComponentWithBondLabel{}{gy}{GY}{right of=}{1-1}{inbond}{}{$e_1=e$}{$f_1=i$}
+
+		\bgComponentWithBondLabel{node distance=3cm}{loss}{TF}{right of=}{gy}{inbond}{}{$k_t f_1=\tau_m$}{$k_t^{-1} e_1=\omega_m$}
+		\bgComponentWithBondLabel{node distance=3cm}{conv}{TF}{right of=}{loss}{inbond}{}{$k_g \tau_m=\tau_w$}{$k_g^{-1} \omega_m = \omega_w$}
+		\bgComponentWithBondLabel{node distance=3cm}{1-2}{1}{right of=}{conv}{inbond}{}{$r_w^{-1} \tau_w=F$}{$r_w \omega_w=v$}
 
 
+		\bgComponent{}{mass}{$I:m$}{above of=}{1-2}{inbond}
+		\bgComponent{}{res2}{$R:\rho$}{right of=}{1-2}{inbond}
+	\end{tikzpicture}
+	\caption{Bond graph representation of the extended car model}
+	\label{fig:ass-1-bond}
+\end{figure}
 
+Let us define
+
+\begin{equation}
+	r = \frac{k_t k_g}{r_w}.
+\end{equation}
+
+The third-order state-space model fitting the bond graph drawn in Figure~\ref{fig:ass-1-bond-simple} is given by
+
+\begin{align}
+	\dot{\vec{x}} = \frac{d}{dt}
+	\begin{bmatrix}
+		q_m \\
+		f_m \\
+		f_L
+	\end{bmatrix} &= \mat{A} \vec{x} + \mat{B} \vec{u} =
+	\begin{bmatrix}
+		0 & 1 & 0 \\
+		0 & -\frac{\rho}{m} & \frac{r}{m} \\
+		0 & -\frac{r}{L} & -\frac{R}{L}
+	\end{bmatrix}
+	\begin{bmatrix}
+		q_m \\
+		f_m \\
+		f_L
+	\end{bmatrix} +
+	\begin{bmatrix}
+		0 \\
+		0 \\
+		\frac{1}{L}
+	\end{bmatrix} v, \\
+	\vec{y} = q_m &= \mat{C} \vec{x} + \mat{D} \vec{u} =
+	\begin{bmatrix}
+		1 & 0 & 0
+	\end{bmatrix}
+	\begin{bmatrix}
+		q_m \\
+		f_m \\
+		f_L
+	\end{bmatrix}.
+\end{align}
 \end{document}
