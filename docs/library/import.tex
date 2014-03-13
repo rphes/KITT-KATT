@@ -2,7 +2,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage[svgnames,x11names,rgb]{xcolor}
+\usepackage[svgnames]{xcolor} % Additional options: x11names, rgb
 \usepackage{fontspec} % XeLaTeX required!
 \usepackage{graphicx}
 \usepackage[american]{circuitikz}
@@ -53,3 +53,9 @@
 	\newcommand{\insertpdf}[2]{\includepdf[pages=##1]{#1/##2}}
 	\fi
 }
+
+% Matrix and vector notation
+\newcommand{\mat}[1]{\mathbf{#1}}
+\let\vec\vecold
+\newcommand{\vec}[1]{\mathbf{\underline{#1}}}
+\newcommand{\tr}[1]{#1^{\text T}} % Transposed
