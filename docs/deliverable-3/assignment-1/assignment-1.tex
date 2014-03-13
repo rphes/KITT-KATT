@@ -75,7 +75,7 @@ The eigenvalues with corresponding eigenvectors of our state-space model are
 	\end{bmatrix}.
 \end{equation}
 
-Since we have two independent eigenvectors, $\lambda_2 < 0$ and $\lambda_1 = 0$, our system is marginally stable. To investigate the controllability and observability, we used the fact that a pair $(\mat{A},\mat{B})$ is controllable if $\mat{V}$ is a square matrix whose colums consist of different eigenvectors of $\mat{A}$ and every element of the vector $\mat{V}^{-1} \mat{B}$ is non-zero. Since
+Since we have two independent eigenvectors, $\lambda_2 < 0$ and $\lambda_1 = 0$, our system is marginally stable. To investigate the controllability and observability of a one-dimensional output system, we used the fact that a pair $(\mat{A},\mat{B})$ is controllable if $\mat{V}$ is a square matrix whose colums consist of different eigenvectors of $\mat{A}$, and every element of the vector $\mat{V}^{-1} \mat{B}$ is non-zero. Since
 
 \begin{equation}
 	\left[\vec{v}_1 \vec{v}_2 \right]^{-1} \mat{B} = \begin{bmatrix}
@@ -124,7 +124,7 @@ Let us define
 	r = \frac{k_t k_g}{r_w}.
 \end{equation}
 
-The third-order state-space model fitting the bond graph drawn in Figure~\ref{fig:ass-1-bond-simple} is given by
+The third-order state-space model fitting the bond graph drawn in Figure~\ref{fig:ass-1-bond} is then given by
 
 \begin{align}
 	\dot{\vec{x}} = \frac{d}{dt}
@@ -158,4 +158,101 @@ The third-order state-space model fitting the bond graph drawn in Figure~\ref{fi
 		f_L
 	\end{bmatrix}.
 \end{align}
+
+If we let $L \to 0$, then the order of the system drops to two. The simplified bond graph is drawn in Figure~\ref{fig:ass-1-bond-extsimple}.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[node distance=2cm]
+		\bgComponentNoBond{bat}{$S_e:v$}
+		\bgComponent{}{1-1}{1}{right of=}{bat}{inbond}
+		\bgComponent{}{res1}{$R:R$}{below of=}{1-1}{inbond}
+
+		\bgComponentWithBondLabel{}{gy}{GY}{right of=}{1-1}{inbond}{}{$e_1=e$}{$f_1=i$}
+
+		\bgComponentWithBondLabel{node distance=3cm}{loss}{TF}{right of=}{gy}{inbond}{}{$k_t f_1=\tau_m$}{$k_t^{-1} e_1=\omega_m$}
+		\bgComponentWithBondLabel{node distance=3cm}{conv}{TF}{right of=}{loss}{inbond}{}{$k_g \tau_m=\tau_w$}{$k_g^{-1} \omega_m = \omega_w$}
+		\bgComponentWithBondLabel{node distance=3cm}{1-2}{1}{right of=}{conv}{inbond}{}{$r_w^{-1} \tau_w=F$}{$r_w \omega_w=v$}
+
+
+		\bgComponent{}{mass}{$I:m$}{above of=}{1-2}{inbond}
+		\bgComponent{}{res2}{$R:\rho$}{right of=}{1-2}{inbond}
+	\end{tikzpicture}
+	\caption{Bond graph representation of the simplified extended car model}
+	\label{fig:ass-1-bond-extsimple}
+\end{figure}
+
+The state-space model of the simplified bond graph is given by
+
+\begin{align}
+	\dot{\vec{x}} = \frac{d}{dt}
+	\begin{bmatrix}
+		q_m \\
+		f_m
+	\end{bmatrix} &= \mat{A} \vec{x} + \mat{B} \vec{u} =
+	\begin{bmatrix}
+		0 & 1 \\
+		0 & -\frac{r^2}{m R}-\frac{\rho}{m}
+	\end{bmatrix}
+	\begin{bmatrix}
+		q_m \\
+		f_m
+	\end{bmatrix} +
+	\begin{bmatrix}
+		0 \\
+		\frac{r}{m R}
+	\end{bmatrix} v, \\
+	\vec{y} = q_m &= \mat{C} \vec{x} + \mat{D} \vec{u} =
+	\begin{bmatrix}
+		1 & 0
+	\end{bmatrix}
+	\begin{bmatrix}
+		q_m \\
+		f_m
+	\end{bmatrix}.
+\end{align}
+
+The eigenvalues and eigenvectors of $\mat{A}$ are
+
+\begin{equation}
+	\lambda_1 = 0\text{ with }
+	\vec{v}_1 = \begin{bmatrix}
+		1 \\
+		0
+	\end{bmatrix}\text{ and}
+\end{equation}
+
+\begin{equation}
+	\lambda_2 = -\frac{r^2}{m R}-\frac{\rho}{m}\text{ with }
+	\vec{v}_2 = \begin{bmatrix}
+		-\frac{m R}{r^2 + p R} \\
+		1
+	\end{bmatrix}.
+\end{equation}
+
+Since we have two independent eigenvectors, $\lambda_2 < 0$ and $\lambda_1 = 0$, our system is marginally stable. The controllability matrix is here given by
+
+\begin{equation}
+	\mathcal{C} = \begin{bmatrix}
+		\mat{B} & \mat{A} \mat{B}
+	\end{bmatrix} = \begin{bmatrix}
+		0 & \frac{r}{m R} \\
+		\frac{r}{m R} & -\frac{r}{m R} \left(\frac{r^2}{m R}+\frac{\rho}{m} \right)
+	\end{bmatrix}
+\end{equation}
+
+whose rank is obviously two. Therefore, the simplified state-space model is controllable. The observability matrix is given by
+
+\begin{equation}
+	\mathcal{O} = \begin{bmatrix}
+		\mat{C} \\
+		\mat{C} \mat{A}
+	\end{bmatrix} = \begin{bmatrix}
+		1 & 0 \\
+		0 & 1
+	\end{bmatrix}
+\end{equation}
+
+whose rank is also obviously two. Therefore, the simplified state-space model is also observable.
+
 \end{document}
