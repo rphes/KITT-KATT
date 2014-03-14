@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Windows.Threading;
 
 namespace KITT_Drive_dotNET
 {
@@ -86,6 +86,8 @@ namespace KITT_Drive_dotNET
 		public string SensorDistanceRightString { get { return "Right: " + SensorDistanceRight + " cm"; } }
 		public string BatteryVoltageString { get { return BatteryVoltage + " mV"; } }
 		public string BatteryPercentageString { get { return Math.Round(((double)BatteryVoltage / Data.BatteryVoltageMax * 100)).ToString() + " %"; } }
+
+		public DispatcherTimer StatusUpdaterTimer;
 		#endregion
 
 		#region Construction
@@ -93,6 +95,16 @@ namespace KITT_Drive_dotNET
 		{
 			ActualPWMSpeed = Data.PWMSpeedDefault;
 			ActualPWMHeading = Data.PWMHeadingDefault;
+			StatusUpdaterTimer = new DispatcherTimer();
+			StatusUpdaterTimer.Interval = new System.TimeSpan(0,0,0,0,250);
+			StatusUpdaterTimer.Tick += StatusUpdaterTimer_Tick; 
+		}
+		#endregion
+
+		#region UI Helpers
+		void StatusUpdaterTimer_Tick(object sender, EventArgs e)
+		{
+			Data.Com.RequestStatus();
 		}
 		#endregion
 	}

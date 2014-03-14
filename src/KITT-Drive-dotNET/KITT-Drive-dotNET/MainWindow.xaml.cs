@@ -2,8 +2,8 @@
 using System.IO.Ports;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Threading;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace KITT_Drive_dotNET
 {
@@ -74,7 +74,7 @@ namespace KITT_Drive_dotNET
 					{
 						Button_Connect.Content = "Disconnect";
 						ComboBox_COM.IsEnabled = false;
-						Data.Com.RequestStatus();
+						Data.Car.StatusUpdaterTimer.Start();
 					}
 				}
 				else
@@ -84,6 +84,7 @@ namespace KITT_Drive_dotNET
 			}
 			else
 			{
+				Data.Car.StatusUpdaterTimer.Stop();
 				Data.Com.SerialPort.Close();
 				Button_Connect.Content = "Connect";
 				ComboBox_COM.IsEnabled = true;
