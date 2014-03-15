@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 
 namespace KITT_Drive_dotNET
@@ -62,7 +56,7 @@ namespace KITT_Drive_dotNET
 				_heading = Clamp(value, Data.HeadingMin, Data.HeadingMax);
 				NotifyPropertyChanged("Heading");
 
-				int intheading = (int)Math.Round(-_heading) + Data.PWMOffset; //compensate for reverse steering
+				int intheading = (int)Math.Round(-_heading) + Data.PWMOffset; //negate for reverse steering
 				if (intheading != PWMHeading)
 					PWMHeading = intheading;
 			}
@@ -93,9 +87,9 @@ namespace KITT_Drive_dotNET
 			Speed = Data.SpeedDefault;
 			Heading = Data.HeadingDefault;
 			speedDecrementTimer = new DispatcherTimer();
-			speedDecrementTimer.Tick += new EventHandler(speedDecrementTimer_Tick);
+			speedDecrementTimer.Tick += speedDecrementTimer_Tick;
 			headingDecrementTimer = new DispatcherTimer();
-			headingDecrementTimer.Tick += new EventHandler(headingDecrementTimer_Tick);
+			headingDecrementTimer.Tick += headingDecrementTimer_Tick;
 			speedDecrementTimer.Interval = headingDecrementTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
 		}
 		#endregion

@@ -32,8 +32,8 @@ namespace KITT_Drive_dotNET
 		#endregion
 
 		#region Modules
-		public static Control Ctr = new Control();
 		public static Vehicle Car = new Vehicle();
+		public static Control Ctr = new Control();
 		public static SerialInterface Com = new SerialInterface();
 		#endregion
 	}

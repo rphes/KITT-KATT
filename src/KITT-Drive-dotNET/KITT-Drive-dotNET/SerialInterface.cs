@@ -134,8 +134,6 @@ namespace KITT_Drive_dotNET
 		public void RequestStatus()
 		{
 			SendString("S");
-
-			//return this.RetrieveAnswer();
 		}
 
 		public void DoDrive(int dir, int speed)
@@ -157,8 +155,23 @@ namespace KITT_Drive_dotNET
 		private void parseResponse(string response)
 		{
 			char responseType = response[0];
+			string responseTypeAlt = response.Split(' ')[0];
 
-			if (responseType == 'D' || responseType == 'U')
+			if (responseTypeAlt == "Drive:" || responseTypeAlt == "L/R:")
+			{
+				int value;
+				string data = response.Split(' ')[1].TrimEnd('%');
+
+				if (int.TryParse(data, out value))
+				{
+					if (responseTypeAlt == "Drive:")
+						Data.Car.ActualPWMSpeed = value;
+					else if (responseTypeAlt == "L/R:")
+						Data.Car.ActualPWMHeading = value;
+				}
+
+			}
+			else if (responseType == 'D' || responseType == 'U')
 			{
 				int value1, value2;
 				string[] data = response.Substring(1).Split(' ');
@@ -194,6 +207,12 @@ namespace KITT_Drive_dotNET
 				bool audiostatus = response[-1] != 0;
 				Data.Car.AudioStatus = audiostatus;
 			}
+			else
+			{
+				System.Diagnostics.Debug.WriteLine("Received unknown response: " + response + "could not parse...");
+			}
+
+			//TODO: parse lines "Drive: 159%%" and "L/R: 150%%"
 		}
 		#endregion
 
