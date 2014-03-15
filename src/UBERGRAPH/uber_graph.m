@@ -5,7 +5,6 @@
 % - Export to PDF
 % TODO:
 % - Grid lines width and color
-% - change '-1' value
 
 %% Example
 
@@ -35,11 +34,11 @@
 
 % XTicks = -10:1:10;
 % YTicks = -10:1:10;
-% outputPath = 'output/testGraph'; % '-1' to disable outputting
+% outputPath = 'output/testGraph'; % 'off' to disable outputting
 % graphTitle = 'title';
 % yLabel = 'ylabel';
 % xLabel = 'xlabel';
-% xLim = '-1';
+% xLim = 'auto';
 % yLim = [0 200];
 
 %% Script    
@@ -60,14 +59,8 @@ hold on;
 hData = zeros(size(x,1));
 
 for i = 1:size(x,1)
-
-%     if (size(x,2) > 1)
-        xData = x(i,:);
-        yData = y(i,:);
-%     else
-%         xData = x;
-%         yData = y;
-%     end
+    xData = x(i,:);
+    yData = y(i,:);
     
     hData(i) = line(xData, yData);
 
@@ -123,26 +116,26 @@ set(gca,...
     'LineWidth', 1);
 
 % Ticks
-if not (XTicks == -1)
+if ~strcmp(XTicks, 'auto')
     set(gca,...
         'XTick', XTicks);
 end
 
-if not (YTicks == -1)
+if ~strcmp(YTicks, 'auto')
     set(gca,...
         'YTick', YTicks);
 end
 
 % Limits
-if not (xLim == -1)
+if ~strcmp(xLim, 'auto')
     xlim(xLim);
 end
 
-if not (yLim == -1)
+if ~strcmp(yLim, 'auto')
     ylim(yLim);
 end
 
-if not (outputPath == -1)
+if ~strcmp(outputPath, 'off')
     % Preservation settings
     set(gcf,...
         'InvertHardcopy','on',...
