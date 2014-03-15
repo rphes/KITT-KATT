@@ -92,7 +92,7 @@ hTitle = title(graphTitle);
 hXLabel = xlabel(xLabel);
 hYLabel = ylabel(yLabel);
 
-if (legend ~= 0)
+if (makelegend ~= 0)
     legend(legendText,...
         'Location',legendLocation);
 end

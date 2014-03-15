@@ -242,6 +242,7 @@ pip-log.txt
 *.out
 *.pdf
 !*-rc.pdf
+!**/resource/**/*
 *.run.xml
 *.synctex.gz
 *.bib$
