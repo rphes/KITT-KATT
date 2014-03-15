@@ -244,3 +244,4 @@ pip-log.txt
 !*-rc.pdf
 *.run.xml
 *.synctex.gz
+*.bib$

@@ -1,0 +1,57 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../library/bibliography.bib}
+
+\begin{document}
+\begin{titlepage}
+
+\definecolor{headercolor}{cmyk}{1,.60,0,.40}
+\definecolor{subheadercolor}{cmyk}{.52,.32,0,0}
+\backgroundsetup{
+	scale=1, angle=0, opacity=1,
+	contents={
+		\begin{tikzpicture}[remember picture,overlay]
+ 			\path [fill=headercolor] (-0.5\paperwidth,6) rectangle (0.5\paperwidth,9.5);  
+ 			\path [fill=subheadercolor] (-0.5\paperwidth,4) rectangle (0.5\paperwidth,5.5);  
+		\end{tikzpicture}
+	}
+} \BgThispage
+
+\newlength{\drop}
+
+\begingroup
+	\sffamily
+
+	\drop=0.1\textheight
+	\vspace*{\drop}
+	\begin{flushright}
+		{\fontsize{1.8cm}{1em} \selectfont \color{white} Electric Transport} \\
+		\vspace*{52pt}
+		{\fontsize{0.8cm}{1em} \selectfont Deliverable report 3}
+
+		\vfill
+
+		{\fontsize{0.5cm}{1em} \selectfont
+			\normalfont
+			
+			\begin{tabular}{rr}
+				\multicolumn{2}{r}{EPO-4} \\[0.5em]
+				\multicolumn{2}{r}{EE2831} \\[1.5em]
+				Julio Ballesteros & 9999999 \\[0.5em]
+				Robin Hes & 4236815 \\[1.5em]
+				\multicolumn{2}{r}{\today} \\
+			\end{tabular}
+			
+		}
+	\end{flushright}
+\endgroup
+
+\begin{textblock}{16.1}(0,6)
+	\includegraphics[width=\linewidth]{resource/title.png}
+\end{textblock}
+
+\end{titlepage}
+\end{document}
