@@ -8,6 +8,33 @@
 \begin{document}
 
 \chapter{Assignment 2}
+\section{Controlling the output}
+Consider the state-space model
+
+\begin{align}
+	\dot{\vec{x}} &= \mat{A}\vec{x} + \mat{B}\vec{u}, \\
+	\vec{y} &= \mat{C} \vec{x}. \label{eq:ass-2-model-output}
+\end{align}
+
+Let
+
+\begin{equation}
+	\vec{u} = -\mat{K}\vec{x} + \vec{r}
+\end{equation}
+
+be a feedback law which renders the considered state-space system asymptotically stable. Substituting $\vec{u}$ yields
+
+\begin{equation} \label{eq:ass-2-derivative}
+	\dot{\vec{x}} = (\mat{A} - \mat{B} \mat{K}) \vec{x} + \mat{B} \vec{r}.
+\end{equation}
+
+Using the fact that our system is asymptotically stable, we can argue that $\dot{\vec{x}} \to 0$ when $t \to \infty$. Combining Equation~\ref{eq:ass-2-model-output} and \ref{eq:ass-2-derivative} yields
+
+\begin{equation}
+	\vec{y} \to \mat{C} (\mat{B} \mat{K} - \mat{A})^{-1} \mat{B} \vec{r} \text{ when } t \to \infty.
+\end{equation}
+
+Therefore, the output $\vec{y}$ converges to the scaled applied input $\vec{r}$. We can utilize this fact to control the output of the model.
 
 
 \end{document}
