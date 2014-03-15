@@ -342,4 +342,68 @@ It is important to realize that applying such a filter introduces delay. The del
 	T(f) = \frac{-1}{2 \pi f} \phi(f).
 \end{equation}
 
+\section{Fitting a state-space model}
+To fit a state-space model, we first had to define our inputs and outputs. Eventually we want our car to drive to a specified position.Therefore, it made sense to define the distance measured by the ultrasonic sensors as output. We chose the PWM signal sent to the motor to be the input.
+
+Secondly, we needed data to fit a model. We used Matlab to drive KITT between two specified distances. The filters previously discussed were used to filter the distances measured.
+
+\begin{figure}[H]
+	\begin{subfigure}{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{resource/distances1.pdf}
+		\end{center}
+		\caption{Distance measurement}
+		\label{fig:ass-1-dist-1}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{resource/drive-excitation1.pdf}
+		\end{center}
+		\caption{Drive excitation}
+		\label{fig:ass-1-drive-1}
+	\end{subfigure}
+	\caption{First experiment to obtain the data needed to fit a state-space model}
+	\label{fig:ass-1-exp-1}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{subfigure}{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{resource/distances2.pdf}
+		\end{center}
+		\caption{Distance measurement}
+		\label{fig:ass-1-dist-2}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{resource/drive-excitation2.pdf}
+		\end{center}
+		\caption{Drive excitation}
+		\label{fig:ass-1-drive-2}
+	\end{subfigure}
+	\caption{Second experiment to obtain the data needed to fit a state-space model}
+	\label{fig:ass-1-exp-2}
+\end{figure}
+
+Figure~\ref{fig:ass-1-exp-1} and Figure~\ref{fig:ass-1-exp-2} show the results of the experiments done to obtain data to fit our model. After we had obtained these data sets, we used Matlab to fit a second-order state-space model to the first experiment. Subsequently we compared the outputs of the obtained model with the outputs of both experiments. The results are shown in Figure \ref{fig:ass-1-comp}.
+
+\begin{figure}[H]
+	\begin{subfigure}{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{resource/model-fit1.pdf}
+		\end{center}
+		\caption{Comparison to the first experiment}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\linewidth]{resource/model-fit2.pdf}
+		\end{center}
+		\caption{Comparison the the second experiment}
+	\end{subfigure}
+	\caption{Comparison of the output of the fitted state-space model and the measured output}
+	\label{fig:ass-1-comp}
+\end{figure}
+
+One can see that the model does not match the measured output perfectly. In fact, there is quite a mismatch. The eigenvalues of the fitted state matrix are \num{-0.0208} and \num{-3.4747}. The fitted model is therefore stable.
+
 \end{document}
