@@ -242,7 +242,8 @@ pip-log.txt
 *.out
 *.pdf
 !*-rc.pdf
-!**/resource/**/*
+!**/resource/**/*.pdf
 *.run.xml
 *.synctex.gz
 *.bib$
+*.gz(busy)
