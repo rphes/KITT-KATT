@@ -9,7 +9,54 @@
 
 \chapter{Assignment 2}
 \section{Observer design}
+To have full state knowledge required for control, we designed an observer. This observer would have to converge as fast as possible to the observed state. However, the fact that we can only observe approximately once per \SI{300}{ms}, puts constraints on the observer feedback matrix $\mat{L}$. We decided that the performance of a chosen feedback matrix $\mat{L}$ is given by
 
+\begin{equation}
+	\sum_{i=0}^{\infty} (\hat{\vec{y}_i}-\vec{y}_i)^2.
+\end{equation}
+
+Here the output of the observer at specified time $t$ with corresponding sample $i$ is denoted by $\hat{\vec{y}_i}$ and the output measured, which is in our case the distance measured, by $\vec{y}_i$. Defining such a measure for performance allowed us to try many different eigenvalues for matrix $\mat{L}$ and observe the results. The results are shown in Figure~\ref{fig:ass-2-eigs}.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=.7\linewidth]{resource/pole-fitness.pdf}
+	\end{center}
+	\caption{Performance of the eigenvalues of matrix $\mat{L}$, darker is better}
+	\label{fig:ass-2-eigs}
+\end{figure}
+
+There is one thing worth mentioning about the results shown in Figure~\ref{fig:ass-2-eigs}. The eigenvalues seem to converge to approximately $(-4.5,-4.5)$, but when they come very close to this value, they fail to perform. The ideal observer would converge critically damped. However, in the case of a critically behaviour, $\lambda_1 = \lambda_2$, which is why they converge to a point $(a,a)$. That having said, having two eigenvalues of the same value also renders $\mat{A}$ not diagonalizable, which is why they seem to fail to perform. Critically damped behaviour is further explained in Section \ref{sec:ass-2-behav}.
+
+-- sim results + uitleggen
+
+\section{Oscillatory and critically damped response}
+\label{sec:ass-2-behav}
+The response consists of two exponential functions, whose exponents are the eigenvalues. Therefore, to achieve an oscillatory response, the eigenvalues must be complex conjugated.
+
+The situation is somewhat more complex regarding a perfect critically damped response. The solution of a state-space model is dependent of $e^{\mat{A} t}$, which can be written as
+
+\begin{equation}
+	e^{\mat{A} t} = \sum_{k=0}^{\infty} \frac{\mat{A}^k t^k}{k!}.
+\end{equation}
+
+If $\mat{A}$ is diagonalizable, then
+
+\begin{equation}
+	e^{\mat{A} t} = P \begin{bmatrix}
+		e^{\lambda_1 t} & 0 & & 0 \\
+		0 & e^{\lambda_2 t} & & \\
+		 & & \ddots & 0 \\
+		 0 & & 0 & e^{\lambda_n t}
+	\end{bmatrix} P^{-1}.
+\end{equation}
+
+This calculation yields us an overdamped response. We can therefore roughly state that, if $\mat{A}$ is diagonalizable, this corresponds with an overdamped response.
+
+$e^{\mat{A} t}$ can also be calculated using the $\mat{A}$'s Jordan form. If $e^{\mat{A} t}$ is diagonalizable, then this Jordan form reduces to a regular diagonalization. However, if $e^{\mat{A} t}$ is not diagonalizable, then calculating $e^{\mat{A} t}$ using $\mat{A}$'s Jordan form turns out to give us a critically damped solution \cite{jordan-solution}. Therefore, if we were able to chose a feedback which would render $\mat{A} - \mat{B} \mat{K}$ not diagonalizable, then we would find a critically damped response.
+
+Let us consider the case of a matrix $\mat{A} \in \mathbb{M}_{22}$. If $\lambda$ was to be an eigenvalue, then solving $\operatorname{null}{(\mat{A} - \lambda \mat{I})}$ would yield the corresponding eigenvectors. In general, $\operatorname{nullity}{(\mat{M})} + \operatorname{rank}{(\mat{M})} = n$. Therefore, in our case, $2 - \operatorname{rank}{(\mat{A} - \lambda \mat{I})} = \operatorname{nullity}{(\mat{A} - \lambda \mat{I})}$. However, if $\operatorname{rank}{(\mat{A} - \lambda \mat{I})} \ge 1$, which is the case if $\mat{A} - \lambda \mat{I} \neq \vec{0}$, then the dimension of the eigenspace corresponding with $\lambda$ can not equal two. Therefore, if $\lambda$ would have algebraic multiplicity two, then $\mat{A}$ would be not diagonalizable.
+
+Combining the facts that \textbf{(1)} having a algebraic multiplicity of two renders $\mat{A}$ not diagonalizable, and \textbf{(2)} $\mat{A}$ not being diagonalizble leads us to a critically damped response, allows us to argue that chosing two eigenvalues $\lambda_1$ and $\lambda_2$ with $|\lambda_1- \lambda_2|$ minimal, allows us to mimic critically damped behaviour. 
 
 \section{Controlling the output}
 Consider the state-space model
@@ -39,7 +86,7 @@ Using the fact that our system is asymptotically stable, we can argue that $\dot
 
 Therefore, the output $\vec{y}$ converges to the scaled applied input $\vec{r}$. We can utilize this fact to control the output of the model.
 
-\section{The controller}
+\section{Controller design}
 Putting together the compensator, observer and output reference leaves us at the controller given by
 
 \begin{align}
@@ -57,33 +104,13 @@ Here the drive excitation is denoted by $\vec{x}$ and distance measured by $\vec
 
 Heun's method averages the slopes at points $n$ and $n+1$ using Euler's method to predict the value at point $n+1$. This gives us a decent and relatively easy to implement approximation.
 
-\section{Oscillatory and critically damped response}
-The response consists of two exponential functions, whose exponents are the eigenvalues. Therefore, to achieve an oscillatory response, the eigenvalues must be complex conjugated.
+-- input output response plots + uitleggen
 
-The situation is somewhat more complex regarding a perfect critically damped response. The solution of a state-space model is dependent of $e^{\mat{A} t}$, which can be written as
+-- oscillatory and critically damped response plots + uitleggen
 
-\begin{equation}
-	e^{\mat{A} t} = \sum_{k=0}^{\infty} \frac{\mat{A}^k t^k}{k!}.
-\end{equation}
+-- plotje resultaten van auto bestuurd met oscillatory en critically damped controller + uitleggen (vraag 2)
 
-If $\mat{A}$ is diagonalizable, then
-
-\begin{equation}
-	e^{\mat{A} t} = P \begin{bmatrix}
-		e^{\lambda_1 t} & 0 & & 0 \\
-		0 & e^{\lambda_2 t} & & \\
-		 & & \ddots & 0 \\
-		 0 & & 0 & e^{\lambda_n t}
-	\end{bmatrix} P^{-1}.
-\end{equation}
-
-This calculation yields us an overdamped response. We can therefore roughly state that, if $\mat{A}$ is diagonalizable, this corresponds with an overdamped response.
-
-$e^{\mat{A} t}$ can also be calculated using the $\mat{A}$'s Jordan form. If $e^{\mat{A} t}$ is diagonalizable, then this Jordan form reduces to a regular diagonalization. However, if $e^{\mat{A} t}$ is not diagonalizable, then calculating $e^{\mat{A} t}$ using $\mat{A}$'s Jordan form turns out to give us a critically damped solution \cite{jordan-solution}. Therefore, if we were able to chose a feedback which would render $\mat{A} - \mat{B} \mat{K}$ not diagonalizable, then we would find a critically damped response.
-
-Let us consider the case of a matrix $\mat{A} \in \mathbb{M}_{22}$. If $\lambda$ was to be an eigenvalue, then solving $\operatorname{null}{(\mat{A} - \lambda \mat{I})}$ would yield the corresponding eigenvectors. In general, $\operatorname{nullity}{(\mat{M})} + \operatorname{rank}{(\mat{M})} = n$. Therefore, in our case, $2 - \operatorname{rank}{(\mat{A} - \lambda \mat{I})} = \operatorname{nullity}{(\mat{A} - \lambda \mat{I})}$. However, if $\operatorname{rank}{(\mat{A} - \lambda \mat{I})} \ge 1$, which is the case if $\mat{A} - \lambda \mat{I} \neq \vec{0}$, then the dimension of the eigenspace corresponding with $\lambda$ can not equal two. Therefore, if $\lambda$ would have algebraic multiplicity two, then $\mat{A}$ would be not diagonalizable.
-
-Combining the facts that \textbf{(1)} having a algebraic multiplicity of two renders $\mat{A}$ not diagonalizable, and \textbf{(2)} $\mat{A}$ not being diagonalizble leads us to a critically damped response, allows us to argue that chosing two eigenvalues $\lambda_1$ and $\lambda_2$ with $|\lambda_1- \lambda_2|$ minimal, allows us to mimic critically damped behaviour. 
+-- uitleggen externe factoren, non-linearities etc (vraag 3)
 
 
 \end{document}
