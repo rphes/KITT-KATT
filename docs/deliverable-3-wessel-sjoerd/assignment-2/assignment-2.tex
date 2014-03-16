@@ -36,5 +36,23 @@ Using the fact that our system is asymptotically stable, we can argue that $\dot
 
 Therefore, the output $\vec{y}$ converges to the scaled applied input $\vec{r}$. We can utilize this fact to control the output of the model.
 
+\section{The controller}
+Putting together the compensator, observer and output reference leaves us at the controller given by
+
+\begin{align}
+	\dot{\hat{\vec{x}}} &= (\mat{A}-\mat{L}\mat{C}-\mat{B}\mat{K}) \hat{\vec{x}} + \mat{B}(\mat{C}(\mat{B} \mat{K} - \mat{A})^{-1} \mat{B})^{-1} \vec{r} + \mat{L} \vec{y}, \\
+	\vec{x} &= (\mat{C}(\mat{B} \mat{K} - \mat{A})^{-1} \mat{B})^{-1} \vec{r} - \mat{K} \hat{\vec{x}}.
+\end{align}
+
+Here the drive excitation is denoted by $\vec{x}$ and distance measured by $\vec{y}$. However, we can only regulate the throttle of KITT approximately once per \SI{300}{ms}. We must therefore discretize the controller. Discretization using Heun's method \cite{wikipedia-heuns} yields
+
+\begin{align}
+	f(\vec{x},\vec{r},\vec{y}) &= (\mat{A}-\mat{L}\mat{C}-\mat{B}\mat{K}) \hat{\vec{x}} + \mat{B}(\mat{C}(\mat{B} \mat{K} - \mat{A})^{-1} \mat{B})^{-1} \vec{r} + \mat{L} \vec{y}, \\
+	\hat{\vec{x}}_n &= \hat{\vec{x}}_{n-1} + \frac{T}{2} \left( f\left(\vec{x}_{n-1},\vec{r}_{n-1},\vec{y}_{n-1} \right) + f\left( \vec{x}_{n-1} + T f(\vec{x}_{n-1},\vec{r}_{n-1},\vec{y}_{n-1}),\vec{r}_{n},\vec{y}_{n}\right) \right), \\
+	\vec{x}_n &= (\mat{C}(\mat{B} \mat{K} - \mat{A})^{-1} \mat{B})^{-1} \vec{r}_n - \mat{K} \hat{\vec{x}}_n.
+\end{align}
+
+Heun's method averages the slopes at points $n$ and $n+1$ using Euler's method to predict the value at point $n+1$. This gives us a decent and relatively easy to implement approximation.
+
 
 \end{document}
