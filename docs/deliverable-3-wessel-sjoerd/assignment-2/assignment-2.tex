@@ -8,6 +8,9 @@
 \begin{document}
 
 \chapter{Assignment 2}
+\section{Observer design}
+
+
 \section{Controlling the output}
 Consider the state-space model
 
@@ -53,6 +56,34 @@ Here the drive excitation is denoted by $\vec{x}$ and distance measured by $\vec
 \end{align}
 
 Heun's method averages the slopes at points $n$ and $n+1$ using Euler's method to predict the value at point $n+1$. This gives us a decent and relatively easy to implement approximation.
+
+\section{Oscillatory and critically damped response}
+The response consists of two exponential functions, whose exponents are the eigenvalues. Therefore, to achieve an oscillatory response, the eigenvalues must be complex conjugated.
+
+The situation is somewhat more complex regarding a perfect critically damped response. The solution of a state-space model is dependent of $e^{\mat{A} t}$, which can be written as
+
+\begin{equation}
+	e^{\mat{A} t} = \sum_{k=0}^{\infty} \frac{\mat{A}^k t^k}{k!}.
+\end{equation}
+
+If $\mat{A}$ is diagonalizable, then
+
+\begin{equation}
+	e^{\mat{A} t} = P \begin{bmatrix}
+		e^{\lambda_1 t} & 0 & & 0 \\
+		0 & e^{\lambda_2 t} & & \\
+		 & & \ddots & 0 \\
+		 0 & & 0 & e^{\lambda_n t}
+	\end{bmatrix} P^{-1}.
+\end{equation}
+
+This calculation yields us an overdamped response. We can therefore roughly state that, if $\mat{A}$ is diagonalizable, this corresponds with an overdamped response.
+
+$e^{\mat{A} t}$ can also be calculated using the $\mat{A}$'s Jordan form. If $e^{\mat{A} t}$ is diagonalizable, then this Jordan form reduces to a regular diagonalization. However, if $e^{\mat{A} t}$ is not diagonalizable, then calculating $e^{\mat{A} t}$ using $\mat{A}$'s Jordan form turns out to give us a critically damped solution \cite{jordan-solution}. Therefore, if we were able to chose a feedback which would render $\mat{A} - \mat{B} \mat{K}$ not diagonalizable, then we would find a critically damped response.
+
+Let us consider the case of a matrix $\mat{A} \in \mathbb{M}_{22}$. If $\lambda$ was to be an eigenvalue, then solving $\operatorname{null}{(\mat{A} - \lambda \mat{I})}$ would yield the corresponding eigenvectors. In general, $\operatorname{nullity}{(\mat{M})} + \operatorname{rank}{(\mat{M})} = n$. Therefore, in our case, $2 - \operatorname{rank}{(\mat{A} - \lambda \mat{I})} = \operatorname{nullity}{(\mat{A} - \lambda \mat{I})}$. However, if $\operatorname{rank}{(\mat{A} - \lambda \mat{I})} \ge 1$, which is the case if $\mat{A} - \lambda \mat{I} \neq \vec{0}$, then the dimension of the eigenspace corresponding with $\lambda$ can not equal two. Therefore, if $\lambda$ would have algebraic multiplicity two, then $\mat{A}$ would be not diagonalizable.
+
+Combining the facts that \textbf{(1)} having a algebraic multiplicity of two renders $\mat{A}$ not diagonalizable, and \textbf{(2)} $\mat{A}$ not being diagonalizble leads us to a critically damped response, allows us to argue that chosing two eigenvalues $\lambda_1$ and $\lambda_2$ with $|\lambda_1- \lambda_2|$ minimal, allows us to mimic critically damped behaviour. 
 
 
 \end{document}
