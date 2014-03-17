@@ -8,6 +8,7 @@
 \begin{document}
 
 \chapter{Assignment 2}
+\textbf{ALLES NOG EVEN NALEZEN}
 \section{Observer design}
 To have full state knowledge required for control, we designed an observer. This observer would have to converge as fast as possible to the observed state. However, the fact that we can only observe approximately once per \SI{300}{ms}, puts constraints on the observer feedback matrix $\mat{L}$. We decided that the performance of a chosen feedback matrix $\mat{L}$ is given by
 
@@ -25,7 +26,7 @@ Here the output of the observer at specified time $t$ with corresponding sample 
 	\label{fig:ass-2-eigs}
 \end{figure}
 
-There is one thing worth mentioning about the results shown in Figure~\ref{fig:ass-2-eigs}. The eigenvalues seem to converge to approximately $(-4.5,-4.5)$, but when they come very close to this value, they fail to perform. The ideal observer would converge critically damped. However, in the case of a critically behaviour, $\lambda_1 = \lambda_2$, which is why they converge to a point $(a,a)$. That having said, having two eigenvalues of the same value also renders $\mat{A}$ not diagonalizable, which is why they seem to fail to perform. Critically damped behaviour is further explained in Section \ref{sec:ass-2-behav}.
+There is one thing worth mentioning about the results shown in Figure~\ref{fig:ass-2-eigs}. The eigenvalues seem to converge to approximately $(-4.5,-4.5)$, but when they come very close to this value, they fail to perform. The ideal observer would converge critically damped. However, in the case of critically damped behaviour, $\lambda_1 = \lambda_2$, which is why they converge to a point $(a,a)$. That having said, having two eigenvalues of the same value also renders $\mat{A}$ not diagonalizable, which is why they seem to fail to perform. Critically damped behaviour is further explained in Section \ref{sec:ass-2-behav}.
 
 -- sim results + uitleggen
 
