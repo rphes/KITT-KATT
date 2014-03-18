@@ -40,6 +40,9 @@ while True:
 	dist_left = lp_filter.eval(dists_left, dist_left)
 	dist_right = lp_filter.eval(dists_right, dist_left)
 
+	dists_left.append(dist_left)
+	dists_right.append(dist_right)
+
 	if dist_left < dist_right:
 		dist = dist_left
 	else:
