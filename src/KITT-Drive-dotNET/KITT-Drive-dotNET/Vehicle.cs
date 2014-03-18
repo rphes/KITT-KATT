@@ -7,6 +7,9 @@ using System.Windows.Threading;
 
 namespace KITT_Drive_dotNET
 {
+	/// <summary>
+	/// Provides access to all data periodically measured from KITT as well as modifiers to display this data in the GUI
+	/// </summary>
 	public class Vehicle : ObservableObject
 	{
 		#region Data members
@@ -96,7 +99,7 @@ namespace KITT_Drive_dotNET
 			ActualPWMSpeed = Data.PWMSpeedDefault;
 			ActualPWMHeading = Data.PWMHeadingDefault;
 			StatusUpdaterTimer = new DispatcherTimer();
-			StatusUpdaterTimer.Interval = new System.TimeSpan(0,0,0,0,250);
+			StatusUpdaterTimer.Interval = new TimeSpan(0,0,0,0,250);
 			StatusUpdaterTimer.Tick += StatusUpdaterTimer_Tick; 
 		}
 		#endregion

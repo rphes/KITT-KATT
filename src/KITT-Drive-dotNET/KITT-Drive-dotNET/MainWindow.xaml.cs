@@ -32,6 +32,7 @@ namespace KITT_Drive_dotNET
 			steerTimer = new DispatcherTimer();
 			steerTimer.Tick += SteerTimer_Tick;
 			throttleTimer.Interval = steerTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+			Data.Mod.evTimer.Start();
 		}
 		#endregion
 

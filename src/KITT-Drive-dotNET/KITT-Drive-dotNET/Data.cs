@@ -35,6 +35,26 @@ namespace KITT_Drive_dotNET
 		public static Vehicle Car = new Vehicle();
 		public static Control Ctr = new Control();
 		public static SerialInterface Com = new SerialInterface();
+		public static Model Mod = new Model();
+		#endregion
+
+		#region Utility methods
+		public static double Clamp(double value, double min, double max)
+		{
+			if (value > max)
+				return max;
+			if (value < min)
+				return min;
+			return value;
+		}
+
+		public static double Snap(double value, double snap, double min, double max)
+		{
+			if (value < max && value > min)
+				return snap;
+			else
+				return value;
+		}
 		#endregion
 	}
 
@@ -42,4 +62,6 @@ namespace KITT_Drive_dotNET
 	{
 		up, down, left, right
 	}
+
+
 }

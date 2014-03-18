@@ -3,6 +3,9 @@ using System.Windows.Threading;
 
 namespace KITT_Drive_dotNET
 {
+	/// <summary>
+	/// Provides methods and properties for controlling KITT, as well as members for the GUI to bind to
+	/// </summary>
 	public class Control : ObservableObject
 	{
 		#region Data members
@@ -22,7 +25,7 @@ namespace KITT_Drive_dotNET
 			get { return _speed; }
 			set
 			{
-				_speed = Clamp(value, Data.SpeedMin, Data.SpeedMax);
+				_speed = Data.Clamp(value, Data.SpeedMin, Data.SpeedMax);
 				NotifyPropertyChanged("Speed");
 
 				int intspeed = (int)Math.Round(_speed) + Data.PWMOffset;
@@ -53,7 +56,7 @@ namespace KITT_Drive_dotNET
 			get { return _heading; }
 			set
 			{
-				_heading = Clamp(value, Data.HeadingMin, Data.HeadingMax);
+				_heading = Data.Clamp(value, Data.HeadingMin, Data.HeadingMax);
 				NotifyPropertyChanged("Heading");
 
 				int intheading = (int)Math.Round(-_heading) + Data.PWMOffset; //negate for reverse steering
@@ -102,7 +105,7 @@ namespace KITT_Drive_dotNET
 				double delta = Data.SpeedDefault - Speed;
 				Speed = Speed * decrementMultiplier;
 
-				Speed = Snap(Speed, Data.SpeedDefault, -speedIncrement, speedIncrement);
+				Speed = Data.Snap(Speed, Data.SpeedDefault, -speedIncrement, speedIncrement);
 			}
 
 			if (Speed == Data.SpeedDefault)
@@ -116,7 +119,7 @@ namespace KITT_Drive_dotNET
 				double delta = Data.HeadingDefault - Heading;
 				Heading = Heading * decrementMultiplier;
 
-				Heading = Snap(Heading, Data.HeadingDefault, -headingIncrement, headingIncrement);
+				Heading = Data.Snap(Heading, Data.HeadingDefault, -headingIncrement, headingIncrement);
 			}
 
 			if (Heading == Data.HeadingDefault)
@@ -193,25 +196,6 @@ namespace KITT_Drive_dotNET
 		{
 			Heading = Data.HeadingDefault;
 			Speed = Data.SpeedDefault;
-		}
-		#endregion
-
-		#region Utility methods
-		public double Clamp(double value, double min, double max)
-		{
-			if (value > max)
-				return max;
-			if (value < min)
-				return min;
-			return value;
-		}
-
-		public double Snap(double value, double snap, double min, double max)
-		{
-			if (value < max && value > min)
-				return snap;
-			else
-				return value;
 		}
 		#endregion
 	}
