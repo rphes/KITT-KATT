@@ -8,8 +8,30 @@
 \begin{document}
 
 \chapter{Assignment 2: Feedback controller design}
-\section{Tasks 4}
+\section{Observer design}
+The observer is in fact a duplicate of the derived model for KITT, but with its own state and output. The observer will give a hopefully accurate estimate of the state of the actual system, using its own state in conjunction with the actual system's output (KITT's ultrasonic sensor readouts). To this end, the observer multiplies the difference between KITT's and its own output $\vec{y}-\hat{\vec{y}}$ with a matrix $\mathbf{L}$: the \textit{observer gain}.
+As stated in the student manual we can choose our poles at will when the pair $(\mathbf{C},\mathbf{A})$ is observable. Using MATLAB with command \texttt{rank(obsv(A,C))}, we find that the observability matrix of our model has rank \num{2}, so can place our poles anywhere we want to.
+\\
+For calculating an optimal set of poles we introduced a function that would give some indication of the performance of our observer (i.e. the time it would take to converge) for a certain set of poles:
 
-\section{Tasks 5}
+\begin{equation}
+	\sum_{i=0}^{\infty} (\hat{\vec{y}_i}-\vec{y}_i)^2.
+\end{equation}
+
+Here $\vec{y}_i-\hat{\vec{y}_i}$ denotes the difference between observer and system outputs when a sample $i$ is taken. The sum of all these differences then gives an indication of the converge time of the observer. Using this definition, a lot of poles were tested for performance, of which the results are shown in \ref{fig:ass2-eigs}.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=.7\linewidth]{resource/pole-fitness.pdf}
+	\end{center}
+	\caption{Performance of the eigenvalues of matrix $\mat{L}$, darker means faster convergence (better)}
+	\label{fig:ass2-eigs}
+\end{figure}
+
+We see the best combination of poles lies around $(-4.5; -4.5)$, so ideally we would pick these two values to calculate our eigenvalues with.
+
+%TODO finish this + fix \texttt size
+
+\section{Controller design}
 
 \end{document}
