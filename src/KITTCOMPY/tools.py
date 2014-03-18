@@ -18,33 +18,33 @@ class StateSpaceModel:
 
 	def slope(self, x, r, y, control=True):
 		if control == True:
-			control = 1
+			c = 1
 		else:
-			control = 0
+			c = 0
 
 		return (
-			(self.A - self.L*self.C - control*self.B*self.K) * x +
-			control*self.B*self.R*r +
+			(self.A - self.L*self.C - c*self.B*self.K) * x +
+			c*self.B*self.R*r +
 			self.L*y
 		)
 
 	def output(self, x, r, control=True):
 		if control == True:
-			control = 1
+			c = 1
 		else:
-			control = 0
+			c = 0
 			
-		return control*(
-			self.R*r - self.K*x
+		return (
+			c*self.R*r - self.K*x
 		)
 
 class LowPassFilter:
 	def __init__(self, freq, dt):
 		# Coefficients
-		self.a = 1/(2*np.pi*freq*dt);
-		self.c1 = (2*math.pow(self.a,2)+2*self.a)/(math.pow(self.a,2)+2*self.a+1);
-		self.c2 = (-math.pow(self.a,2))/(math.pow(self.a,2)+2*self.a+1);
-		self.c3 = 1/(math.pow(self.a,2)+2*self.a+1);
+		self.a = 1/(2*np.pi*freq*dt)
+		self.c1 = (2*math.pow(self.a,2)+2*self.a)/(math.pow(self.a,2)+2*self.a+1)
+		self.c2 = (-math.pow(self.a,2))/(math.pow(self.a,2)+2*self.a+1)
+		self.c3 = 1/(math.pow(self.a,2)+2*self.a+1)
 
 	def eval(self, data, new_value):
 		new_value *= self.c3;
@@ -66,9 +66,10 @@ class UnrealisticValueFilter:
 			return new_value
 		else:
 			# Calculate prediction
-			pred = 5/2*data[-1] - 2*data[-2] + 1/2*data[3]
+			pred = 5*float(data[-1])/2 - 2*float(data[-2]) + float(data[-3])/2
+			print pred
 
-			if abs(pred - new_value) > dev_max:
+			if abs(pred - new_value) > self.dev_max:
 				# Exceeded maximum deviation
 				new_value = pred
 

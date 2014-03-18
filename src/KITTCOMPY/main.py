@@ -24,6 +24,8 @@ ref_time = [0,   5,   5.1, 10 ]
 ref_sig =  [0.5, 0.5, 1.5, 1.5]
 drive_limit = 0.15
 time_max = 10
+time_init = 2
+control = False
 
 while True:
 	if time.time()-start_time >= time_max:
@@ -56,14 +58,18 @@ while True:
 	# Find reference
 	ref = np.interp(cur_time, ref_time, ref_sig)
 
+	
+	if control == False and cur_time >= time_init:
+		control = True
+
 	# State-space calculation
 	cur_state = np.matrix(state[-1])
-	cur_slope = model.slope(cur_state, ref, dist, control=True) 			# Current slope
+	cur_slope = model.slope(cur_state, ref, dist, control=control) 			# Current slope
 	pred_state = cur_state + dt*cur_slope 									# Predicted state
-	pred_slope = model.slope(pred_state, ref, dist, control=True) 			# Predicted slope
+	pred_slope = model.slope(pred_state, ref, dist, control=control) 		# Predicted slope
 	cur_state = cur_state + dt/2*(cur_slope + pred_slope);					# New current state
 	state.append(cur_state.tolist()) 					
-	drive = model.output(cur_state, ref, control=True)						# Model output
+	drive = model.output(cur_state, ref, control=control)					# Model output
 
 	# Limit drive signal
 	if drive > drive_limit:
@@ -77,6 +83,11 @@ while True:
 	print "-------------"
 	print "Time:                " + str(round(cur_time,2)) + "s / " + str(round(time_max,2)) + "s"
 	print "Current sample time: " + str(round(dt*1000,2)) + "ms"
+	print
+	if control == True:
+		print "Mode:                control"
+	else:
+		print "Mode:                init"
 	print 
 	print "Distance left:       " + str(round(dist_left,2)) + "m"
 	print "Distance right:      " + str(round(dist_right,2)) + "m"
