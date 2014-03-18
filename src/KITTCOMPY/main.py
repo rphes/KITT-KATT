@@ -26,7 +26,7 @@ drive_limit = 0.15
 time_max = 10
 
 while True:
-	if time.time()-start_time > time_max:
+	if time.time()-start_time >= time_max:
 		break
 
 	status = kitt.status()
