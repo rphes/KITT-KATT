@@ -29,8 +29,8 @@ namespace KITT_Drive_dotNET
 		//Model re-evaluation timer
 		public DispatcherTimer evTimer;
 		TimeSpan tInterval = new TimeSpan(0, 0, 0, 0, 100);
-		DateTime tZero;
-		TimeSpan tRel { get { return DateTime.Now - tZero; } }
+		//DateTime tZero; //obsolete at this point, see tRel
+		//TimeSpan tRel { get { return DateTime.Now - tZero; } } //obsolete at this point, when using a fixed sampletime it's easier to use that as reference
 		TimeSpan tMax = new TimeSpan(0, 0, 30);
 		TimeSpan tInit = new TimeSpan(0, 0, 0);
 		int iteration = 0;
@@ -40,17 +40,20 @@ namespace KITT_Drive_dotNET
 		int[] refTimes = { 10, 20, 30 }; //in seconds
 
 		//Throttle scaling
-		double thScaleForward = 1;
-		double thScaleBackward = 1;
+		double thScaleForward = 15;
+		double thScaleBackward = 15;
 		double thMaxForward = 15;
 		double thMinForward = 5;
 		double thMaxBackward = -15;
 		double thMinBackward = -5;
 
-		//Low-pass filter
+		//Filtering
 		double[] lowPass = new double[3];
-		double fFall = 10;
-		double tExpectedSample = 0.3;
+		double fFall = 10; //Cut-off frequency of low-pass filter
+		double tExpectedSample = 0.3; //Expected sample time for dimensioning low-pass filter
+		List<double> dLeft = new List<double>(4); //Historic left sensor values
+		List<double> dRight = new List<double>(4); //Historic right sensor values
+		double maxDeviation = 0.5;
 	
 		//Misc
 		short controlling = 0; //Modifier for enabling vehicle control
@@ -66,25 +69,27 @@ namespace KITT_Drive_dotNET
 
 		void EvTimer_Tick(object sender, EventArgs e)
 		{
+			//Init some stuff
 			if (iteration == 0)
 			{
-				tZero = DateTime.Now;
+				//tZero = DateTime.Now; //unused (yet?)
 				lowPass = makeLowPass();
 			}
 
-			double T = iteration * tInterval.TotalSeconds;//tRel.TotalSeconds;
+			//Get total execution time
+			double T = iteration * tInterval.TotalSeconds;
 
-			//System.Diagnostics.Debug.WriteLine("Current time: " + tRel);
-			
+			//Check if the observer is done initializing
 			if (controlling == 0 && T > tInit.TotalSeconds)
 				controlling = 1;
 
-			//Controller
+			//Obtain current filtered working distance
+			y = Math.Min(filter(Data.Car.SensorDistanceLeft, ref dLeft), filter(Data.Car.SensorDistanceRight, ref dRight));
+
+			//Control
 			if (iteration > 0)
 			{
-				double yNext = Math.Min(Data.Car.SensorDistanceLeft, Data.Car.SensorDistanceRight);
-
-				//Determine next reference value
+				//Determine reference value
 				for (int i = 0; i < refVal.Length; i++)
 				{
 					if (T < refTimes[i])
@@ -109,16 +114,13 @@ namespace KITT_Drive_dotNET
 
 				//Drive!
 				drive = (controlling * R * r - K * x).At(0,0);
-
-				//Set next y
-				y = yNext;
 			}
 
 			//Drive signal scaling
 			if (drive < 0)
 			{
 				drive *= thScaleBackward;
-				drive = Data.Clamp(drive, thMinBackward, thMaxBackward);
+				drive = Data.Clamp(drive, thMaxBackward, thMinBackward);
 			}
 			else if (drive > 0)
 			{
@@ -131,6 +133,8 @@ namespace KITT_Drive_dotNET
 			//Drive KITT!
 			Data.Ctr.Speed = drive;
 
+
+			//Update internal state and save required values
 			iteration++;
 		}
 
@@ -151,6 +155,37 @@ namespace KITT_Drive_dotNET
 			c3 = 1 / (Math.Pow(a, 2) + 2 * a + 1);
 
 			return new double[] { c1, c2, c3 };
+		}
+
+		double filter(double value, ref List<double> history)
+		{
+			double filtered, expected;
+
+			filtered = value;
+
+			//Unrealistic value filter based on historic values
+			if (iteration > 2)
+			{
+				expected = 0.2 * history[0] - 2 * history[1] + 0.5 * history[2];
+
+				if (Math.Abs(value - expected) > 0.5)
+					filtered = expected;
+			}
+			
+			//Low-pass filter
+			filtered *= lowPass[2];
+
+			if (iteration > 0)
+				filtered += lowPass[0] * history[0];
+			if (iteration > 1)
+				filtered += lowPass[1] * history[1];
+
+			//Remove obsolete value and save new one
+			if (history.Count == 4)
+				history.RemoveAt(3);
+			history.Insert(0, filtered);
+
+			return filtered;
 		}
 	}
 }
