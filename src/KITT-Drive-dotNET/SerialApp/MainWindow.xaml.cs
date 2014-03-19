@@ -12,12 +12,16 @@ namespace SerialApp
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public SerialInterface serial = new SerialInterface();
-
 		public MainWindow()
 		{
 			InitializeComponent();
-			this.DataContext = serial;
+			this.Closing += MainWindow_Closing;
+			this.DataContext = Data.serial;
+		}
+
+		void MainWindow_Closing(object sender, CancelEventArgs e)
+		{
+			Data.matlab.Dispose();
 		}
 
 		#region Communication controls
@@ -36,14 +40,14 @@ namespace SerialApp
 		{
 			string port = Convert.ToString(ComboBox_COM.SelectedValue);
 
-			if (!serial.SerialPort.IsOpen)
+			if (!Data.serial.SerialPort.IsOpen)
 			{
 				if (!String.IsNullOrEmpty(port) && port.Substring(0, 3) == "COM")
 				{
-					serial.SerialPort.PortName = port;
-					if (serial.OpenPort() != 0)
+					Data.serial.SerialPort.PortName = port;
+					if (Data.serial.OpenPort() != 0)
 					{
-						MessageBox.Show(serial.LastError, "Could not open port", MessageBoxButton.OK, MessageBoxImage.Error);
+						MessageBox.Show(Data.serial.LastError, "Could not open port", MessageBoxButton.OK, MessageBoxImage.Error);
 					}
 					else
 					{
@@ -58,13 +62,11 @@ namespace SerialApp
 			}
 			else
 			{
-				serial.SerialPort.Close();
+				Data.serial.SerialPort.Close();
 				Button_Connect.Content = "Connect";
 				ComboBox_COM.IsEnabled = true;
 			}
 		}
-
-
 		#endregion
 
 		private void TextBox_Log_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -79,8 +81,40 @@ namespace SerialApp
 
 			if (e.Key == Key.Enter)
 			{
-				serial.SendString(b.Text);
+				Data.serial.SendString(b.Text);
 				b.Text = "";
+			}
+		}
+
+		private void Button_MatlabConnect_Click(object sender, RoutedEventArgs e)
+		{
+			if (Data.matlab == null)
+			{
+				Data.matlab = new Matlab();
+				Button_MatlabConnect.Content = "Close Matlab";
+				Button_StartSerial.IsEnabled = true;
+			}
+			else
+			{
+				Data.matlab.Dispose();
+				Data.matlab = null;
+				Button_MatlabConnect.Content = "Connect to Matlab";
+				Button_StartSerial.IsEnabled = false;
+			}
+		}
+
+		private void Button_StartSerial_Click(object sender, RoutedEventArgs e)
+		{
+			if (!Data.matlab.SerialPoller.IsEnabled)
+			{
+				Data.matlab.SerialPoller.Start();
+				Button_StartSerial.Content = "Stop serial polling";
+			}
+			else
+			{
+
+				Data.matlab.SerialPoller.Stop();
+				Button_StartSerial.Content = "Start serial polling";
 			}
 		}
 	}

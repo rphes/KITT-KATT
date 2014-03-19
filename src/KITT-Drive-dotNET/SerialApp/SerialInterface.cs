@@ -31,6 +31,15 @@ namespace SerialApp
 			get { return _lastError; }
 			protected set { _lastError = value; }
 		}
+
+		private string _lastLine;
+
+		public string LastLine
+		{
+			get { return _lastLine; }
+			protected set { _lastLine = value; }
+		}
+		
 		
 		#endregion
 
@@ -147,6 +156,7 @@ namespace SerialApp
 		void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
 		{
 			int rx;
+			string linebuffer = "";
 
 			while (SerialPort.BytesToRead > 0)
 			{
@@ -158,6 +168,16 @@ namespace SerialApp
 				{
 					LastError = exc.Message;
 					return;
+				}
+
+				char c = (char)rx;
+
+				if (c != '\n')
+					linebuffer += (char)rx;
+				else
+				{
+					LastLine = linebuffer;
+					linebuffer = "";
 				}
 
 				TextBuffer += (char)rx;
