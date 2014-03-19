@@ -7,7 +7,10 @@
 			<ComboBoxItem Content="COM-port..." IsSelected="true"/>
 		</ComboBox>
 		<Button Name="Button_Connect" Content="Connect" HorizontalAlignment="Left" Margin="140,10,10,0" VerticalAlignment="Top" Width="70" Height="22" Click="Button_Connect_Click"/>
-		
+
+		<Button Name="Button_MatlabConnect" Content="Connect to Matlab" HorizontalAlignment="Right" Margin="0,10,140,0" VerticalAlignment="Top" Width="120" Height="22" Click="Button_MatlabConnect_Click"/>
+		<Button Name="Button_StartSerial" Content="Start serial polling" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="120" Height="22" Click="Button_StartSerial_Click" IsEnabled="False"/>
+
 		<TextBox Name="TextBox_Log" HorizontalAlignment="Stretch"  Margin="10,42,10,42" TextWrapping="Wrap" Text="{Binding Path=TextBuffer}" VerticalAlignment="Stretch" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" TextChanged="TextBox_Log_TextChanged"/>
 		<TextBox Name="TextBox_Command" HorizontalAlignment="Stretch" Height="22" Margin="10,0,10,10" TextWrapping="Wrap" VerticalAlignment="Bottom" KeyDown="TextBox_Command_KeyDown"/>
 	</Grid>
