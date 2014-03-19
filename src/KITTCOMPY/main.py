@@ -16,15 +16,15 @@ unr_filter = UnrealisticValueFilter(0.5)
 
 dists_left = [0]
 dists_right = [0]
-state = [[[0],[0]]]
+states = [[[0],[0]]]
 start_sample_time = time.time()
 start_time = time.time()
 
 ref_time = [0,   5,   5.1, 10 ]
 ref_sig =  [0.5, 0.5, 1.5, 1.5]
-drive_limit = 0.15
+drive_limit = 1
 time_max = 10
-time_init = 2
+time_init = 0
 control = False
 
 while True:
@@ -63,12 +63,12 @@ while True:
 		control = True
 
 	# State-space calculation
-	cur_state = np.matrix(state[-1])
+	cur_state = np.matrix(states[-1])
 	cur_slope = model.slope(cur_state, ref, dist, control=control) 			# Current slope
 	pred_state = cur_state + dt*cur_slope 									# Predicted state
 	pred_slope = model.slope(pred_state, ref, dist, control=control) 		# Predicted slope
-	cur_state = cur_state + dt/2*(cur_slope + pred_slope);					# New current state
-	state.append(cur_state.tolist()) 					
+	cur_state = cur_state + dt/2*(cur_slope + pred_slope)					# New current state
+	states.append(cur_state.tolist()) 					
 	drive = model.output(cur_state, ref, control=control)					# Model output
 
 	# Limit drive signal

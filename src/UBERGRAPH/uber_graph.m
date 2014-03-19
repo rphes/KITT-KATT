@@ -17,6 +17,8 @@
 % MarkerStyle = 'o';
 % MarkerColor = [.75 .75 .75];
 % legendText = {'line'};
+% makeLegend = 'yes';
+% legendLocation = 'northEast';
 % logX = 0;
 
 % Multiple graphs
@@ -28,6 +30,8 @@
 % MarkerStyle = ['o';'o'];
 % MarkerColor = [[.75 .75 .75];[.75 .75 .75]];
 % legendText = {'line1', 'line2'};
+% makeLegend = 'yes';
+% legendLocation = 'northEast';
 % logX = 0;
 
 % Config
@@ -85,7 +89,7 @@ hTitle = title(graphTitle);
 hXLabel = xlabel(xLabel);
 hYLabel = ylabel(yLabel);
 
-if (makelegend ~= 0)
+if ~strcmp(makeLegend,'no')
     legend(legendText,...
         'Location',legendLocation);
 end

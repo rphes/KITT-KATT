@@ -178,7 +178,7 @@ If we let $L \to 0$, then the order of the system drops to two. The simplified b
 
 The state-space model of the simplified bond graph is given by
 
-\begin{align}
+\begin{align} \label{eq:ass-1-model-final}
 	\dot{\vec{x}} = \frac{d}{dt}
 	\begin{bmatrix}
 		q_m \\
@@ -404,6 +404,15 @@ Figure~\ref{fig:ass-1-exp-1} and Figure~\ref{fig:ass-1-exp-2} show the results o
 	\label{fig:ass-1-comp}
 \end{figure}
 
-One can see that the model does not match the measured output perfectly. In fact, there is quite a mismatch. The eigenvalues of the fitted state matrix are \num{-0.0208} and \num{-3.4747}. The fitted model is therefore stable.
+One can see that the model does not match the measured output perfectly. In fact, there is quite a mismatch. The eigenvalues of the fitted state matrix are \num{-0.0208} and \num{-3.4747}. The fitted model is therefore stable. The fitted system matrix is given by
+
+\begin{equation}
+	\mat{A}_{fitted} = \begin{bmatrix}
+	0 & 1.0000 \\
+   -0.0723 & -3.4955	
+	\end{bmatrix}.
+\end{equation}
+
+Note that $a_{12} = 1$ and $a_{21} \approx 0$, this matches our model in Equation \ref{eq:ass-1-model-final}.
 
 \end{document}
