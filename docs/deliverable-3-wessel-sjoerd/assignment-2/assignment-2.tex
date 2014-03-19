@@ -112,7 +112,7 @@ Heun's method averages the slopes at points $n$ and $n+1$ using Euler's method t
 	\label{fig:ass-2-controller-response}
 \end{figure}
 
-Figure \ref{fig:ass-2-controller-response} shows two different responses of the controller. Both an oscillatory and critically damped behaviour is shown. We can see that the controller converges the model to the specified reference. There are, however, some things to notice. The critically damped response first overshoots the reference before it converges. This is because of the influences of the zeros of our complete closed-loop system. They interfere with our poles, and the result is shown.
+Figure \ref{fig:ass-2-controller-response} shows two different responses of the controller. Both an oscillatory and critically damped behaviour is shown. We can see that the controller converges the model to the specified reference. There is, however, something to notice. Both responses first tend to diverge from the reference. This is because the system is non minimum phase.
 
 \section{Controlling KITT}
 Implementing the controller appeared to be not so straightforward as we thought it to be. Some details interferred our thought-to-be-somewhat-painless implementation:
