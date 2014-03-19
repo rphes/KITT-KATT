@@ -22,7 +22,7 @@ namespace KITT_Drive_dotNET
 		Matrix<double> L = DenseMatrix.OfArray(new double[,] { { 3.2045 }, { -0.0537 } }); //Observer gain
 		Matrix<double> R { get { return (C * (B * K - A).Inverse() * B).Inverse(); } } //Control input scale
 		Matrix<double> x = DenseMatrix.OfArray(new double[,] { { 1 }, { 0 } }); //State matrix
-		double y = 1; //Vehicle output
+		double y = 0; //Vehicle output
 		double r = 0; //Control input
 		double drive; //Unscaled throttle
 
@@ -46,9 +46,13 @@ namespace KITT_Drive_dotNET
 		double thMinForward = 5;
 		double thMaxBackward = -15;
 		double thMinBackward = -5;
+
+		//Low-pass filter
+		double[] lowPass = new double[3];
+		double fFall = 10;
+		double tExpectedSample = 0.3;
 	
 		//Misc
-		double[] filter = new double[3]; //Low-pass filter
 		short controlling = 0; //Modifier for enabling vehicle control
 
 		#endregion
@@ -63,7 +67,10 @@ namespace KITT_Drive_dotNET
 		void EvTimer_Tick(object sender, EventArgs e)
 		{
 			if (iteration == 0)
+			{
 				tZero = DateTime.Now;
+				lowPass = makeLowPass();
+			}
 
 			double T = iteration * tInterval.TotalSeconds;//tRel.TotalSeconds;
 
@@ -86,22 +93,15 @@ namespace KITT_Drive_dotNET
 						break;
 					}
 				}
-				//r = 0;
 
 				//Find next slope
-				Matrix<double> curSlope = 
-					(A - L * C - B * K * controlling) * x + //(A - BK - LC)x_hat
-					B * R * r * controlling + // BRr
-					L * y; //Ly
+				Matrix<double> curSlope = getSlope(x);
 
 				//Find next predicted value via Euler's method
 				Matrix<double> predVal = x + curSlope * tInterval.TotalSeconds;
 
 				//Find next predicted slope
-				Matrix<double> predSlope =
-					(A - L * C - B * K * controlling) * predVal +
-					B * R * r * controlling +
-					L * y;
+				Matrix<double> predSlope = getSlope(predVal);
 
 				//Find next state
 				x += tInterval.TotalSeconds / 2 * (curSlope + predSlope);
@@ -111,8 +111,7 @@ namespace KITT_Drive_dotNET
 				drive = (controlling * R * r - K * x).At(0,0);
 
 				//Set next y
-				//y = yNext;
-
+				y = yNext;
 			}
 
 			//Drive signal scaling
@@ -133,6 +132,25 @@ namespace KITT_Drive_dotNET
 			Data.Ctr.Speed = drive;
 
 			iteration++;
+		}
+
+		Matrix<double> getSlope(Matrix<double> var)
+		{
+			return	
+				(A - L * C - B * K * controlling) * var + //(A - BK - LC)x
+				B * R * r * controlling + // BRr
+				L * y; //Ly
+		}
+
+		double[] makeLowPass()
+		{
+			double c1, c2, c3;
+			double a = 1 / (2 * Math.PI * fFall * tExpectedSample);
+			c1 = 2 * (Math.Pow(a, 2) + a) / (Math.Pow(a, 2 + 2 * a + 1));
+			c2 = Math.Pow(-a, 2) / (Math.Pow(a, 2) + 2 * a + 1);
+			c3 = 1 / (Math.Pow(a, 2) + 2 * a + 1);
+
+			return new double[] { c1, c2, c3 };
 		}
 	}
 }
