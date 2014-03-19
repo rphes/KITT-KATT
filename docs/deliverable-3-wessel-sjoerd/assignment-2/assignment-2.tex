@@ -27,7 +27,7 @@ Here the output of the observer at specified time $t$ with corresponding sample 
 
 There is one thing worth mentioning about the results shown in Figure~\ref{fig:ass-2-eigs}. The eigenvalues seem to converge to approximately $(-4.5,-4.5)$, but when they come very close to this value, they fail to perform. The ideal observer would converge critically damped. However, in the case of critically damped behaviour, $\lambda_1 = \lambda_2$, which is why they converge to a point $(a,a)$. That having said, having two eigenvalues of the same value also renders $\mat{A}$ not diagonalizable, which is why they seem to fail to perform. Critically damped behaviour is further explained in Section \ref{sec:ass-2-behav}.
 
-One would think, that having poles with a real part as negative as possible, would result in the lowest convergence time. In a perfect continuous case this would be true. However, we can only sample once in a while. Therefore, poles with a real part as negative as possible would very likely result in severe overshoot.
+One would think, that having poles with a real part as negative as possible, would result in the lowest convergence time. In the case of a continuous time space this would be true. However, we can only sample once in a while. Therefore, poles with a real part as negative as possible would very likely result in severe overshoot.
 
 \section{Oscillatory and critically damped response}
 \label{sec:ass-2-behav}
@@ -112,7 +112,7 @@ Heun's method averages the slopes at points $n$ and $n+1$ using Euler's method t
 	\label{fig:ass-2-controller-response}
 \end{figure}
 
-Figure \ref{fig:ass-2-controller-response} shows two different responses of the controller. Both an oscillatory and critically damped behaviour is shown. We can see that the controller converges the model to the specified reference. There is, however, something to notice. Both responses first tend to diverge from the reference. This is because the system is non minimum phase.
+Figure \ref{fig:ass-2-controller-response} shows two different responses of the controller. Both an oscillatory and critically damped behaviour is shown. We can see that the controller converges the model to the specified reference. There is, however, something to notice. Both responses first tend to diverge from the reference. This is because the system is non-minimum phase.
 
 \section{Controlling KITT}
 Implementing the controller appeared to be not so straightforward as we thought it to be. Some details interferred our thought-to-be-somewhat-painless implementation:
