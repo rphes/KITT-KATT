@@ -10,7 +10,7 @@
 \chapter{Assignment 2: Feedback controller design}
 \section{Observer design}
 The observer is in fact a duplicate of the derived model for KITT, but with its own state and output. The observer will give a hopefully accurate estimate of the state of the actual system, using its own state in conjunction with the actual system's output (KITT's ultrasonic sensor readouts). To this end, the observer multiplies the difference between KITT's and its own output $\vec{y}-\hat{\vec{y}}$ with a matrix $\mathbf{L}$: the \textit{observer gain}.
-As stated in the student manual we can choose our poles at will when the pair $(\mathbf{C},\mathbf{A})$ is observable. Using MATLAB with command \texttt{rank(obsv(A,C))}, we find that the observability matrix of our model has rank \num{2}, so can place our poles anywhere we want to.
+As stated in the student manual we can choose our poles at will when the pair $(\mathbf{C},\mathbf{A})$ is observable. Using MATLAB with command \texttt{rank(obsv(A,C))}, we find that the observability matrix of our model has rank \num{2}, so we can place our poles anywhere we want to. In theory the best set of poles would be at $-\infty$, for immediate convergence. However, because we are dealing with a relatively small sampling frequency, the use of very large poles would result in severe overshoot between samples, thus having an adverse effect on observer efficiency.
 \\
 For calculating an optimal set of poles we introduced a function that would give some indication of the performance of our observer (i.e. the time it would take to converge) for a certain set of poles:
 
@@ -28,10 +28,155 @@ Here $\vec{y}_i-\hat{\vec{y}_i}$ denotes the difference between observer and sys
 	\label{fig:ass2-eigs}
 \end{figure}
 
-We see the best combination of poles lies around $(-4.5; -4.5)$, so ideally we would pick these two values to calculate our eigenvalues with.
+We see the best combination of poles lies around $(-4.3; -4.4)$, so ideally we would pick these two values to calculate our eigenvalues with. The white line is there because it is not possible to have MATLAB place two equal poles. Having MATLAB \texttt{place} the given poles yields:
 
-%TODO finish this + fix \texttt size
+\begin{equation}
+	\mathbf{L} =
+		\begin{bmatrix}
+			-7.2222 \\
+			-2.0519 \\
+		\end{bmatrix}.
+\end{equation}
 
 \section{Controller design}
+\subsection{Oscillatory and critically-damped behavior}
+In designing a controller, we want to drive KITT a to given location as fast as possible, without overshoot. This means the system should be critically damped. In this assignment, however, we are required to find a controller that introduces an oscillatory response as well. We will start by studying which behaviours can be observed when using different poles.
+\\
+For a general system of the form
+
+\begin{equation*}
+	\begin{split}
+		\dot{\vec{x}} &= \mathbf{A}\vec{x} + \mathbf{B}\vec{u} \\
+		\vec{y} &= \mathbf{C}\vec{x},
+	\end{split}
+\end{equation*}
+
+we can use its Laplace-transform
+
+\begin{equation}
+	\begin{split}
+		s\dot{\vec{X}}(s) &= \mathbf{A}\vec{X}(s) + \mathbf{B}\mathbf{U}(s) \\
+		\vec{Y}(s) &= \mathbf{C}\vec{X}(s),
+	\end{split}
+	\label{eq:ass2-system-laplace}
+\end{equation}
+
+to derive an expression for $\vec{X}(s)$:
+
+\begin{equation}
+	\vec{X}(s) = (s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B}\mathbf{U}(s).
+	\label{eq:ass2-Xs}
+\end{equation}
+
+When substituting \ref{eq:ass2-Xs} back into \ref{eq:ass2-system-laplace}, we obtain
+
+\begin{equation*}
+	\vec{Y}(s) = \mathbf{C}(s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B}\mathbf{U}(s),
+\end{equation*}
+
+which we can then use to determine the transfer function:
+
+\begin{equation}
+	\mathbf{H}(s) = \frac{\mathbf{Y}(s)}{\mathbf{U}(s)} = \mathbf{C}(s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B}.
+	\label{eq:ass2-Hs}
+\end{equation}
+
+It can then be shown using \ref{eq:ass2-Hs}, that for an arbitrary system $\mathbf{H}(s)$ will be of the form
+
+\begin{equation}
+	\frac{Num(s)}{Den(s)},
+\end{equation}
+
+where $Den(s)$ equals the characteristic equation of the controlled system, being $\mathrm{det}\{s\mathbf{I}-\mathbf{A})\}$. We thus notice that the poles of the system's transfer function are equal to the eigenvalues of the matrix $\mathbf{A}$. We can use this fact to determine which kind of behaviour the system will exhibit for different eigenvalues. \\
+Let us write an expression for $Den(s)$ using the previous observation for a second order system:
+
+\begin{equation}
+	Den(s) = s^2 + 2\xi s \omega_n + \omega_n^2,
+\end{equation}
+
+here $\xi$ denotes the so-called \textit{damping-ratio} and $\omega_n$ is the \textit{natural frequency}. We can distinguish four different cases with respect to $\xi$:
+
+\begin{itemize}
+	\item $\xi < 0$, the poles of the system are in the right half-plane, we know this renders the system unstable
+	\item $\xi > 1$, the poles of the system are real and lie in the left half-plane, the system is stable, but over-damped: it will converge slower than it could have
+	\item $\xi = 1$, the system has a double pole in the right half-plane, the system is stable and critically damped: it will converge as fast as possible without overshoot
+	\item $0 < \xi < 1$, the poles of the system are complex conjugates, the system is stable and under-damped: it can be shown with an inverse-Laplace-transform that it exhibits oscillatory behaviour (overshooting) and therefore converges slower
+\end{itemize}
+\cite{transient-systems}
+
+\subsection{The controller itself}
+Because our $\mathbf{A}$-matrix has a fixed set of poles of its own, we need a way to influence our system's characteristics (place its poles). To accomplish this, we introduce the \textit{control law} $\vec{u} = -\mathbf{K}\vec{x}$, so that the system (without observer), will be of the form
+
+\begin{equation*}
+	\begin{split}
+		\dot{\vec{x}} &= (\mathbf{A}-\mathbf{B}\mathbf{K})\vec{x} \\
+		\vec{y} &= \mathbf{C}\vec{x},
+	\end{split}
+\end{equation*}
+
+To find a suitable matrix $K$ we can once again use MATLAB's \texttt{place}-command.
+Because we want our system to converge as fast as possible, we want a critically damped response, our poles should thus be equal or at least very close to each other, since placing equal poles with MATLAB is not possible. Via trial-and-error we learned that the pair $(-1.5; -1.6)$ would yield acceptable results.
+For the underdamped system we used the pair $(-1.5; -1.6)$. Both of the responses are plotted in Figure~\ref{fig:ass2-controller-response}. %TODO insert actual value + K-matrices
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{resource/controller.pdf}
+	\end{center}
+	\caption{Oscillatory and critically damped response of the controller}
+	\label{fig:ass2-controller-response}
+\end{figure}
+
+%TODO add description
+
+Later we learned that MATLAB implements another method of placing poles using \textit{Acker's method} (command: \texttt{acker}). This way two equal poles can be placed, which theoretically results in faster convergence. In practice, however, this improvement would most likely prove to be insignificant due to various other inaccuracies.
+
+Finally, we want to be able to send KITT to a certain position. For this to happen, we have force KITT from his steady state to another one. We do this by applying a reference vector $\vec{r}$ to the control law, so it becomes $\vec{u} = \mathbf{K}\vec{x} + \vec{r}$. The system (without observer) is now of the form:
+
+\begin{align}
+	\dot{\vec{x}} &= (\mathbf{A}-\mathbf{B}\mathbf{K})\vec{x} + \mathbf{B}\vec{r} \\
+	\vec{y} &= \mathbf{C}\vec{x}.
+	\label{eq:ass2-conroller-ref}
+\end{align}
+
+When implementing this model using the previously obtained matrices, one would quickly notice it would converge to a certain state when given a reference vector $\vec{r}$ as input, but that this state would not be equal to the given reference vector. This is easily explained with the fact that we only multiply our state by $\mathbf{K}$ and consequently subtract the result from $\vec{r}$, so there is no reason to expect the state to be equal to the desired output. To overcome this issue, we must scale the reference value to be equal to the system's steady-state. Since the system is stable we can determine that $\dot{\vec{x}} \to 0$ when $t \to \infty$. Combining equations in \ref{eq:ass2-conroller-ref} then yields
+
+\begin{equation}
+	\vec{y} \to \mathbf{C} (\mathbf{B} \mathbf{K} - \mathbf{A})^{-1} \mathbf{B} \vec{r} \text{ when } t \to \infty.
+\end{equation}
+
+When multiplying the reference vector with the inverse of the above result, the system will converge to the desired state. The complete and final system then becomes
+
+\begin{equation}
+	\dot{\hat{\vec{x}}} = (\mathbf{A}-\mathbf{L}\mathbf{C}-\mathbf{B}\mathbf{K}) \hat{\vec{x}} + \mathbf{B}(\mathbf{C}(\mathbf{B} \mathbf{K} - \mathbf{A})^{-1} \mathbf{B})^{-1} \vec{r} + \mathbf{L} \vec{y}.
+\end{equation}
+
+Alas, there is one last issue to deal with. The given model is for continuous time, where we read KITT's output at a pretty low rate. Therefore the model must be discretized for approximating the current state at discrete intervals. To do this we used Heun's method, which gives an estimation of the next state by averaging the current slope and a predicted next slope. \cite{wikipedia-heuns}
+
+\section{Considerations}
+There are a few things that set our theoretically fine model aside from reality. \\
+A big hit on the accuracy of the controller is the fact that the connection's latency when requesting the current state can increase up to \SI{600}{ms}. In this time a lot can happen, especially when KITT is driving fast, so severe overshoot is not uncommon. We think this lag is due to MATLAB, so because we have an implementation of the model in both Python and C\# ready for testing, we hope this lag will decrease to more acceptable levels in the future. \\
+Another issue is the dependency of KITT's performance on the current battery voltage. The lower that gets, the slower KITT will be. The model itself does not implement this property, so it might be worth implementing some form of compensation ourselves. \\
+There is also the fact that the sensors sometimes output incorrect values, even though we filter these before using them in the model, sometimes a spike gets through. \\
+And lastly, of course some inaccuracy is caused by the model being only a linearly fitted approximation of reality. \\
+
+\section{Controlling KITT}
+Every non-ideality we discussed aside, we were able to control KITT in some degree. Plots of KITT's response are shown in Figure~\ref{fig:ass2-kitt-controlled}.
+
+\begin{figure}[H]
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{resource/measurement-states.pdf}
+		\caption{Internal states, measured distance and reference during control}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{resource/measurement-drive.pdf}
+		\caption{Relative throttle during control}
+	\end{subfigure}
+	\caption{Measurement results of KITT controlled by the designed controller}
+	\label{fig:ass2-kitt-controlled}
+\end{figure}
+
+Without MATLAB and with some more optimsations, we hope things will get better.
 
 \end{document}
