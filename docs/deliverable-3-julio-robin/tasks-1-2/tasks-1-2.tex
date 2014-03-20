@@ -8,6 +8,172 @@
 \begin{document}
 
 \chapter{System model for driving on a straight line}
+
+\section{inleiding}
+
+TASK 3
+
+Matrices A, B en K worden gedefinieerd als: $A = \bigl(\begin{smallmatrix}
+  A_{1} & A_{2} \\
+  A_{3} & A_{4}  
+\end{smallmatrix} \bigr)$,  $B = \bigl(\begin{smallmatrix}
+   B_{1}   \\
+   B_{2}  
+\end{smallmatrix} \bigr)$,
+$ K = \bigl(\begin{smallmatrix}
+    K_{1} & K_{2} 
+\end{smallmatrix} \bigr)$.
+Om polen te plaatsen moet de determinant van  $\lambda$$I$$-(A-BK)$ worden berekend. De matrix $\lambda$$I$$-(A-BK)$ wordt afgebeeld in vergelijking \eqref{eq:lambda_matrix}. Door de determinant van deze matrix te nemen en polen te kiezen kan de K matrix berekend worden. De relatie tussen de polen en de waardes van de K matrix wordt weergegeven in vergelijkingen .... en ... De formules om  $K_{1}$ en $K_{2}$ die hieruit zijn afgeleid worden weergegeven in verlkijking \eqref{eq:K1} en \eqref{eq:K2}. In formules \eqref{eq:lambda_matrix}, \eqref{eq:K1} en \eqref{eq:K2} zijn $A_{1}$ t/m $A_{4}$ de compenenten van de A matrix, $B_{1}$ en $B_{2}$ componenten van de B matrix, $P_{1}$ en $P_{2}$ de gekozen polen.
+Met deze formules kunnen nu K-matrices worden berekend. \\ 
+
+\begin{equation} \label{eq:lambda_matrix}
+{\lambda}I-(A-BK) =
+ \begin{bmatrix}
+  {\lambda} - A_{1} + B_{1}K_{1} & B_{1}K_{2} - A_{2} \\
+  B_{2}K_{1} - A_{3} & \lambda - A_{4} + B_{2}K_{2}  
+ \end{bmatrix}
+\end{equation}
+
+
+\begin{equation} \label{eq:K1}
+K_{1} = \frac{B_{2}(A_{2}A_{3} - A_{1}A_{4} + P_{1}P_{2}) + (A_{1}B_{2} - A_{3}B_{1})(A_{1} + A_{4} - P_{1} - P_{2})}{B_{1}(A_{1}B_{2} - A_{3}B_{1}) + B_{2}(A_{2}B_{2} - A_{4}B_{1})}
+\end{equation}
+
+
+\begin{equation} \label{eq:K2}
+K_{2} = -\frac{B_{1}(A_{4}^2 + A_{2}A_{3} - A_{4}P_{1} - A_{4}P_{2} + P_{1}P_{2}) - B_{2}(A_{1}A_{2} + A_{2}A_{4} - A_{2}P_{1} - A_{2}P_{2})}{A_{2}B_{2}^2 - A_{3}B_{1}^2 + A_{1}B_{1}B_{2} - A_{4}B_{1}B_{2}}
+\end{equation}
+
+
+
+TASK 1
+Voor het systeem is er een state-space model afgeleid waarin de ingang de kracht is dat door de motor wordt uitgevoerd. Dit is gedaan aan de hand van vergelijking \eqref{eq:bron1}. In deze formule is $X_{1}$ de afstand, U de kracht die de motor uitvoerd ......  De toestandvergelijking is te zien in formule \eqref{eq:state_space}, waarbij $X_{2}$ de snelheid is. Dit is een tweede orde systeem aangezien A een 2 bij 2 matrix is. ...................... Met behulp van de matrices in formules \eqref{eq:observable} en \eqref{eq:controllable} kan worden gecontrolleerd of het systeem controlleerbaar en/of observeerbaar is. De rank van zowel C en O is twee en dus gelijk aan de orde van het systeem. Dit betekent dat het systeem zowel observeerbaar als controlleerbaar is. 
+
+\begin{equation} \label{eq:bron1} 
+m\ddot{X_{1}} = -{\rho}\dot{X_{1}} + U
+\end{equation}
+
+\begin{equation} \label{eq:state_space}
+	\dot{X} = AX + BU   \Longrightarrow
+    \begin{bmatrix}
+    \dot{X_{1}} \\ 
+    \dot{X_{2}} 
+    \end{bmatrix} = \begin{bmatrix}
+        0 & 1 \\
+        0 & \frac{-p}{m}
+     \end{bmatrix}
+    \begin{bmatrix}
+        X_{1} \\
+        X_{2}
+    \end{bmatrix} + \begin{bmatrix}
+    0 \\
+    \frac{1}{m}
+    \end{bmatrix}U 
+    C = 2x
+\end{equation}
+
+\begin{equation} \label{eq:observable}
+	O_{1} = \begin{bmatrix}
+	  C \\
+	  CA
+	\end{bmatrix} = \begin{bmatrix}
+	1 & 0 \\ 
+	0 & 1 \\
+	0 & 1 \\
+	0 & -\frac{1}{m}
+	\end{bmatrix}
+\end{equation}
+
+\begin{equation} \label{eq:controllable}
+	C_{1} = \begin{bmatrix}
+	  B & AB 
+	\end{bmatrix} = \begin{bmatrix}
+	0 & \frac{1}{m} \\
+	\frac{1}{m} & -\frac{p}{m}
+	\end{bmatrix}
+\end{equation}
+
+
+TASK 2.1
+Om het volledige systeem te beschrijven met de spanning als input is gebruik gemaakt van de formules in formules \eqref{eq:bron1}, \eqref{eq:bron2} en \eqref{eq:bron3}. In het nieuwe systeem is de kracht die uitgevoerd door de motor afhankelijk van de elektrische stroom. Bovendien is de stroom afhanelijk van zijn eigen tijdsafgeleide. Hierdoor kon het systeem niet beschreven worden met twee states. De derde state dat werd toegevoegd is stroom. De nieuwe toestandvergelijking wordt afgebeeld in formule \eqref{eq:state_space2}. Dit is een derde orde systeem. \\ \\ 
+TASK 2.2
+Als nu wordt verondersteld dat de inductantie(L) nul is kan het systeem versimpeld worden. De stroom hangt namelijk niet meer af van zijn eigen tijdsafgeleide. De uiteindelijke toestandsvergelijk is te zien in formule \eqref{eq:state_space3}.
+Zoals te zien is aan de A matrix is dit systeem door de versimpeling weer een tweede orde systeem geworden. Bij het controleren op controlleerbaarheid en observeerbaarheid zijn de rangen van zowel O(formule \eqref{eq:observable2}) en C(formule \eqref{eq:controllable2}) berekend. De rang van beide matrices blijkt twee te zijn. Dit is ookwel gelijk aan de orde van het systeem. Hieruit bleek dat de rangen overeenkomen met de orde van het systeem. Dit systeem is dus zowel controleerbaar als observeerbaar. 
+
+
+
+\begin{equation} \label{eq:bron2}
+V = iR + L\dot{i} + e
+\end{equation}
+
+\begin{equation} \label{eq:bron3}
+u = \frac{k_{t}k_{g}i}{r_{w}}
+\end{equation}
+
+
+\begin{equation} \label{eq:state_space2}
+	\dot{X} = A_{2}X + B_{2}V   \Longrightarrow
+    \begin{bmatrix}
+    \dot{X_{1}} \\ 
+    \dot{X_{2}} \\
+    \dot{X_{3}}
+    \end{bmatrix} = \begin{bmatrix}
+        0 & 1 & 0 \\ 
+        0 & \frac{-p}{m} & \frac{k_{t}k_{g}}{r_{w}m} \\ 
+        0 & \frac{-k_{t}}{k_{g}Lr_{w}} & \frac{-R}{L}
+     \end{bmatrix}
+    \begin{bmatrix}
+        X_{1} \\
+        X_{2} \\
+        X_{3}
+    \end{bmatrix} + \begin{bmatrix}
+    0 \\  0 \\ 
+    \frac{1}{L}
+    \end{bmatrix}V
+\end{equation}
+
+
+
+\begin{equation} \label{eq:state_space3}
+	\dot{X} = A_{3}X + B_{3}V   \Longrightarrow
+    \begin{bmatrix}
+    \dot{X_{1}} \\ 
+    \dot{X_{2}} 
+    \end{bmatrix} = \begin{bmatrix}
+        0 & & 1 \\ \\
+        0 & & -(\frac{{\rho}}{m}+\frac{(k_{t}k_{g})^2}{r_{w}^2mR})  
+     \end{bmatrix}
+    \begin{bmatrix}
+        X_{1} \\
+        X_{2} 
+    \end{bmatrix} + \begin{bmatrix}
+    0 \\ \\
+    \frac{k_{t}k_{g}}{r_{w}mR}
+    \end{bmatrix}V
+\end{equation}
+
+
+
+\begin{equation} \label{eq:observable2}
+	O_{2} = \begin{bmatrix}
+	  C \\
+	  CA_{3}
+	\end{bmatrix} = \begin{bmatrix}
+	1 & & 0 \\ \\
+	0 & & 1 \\ \\
+	0 & & 1 \\ \\
+	0 & & -(\frac{{\rho}}{m}+\frac{(k_{t}k_{g})^2}{r_{w}^2mR})  
+	\end{bmatrix}
+\end{equation}
+
+\begin{equation} \label{eq:controllable2}
+	C_{2} = \begin{bmatrix}
+	  B_{3} & A_{3}B_{3} 
+	\end{bmatrix} = \begin{bmatrix}
+	0 & & \frac{k_{t}k_{g}}{r_{w}mR} \\ \\
+	\frac{k_{t}k_{g}}{r_{w}mR} & & (\frac{-k_{t}k_{g}}{r_{w}mR})(\frac{{\rho}}{m}+\frac{(k_{t}k_{g})^2}{r_{w}^2mR})  
+	\end{bmatrix}
+\end{equation}
 \section{Tasks 1}
 
 \section{Tasks 2}
