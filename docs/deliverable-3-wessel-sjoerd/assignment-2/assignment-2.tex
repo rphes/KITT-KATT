@@ -123,7 +123,7 @@ Implementing the controller appeared to be not so straightforward as we thought 
 	\item The sampling time would sometimes turn out unacceptably high, up to \SI{600}{ms}. This high latency caused in combination with the minimum driving speed of KITT an inevitable oscillatory response. Matlab's serial toolkit turned out to be the cause of this lag. Eventually we want to implement the controller in our C\# environment, so this problem should resolve itself.
 	\item Although we applied our designed filters, the sensors would sometimes provide incorrect values.
 \end{itemize}
-Even though we encountered al these non-linearities, we were actually able to control the car up to some level. Keeping in mind al these non-linear aspects, the theory does, within some boundaries (e.g. the discussed non-linearities), match the reality. However, the responses measured do only to a certain extent match the simulated responses.
+Even though we encountered al these non-linearities, we were actually able to control the car up to some level. Keeping in mind al these non-linear aspects, the theory does, within some boundaries (i.e. the discussed non-linearities), match the reality. However, the responses measured do only to a certain extent match the simulated responses.
 
 \begin{figure}[H]
 	\begin{subfigure}{.5\textwidth}
