@@ -116,7 +116,7 @@ Because our $\mathbf{A}$-matrix has a fixed set of poles of its own, we need a w
 
 To find a suitable matrix $K$ we can once again use MATLAB's \texttt{place}-command.
 Because we want our system to converge as fast as possible, we want a critically damped response, our poles should thus be equal or at least very close to each other, since placing equal poles with MATLAB is not possible. Via trial-and-error we learned that the pair $(-1.5; -1.6)$ would yield acceptable results.
-For the underdamped system we used the pair $(-1.5; -1.6)$. Both of the responses are plotted in Figure~\ref{fig:ass2-controller-response}. %TODO insert actual value + K-matrices
+For the underdamped system we used the pair $(-1.5; -1.6)$. Both of the responses are plotted in Figure~\ref{fig:ass2-controller-response}, we see the responses we expected to see. %TODO insert actual value + K-matrices
 
 \begin{figure}[H]
 	\begin{center}
@@ -125,8 +125,6 @@ For the underdamped system we used the pair $(-1.5; -1.6)$. Both of the response
 	\caption{Oscillatory and critically damped response of the controller}
 	\label{fig:ass2-controller-response}
 \end{figure}
-
-%TODO add description
 
 Later we learned that MATLAB implements another method of placing poles using \textit{Acker's method} (command: \texttt{acker}). This way two equal poles can be placed, which theoretically results in faster convergence. In practice, however, this improvement would most likely prove to be insignificant due to various other inaccuracies.
 
@@ -160,7 +158,7 @@ There is also the fact that the sensors sometimes output incorrect values, even 
 And lastly, of course some inaccuracy is caused by the model being only a linearly fitted approximation of reality. \\
 
 \section{Controlling KITT}
-Every non-ideality we discussed aside, we were able to control KITT in some degree. Plots of KITT's response are shown in Figure~\ref{fig:ass2-kitt-controlled}.
+Every non-ideality we discussed aside, we were able to control KITT in some degree. Plots of KITT's response are shown in Figure~\ref{fig:ass2-kitt-controlled}. The clamped output was introduced to reduce KITT's maximum speed for preventing accidents and monumental overshoot. We see that KITT slowly drives towards the reference value, which is an accomplishment.
 
 \begin{figure}[H]
 	\begin{subfigure}{.5\textwidth}
@@ -177,6 +175,6 @@ Every non-ideality we discussed aside, we were able to control KITT in some degr
 	\label{fig:ass2-kitt-controlled}
 \end{figure}
 
-Without MATLAB and with some more optimsations, we hope things will get better.
+Without MATLAB and with some more optimizations, we hope things will get better.
 
 \end{document}
