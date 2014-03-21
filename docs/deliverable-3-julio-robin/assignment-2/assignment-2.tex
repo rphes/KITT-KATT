@@ -47,7 +47,7 @@ For a general system of the form
 \begin{equation*}
 	\begin{split}
 		\dot{\vec{x}} &= \mathbf{A}\vec{x} + \mathbf{B}\vec{u} \\
-		\vec{y} &= \mathbf{C}\vec{x},
+		y &= \mathbf{C}\vec{x},
 	\end{split}
 \end{equation*}
 
@@ -55,7 +55,7 @@ we can use its Laplace-transform
 
 \begin{equation}
 	\begin{split}
-		s\dot{\vec{X}}(s) &= \mathbf{A}\vec{X}(s) + \mathbf{B}\mathbf{U}(s) \\
+		s\dot{\vec{X}}(s) &= \mathbf{A}\vec{X}(s) + \mathbf{B}\vec{U}(s) \\
 		\vec{Y}(s) &= \mathbf{C}\vec{X}(s),
 	\end{split}
 	\label{eq:ass2-system-laplace}
@@ -64,24 +64,24 @@ we can use its Laplace-transform
 to derive an expression for $\vec{X}(s)$:
 
 \begin{equation}
-	\vec{X}(s) = (s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B}\mathbf{U}(s).
+	\vec{X}(s) = (s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B}\vec{U}(s).
 	\label{eq:ass2-Xs}
 \end{equation}
 
 When substituting \ref{eq:ass2-Xs} back into \ref{eq:ass2-system-laplace}, we obtain
 
 \begin{equation*}
-	\vec{Y}(s) = \mathbf{C}(s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B}\mathbf{U}(s),
+	\vec{Y}(s) = \mathbf{C}(s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B}\vec{U}(s),
 \end{equation*}
 
-which we can then use to determine the transfer function:
+which we can then use to determine the transfer function, because we are dealing with a SISO-system:
 
 \begin{equation}
-	\mathbf{H}(s) = \frac{\mathbf{Y}(s)}{\mathbf{U}(s)} = \mathbf{C}(s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B}.
+	H(s) = \frac{Y(s)}{U(s)} = \mathbf{C}(s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B}.
 	\label{eq:ass2-Hs}
 \end{equation}
 
-It can then be shown using \ref{eq:ass2-Hs}, that for an arbitrary system $\mathbf{H}(s)$ will be of the form
+It can then be shown using \ref{eq:ass2-Hs}, that for an arbitrary system $H(s)$ will be of the form
 
 \begin{equation}
 	\frac{Num(s)}{Den(s)},
