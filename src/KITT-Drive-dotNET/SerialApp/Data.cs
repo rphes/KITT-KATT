@@ -9,6 +9,7 @@ namespace SerialApp
 	public static class Data
 	{
 		public static SerialInterface serial = new SerialInterface();
-		public static Matlab matlab;
+		public static Matlab matlab = new Matlab();
+		public static Vehicle car = new Vehicle();
 	}
 }

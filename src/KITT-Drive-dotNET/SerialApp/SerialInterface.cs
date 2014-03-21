@@ -144,7 +144,66 @@ namespace SerialApp
 		#endregion
 
 		#region Reception
-		
+		private void parseResponse(string response)
+		{
+			char responseType = response[0];
+			string responseTypeAlt = response.Split(' ')[0];
+
+			if (responseTypeAlt == "Drive:" || responseTypeAlt == "L/R:")
+			{
+				int value;
+				string data = response.Split(' ')[1].TrimEnd('%');
+
+				if (int.TryParse(data, out value))
+				{
+					if (responseTypeAlt == "Drive:")
+						Data.car.ActualPWMSpeed = value;
+					else if (responseTypeAlt == "L/R:")
+						Data.car.ActualPWMHeading = value;
+				}
+
+			}
+			else if (responseType == 'D' || responseType == 'U')
+			{
+				int value1, value2;
+				string[] data = response.Substring(1).Split(' ');
+
+				if (int.TryParse(data[0], out value1) && int.TryParse(data[1], out value2))
+				{
+					if (responseType == 'D')
+					{
+						//current drive commands
+						Data.car.ActualPWMHeading = value1;
+						Data.car.ActualPWMSpeed = value2;
+					}
+					else if (responseType == 'U')
+					{
+						//ultrasonic sensor readout
+						Data.car.SensorDistanceLeft = value1;
+						Data.car.SensorDistanceRight = value2;
+					}
+				}
+			}
+			else if (responseType == 'A')
+			{
+				//battery voltage readout
+				int voltage;
+				string data = response.Substring(1);
+
+				if (int.TryParse(data, out voltage))
+					Data.car.BatteryVoltage = voltage;
+			}
+			else if (response.Substring(0, 5) == "Audio")
+			{
+				//audio status readout
+				bool audiostatus = response[-1] != 0;
+				Data.car.AudioStatus = audiostatus;
+			}
+			else
+			{
+				System.Diagnostics.Debug.WriteLine("Received unknown response: " + response + "could not parse...");
+			}
+		}
 		#endregion
 
 		#region Serial event handling
@@ -178,6 +237,8 @@ namespace SerialApp
 				{
 					LastLine = linebuffer;
 					linebuffer = "";
+					if (!String.IsNullOrEmpty(LastLine))
+						parseResponse(LastLine);
 				}
 
 				TextBuffer += (char)rx;
