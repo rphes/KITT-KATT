@@ -114,9 +114,9 @@ Because our $\mathbf{A}$-matrix has a fixed set of poles of its own, we need a w
 	\end{split}
 \end{equation*}
 
-To find a suitable matrix $K$ we can once again use MATLAB's \texttt{place}-command.
+To find a suitable matrix $\mathbf{K}$ we can once again use MATLAB's \texttt{place}-command.
 Because we want our system to converge as fast as possible, we want a critically damped response, our poles should thus be equal or at least very close to each other, since placing equal poles with MATLAB is not possible. Via trial-and-error we learned that the pair $(-1.5; -1.6)$ would yield acceptable results.
-For the underdamped system we used the pair $(-1.5; -1.6)$. Both of the responses are plotted in Figure~\ref{fig:ass2-controller-response}, we see the responses we expected to see. %TODO insert actual value + K-matrices
+For the underdamped system we used an arbitrary pair of complex conjugates. Both of the responses are plotted in Figure~\ref{fig:ass2-controller-response}, we see the responses we expected to see.
 
 \begin{figure}[H]
 	\begin{center}
@@ -126,7 +126,14 @@ For the underdamped system we used the pair $(-1.5; -1.6)$. Both of the response
 	\label{fig:ass2-controller-response}
 \end{figure}
 
-Later we learned that MATLAB implements another method of placing poles using \textit{Acker's method} (command: \texttt{acker}). This way two equal poles can be placed, which theoretically results in faster convergence. In practice, however, this improvement would most likely prove to be insignificant due to various other inaccuracies.
+Later we learned that MATLAB implements another method of placing poles using \textit{Acker's method} (command: \texttt{acker}). This way two equal poles can be placed, which theoretically results in faster convergence. In practice, however, this improvement would most likely prove to be insignificant due to various other inaccuracies. Our final $\mathbf{K}$-matrix for the critically-damped system is:
+
+\begin{equation}
+	\mathbf{K} = 
+		\begin{bmatrix}
+			-0.8976 & -0.1293
+		\end{bmatrix}
+\end{equation}
 
 Finally, we want to be able to send KITT to a certain position. For this to happen, we have force KITT from his steady state to another one. We do this by applying a reference vector $\vec{r}$ to the control law, so it becomes $\vec{u} = \mathbf{K}\vec{x} + \vec{r}$. The system (without observer) is now of the form:
 
