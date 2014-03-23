@@ -7,24 +7,45 @@ using MLApp;
 
 namespace SerialApp
 {
-	public class Matlab : IDisposable
+	public class Matlab
 	{
 		MLApp.MLApp matlab;
 		public DispatcherTimer SerialPoller;
 		public string SerialTx = "";
-		bool disposed, firsttick = true;
+		bool firsttick = true;
+		public bool Connected
+		{
+			get
+			{
+				if (matlab == null || matlab.Visible == 0)
+					return false;
+				else
+					return true;
+			}
+		}
 
 		public Matlab()
+		{
+			SerialPoller = new DispatcherTimer();
+			SerialPoller.Interval = new TimeSpan(0, 0, 0, 0, 100);
+			SerialPoller.Tick += SerialPoller_Tick;
+		}
+
+		public void Connect()
 		{
 			//Init teh Matlab
 			matlab = new MLApp.MLApp();
 			if (matlab.Visible != 1)
 				matlab.MaximizeCommandWindow();
+		}
 
-			SerialPoller = new DispatcherTimer();
-			SerialPoller.Interval = new TimeSpan(0, 0, 0, 0, 100);
-			SerialPoller.Tick += SerialPoller_Tick;
-
+		public void Disconnect()
+		{
+			if (matlab != null)
+			{
+				matlab.Quit();
+				matlab = null;
+			}
 		}
 
 		void SerialPoller_Tick(object sender, EventArgs e)
@@ -53,44 +74,16 @@ namespace SerialApp
 				firsttick = false;
 			}
 
-
-			PutRxData();
+			//PutRxData();
 			GetTxData();
 		}
 
-		~Matlab()
+		public void PutRxData(string varname, object data)
 		{
-			Dispose(false);
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!this.disposed)
-			{
-				if (disposing)
-					matlab.Quit();
-
-				disposed = true;
-			}
-				
-		}
-
-		void PutRxData()
-		{
-			//push the last received line to matlab
-			string serialrx;
-
+			//push data to matlab
 			try
 			{
-				serialrx = matlab.GetCharArray("serialrx", "base");
-				if (serialrx != Data.serial.LastLine)
-					matlab.PutCharArray("serialtx", "base", Data.serial.LastLine);
+				matlab.PutWorkspaceData(varname, "base", data);
 			}
 			catch (Exception exc)
 			{
@@ -106,8 +99,12 @@ namespace SerialApp
 			try
 			{
 				serialtx = matlab.GetCharArray("serialtx", "base");
+				System.Diagnostics.Debug.WriteLine(serialtx);
 				if (serialtx != SerialTx)
+				{
+					SerialTx = serialtx;
 					Data.serial.SendString(SerialTx);
+				}
 			}
 			catch (Exception exc)
 			{

@@ -21,7 +21,7 @@ namespace SerialApp
 
 		void MainWindow_Closing(object sender, CancelEventArgs e)
 		{
-			Data.matlab.Dispose();
+			Data.matlab.Disconnect();
 		}
 
 		#region Communication controls
@@ -88,16 +88,15 @@ namespace SerialApp
 
 		private void Button_MatlabConnect_Click(object sender, RoutedEventArgs e)
 		{
-			if (Data.matlab == null)
+			if (!Data.matlab.Connected)
 			{
-				Data.matlab = new Matlab();
+				Data.matlab.Connect();
 				Button_MatlabConnect.Content = "Close Matlab";
 				Button_StartSerial.IsEnabled = true;
 			}
 			else
 			{
-				Data.matlab.Dispose();
-				Data.matlab = null;
+				Data.matlab.Disconnect();
 				Button_MatlabConnect.Content = "Connect to Matlab";
 				Button_StartSerial.IsEnabled = false;
 			}

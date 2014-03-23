@@ -9,7 +9,7 @@
 
 \chapter{Assignment 2}
 \section{Observer design}
-To have full state knowledge required for control, we designed an observer. This observer would have to converge as fast as possible to the observed state. However, the fact that we can only observe approximately once per \SI{300}{ms}, puts constraints on the observer feedback matrix $\mat{L}$. We decided that the performance of a chosen feedback matrix $\mat{L}$ is given by
+To have full state knowledge required for control, we designed an observer. This observer has to converge as fast as possible to the observed state. However, the fact that we can only observe approximately once per \SI{300}{ms}, puts constraints on the observer feedback matrix $\mat{L}$. We decided that the performance of a chosen feedback matrix $\mat{L}$ is given by
 
 \begin{equation} \label{eq:ass-2-mse}
 	\sum_{i=0}^{\infty} (\hat{\vec{y}_i}-\vec{y}_i)^2.
@@ -25,7 +25,7 @@ Here the output of the observer at specified time $t$ with corresponding sample 
 	\label{fig:ass-2-eigs}
 \end{figure}
 
-There is one thing worth mentioning about the results shown in Figure~\ref{fig:ass-2-eigs}. The eigenvalues seem to converge to approximately $(-4.5,-4.5)$, but when they come very close to this value, they fail to perform. The ideal observer would converge critically damped. However, in the case of critically damped behaviour, $\lambda_1 = \lambda_2$, which is why they converge to a point $(a,a)$. That having said, having two eigenvalues of the same value also renders $\mat{A}$ not diagonalizable, which is why they seem to fail to perform. Critically damped behaviour is further explained in Section \ref{sec:ass-2-behav}.
+There is one thing worth mentioning about the results shown in Figure~\ref{fig:ass-2-eigs}. The eigenvalues seem to converge to approximately $(-4.5,-4.5)$, but when they come very close to this value, they fail to perform. The ideal observer would converge critically damped. However, in the case of critically damped behaviour, $\lambda_1 = \lambda_2$, which is why they converge to a point $(a,a)$. Having said that, two eigenvalues of the same value render $\mat{A}$ undiagonalizable, which is why they seem to fail to perform. Critically damped behaviour is further explained in Section \ref{sec:ass-2-behav}.
 
 One would think, that having poles with a real part as negative as possible, would result in the lowest convergence time. In the case of a continuous time space this would be true. However, we can only sample once in a while. Therefore, poles with a real part as negative as possible would very likely result in severe overshoot.
 
@@ -52,11 +52,11 @@ If $\mat{A}$ is diagonalizable, then
 
 The exponential functions in Equation \ref{eq:ass-2-matrix} show that this calculation yields us an overdamped response. We can therefore roughly state that, if $\mat{A}$ is diagonalizable, this corresponds with an overdamped response.
 
-$e^{\mat{A} t}$ can also be calculated using the $\mat{A}$'s Jordan form. If $e^{\mat{A} t}$ is diagonalizable, then this Jordan form reduces to a regular diagonalization. However, if $e^{\mat{A} t}$ is not diagonalizable, then calculating $e^{\mat{A} t}$ using $\mat{A}$'s Jordan form turns out to give us a critically damped solution \cite{jordan-solution}. Therefore, if we were able to chose a feedback which would render $\mat{A} - \mat{B} \mat{K}$ not diagonalizable, then we would find a critically damped response.
+$e^{\mat{A} t}$ can also be calculated using the $\mat{A}$'s Jordan form. If $e^{\mat{A} t}$ is diagonalizable, then this Jordan form reduces to a regular diagonalization. However, if $e^{\mat{A} t}$ is not diagonalizable, then calculating $e^{\mat{A} t}$ using $\mat{A}$'s Jordan form turns out to give us a critically damped solution \cite{jordan-solution}. Therefore, if we were able to choose a feedback which would render $\mat{A} - \mat{B} \mat{K}$ not diagonalizable, then we would find a critically damped response.
 
 Let us consider the case of a matrix $\mat{A} \in \mathbb{M}_{22}$. If $\lambda$ was to be an eigenvalue, then solving $\operatorname{null}{(\mat{A} - \lambda \mat{I})}$ would yield the corresponding eigenvectors. In general, $\operatorname{nullity}{(\mat{M})} + \operatorname{rank}{(\mat{M})} = n$. Therefore, in our case, $2 - \operatorname{rank}{(\mat{A} - \lambda \mat{I})} = \operatorname{nullity}{(\mat{A} - \lambda \mat{I})}$. However, if $\operatorname{rank}{(\mat{A} - \lambda \mat{I})} \ge 1$, which is the case if $\mat{A} - \lambda \mat{I} \neq \vec{0}$, then the dimension of the eigenspace corresponding with $\lambda$ can not equal two. Therefore, if $\lambda$ would have algebraic multiplicity two, then $\mat{A}$ would be not diagonalizable.
 
-Combining the facts that \textbf{(1)} having a algebraic multiplicity of two renders $\mat{A}$ not diagonalizable, and \textbf{(2)} $\mat{A}$ not being diagonalizble leads us to a critically damped response, tempts us to argue that chosing two eigenvalues $\lambda_1$ and $\lambda_2$ with $|\lambda_1- \lambda_2|$ minimal, allows us to mimic an eigenvalue with algebraic multiplicity of two and consequently approximate critically damped behaviour. 
+Combining the facts that \textbf{(1)} having a algebraic multiplicity of two renders $\mat{A}$ not diagonalizable, and \textbf{(2)} $\mat{A}$ not being diagonalizble leads us to a critically damped response, tempts us to argue that choosing two eigenvalues $\lambda_1$ and $\lambda_2$ with $|\lambda_1- \lambda_2|$ minimal, allows us to mimic an eigenvalue with algebraic multiplicity of two and consequently approximate critically damped behaviour. 
 
 \section{Controlling the output}
 Consider the state-space model
@@ -102,7 +102,7 @@ Here the drive excitation is denoted by $\vec{x}$ and distance measured by $\vec
 	\vec{x}_n &= (\mat{C}(\mat{B} \mat{K} - \mat{A})^{-1} \mat{B})^{-1} \vec{r}_n - \mat{K} \hat{\vec{x}}_n.
 \end{align}
 
-Heun's method averages the slopes at points $n$ and $n+1$ using Euler's method to predict the value at point $n+1$. This gives us a decent and relatively easy to implement approximation.
+Heun's method averages the slopes at points $n$ and $n+1$ using Euler's method to predict the value at point $n+1$. This gives us a decent and relatively easy way to implement the approximation.
 
 \begin{figure}[H]
 	\begin{center}
@@ -115,15 +115,15 @@ Heun's method averages the slopes at points $n$ and $n+1$ using Euler's method t
 Figure \ref{fig:ass-2-controller-response} shows two different responses of the controller. Both an oscillatory and critically damped behaviour is shown. We can see that the controller converges the model to the specified reference. There is, however, something to notice. Both responses first tend to diverge from the reference. This is because the system is non-minimum phase.
 
 \section{Controlling KITT}
-Implementing the controller appeared to be not so straightforward as we thought it to be. Some details interferred our thought-to-be-somewhat-painless implementation:
+Implementing the controller was not as straightforward as conceived. Here we present difficulties faced during the implementation.
 \begin{itemize}
 	\item The excitation of car to the specified PWM signal is heavily influenced by the battery voltage.
-	\item The speed of the car is discretized; we can only send an integer drive value to KITT. This arised the problem that KITT would not drive for a signal lower than a certain value, which caused a steady-state error with respect to the reference distance.
-	\item The fitted model does only approximate the real situation.
-	\item The sampling time would sometimes turn out unacceptably high, up to \SI{600}{ms}. This high latency caused in combination with the minimum driving speed of KITT an inevitable oscillatory response. Matlab's serial toolkit turned out to be the cause of this lag. Eventually we want to implement the controller in our C\# environment, so this problem should resolve itself.
+	\item The speed of the car is discretized; we can only send an integer drive value to KITT. This raised the problem that KITT would not drive for a signal lower than a certain value, which caused a steady-state error with respect to the reference distance.
+	\item The fitted model only approximates the real situation.
+	\item The sampling time would sometimes turn out unacceptably high, up to \SI{600}{ms}. This high latency caused, in combination with the minimum driving speed of KITT, an inevitable oscillatory response. \texttt{MATLAB}'s serial toolkit turned out to be the cause of this lag. Eventually we want to implement the communication in our C\# environment, so this problem should resolve itself.
 	\item Although we applied our designed filters, the sensors would sometimes provide incorrect values.
 \end{itemize}
-Even though we encountered al these non-linearities, we were actually able to control the car up to some level. Keeping in mind al these non-linear aspects, the theory does, within some boundaries (i.e. the discussed non-linearities), match the reality. However, the responses measured do only to a certain extent match the simulated responses.
+Even though we encountered all these non-linearities, we were actually able to control the car up to some level. Keeping in mind all these non-linear aspects, the theory does, within some boundaries (i.e. the discussed non-linearities), match the reality. However, the responses measured do only to a certain extent match the simulated responses.
 
 \begin{figure}[H]
 	\begin{subfigure}{.5\textwidth}

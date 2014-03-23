@@ -57,6 +57,7 @@
     <Compile Include="Matlab.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="SerialInterface.cs" />
+    <Compile Include="Vehicle.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

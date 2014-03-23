@@ -251,7 +251,7 @@ whose rank is also obviously two. Therefore, the simplified state-space model is
 
 \section{System identification}
 \subsection{Unrealistic value filtering}
-For us to obtain decent measurement values, the sensor output would have to be stable. However, every now and then, the sensors would output unrealistic values. To overcome this problem, we have created a finite impulse response filter which would predict the next measured value. If the measured value would differ too much from the predicted value, the measured value would be replaced.
+To process measured values, consistent sensor output is required. However, every now and then, the sensors output unrealistic values. To overcome this problem, we have created a finite impulse response filter which would predict the next measured value. If the measured value differs too much from the predicted value, the measured value is replaced.
 
 Let the measured distances be $x_i$ with $i \in [0,n]$. If the sample time is $T$, then the current observed speed is given by
 
@@ -265,7 +265,7 @@ The current observed acceleration is given by
 	a_n = \frac{v_n - v_{n-1}}{T} = \frac{x_{n} - 2 x_{n-1} + x_{n-2}}{T^2}.
 \end{equation}
 
-If one assumes constant speed and acceleration, then the predicted next distance is given by
+Assuming constant speed and acceleration, the predicted next distance is given by
 
 \begin{equation}
 	y_{n+1} = x_{n} + v_n T + \frac{1}{2} a T^2 = \frac{5}{2} x_n - 2 x_{n-1} + \frac{1}{2} x_{n-2}= x_n \ast h_n
@@ -310,7 +310,7 @@ and rewriting the transfer function yields
 	Y(s) \left(\frac{\alpha^2}{T_s^2} s^2 + 2 \frac{\alpha}{T_s} s + 1 \right) = X(s).
 \end{equation}
 
-Inverse LaPlace transforming and converting to discrete time using
+Inverse Laplace transforming and converting to discrete time using
 
 \begin{equation}
 	\frac{d}{dt}f(t) = \frac{f_n - f_{n-1}}{T_s}
@@ -345,7 +345,7 @@ It is important to realize that applying such a filter introduces delay. The del
 \section{Fitting a state-space model}
 To fit a state-space model, we first had to define our inputs and outputs. Eventually we want our car to drive to a specified position.Therefore, it made sense to define the distance measured by the ultrasonic sensors as output. We chose the PWM signal sent to the motor to be the input.
 
-Secondly, we needed data to fit a model. We used Matlab to drive KITT between two specified distances. The filters previously discussed were used to filter the distances measured.
+Secondly, we needed data to fit a model. We used \texttt{MATLAB} to drive KITT between two specified distances. The filters previously discussed were used to filter the distances measured.
 
 \begin{figure}[H]
 	\begin{subfigure}{.5\textwidth}
@@ -385,7 +385,7 @@ Secondly, we needed data to fit a model. We used Matlab to drive KITT between tw
 	\label{fig:ass-1-exp-2}
 \end{figure}
 
-Figure~\ref{fig:ass-1-exp-1} and Figure~\ref{fig:ass-1-exp-2} show the results of the experiments done to obtain data to fit our model. After we had obtained these data sets, we used Matlab to fit a second-order state-space model to the first experiment. Subsequently we compared the outputs of the obtained model with the outputs of both experiments. The results are shown in Figure \ref{fig:ass-1-comp}.
+Figure~\ref{fig:ass-1-exp-1} and Figure~\ref{fig:ass-1-exp-2} show the results of the experiments done to obtain data to fit our model. After we had obtained these data sets, we used \texttt{MATLAB} to fit a second-order state-space model to the first experiment. Subsequently we compared the outputs of the obtained model with the outputs of both experiments. The results are shown in Figure \ref{fig:ass-1-comp}.
 
 \begin{figure}[H]
 	\begin{subfigure}{.5\textwidth}

@@ -8,7 +8,7 @@
 \begin{document}
 
 \chapter{Assignment 1: System identification}
-\subsection{Excitation signal generation}
+\section{Excitation signal generation}
 For identifying the parameters of the previously obtained second order model, we had to apply some form of excitation signal to KITT for him to drive, so we could measure his output. We chose to make KITT drive back and forth in a line perpendicular to a solid reference point, in our case a wall. The corresponding excitation signal was dynamically generated, depending on KITT's distance to that wall. An event based scheme of the signal generation logic is shown in Figure~\ref{fig:ass1-chain}.
 
 \usetikzlibrary{shapes,arrows}
@@ -59,7 +59,7 @@ After implementing such behaviour in MATLAB, we obtained signals during our two 
 	\label{fig:ass1-excitation}
 \end{figure}
 
-\subsection{The experiment}
+\section{The experiment}
 The output of KITT's left ultrasound sensor (being more accurate than the right one) was used for determining KITT's distance to the wall, and thus the output of the desired state space model. However, using the sensor's `raw' output data was not an option, since it would sometimes spike to zero or another random value. To overcome this, a finite impulse response (FIR) filter was implemented in the data acquisition MATLAB-script. This filter uses the last three determined values to compute an expected value for the next measurement. If this next measurement deviates too much from the expected value, the measured value is replaced with the expected value. The FIR-filter thus acts as a low-pass filter, blocking high frequency noise (sensor spikes) and passing through the actual signal.
 The filtered results are shown in Figure~\ref{fig:ass1-output}.
 
@@ -80,7 +80,7 @@ The filtered results are shown in Figure~\ref{fig:ass1-output}.
 
 These graphs resemble the behaviour we expected KITT to exhibit: driving back and forth with a relatively constant velocity.
 
-\subsection{Obtaining the model}
+\section{Obtaining the model}
 Using MATLAB's system identification toolbox, we obtained a state space model of the ``observability canonical'' form, since this resembles the form of previously derived vehicle model best. The fitting results are shown in Figure~\ref{fig:ass1-fit}. The model was obtained using output dataset \num{1}, and validated using output dataset \num{2}.
 
 \begin{figure}[H]

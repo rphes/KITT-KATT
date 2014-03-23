@@ -84,7 +84,8 @@ namespace KITT_Drive_dotNET
 				controlling = 1;
 
 			//Obtain current filtered working distance
-			y = Math.Min(filter(Data.Car.SensorDistanceLeft, ref dLeft), filter(Data.Car.SensorDistanceRight, ref dRight));
+			//y = Math.Min(filter(Data.Car.SensorDistanceLeft, ref dLeft), filter(Data.Car.SensorDistanceRight, ref dRight));
+			y = filter(Data.Car.SensorDistanceLeft, ref dLeft);
 
 			//Control
 			if (iteration > 0)
