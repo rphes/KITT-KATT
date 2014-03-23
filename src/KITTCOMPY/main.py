@@ -6,13 +6,12 @@ import os
 
 kitt = KITTSerial()
 print "Connecting to KITT..."
-if not kitt.connect():
-	print "Could not connect"
-	exit()
+while not kitt.connect():
+	print "Could not connect, retrying..."
 
 model = StateSpaceModel()
 lp_filter = LowPassFilter(10, 0.3)
-unr_filter = UnrealisticValueFilter(0.5)
+unr_filter = UnrealisticValueFilter(2)
 
 dists_left = [0]
 dists_right = [0]
@@ -22,9 +21,9 @@ start_time = time.time()
 
 ref_time = [0,   5,   5.1, 10 ]
 ref_sig =  [0.5, 0.5, 1.5, 1.5]
-drive_limit = 1
-time_max = 10
-time_init = 0
+drive_limit = 0.15
+time_max = 20
+time_init = 20
 control = False
 
 while True:
@@ -32,7 +31,6 @@ while True:
 		break
 
 	status = kitt.status()
-	time.sleep(0.1)
 
 	# Apply unrealistic value filter
 	dist_left = unr_filter.eval(dists_left, status.distanceLeft)
@@ -40,15 +38,15 @@ while True:
 
 	# Apply low pass filter
 	dist_left = lp_filter.eval(dists_left, dist_left)
-	dist_right = lp_filter.eval(dists_right, dist_left)
+	dist_right = lp_filter.eval(dists_right, dist_right)
 
 	dists_left.append(dist_left)
 	dists_right.append(dist_right)
 
-	if dist_left < dist_right:
-		dist = dist_left
-	else:
-		dist = dist_right
+	# if dist_left < dist_right:
+	dist = dist_left
+	# else:
+	# 	dist = dist_right
 
 	# Time calculation
 	dt = time.time()-start_sample_time
@@ -89,7 +87,7 @@ while True:
 	else:
 		print "Mode:                init"
 	print 
-	print "Distance left:       " + str(round(dist_left,2)) + "m"
+	print "Distance left:       " + str(round(dist_left,2)) + "m" + str(status.distanceLeft)
 	print "Distance right:      " + str(round(dist_right,2)) + "m"
 	print
 	print "Distance:            " + str(round(dist,2)) + "m"

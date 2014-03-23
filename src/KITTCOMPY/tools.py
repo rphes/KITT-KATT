@@ -62,15 +62,12 @@ class UnrealisticValueFilter:
 		self.dev_max = dev_max
 
 	def eval(self, data, new_value):
-		if len(data) < 3:
-			return new_value
-		else:
+		if len(data) >= 3:
 			# Calculate prediction
 			pred = 5*float(data[-1])/2 - 2*float(data[-2]) + float(data[-3])/2
-			print pred
 
 			if abs(pred - new_value) > self.dev_max:
 				# Exceeded maximum deviation
 				new_value = pred
-
-			return new_value
+			
+		return new_value
