@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KITT_Drive_dotNET.ViewModel;
 
 namespace KITT_Drive_dotNET
 {
@@ -35,11 +36,11 @@ namespace KITT_Drive_dotNET
 		#endregion
 
 		#region Modules
-		public static ViewModel.MainViewModel MainViewModel = new ViewModel.MainViewModel();
+		public static MainViewModel MainViewModel = new MainViewModel();
 		//public static Vehicle Car = new Vehicle();
 		//public static Control Ctr = new Control();
 		public static SerialInterface Com = new SerialInterface();
-		public static AutoPilot Mod = new AutoPilot();
+		public static AutoControl Mod = new AutoControl();
 		#endregion
 
 		#region Utility methods

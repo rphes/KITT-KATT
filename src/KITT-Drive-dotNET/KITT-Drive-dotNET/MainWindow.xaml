@@ -53,17 +53,19 @@
 				</GroupBox>
 			</Grid>
 		</GroupBox>
-		<GroupBox Name="GroupBox_Auto" Header="Autonomous control" HorizontalAlignment="Stretch" Margin="490,10,10,10" VerticalAlignment="Stretch">
+		<GroupBox Name="GroupBox_Auto" Header="Autonomous control" HorizontalAlignment="Stretch" Margin="490,10,10,10" VerticalAlignment="Stretch" DataContext="{Binding Path=AutoControlViewModel}">
 			<Grid>
-				<oxy:Plot Title="Live data" VerticalAlignment="Stretch" Margin="0,0,0,15">
+				<oxy:Plot Title="Live data" VerticalAlignment="Stretch" Margin="0,0,0,20">
 					<oxy:Plot.Series>
 						<oxy:LineSeries ItemsSource="{Binding Points}"/>
 					</oxy:Plot.Series>
 				</oxy:Plot>
-				<Label Content="Go to:" Target="{Binding ElementName=TextBox_xRef}" VerticalAlignment="Bottom" HorizontalAlignment="Left"  Margin="10,0,10,10"/>
-				<TextBox Name="TextBox_xRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="160" Height="22" Margin="60,0,10,10"/>
-				<Label Content="at times:" Target="{Binding ElementName=TextBox_tRef}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="230,0,10,10"/>
-				<TextBox Name="TextBox_tRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="160" Height="22" Margin="300,0,10,10"/>
+				<Label Content="Go to:" Target="{Binding ElementName=TextBox_xRef}" VerticalAlignment="Bottom" HorizontalAlignment="Left"  Margin="10,0,10,15"/>
+				<TextBox Name="TextBox_xRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="120" Height="22" Margin="55,0,10,15" Text="{Binding Path=xRefString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				<Label Content="at times:" Target="{Binding ElementName=TextBox_tRef}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="180,0,10,15"/>
+				<TextBox Name="TextBox_tRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="120" Height="22" Margin="240,0,10,15" Text="{Binding Path=tRefString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				<Button Name="Button_AutoControl_Start" Content="Go!" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="70" Height="22" Margin="0,0,10,15" Command="{Binding Path=Start}"/>
+				<Label HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,-7" Content="{Binding Path=StatusString}" Foreground="{Binding Path=StatusStringColor}"/>
 			</Grid>
 		</GroupBox>
 	</Grid>

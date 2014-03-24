@@ -16,6 +16,14 @@ namespace KITT_Drive_dotNET.ViewModel
 			set { _controlViewModel = value; }
 		}
 
+		private AutoControlViewModel _autoControlViewModel = new AutoControlViewModel();
+
+		public AutoControlViewModel AutoControlViewModel
+		{
+			get { return _autoControlViewModel; }
+			set { _autoControlViewModel = value; }
+		}
+
 		private VehicleViewModel _vehicleViewModel = new VehicleViewModel();
 
 		public VehicleViewModel VehicleViewModel

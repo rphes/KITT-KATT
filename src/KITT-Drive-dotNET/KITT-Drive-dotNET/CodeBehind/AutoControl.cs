@@ -5,13 +5,15 @@ using System.Text;
 using MathNet.Numerics.LinearAlgebra.Generic;
 using MathNet.Numerics.LinearAlgebra.Double;
 using System.Windows.Threading;
+using OxyPlot;
+using OxyPlot.Wpf;
 
 namespace KITT_Drive_dotNET
 {
 	/// <summary>
 	/// Implements a system model, for tracking and controlling KITT
 	/// </summary>
-	public class AutoPilot
+	public class AutoControl
 	{
 		#region Data members
 		//KITT parameters
@@ -31,16 +33,16 @@ namespace KITT_Drive_dotNET
 		TimeSpan tInterval = new TimeSpan(0, 0, 0, 0, 100);
 		//DateTime tZero; //obsolete at this point, see tRel
 		//TimeSpan tRel { get { return DateTime.Now - tZero; } } //obsolete at this point, when using a fixed sampletime it's easier to use that as reference
-		TimeSpan tMax = new TimeSpan(0, 0, 30);
-		TimeSpan tInit = new TimeSpan(0, 0, 0);
+		//TimeSpan tMax = new TimeSpan(0, 0, 0, 30);
+		TimeSpan tInit = new TimeSpan(0, 0, 0, 0);
 		int iteration = 0;
 
 		//Reference
-		int[] refVal = { 100, 200, 50 }; //in cm
-		int[] refTimes = { 10, 20, 30 }; //in seconds
+		public List<int> xRefList { get; set; }
+		public List<int> tRefList { get; set; }
 
 		//Throttle mapping
-		double[] forceMapper = {1, 0, -0.025};
+		double[] forceMapper = {5, 0, -0.1};
 		double forceMin = 0.1;
 
 		//Filtering
@@ -50,6 +52,9 @@ namespace KITT_Drive_dotNET
 		List<double> dLeft = new List<double>(4); //Historic left sensor values
 		List<double> dRight = new List<double>(4); //Historic right sensor values
 		double maxDeviation = 0.5;
+
+		//Graph
+		public IList<DataPoint> yPoints { get; set; }
 	
 		//Misc
 		short controlling = 0; //Modifier for enabling vehicle control
@@ -57,7 +62,7 @@ namespace KITT_Drive_dotNET
 		#endregion
 
 		#region Construction
-		public AutoPilot()
+		public AutoControl()
 		{
 			evTimer = new DispatcherTimer();
 			evTimer.Tick += evTimer_Tick;
@@ -89,6 +94,8 @@ namespace KITT_Drive_dotNET
 
 			//Update internal state and save required values
 			iteration++;
+
+			Data.Com.RequestStatus();
 		}
 		#endregion
 
@@ -133,13 +140,12 @@ namespace KITT_Drive_dotNET
 			if (iteration > 0)
 			{
 				//Determine reference value
-				for (int i = 0; i < refVal.Length; i++)
+				for (int i = 0; i < xRefList.Count; i++)
 				{
-					if (T < refTimes[i])
-					{
-						xRef.At(0, 0, refVal[i] / 100);
-						break;
-					}
+					if (T > tRefList[i])
+						xRef.At(0, 0, xRefList[i] / 100);
+					else
+						break;				
 				}
 
 				//Find next slope
@@ -195,7 +201,7 @@ namespace KITT_Drive_dotNET
 		int map(double force)
 		{
 			if (Math.Abs(force) < forceMin)
-				return Data.PWMSpeedDefault;
+				return Data.SpeedDefault;
 			else
 			{
 				double f;
@@ -210,6 +216,17 @@ namespace KITT_Drive_dotNET
 					return (int)Math.Round(-5 + forceMapper[0] * f + forceMapper[1] * Math.Pow(f, 2) + forceMapper[2] * Math.Pow(f, 3));
 				}
 			}
+		}
+
+		void initGraph()
+		{
+			yPoints = new List<DataPoint>();
+		}
+
+		void updateGraph()
+		{
+			double t = iteration * tInterval.TotalSeconds;
+			yPoints.Add(new DataPoint(t, y));
 		}
 		#endregion
 	}

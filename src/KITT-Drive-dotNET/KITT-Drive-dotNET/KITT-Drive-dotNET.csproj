@@ -91,9 +91,10 @@
     </ApplicationDefinition>
     <Compile Include="Tools\ObservableObject.cs" />
     <Compile Include="CodeBehind\SerialInterface.cs" />
-    <Compile Include="CodeBehind\AutoPilot.cs" />
+    <Compile Include="CodeBehind\AutoControl.cs" />
     <Compile Include="CodeBehind\Vehicle.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
+    <Compile Include="ViewModel\AutoControlViewModel.cs" />
     <Compile Include="ViewModel\ControlViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\VehicleViewModel.cs" />
