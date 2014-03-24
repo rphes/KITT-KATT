@@ -165,9 +165,9 @@ namespace KITT_Drive_dotNET
 				if (int.TryParse(data, out value))
 				{
 					if (responseTypeAlt == "Drive:")
-						Data.Car.ActualPWMSpeed = value;
+						Data.MainViewModel.VehicleViewModel.ActualPWMSpeed = value;
 					else if (responseTypeAlt == "L/R:")
-						Data.Car.ActualPWMHeading = value;
+						Data.MainViewModel.VehicleViewModel.ActualPWMHeading = value;
 				}
 
 			}
@@ -181,14 +181,14 @@ namespace KITT_Drive_dotNET
 					if (responseType == 'D')
 					{
 						//current drive commands
-						Data.Car.ActualPWMHeading = value1;
-						Data.Car.ActualPWMSpeed = value2;
+						Data.MainViewModel.VehicleViewModel.ActualPWMHeading = value1;
+						Data.MainViewModel.VehicleViewModel.ActualPWMSpeed = value2;
 					}
 					else if (responseType == 'U')
 					{
 						//ultrasonic sensor readout
-						Data.Car.SensorDistanceLeft = value1;
-						Data.Car.SensorDistanceRight = value2;
+						Data.MainViewModel.VehicleViewModel.SensorDistanceLeft = value1;
+						Data.MainViewModel.VehicleViewModel.SensorDistanceRight = value2;
 					}
 				}
 			}
@@ -199,13 +199,13 @@ namespace KITT_Drive_dotNET
 				string data = response.Substring(1);
 
 				if (int.TryParse(data, out voltage))
-					Data.Car.BatteryVoltage = voltage;
+					Data.MainViewModel.VehicleViewModel.BatteryVoltage = voltage;
 			}
 			else if (response.Substring(0, 5) == "Audio")
 			{
 				//audio status readout
 				bool audiostatus = response[-1] != 0;
-				Data.Car.AudioStatus = audiostatus;
+				Data.MainViewModel.VehicleViewModel.AudioStatus = audiostatus;
 			}
 			else
 			{

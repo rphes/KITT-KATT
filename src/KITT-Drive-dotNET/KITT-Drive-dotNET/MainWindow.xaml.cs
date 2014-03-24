@@ -21,18 +21,18 @@ namespace KITT_Drive_dotNET
 		public MainWindow()
 		{
 			InitializeComponent();
+			this.DataContext = Data.MainViewModel;
 
-			GroupBox_Control.DataContext = Data.Ctr;
-			GroupBox_Status.DataContext = Data.Car;
+			//GroupBox_Control.DataContext = Data.MainViewModel.ControlViewModel;
+			//GroupBox_Status.DataContext = Data.Car;
 
-			Data.Ctr.PropertyChanged += Drive_PropertyChanged;
+			Data.MainViewModel.ControlViewModel.PropertyChanged += Drive_PropertyChanged;
 
 			throttleTimer = new DispatcherTimer();
 			throttleTimer.Tick += ThrottleTimer_Tick;
 			steerTimer = new DispatcherTimer();
 			steerTimer.Tick += SteerTimer_Tick;
 			throttleTimer.Interval = steerTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
-			Data.Mod.evTimer.Start();
 		}
 		#endregion
 
@@ -41,7 +41,7 @@ namespace KITT_Drive_dotNET
 		{
 			if (Data.Com != null && Data.Com.SerialPort.IsOpen && (e.PropertyName == "SpeedString" || e.PropertyName == "HeadingString"))
 			{
-				Data.Com.DoDrive(Data.Ctr.PWMHeading, Data.Ctr.PWMSpeed);
+				Data.Com.DoDrive(Data.MainViewModel.ControlViewModel.PWMHeading, Data.MainViewModel.ControlViewModel.PWMSpeed);
 			}
 		}
 		#endregion
@@ -75,7 +75,6 @@ namespace KITT_Drive_dotNET
 					{
 						Button_Connect.Content = "Disconnect";
 						ComboBox_COM.IsEnabled = false;
-						Data.Car.StatusUpdaterTimer.Start();
 					}
 				}
 				else
@@ -85,7 +84,6 @@ namespace KITT_Drive_dotNET
 			}
 			else
 			{
-				Data.Car.StatusUpdaterTimer.Stop();
 				Data.Com.SerialPort.Close();
 				Button_Connect.Content = "Connect";
 				ComboBox_COM.IsEnabled = true;
@@ -106,12 +104,12 @@ namespace KITT_Drive_dotNET
 					return;
 
 				if (key == Key.W)
-					Data.Ctr.Throttle(Direction.up, true);
+					Data.MainViewModel.ControlViewModel.Throttle(Direction.up, true);
 				else if (key == Key.S)
-					Data.Ctr.Throttle(Direction.down, true);
+					Data.MainViewModel.ControlViewModel.Throttle(Direction.down, true);
 
 				throttleTimer.Start();
-				Data.Ctr.speedDecrementTimer.Stop();
+				Data.MainViewModel.ControlViewModel.speedDecrementTimer.Stop();
 				throttleTimerKey = key;
 			}
 
@@ -121,17 +119,17 @@ namespace KITT_Drive_dotNET
 					return;
 
 				if (key == Key.A)
-					Data.Ctr.Steer(Direction.left, true);
+					Data.MainViewModel.ControlViewModel.Steer(Direction.left, true);
 				else if (key == Key.D)
-					Data.Ctr.Steer(Direction.right, true);
+					Data.MainViewModel.ControlViewModel.Steer(Direction.right, true);
 
 				steerTimer.Start();
-				Data.Ctr.headingDecrementTimer.Stop();
+				Data.MainViewModel.ControlViewModel.headingDecrementTimer.Stop();
 				steerTimerKey = key;
 			}
 
 			if (key == Key.Q)
-				Data.Ctr.Stop();
+				Data.MainViewModel.ControlViewModel.Stop();
 		}
 
 		private void Window_KeyUp(object sender, KeyEventArgs e)
@@ -144,13 +142,13 @@ namespace KITT_Drive_dotNET
 			if (key == Key.W || key == Key.S)
 			{
 				throttleTimer.Stop();
-				Data.Ctr.speedDecrementTimer.Start();
+				Data.MainViewModel.ControlViewModel.speedDecrementTimer.Start();
 				throttleTimerKey = Key.None;
 			}
 			else if (key == Key.A || key == Key.D)
 			{
 				steerTimer.Stop();
-				Data.Ctr.headingDecrementTimer.Start();
+				Data.MainViewModel.ControlViewModel.headingDecrementTimer.Start();
 				steerTimerKey = Key.None;
 			}
 		}
@@ -158,39 +156,39 @@ namespace KITT_Drive_dotNET
 		private void SteerTimer_Tick(object sender, System.EventArgs e)
 		{
 			if (steerTimerKey == Key.A)
-				Data.Ctr.Steer(Direction.left, false);
+				Data.MainViewModel.ControlViewModel.Steer(Direction.left, false);
 			else if (steerTimerKey == Key.D)
-				Data.Ctr.Steer(Direction.right, false);
+				Data.MainViewModel.ControlViewModel.Steer(Direction.right, false);
 		}
 
 		private void ThrottleTimer_Tick(object sender, System.EventArgs e)
 		{
 			if (throttleTimerKey == Key.W)
-				Data.Ctr.Throttle(Direction.up, false);
+				Data.MainViewModel.ControlViewModel.Throttle(Direction.up, false);
 			else if (throttleTimerKey == Key.S)
-				Data.Ctr.Throttle(Direction.down, false);
+				Data.MainViewModel.ControlViewModel.Throttle(Direction.down, false);
 		}
 		#endregion
 
 		#region Button vehicle controls
 		private void Button_ThrottleUp_Click(object sender, RoutedEventArgs e)
 		{
-			Data.Ctr.Throttle(Direction.up, true);
+			Data.MainViewModel.ControlViewModel.Throttle(Direction.up, true);
 		}
 
 		private void Button_ThrottleDown_Click(object sender, RoutedEventArgs e)
 		{
-            Data.Ctr.Throttle(Direction.down, true);
+            Data.MainViewModel.ControlViewModel.Throttle(Direction.down, true);
 		}
 
 		private void Button_SteerLeft_Click(object sender, RoutedEventArgs e)
 		{
-            Data.Ctr.Steer(Direction.left, true);
+            Data.MainViewModel.ControlViewModel.Steer(Direction.left, true);
 		}
 
 		private void Button_SteerRight_Click(object sender, RoutedEventArgs e)
 		{
-            Data.Ctr.Steer(Direction.right, true);
+            Data.MainViewModel.ControlViewModel.Steer(Direction.right, true);
 		}
 
 
@@ -201,21 +199,21 @@ namespace KITT_Drive_dotNET
 
 		private void Button_STOP_Click(object sender, RoutedEventArgs e)
 		{
-			Data.Ctr.Speed = Data.SpeedDefault;
-			Data.Ctr.Heading = Data.HeadingDefault;
+			Data.MainViewModel.ControlViewModel.Speed = Data.SpeedDefault;
+			Data.MainViewModel.ControlViewModel.Heading = Data.HeadingDefault;
 		}
 		#endregion
 
 		#region Slider vehicle controls
-		private void Slider_Speed_DragCompleted(object sender, DragCompletedEventArgs e)
-		{
-			Data.Ctr.Speed = (int)Slider_Speed.Value;
-		}
+		//private void Slider_Speed_DragCompleted(object sender, DragCompletedEventArgs e)
+		//{
+		//	Data.MainViewModel.ControlViewModel.Speed = (int)Slider_Speed.Value;
+		//}
 
-		private void Slider_Heading_DragCompleted(object sender, DragCompletedEventArgs e)
-		{
-			Data.Ctr.Heading = (int)Slider_Heading.Value;
-		}
+		//private void Slider_Heading_DragCompleted(object sender, DragCompletedEventArgs e)
+		//{
+		//	Data.MainViewModel.ControlViewModel.Heading = (int)Slider_Heading.Value;
+		//}
 		#endregion
 	}
 }

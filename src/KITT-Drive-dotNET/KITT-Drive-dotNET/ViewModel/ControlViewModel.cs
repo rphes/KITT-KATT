@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Windows.Threading;
 
-namespace KITT_Drive_dotNET
+namespace KITT_Drive_dotNET.ViewModel
 {
-	/// <summary>
-	/// Provides methods and properties for controlling KITT, as well as members for the GUI to bind to
-	/// </summary>
-	public class Control : ObservableObject
+	public class ControlViewModel : ObservableObject
 	{
 		#region Data members
-		
+		//Model
+		private Control _control = new Control();
+
+		public Control Control
+		{
+			get { return _control; }
+			set { _control = value; }
+		}
+			
 		//Increment values
 		const double speedIncrement = 1;
 		const double speedIncrementInitial = 6;
@@ -18,63 +23,55 @@ namespace KITT_Drive_dotNET
 		//Decrement multiplier
 		const double decrementMultiplier = 0.9;
 
-		private double _speed;
-
 		public double Speed
 		{
-			get { return _speed; }
+			get { return Control.Speed; }
 			set
 			{
-				_speed = Data.Clamp(value, Data.SpeedMin, Data.SpeedMax);
-				NotifyPropertyChanged("Speed");
+				Control.Speed = Data.Clamp(value, Data.SpeedMin, Data.SpeedMax);
+				RaisePropertyChanged("Speed");
 
-				int intspeed = (int)Math.Round(_speed) + Data.PWMOffset;
+				int intspeed = (int)Math.Round(Speed) + Data.PWMOffset;
 				if (intspeed != PWMSpeed)
 					PWMSpeed = intspeed;
 			}
 		}
 
-		private int _pwmSpeed;
-
 		public int PWMSpeed
 		{
-			get { return _pwmSpeed; }
-			protected set
+			get { return Control.PWMSpeed; }
+			set
 			{
-				_pwmSpeed = value;
-				NotifyPropertyChanged("PWMSpeed");
-				NotifyPropertyChanged("SpeedString");
+				Control.PWMSpeed = value;
+				RaisePropertyChanged("PWMSpeed");
+				RaisePropertyChanged("SpeedString");
 			}
 		}
 
 		public string SpeedString { get { return "Speed: " + (PWMSpeed - Data.PWMOffset); } }
 
-		private double _heading;
-
 		public double Heading
 		{
-			get { return _heading; }
+			get { return Control.Heading; }
 			set
 			{
-				_heading = Data.Clamp(value, Data.HeadingMin, Data.HeadingMax);
-				NotifyPropertyChanged("Heading");
+				Control.Heading = Data.Clamp(value, Data.HeadingMin, Data.HeadingMax);
+				RaisePropertyChanged("Heading");
 
-				int intheading = (int)Math.Round(-_heading) + Data.PWMOffset; //negate for reverse steering
+				int intheading = (int)Math.Round(-Control.Heading) + Data.PWMOffset; //negate for reverse steering
 				if (intheading != PWMHeading)
 					PWMHeading = intheading;
 			}
 		}
 
-		private int _pwmHeading;
-
 		public int PWMHeading
 		{
-			get { return _pwmHeading; }
-			protected set
+			get { return Control.PWMHeading; }
+			set
 			{
-				_pwmHeading = value;
-				NotifyPropertyChanged("PWMHeading");
-				NotifyPropertyChanged("HeadingString");
+				Control.PWMHeading = value;
+				RaisePropertyChanged("PWMHeading");
+				RaisePropertyChanged("HeadingString");
 			}
 		}
 
@@ -85,7 +82,7 @@ namespace KITT_Drive_dotNET
 		#endregion
 
 		#region Construction
-		public Control()
+		public ControlViewModel()
 		{
 			Speed = Data.SpeedDefault;
 			Heading = Data.HeadingDefault;

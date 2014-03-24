@@ -11,23 +11,23 @@ namespace KITT_Drive_dotNET
 	/// <summary>
 	/// Implements a system model, for tracking and controlling KITT
 	/// </summary>
-	public class Model
+	public class AutoPilot
 	{
 		#region Data members
+		//KITT parameters
+
 		//Model essentials
-		Matrix<double> A = DenseMatrix.OfArray(new double[,] { { 0, 1 }, { -0.07233, -3.4955 } });
-		Matrix<double> B = DenseMatrix.OfArray(new double[,] { { 1.6339 }, { -8.2873 } });
-		Matrix<double> C = DenseMatrix.OfArray(new double[,] { { 1, 0 } });
-		Matrix<double> K = DenseMatrix.OfArray(new double[,] { { -0.1007, 0.2692 } }); //Feedback gain
-		Matrix<double> L = DenseMatrix.OfArray(new double[,] { { 3.2045 }, { -0.0537 } }); //Observer gain
-		Matrix<double> R { get { return (C * (B * K - A).Inverse() * B).Inverse(); } } //Control input scale
+		Matrix<double> A;
+		Matrix<double> B;
+		Matrix<double> C;
+		Matrix<double> K; //Feedback gain
+		Matrix<double> L; //Observer gain
 		Matrix<double> x = DenseMatrix.OfArray(new double[,] { { 1 }, { 0 } }); //State matrix
+		Matrix<double> xRef = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } }); //Reference state matrix
 		double y = 0; //Vehicle output
-		double r = 0; //Control input
-		double drive; //Unscaled throttle
 
 		//Model re-evaluation timer
-		public DispatcherTimer evTimer;
+		DispatcherTimer evTimer;
 		TimeSpan tInterval = new TimeSpan(0, 0, 0, 0, 100);
 		//DateTime tZero; //obsolete at this point, see tRel
 		//TimeSpan tRel { get { return DateTime.Now - tZero; } } //obsolete at this point, when using a fixed sampletime it's easier to use that as reference
@@ -39,13 +39,9 @@ namespace KITT_Drive_dotNET
 		int[] refVal = { 100, 200, 50 }; //in cm
 		int[] refTimes = { 10, 20, 30 }; //in seconds
 
-		//Throttle scaling
-		double thScaleForward = 15;
-		double thScaleBackward = 15;
-		double thMaxForward = 15;
-		double thMinForward = 5;
-		double thMaxBackward = -15;
-		double thMinBackward = -5;
+		//Throttle mapping
+		double[] forceMapper = {1, 0, -0.025};
+		double forceMin = 0.1;
 
 		//Filtering
 		double[] lowPass = new double[3];
@@ -60,22 +56,72 @@ namespace KITT_Drive_dotNET
 
 		#endregion
 
-		public Model()
+		#region Construction
+		public AutoPilot()
 		{
 			evTimer = new DispatcherTimer();
-			evTimer.Tick += EvTimer_Tick;
+			evTimer.Tick += evTimer_Tick;
 			evTimer.Interval = tInterval;
+
+			A = DenseMatrix.OfArray(new double[,] { { 0, 1 }, { 0, -Data.Rho / Data.Mass } });
+			B = DenseMatrix.OfArray(new double[,] { { 0 }, { 1 / Data.Mass } });
+			C = DenseMatrix.OfArray(new double[,] { { 1, 0 } });
+			K = DenseMatrix.OfArray(new double[,] { { 0.54, 1.65 } }); //acker(A, B, [-0.6 -0.6]) in MATLAB
+			L = DenseMatrix.OfArray(new double[,] { { 3.9 }, { 3.61 } }); //acker(A', C', [-2 -2]') in MATLAB
+		}
+		#endregion
+
+		#region Event handlers
+		void evTimer_Tick(object sender, EventArgs e)
+		{
+			double force;
+			int speed;
+
+			//Obtain current filtered working distance
+			y = Math.Min(filter(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, ref dLeft), filter(Data.MainViewModel.VehicleViewModel.SensorDistanceRight, ref dRight));
+
+			//Perform control routines
+			force = control();
+
+			//Map force to PWM-value
+			speed = map(force);
+			Data.MainViewModel.ControlViewModel.Speed = speed;
+
+			//Update internal state and save required values
+			iteration++;
+		}
+		#endregion
+
+		#region Methods
+		public void Start()
+		{
+			x = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } });
+			xRef = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } }); //TODO actually init this to the wanted values
+			lowPass = makeLowPass();
+			evTimer.Start();
 		}
 
-		void EvTimer_Tick(object sender, EventArgs e)
+		Matrix<double> getSlope(Matrix<double> var)
 		{
-			//Init some stuff
-			if (iteration == 0)
-			{
-				//tZero = DateTime.Now; //unused (yet?)
-				lowPass = makeLowPass();
-			}
+			return	
+				(A - L * C - B * K * controlling) * var + //(A - BK - LC)x
+				B * K * xRef * controlling + // B K xRef
+				L * y; //Ly
+		}
 
+		double[] makeLowPass()
+		{
+			double c1, c2, c3;
+			double a = 1 / (2 * Math.PI * fFall * tExpectedSample);
+			c1 = 2 * (Math.Pow(a, 2) + a) / (Math.Pow(a, 2 + 2 * a + 1));
+			c2 = Math.Pow(-a, 2) / (Math.Pow(a, 2) + 2 * a + 1);
+			c3 = 1 / (Math.Pow(a, 2) + 2 * a + 1);
+
+			return new double[] { c1, c2, c3 };
+		}
+
+		double control()
+		{
 			//Get total execution time
 			double T = iteration * tInterval.TotalSeconds;
 
@@ -83,11 +129,7 @@ namespace KITT_Drive_dotNET
 			if (controlling == 0 && T > tInit.TotalSeconds)
 				controlling = 1;
 
-			//Obtain current filtered working distance
-			//y = Math.Min(filter(Data.Car.SensorDistanceLeft, ref dLeft), filter(Data.Car.SensorDistanceRight, ref dRight));
-			y = filter(Data.Car.SensorDistanceLeft, ref dLeft);
-
-			//Control
+			//Calculate new states and control
 			if (iteration > 0)
 			{
 				//Determine reference value
@@ -95,7 +137,7 @@ namespace KITT_Drive_dotNET
 				{
 					if (T < refTimes[i])
 					{
-						r = refVal[i] / 100; //to meters
+						xRef.At(0, 0, refVal[i] / 100);
 						break;
 					}
 				}
@@ -113,49 +155,10 @@ namespace KITT_Drive_dotNET
 				x += tInterval.TotalSeconds / 2 * (curSlope + predSlope);
 				//System.Diagnostics.Debug.WriteLine("x: " + x);
 
-				//Drive!
-				drive = (controlling * R * r - K * x).At(0,0);
-			}
-
-			//Drive signal scaling
-			if (drive < 0)
-			{
-				drive *= thScaleBackward;
-				drive = Data.Clamp(drive, thMaxBackward, thMinBackward);
-			}
-			else if (drive > 0)
-			{
-				drive *= thScaleForward;
-				drive = Data.Clamp(drive, thMinForward, thMaxForward);
+				return (controlling * -K * (x - xRef)).At(0, 0); //TODO check this
 			}
 			else
-				drive = 0;
-
-			//Drive KITT!
-			Data.Ctr.Speed = drive;
-
-
-			//Update internal state and save required values
-			iteration++;
-		}
-
-		Matrix<double> getSlope(Matrix<double> var)
-		{
-			return	
-				(A - L * C - B * K * controlling) * var + //(A - BK - LC)x
-				B * R * r * controlling + // BRr
-				L * y; //Ly
-		}
-
-		double[] makeLowPass()
-		{
-			double c1, c2, c3;
-			double a = 1 / (2 * Math.PI * fFall * tExpectedSample);
-			c1 = 2 * (Math.Pow(a, 2) + a) / (Math.Pow(a, 2 + 2 * a + 1));
-			c2 = Math.Pow(-a, 2) / (Math.Pow(a, 2) + 2 * a + 1);
-			c3 = 1 / (Math.Pow(a, 2) + 2 * a + 1);
-
-			return new double[] { c1, c2, c3 };
+				return 0;
 		}
 
 		double filter(double value, ref List<double> history)
@@ -169,7 +172,7 @@ namespace KITT_Drive_dotNET
 			{
 				expected = 0.2 * history[0] - 2 * history[1] + 0.5 * history[2];
 
-				if (Math.Abs(value - expected) > 0.5)
+				if (Math.Abs(value - expected) > maxDeviation)
 					filtered = expected;
 			}
 			
@@ -188,5 +191,26 @@ namespace KITT_Drive_dotNET
 
 			return filtered;
 		}
+
+		int map(double force)
+		{
+			if (Math.Abs(force) < forceMin)
+				return Data.PWMSpeedDefault;
+			else
+			{
+				double f;
+				if (force > 0)
+				{
+					f = force - forceMin;
+					return (int)Math.Round(5 + forceMapper[0] * f + forceMapper[1] * Math.Pow(f, 2) + forceMapper[2] * Math.Pow(f, 3));
+				}
+				else
+				{
+					f = force + forceMin;
+					return (int)Math.Round(-5 + forceMapper[0] * f + forceMapper[1] * Math.Pow(f, 2) + forceMapper[2] * Math.Pow(f, 3));
+				}
+			}
+		}
+		#endregion
 	}
 }

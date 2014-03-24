@@ -9,6 +9,9 @@ namespace KITT_Drive_dotNET
 	public static class Data
 	{
 		#region Global constants
+		//Physical parameters
+		public static double Mass { get { return 1.5; } }
+		public static double Rho { get { return 0.15; } }
 		//Speed and heading
 		public static int SpeedMin { get { return -15; } }
 		public static int SpeedMax { get { return 15; } }
@@ -32,10 +35,11 @@ namespace KITT_Drive_dotNET
 		#endregion
 
 		#region Modules
-		public static Vehicle Car = new Vehicle();
-		public static Control Ctr = new Control();
+		public static ViewModel.MainViewModel MainViewModel = new ViewModel.MainViewModel();
+		//public static Vehicle Car = new Vehicle();
+		//public static Control Ctr = new Control();
 		public static SerialInterface Com = new SerialInterface();
-		public static Model Mod = new Model();
+		public static AutoPilot Mod = new AutoPilot();
 		#endregion
 
 		#region Utility methods
