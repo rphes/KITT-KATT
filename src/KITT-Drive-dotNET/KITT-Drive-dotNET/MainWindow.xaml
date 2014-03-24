@@ -53,12 +53,18 @@
 				</GroupBox>
 			</Grid>
 		</GroupBox>
-		<GroupBox Name="GroupBox_Auto" Header="Autonomous control" HorizontalAlignment="Stretch" Margin="490,10,10,10" VerticalAlignment="Stretch" >
-			<!--<oxy:Plot Title="Live data">
-				<oxy:Plot.Series>
-					<oxy:LineSeries ItemsSource="{Binding Points}"/>
-				</oxy:Plot.Series>
-			</oxy:Plot>-->
+		<GroupBox Name="GroupBox_Auto" Header="Autonomous control" HorizontalAlignment="Stretch" Margin="490,10,10,10" VerticalAlignment="Stretch">
+			<Grid>
+				<oxy:Plot Title="Live data" VerticalAlignment="Stretch" Margin="0,0,0,15">
+					<oxy:Plot.Series>
+						<oxy:LineSeries ItemsSource="{Binding Points}"/>
+					</oxy:Plot.Series>
+				</oxy:Plot>
+				<Label Content="Go to:" Target="{Binding ElementName=TextBox_xRef}" VerticalAlignment="Bottom" HorizontalAlignment="Left"  Margin="10,0,10,10"/>
+				<TextBox Name="TextBox_xRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="160" Height="22" Margin="60,0,10,10"/>
+				<Label Content="at times:" Target="{Binding ElementName=TextBox_tRef}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="230,0,10,10"/>
+				<TextBox Name="TextBox_tRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="160" Height="22" Margin="300,0,10,10"/>
+			</Grid>
 		</GroupBox>
 	</Grid>
 </Window>
