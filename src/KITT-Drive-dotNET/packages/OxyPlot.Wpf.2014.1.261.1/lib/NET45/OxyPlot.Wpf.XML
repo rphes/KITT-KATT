@@ -11,16 +11,14 @@
         </member>
         <member name="F:OxyPlot.Wpf.Annotation.LayerProperty">
             <summary>
-            The layer property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Annotation.Layer"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.Annotation.CreateModel">
             <summary>
             Creates the internal annotation object.
             </summary>
-            <returns>
-            The annotation.
-            </returns>
+            <returns>The annotation.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.Annotation.SynchronizeProperties">
             <summary>
@@ -31,23 +29,15 @@
             <summary>
             Handles changes in appearance.
             </summary>
-            <param name="d">
-            The sender.
-            </param>
-            <param name="e">
-            The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-            </param>
+            <param name="d">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Annotation.DataChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
             <summary>
             Handles changes in data.
             </summary>
-            <param name="d">
-            The sender.
-            </param>
-            <param name="e">
-            The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-            </param>
+            <param name="d">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="P:OxyPlot.Wpf.Annotation.Layer">
             <summary>
@@ -71,7 +61,7 @@
         </member>
         <member name="F:OxyPlot.Wpf.TextualAnnotation.TextProperty">
             <summary>
-            The text property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TextualAnnotation.Text"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.TextualAnnotation.SynchronizeProperties">
@@ -86,52 +76,52 @@
         </member>
         <member name="F:OxyPlot.Wpf.ArrowAnnotation.ArrowDirectionProperty">
             <summary>
-            The ArrowDirection property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ArrowAnnotation.ArrowDirection"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ArrowAnnotation.ColorProperty">
             <summary>
-            The Color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ArrowAnnotation.Color"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ArrowAnnotation.EndPointProperty">
             <summary>
-            The EndPoint property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ArrowAnnotation.EndPoint"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ArrowAnnotation.HeadLengthProperty">
             <summary>
-            The HeadLength property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ArrowAnnotation.HeadLength"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ArrowAnnotation.HeadWidthProperty">
             <summary>
-            The HeadWidth property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ArrowAnnotation.HeadWidth"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ArrowAnnotation.LineJoinProperty">
             <summary>
-            The LineJoin property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ArrowAnnotation.LineJoin"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ArrowAnnotation.LineStyleProperty">
             <summary>
-            The LineStyle property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ArrowAnnotation.LineStyle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ArrowAnnotation.StartPointProperty">
             <summary>
-            The StartPoint property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ArrowAnnotation.StartPoint"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ArrowAnnotation.StrokeThicknessProperty">
             <summary>
-            The StrokeThickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ArrowAnnotation.StrokeThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ArrowAnnotation.VeenessProperty">
             <summary>
-            The Veeness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ArrowAnnotation.Veeness"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.ArrowAnnotation.#ctor">
@@ -143,9 +133,7 @@
             <summary>
             Creates the internal annotation object.
             </summary>
-            <returns>
-            The annotation.
-            </returns>
+            <returns>The annotation.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ArrowAnnotation.SynchronizeProperties">
             <summary>
@@ -171,13 +159,13 @@
             <summary>
             Gets or sets the length of the head (relative to the stroke thickness).
             </summary>
-            <value> The length of the head. </value>
+            <value>The length of the head.</value>
         </member>
         <member name="P:OxyPlot.Wpf.ArrowAnnotation.HeadWidth">
             <summary>
             Gets or sets the width of the head (relative to the stroke thickness).
             </summary>
-            <value> The width of the head. </value>
+            <value>The width of the head.</value>
         </member>
         <member name="P:OxyPlot.Wpf.ArrowAnnotation.LineJoin">
             <summary>
@@ -194,9 +182,7 @@
             <summary>
             Gets or sets the start point.
             </summary>
-            <remarks>
-            This property is overridden by the ArrowDirection property, if set.
-            </remarks>
+            <remarks>This property is overridden by the ArrowDirection property, if set.</remarks>
         </member>
         <member name="P:OxyPlot.Wpf.ArrowAnnotation.StrokeThickness">
             <summary>
@@ -210,85 +196,83 @@
         </member>
         <member name="T:OxyPlot.Wpf.EllipseAnnotation">
             <summary>
-                This is a WPF wrapper of OxyPlot.EllipseAnnotation
+            This is a WPF wrapper of OxyPlot.EllipseAnnotation
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.EllipseAnnotation.FillProperty">
             <summary>
-                The Fill property.
+            Identifies the <see cref="P:OxyPlot.Wpf.EllipseAnnotation.Fill"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.EllipseAnnotation.StrokeProperty">
             <summary>
-                The Stroke property.
+            Identifies the <see cref="P:OxyPlot.Wpf.EllipseAnnotation.Stroke"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.EllipseAnnotation.StrokeThicknessProperty">
             <summary>
-                The Stroke property.
+            Identifies the <see cref="P:OxyPlot.Wpf.EllipseAnnotation.StrokeThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.EllipseAnnotation.XProperty">
             <summary>
-                The X property.
+            Identifies the <see cref="P:OxyPlot.Wpf.EllipseAnnotation.X"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.EllipseAnnotation.YProperty">
             <summary>
-                The Y property.
+            Identifies the <see cref="P:OxyPlot.Wpf.EllipseAnnotation.Y"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.EllipseAnnotation.TextRotationProperty">
             <summary>
-                The text rotation property
+            Identifies the <see cref="P:OxyPlot.Wpf.EllipseAnnotation.TextRotation"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.EllipseAnnotation.#ctor">
             <summary>
-                Initializes a new instance of the <see cref="T:OxyPlot.Wpf.EllipseAnnotation"/> class.
+            Initializes a new instance of the <see cref="T:OxyPlot.Wpf.EllipseAnnotation"/> class.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.EllipseAnnotation.CreateModel">
             <summary>
-                Creates the internal annotation object.
+            Creates the internal annotation object.
             </summary>
-            <returns>
-                The annotation.
-            </returns>
+            <returns>The annotation.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.EllipseAnnotation.SynchronizeProperties">
             <summary>
-                Synchronizes the properties.
+            Synchronizes the properties.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.EllipseAnnotation.Fill">
             <summary>
-                Gets or sets the fill color.
+            Gets or sets the fill color.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.EllipseAnnotation.Stroke">
             <summary>
-                Gets or sets the stroke color.
+            Gets or sets the stroke color.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.EllipseAnnotation.StrokeThickness">
             <summary>
-                Gets or sets the stroke thickness.
+            Gets or sets the stroke thickness.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.EllipseAnnotation.X">
             <summary>
-                Gets or sets the  X.
+            Gets or sets the  X.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.EllipseAnnotation.Y">
             <summary>
-                Gets or sets the  Y.
+            Gets or sets the  Y.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.EllipseAnnotation.TextRotation">
             <summary>
-                Gets or sets the text rotation (degrees).
+            Gets or sets the text rotation (degrees).
             </summary>
             <value>The text rotation in degrees.</value>
         </member>
@@ -304,71 +288,69 @@
         </member>
         <member name="F:OxyPlot.Wpf.PathAnnotation.ColorProperty">
             <summary>
-            The Color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PathAnnotation.Color"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PathAnnotation.ClipByXAxisProperty">
             <summary>
-            The ClipByXAxis property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PathAnnotation.ClipByXAxis"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PathAnnotation.ClipByYAxisProperty">
             <summary>
-            The ClipByYAxis property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PathAnnotation.ClipByYAxis"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PathAnnotation.ClipTextProperty">
             <summary>
-            The ClipText property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PathAnnotation.ClipText"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PathAnnotation.LineJoinProperty">
             <summary>
-            The line join property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PathAnnotation.LineJoin"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PathAnnotation.LineStyleProperty">
             <summary>
-            The line style property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PathAnnotation.LineStyle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PathAnnotation.StrokeThicknessProperty">
             <summary>
-            The stroke thickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PathAnnotation.StrokeThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PathAnnotation.TextHorizontalAlignmentProperty">
             <summary>
-            The TextHorizontalAlignment property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PathAnnotation.TextHorizontalAlignment"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PathAnnotation.TextMarginProperty">
             <summary>
-            The TextMargin property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PathAnnotation.TextMargin"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PathAnnotation.TextOrientationProperty">
             <summary>
-            The TextOrientation property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PathAnnotation.TextOrientation"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PathAnnotation.TextPositionProperty">
             <summary>
-            The TextPosition property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PathAnnotation.TextPosition"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PathAnnotation.TextVerticalAlignmentProperty">
             <summary>
-            The TextVerticalAlignment property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PathAnnotation.TextVerticalAlignment"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.PathAnnotation.CreateModel">
             <summary>
             Creates the internal annotation object.
             </summary>
-            <returns>
-            The annotation.
-            </returns>
+            <returns>The annotation.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.PathAnnotation.SynchronizeProperties">
             <summary>
@@ -391,17 +373,13 @@
             <summary>
             Gets or sets a value indicating whether the text should be clipped within the plot area.
             </summary>
-            <value>
-              <c>true</c> if text should be clipped; otherwise, <c>false</c>.
-            </value>
+            <value><c>true</c> if text should be clipped; otherwise, <c>false</c>.</value>
         </member>
         <member name="P:OxyPlot.Wpf.PathAnnotation.Color">
             <summary>
             Gets or sets the annotation color.
             </summary>
-            <value>
-            The color.
-            </value>
+            <value>The color.</value>
         </member>
         <member name="P:OxyPlot.Wpf.PathAnnotation.LineJoin">
             <summary>
@@ -442,11 +420,9 @@
             Gets or sets the text position fraction.
             </summary>
             <value>The text position in the interval [0,1].</value>
-            <remarks>
-            Positions smaller than 0.25 are left aligned at the start of the line
+            <remarks>Positions smaller than 0.25 are left aligned at the start of the line
             Positions larger than 0.75 are right aligned at the end of the line
-            Other positions are center aligned at the specified position
-            </remarks>
+            Other positions are center aligned at the specified position</remarks>
         </member>
         <member name="P:OxyPlot.Wpf.PathAnnotation.TextVerticalAlignment">
             <summary>
@@ -455,17 +431,17 @@
         </member>
         <member name="F:OxyPlot.Wpf.FunctionAnnotation.EquationTypeProperty">
             <summary>
-            The line type property.
+            Identifies the <see cref="!:EquationType"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.FunctionAnnotation.EquationProperty">
             <summary>
-            The equation property
+            Identifies the <see cref="P:OxyPlot.Wpf.FunctionAnnotation.Equation"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.FunctionAnnotation.ResolutionProperty">
             <summary>
-            The resolution property
+            Identifies the <see cref="P:OxyPlot.Wpf.FunctionAnnotation.Resolution"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.FunctionAnnotation.#ctor">
@@ -477,9 +453,7 @@
             <summary>
             Creates the internal annotation object.
             </summary>
-            <returns>
-            The annotation.
-            </returns>
+            <returns>The annotation.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.FunctionAnnotation.SynchronizeProperties">
             <summary>
@@ -490,17 +464,13 @@
             <summary>
             Gets or sets the equation.
             </summary>
-            <value>
-            The equation.
-            </value>
+            <value>The equation.</value>
         </member>
         <member name="P:OxyPlot.Wpf.FunctionAnnotation.Resolution">
             <summary>
             Gets or sets the resolution.
             </summary>
-            <value>
-            The resolution.
-            </value>
+            <value>The resolution.</value>
         </member>
         <member name="P:OxyPlot.Wpf.FunctionAnnotation.Type">
             <summary>
@@ -514,32 +484,32 @@
         </member>
         <member name="F:OxyPlot.Wpf.PolygonAnnotation.ColorProperty">
             <summary>
-            The color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PolygonAnnotation.Color"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PolygonAnnotation.FillProperty">
             <summary>
-            The maximum x property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PolygonAnnotation.Fill"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PolygonAnnotation.LineJoinProperty">
             <summary>
-            The line join property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PolygonAnnotation.LineJoin"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PolygonAnnotation.LineStyleProperty">
             <summary>
-            The line style property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PolygonAnnotation.LineStyle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PolygonAnnotation.PointsProperty">
             <summary>
-            The Points property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PolygonAnnotation.Points"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PolygonAnnotation.StrokeThicknessProperty">
             <summary>
-            The stroke thickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PolygonAnnotation.StrokeThickness"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.PolygonAnnotation.#ctor">
@@ -551,9 +521,7 @@
             <summary>
             Creates the internal annotation object.
             </summary>
-            <returns>
-            The annotation.
-            </returns>
+            <returns>The annotation.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.PolygonAnnotation.SynchronizeProperties">
             <summary>
@@ -598,17 +566,17 @@
         </member>
         <member name="F:OxyPlot.Wpf.PolylineAnnotation.SmoothProperty">
             <summary>
-            The smooth property.
+            Identifies the <see cref="P:OxyPlot.Wpf.PolylineAnnotation.Smooth"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PolylineAnnotation.MinimumSegmentLengthProperty">
             <summary>
-            The minimum segment length property
+            Identifies the <see cref="P:OxyPlot.Wpf.PolylineAnnotation.MinimumSegmentLength"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.PolylineAnnotation.PointsProperty">
             <summary>
-            The points property
+            Identifies the <see cref="P:OxyPlot.Wpf.PolylineAnnotation.Points"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.PolylineAnnotation.#ctor">
@@ -620,9 +588,7 @@
             <summary>
             Creates the internal annotation object.
             </summary>
-            <returns>
-            The annotation.
-            </returns>
+            <returns>The annotation.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.PolylineAnnotation.SynchronizeProperties">
             <summary>
@@ -633,9 +599,7 @@
             <summary>
             Gets or sets the points.
             </summary>
-            <value>
-            The points.
-            </value>
+            <value>The points.</value>
         </member>
         <member name="P:OxyPlot.Wpf.PolylineAnnotation.MinimumSegmentLength">
             <summary>
@@ -649,111 +613,107 @@
             <summary>
             Gets or sets a value indicating whether the polyline should be smoothed.
             </summary>
-            <value>
-              <c>true</c> if smooth; otherwise, <c>false</c>.
-            </value>
+            <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
         </member>
         <member name="T:OxyPlot.Wpf.RectangleAnnotation">
             <summary>
-                This is a WPF wrapper of OxyPlot.RectangleAnnotation
+            This is a WPF wrapper of OxyPlot.RectangleAnnotation
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.RectangleAnnotation.FillProperty">
             <summary>
-                The Fill property.
+            Identifies the <see cref="P:OxyPlot.Wpf.RectangleAnnotation.Fill"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.RectangleAnnotation.StrokeProperty">
             <summary>
-                The Stroke property.
+            Identifies the <see cref="P:OxyPlot.Wpf.RectangleAnnotation.Stroke"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.RectangleAnnotation.StrokeThicknessProperty">
             <summary>
-                The Stroke property.
+            Identifies the <see cref="P:OxyPlot.Wpf.RectangleAnnotation.StrokeThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.RectangleAnnotation.MaximumXProperty">
             <summary>
-                The MaximumX property.
+            Identifies the <see cref="P:OxyPlot.Wpf.RectangleAnnotation.MaximumX"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.RectangleAnnotation.MaximumYProperty">
             <summary>
-                The MaximumY property.
+            Identifies the <see cref="P:OxyPlot.Wpf.RectangleAnnotation.MaximumY"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.RectangleAnnotation.MinimumXProperty">
             <summary>
-                The MinimumX property.
+            Identifies the <see cref="P:OxyPlot.Wpf.RectangleAnnotation.MinimumX"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.RectangleAnnotation.MinimumYProperty">
             <summary>
-                The MinimumY property.
+            Identifies the <see cref="P:OxyPlot.Wpf.RectangleAnnotation.MinimumY"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.RectangleAnnotation.TextRotationProperty">
             <summary>
-                The text rotation property
+            Identifies the <see cref="P:OxyPlot.Wpf.RectangleAnnotation.TextRotation"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.RectangleAnnotation.#ctor">
             <summary>
-                Initializes a new instance of the <see cref="T:OxyPlot.Wpf.RectangleAnnotation"/> class.
+            Initializes a new instance of the <see cref="T:OxyPlot.Wpf.RectangleAnnotation"/> class.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.RectangleAnnotation.CreateModel">
             <summary>
-                Creates the internal annotation object.
+            Creates the internal annotation object.
             </summary>
-            <returns>
-                The annotation.
-            </returns>
+            <returns>The annotation.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.RectangleAnnotation.SynchronizeProperties">
             <summary>
-                Synchronizes the properties.
+            Synchronizes the properties.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.RectangleAnnotation.Fill">
             <summary>
-                Gets or sets the fill color.
+            Gets or sets the fill color.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.RectangleAnnotation.Stroke">
             <summary>
-                Gets or sets the stroke color.
+            Gets or sets the stroke color.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.RectangleAnnotation.StrokeThickness">
             <summary>
-                Gets or sets the stroke thickness.
+            Gets or sets the stroke thickness.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.RectangleAnnotation.MaximumX">
             <summary>
-                Gets or sets the Maximum X.
+            Gets or sets the Maximum X.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.RectangleAnnotation.MaximumY">
             <summary>
-                Gets or sets the Maximum Y.
+            Gets or sets the Maximum Y.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.RectangleAnnotation.MinimumX">
             <summary>
-                Gets or sets the Minimum X.
+            Gets or sets the Minimum X.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.RectangleAnnotation.MinimumY">
             <summary>
-                Gets or sets the Minimum Y.
+            Gets or sets the Minimum Y.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.RectangleAnnotation.TextRotation">
             <summary>
-                Gets or sets the text rotation (degrees).
+            Gets or sets the text rotation (degrees).
             </summary>
             <value>The text rotation in degrees.</value>
         </member>
@@ -764,42 +724,42 @@
         </member>
         <member name="F:OxyPlot.Wpf.TextAnnotation.BackgroundProperty">
             <summary>
-            The Background property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TextAnnotation.Background"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TextAnnotation.TextColorProperty">
             <summary>
-            The TextColor property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TextAnnotation.TextColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TextAnnotation.OffsetProperty">
             <summary>
-            The Offset property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TextAnnotation.Offset"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TextAnnotation.PaddingProperty">
             <summary>
-            The Padding property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TextAnnotation.Padding"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TextAnnotation.PositionProperty">
             <summary>
-            The Position property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TextAnnotation.Position"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TextAnnotation.RotationProperty">
             <summary>
-            The Rotation property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TextAnnotation.Rotation"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TextAnnotation.StrokeProperty">
             <summary>
-            The Stroke property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TextAnnotation.Stroke"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TextAnnotation.StrokeThicknessProperty">
             <summary>
-            The StrokeThickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TextAnnotation.StrokeThickness"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.TextAnnotation.#cctor">
@@ -816,9 +776,7 @@
             <summary>
             Creates the internal annotation object.
             </summary>
-            <returns>
-            The annotation.
-            </returns>
+            <returns>The annotation.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.TextAnnotation.SynchronizeProperties">
             <summary>
@@ -872,47 +830,47 @@
         </member>
         <member name="F:OxyPlot.Wpf.LineAnnotation.LineTypeProperty">
             <summary>
-            The line type property.
+            Identifies the <see cref="!:LineType"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineAnnotation.InterceptProperty">
             <summary>
-            The intercept property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineAnnotation.Intercept"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineAnnotation.MaximumXProperty">
             <summary>
-            The maximum x property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineAnnotation.MaximumX"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineAnnotation.MaximumYProperty">
             <summary>
-            The maximum y property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineAnnotation.MaximumY"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineAnnotation.MinimumXProperty">
             <summary>
-            The minimum x property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineAnnotation.MinimumX"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineAnnotation.MinimumYProperty">
             <summary>
-            The minimum y property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineAnnotation.MinimumY"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineAnnotation.SlopeProperty">
             <summary>
-            The slope property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineAnnotation.Slope"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineAnnotation.XProperty">
             <summary>
-            The x property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineAnnotation.X"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineAnnotation.YProperty">
             <summary>
-            The y property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineAnnotation.Y"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.LineAnnotation.#ctor">
@@ -924,9 +882,7 @@
             <summary>
             Creates the internal annotation object.
             </summary>
-            <returns>
-            The annotation.
-            </returns>
+            <returns>The annotation.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.LineAnnotation.SynchronizeProperties">
             <summary>
@@ -995,302 +951,302 @@
         </member>
         <member name="F:OxyPlot.Wpf.Axis.AbsoluteMaximumProperty">
             <summary>
-            The absolute maximum property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.AbsoluteMaximum"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.AbsoluteMinimumProperty">
             <summary>
-            The absolute minimum property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.AbsoluteMinimum"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.AngleProperty">
             <summary>
-            The angle property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.Angle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.AxisTickToLabelDistanceProperty">
             <summary>
-            The axis tick to label distance property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.AxisTickToLabelDistance"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.AxisTitleDistanceProperty">
             <summary>
-            The axis title distance property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.AxisTitleDistance"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.AxisDistanceProperty">
             <summary>
-            The axis distance property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.AxisDistance"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.AxislineColorProperty">
             <summary>
-            The axis line color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.AxislineColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.AxislineStyleProperty">
             <summary>
-            The axis line style property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.AxislineStyle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.AxislineThicknessProperty">
             <summary>
-            The axis line thickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.AxislineThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.ClipTitleProperty">
             <summary>
-            The clip title property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.ClipTitle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.EndPositionProperty">
             <summary>
-            The end position property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.EndPosition"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.ExtraGridlineColorProperty">
             <summary>
-            The extra gridline color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.ExtraGridlineColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.ExtraGridlineStyleProperty">
             <summary>
-            The extra gridline style property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.ExtraGridlineStyle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.ExtraGridlineThicknessProperty">
             <summary>
-            The extra gridline thickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.ExtraGridlineThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.ExtraGridlinesProperty">
             <summary>
-            The extra gridlines property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.ExtraGridlines"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.FilterFunctionProperty">
             <summary>
-            The filter function property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.FilterFunction"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.FilterMaxValueProperty">
             <summary>
-            The filter max value property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.FilterMaxValue"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.FilterMinValueProperty">
             <summary>
-            The filter min value property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.FilterMinValue"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.FontProperty">
             <summary>
-            The font property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.Font"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.FontSizeProperty">
             <summary>
-            The font size property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.FontSize"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.FontWeightProperty">
             <summary>
-            The font weight property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.FontWeight"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.IntervalLengthProperty">
             <summary>
-            The interval length property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.IntervalLength"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.IsAxisVisibleProperty">
             <summary>
-            The is axis visible property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.IsAxisVisible"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.IsPanEnabledProperty">
             <summary>
-            The is pan enabled property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.IsPanEnabled"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.IsZoomEnabledProperty">
             <summary>
-            The is zoom enabled property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.IsZoomEnabled"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.KeyProperty">
             <summary>
-            The key property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.Key"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.LayerProperty">
             <summary>
-            The layer property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.Layer"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MajorGridlineColorProperty">
             <summary>
-            The major gridline color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MajorGridlineColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MajorGridlineStyleProperty">
             <summary>
-            The major gridline style property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MajorGridlineStyle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MajorGridlineThicknessProperty">
             <summary>
-            The major gridline thickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MajorGridlineThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MajorStepProperty">
             <summary>
-            The major step property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MajorStep"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MajorTickSizeProperty">
             <summary>
-            The major tick size property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MajorTickSize"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MaximumPaddingProperty">
             <summary>
-            The maximum padding property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MaximumPadding"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MaximumProperty">
             <summary>
-            The maximum property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.Maximum"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MinimumPaddingProperty">
             <summary>
-            The minimum padding property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MinimumPadding"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MinimumProperty">
             <summary>
-            The minimum property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.Minimum"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MinimumRangeProperty">
             <summary>
-            The minimum range property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MinimumRange"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MinorGridlineColorProperty">
             <summary>
-            The minor gridline color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MinorGridlineColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MinorGridlineStyleProperty">
             <summary>
-            The minor gridline style property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MinorGridlineStyle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MinorGridlineThicknessProperty">
             <summary>
-            The minor gridline thickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MinorGridlineThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MinorStepProperty">
             <summary>
-            The minor step property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MinorStep"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.MinorTickSizeProperty">
             <summary>
-            The minor tick size property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.MinorTickSize"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.PositionAtZeroCrossingProperty">
             <summary>
-            The position at zero crossing property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.PositionAtZeroCrossing"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.PositionProperty">
             <summary>
-            The position property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.Position"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.PositionTierProperty">
             <summary>
-            The positionTier property
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.PositionTier"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.ShowMinorTicksProperty">
             <summary>
-            The show minor ticks property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.ShowMinorTicks"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.StartPositionProperty">
             <summary>
-            The start position property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.StartPosition"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.StringFormatProperty">
             <summary>
-            The string format property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.StringFormat"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.TickStyleProperty">
             <summary>
-            The tick style property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.TickStyle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.TicklineColorProperty">
             <summary>
-            The tick line color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.TicklineColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.TitleClippingLengthProperty">
             <summary>
-            The title clipping length property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.TitleClippingLength"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.TitleColorProperty">
             <summary>
-            The title color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.TitleColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.TitleFontProperty">
             <summary>
-            The title font property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.TitleFont"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.TitleFontSizeProperty">
             <summary>
-            The title font size property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.TitleFontSize"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.TitleFontWeightProperty">
             <summary>
-            The title font weight property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.TitleFontWeight"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.TitleFormatStringProperty">
             <summary>
-            The title format string property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.TitleFormatString"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.TitlePositionProperty">
             <summary>
-            The title position property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.TitlePosition"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.TitleProperty">
             <summary>
-            The title property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.Title"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.UnitProperty">
             <summary>
-            The unit property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.Unit"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Axis.UseSuperExponentialFormatProperty">
             <summary>
-            The use super exponential format property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Axis.UseSuperExponentialFormat"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.Axis.CreateModel">
@@ -1303,23 +1259,15 @@
             <summary>
             The visual appearance changed.
             </summary>
-            <param name="d">
-            The sender.
-            </param>
-            <param name="e">
-            The event args.
-            </param>
+            <param name="d">The sender.</param>
+            <param name="e">The event args.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Axis.DataChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
             <summary>
             The data changed.
             </summary>
-            <param name="d">
-            The sender.
-            </param>
-            <param name="e">
-            The event args.
-            </param>
+            <param name="d">The sender.</param>
+            <param name="e">The event args.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Axis.OnDataChanged">
             <summary>
@@ -1330,9 +1278,7 @@
             <summary>
             The on property changed handler.
             </summary>
-            <param name="e">
-            The event args.
-            </param>
+            <param name="e">The event args.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Axis.OnVisualChanged">
             <summary>
@@ -1383,33 +1329,25 @@
             <summary>
             Gets or sets the color of the axis line.
             </summary>
-            <value>
-            The color of the axis line.
-            </value>
+            <value>The color of the axis line.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Axis.AxislineStyle">
             <summary>
             Gets or sets the axis line style.
             </summary>
-            <value>
-            The axis line style.
-            </value>
+            <value>The axis line style.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Axis.AxislineThickness">
             <summary>
             Gets or sets the axis line thickness.
             </summary>
-            <value>
-            The axis line thickness.
-            </value>
+            <value>The axis line thickness.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Axis.ClipTitle">
             <summary>
             Gets or sets a value indicating whether [clip title].
             </summary>
-            <value>
-            <c>true</c> if [clip title]; otherwise, <c>false</c> .
-            </value>
+            <value><c>true</c> if [clip title]; otherwise, <c>false</c> .</value>
         </member>
         <member name="P:OxyPlot.Wpf.Axis.EndPosition">
             <summary>
@@ -1440,9 +1378,7 @@
             <summary>
             Gets or sets the filter function.
             </summary>
-            <value>
-            The filter function.
-            </value>
+            <value>The filter function.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Axis.FilterMaxValue">
             <summary>
@@ -1588,9 +1524,7 @@
             <summary>
             Gets or sets the position tier which defines in which tier the axis is displayed.
             </summary>
-            <remarks>
-            The bigger the value the the further afar is the axis from the graph.
-            </remarks>
+            <remarks>The bigger the value the the further afar is the axis from the graph.</remarks>
         </member>
         <member name="P:OxyPlot.Wpf.Axis.ShowMinorTicks">
             <summary>
@@ -1626,41 +1560,31 @@
             <summary>
             Gets or sets the length of the title clipping.
             </summary>
-            <value>
-            The length of the title clipping.
-            </value>
+            <value>The length of the title clipping.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Axis.TitleColor">
             <summary>
             Gets or sets the color of the title.
             </summary>
-            <value>
-            The color of the title.
-            </value>
+            <value>The color of the title.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Axis.TitleFont">
             <summary>
             Gets or sets the title font.
             </summary>
-            <value>
-            The title font.
-            </value>
+            <value>The title font.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Axis.TitleFontSize">
             <summary>
             Gets or sets the size of the title font.
             </summary>
-            <value>
-            The size of the title font.
-            </value>
+            <value>The size of the title font.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Axis.TitleFontWeight">
             <summary>
             Gets or sets the title font weight.
             </summary>
-            <value>
-            The title font weight.
-            </value>
+            <value>The title font weight.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Axis.TitleFormatString">
             <summary>
@@ -1684,17 +1608,17 @@
         </member>
         <member name="F:OxyPlot.Wpf.LinearAxis.FormatAsFractionsProperty">
             <summary>
-            The format as fractions property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LinearAxis.FormatAsFractions"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LinearAxis.FractionUnitProperty">
             <summary>
-            The fraction unit property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LinearAxis.FractionUnit"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LinearAxis.FractionUnitSymbolProperty">
             <summary>
-            The fraction unit symbol property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LinearAxis.FractionUnitSymbol"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.LinearAxis.#ctor">
@@ -1706,9 +1630,7 @@
             <summary>
             Creates the internal axis.
             </summary>
-            <returns>
-            The internal axis.
-            </returns>
+            <returns>The internal axis.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.LinearAxis.SynchronizeProperties">
             <summary>
@@ -1747,27 +1669,27 @@
         </member>
         <member name="F:OxyPlot.Wpf.CategoryAxis.GapWidthProperty">
             <summary>
-            The gap width property.
+            Identifies the <see cref="P:OxyPlot.Wpf.CategoryAxis.GapWidth"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.CategoryAxis.IsTickCenteredProperty">
             <summary>
-            The is tick centered property.
+            Identifies the <see cref="P:OxyPlot.Wpf.CategoryAxis.IsTickCentered"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.CategoryAxis.ItemsSourceProperty">
             <summary>
-            The items source property.
+            Identifies the <see cref="P:OxyPlot.Wpf.CategoryAxis.ItemsSource"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.CategoryAxis.LabelFieldProperty">
             <summary>
-            The label field property.
+            Identifies the <see cref="P:OxyPlot.Wpf.CategoryAxis.LabelField"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.CategoryAxis.LabelsProperty">
             <summary>
-            The labels property.
+            Identifies the <see cref="P:OxyPlot.Wpf.CategoryAxis.Labels"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.CategoryAxis.#cctor">
@@ -1784,9 +1706,7 @@
             <summary>
             Creates the internal axis.
             </summary>
-            <returns>
-            The internal axis.
-            </returns>
+            <returns>The internal axis.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.CategoryAxis.SynchronizeProperties">
             <summary>
@@ -1797,9 +1717,7 @@
             <summary>
             Gets or sets the gap width.
             </summary>
-            <value>
-            The width of the gap.
-            </value>
+            <value>The width of the gap.</value>
         </member>
         <member name="P:OxyPlot.Wpf.CategoryAxis.IsTickCentered">
             <summary>
@@ -1828,32 +1746,32 @@
         </member>
         <member name="F:OxyPlot.Wpf.DateTimeAxis.CalendarWeekRuleProperty">
             <summary>
-            The calendar week rule property.
+            Identifies the <see cref="P:OxyPlot.Wpf.DateTimeAxis.CalendarWeekRule"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.DateTimeAxis.FirstDateTimeProperty">
             <summary>
-            The first date time property.
+            Identifies the <see cref="P:OxyPlot.Wpf.DateTimeAxis.FirstDateTime"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.DateTimeAxis.FirstDayOfWeekProperty">
             <summary>
-            The first day of week property.
+            Identifies the <see cref="P:OxyPlot.Wpf.DateTimeAxis.FirstDayOfWeek"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.DateTimeAxis.IntervalTypeProperty">
             <summary>
-            The interval type property.
+            Identifies the <see cref="P:OxyPlot.Wpf.DateTimeAxis.IntervalType"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.DateTimeAxis.LastDateTimeProperty">
             <summary>
-            The last date time property.
+            Identifies the <see cref="P:OxyPlot.Wpf.DateTimeAxis.LastDateTime"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.DateTimeAxis.MinorIntervalTypeProperty">
             <summary>
-            The minor interval type property.
+            Identifies the <see cref="P:OxyPlot.Wpf.DateTimeAxis.MinorIntervalType"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.DateTimeAxis.#cctor">
@@ -1870,9 +1788,7 @@
             <summary>
             Creates the internal model.
             </summary>
-            <returns>
-            The internal axis.
-            </returns>
+            <returns>The internal axis.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.DateTimeAxis.SynchronizeProperties">
             <summary>
@@ -1938,9 +1854,7 @@
             <summary>
             Creates the internal axis.
             </summary>
-            <returns>
-            The internal axis.
-            </returns>
+            <returns>The internal axis.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.TimeSpanAxis.SynchronizeProperties">
             <summary>
@@ -1954,14 +1868,13 @@
         </member>
         <member name="F:OxyPlot.Wpf.LogarithmicAxis.BaseProperty">
             <summary>
-            Gets or sets the logarithmic base (normally 10).
-            http://en.wikipedia.org/wiki/Logarithm
+            Identifies the <see cref="P:OxyPlot.Wpf.LogarithmicAxis.Base"/> dependency property.
             </summary>
             <value>The logarithmic base.</value>
         </member>
         <member name="F:OxyPlot.Wpf.LogarithmicAxis.PowerPaddingProperty">
             <summary>
-            The power padding property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LogarithmicAxis.PowerPadding"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.LogarithmicAxis.#ctor">
@@ -1973,9 +1886,7 @@
             <summary>
             Creates the internal axis.
             </summary>
-            <returns>
-            The internal axis.
-            </returns>
+            <returns>The internal axis.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.LogarithmicAxis.SynchronizeProperties">
             <summary>
@@ -1996,10 +1907,8 @@
             <summary>
             Converts from <see cref="T:System.Windows.Thickness"/> to the maximum thicknesses.
             </summary>
-            <remarks>
-            This is used in the <see cref="T:OxyPlot.Wpf.TrackerControl"/> to convert BorderThickness properties to Path.StrokeThickness (double).
-            The maximum thickness value is used.
-            </remarks>    [ValueConversion(typeof(Thickness), typeof(double))]
+            <remarks>This is used in the <see cref="T:OxyPlot.Wpf.TrackerControl"/> to convert BorderThickness properties to Path.StrokeThickness (double).
+            The maximum thickness value is used.</remarks>
         </member>
         <member name="M:OxyPlot.Wpf.ThicknessConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <summary>
@@ -2009,9 +1918,7 @@
             <param name="targetType">The type of the binding target property.</param>
             <param name="parameter">The converter parameter to use.</param>
             <param name="culture">The culture to use in the converter.</param>
-            <returns>
-            A converted value. If the method returns null, the valid null value is used.
-            </returns>
+            <returns>A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ThicknessConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <summary>
@@ -2021,9 +1928,7 @@
             <param name="targetType">The type to convert to.</param>
             <param name="parameter">The converter parameter to use.</param>
             <param name="culture">The culture to use in the converter.</param>
-            <returns>
-            A converted value. If the method returns null, the valid null value is used.
-            </returns>
+            <returns>A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.</returns>
         </member>
         <member name="T:OxyPlot.Wpf.OxyColorConverter">
             <summary>
@@ -2038,9 +1943,7 @@
             <param name="targetType">The type of the binding target property.</param>
             <param name="parameter">The converter parameter to use.</param>
             <param name="culture">The culture to use in the converter.</param>
-            <returns>
-            A converted value. If the method returns null, the valid null value is used.
-            </returns>
+            <returns>A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.OxyColorConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <summary>
@@ -2050,9 +1953,7 @@
             <param name="targetType">The type to convert to.</param>
             <param name="parameter">The converter parameter to use.</param>
             <param name="culture">The culture to use in the converter.</param>
-            <returns>
-            A converted value. If the method returns null, the valid null value is used.
-            </returns>
+            <returns>A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.</returns>
         </member>
         <member name="T:OxyPlot.Wpf.RenderingEventListener">
             <summary>
@@ -2081,12 +1982,10 @@
             <summary>
             Receives events from the centralized event manager.
             </summary>
-            <param name="managerType">The type of the <see cref="T:System.Windows.WeakEventManager"/> calling this method.</param>
+            <param name="managerType">The type of the <see cref="T:System.Windows.WeakEventManager" /> calling this method.</param>
             <param name="sender">Object that originated the event.</param>
             <param name="e">Event data.</param>
-            <returns>
-            true if the listener handled the event. It is considered an error by the <see cref="T:System.Windows.WeakEventManager"/> handling in WPF to register a listener for an event that the listener does not handle. Regardless, the method should return false if it receives an event that it does not recognize or handle.
-            </returns>
+            <returns><c>true</c> if the listener handled the event. It is considered an error by the <see cref="T:System.Windows.WeakEventManager" /> handling in WPF to register a listener for an event that the listener does not handle. Regardless, the method should return <c>false</c> if it receives an event that it does not recognize or handle.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.RenderingEventListener.#ctor(System.EventHandler{System.Windows.Media.RenderingEventArgs})">
             <summary>
@@ -2119,7 +2018,7 @@
         </member>
         <member name="M:OxyPlot.Wpf.WeakEventManagerBase`1.StartListening(System.Object)">
             <summary>
-            When overridden in a derived class, starts listening for the event being managed. After <see cref="M:System.Windows.WeakEventManager.StartListening(System.Object)"/>  is first called, the manager should be in the state of calling <see cref="M:System.Windows.WeakEventManager.DeliverEvent(System.Object,System.EventArgs)"/> or <see cref="M:System.Windows.WeakEventManager.DeliverEventToList(System.Object,System.EventArgs,System.Windows.WeakEventManager.ListenerList)"/> whenever the relevant event from the provided source is handled.
+            When overridden in a derived class, starts listening for the event being managed. After <see cref="M:System.Windows.WeakEventManager.StartListening(System.Object)" />  is first called, the manager should be in the state of calling <see cref="M:System.Windows.WeakEventManager.DeliverEvent(System.Object,System.EventArgs)" /> or <see cref="M:System.Windows.WeakEventManager.DeliverEventToList(System.Object,System.EventArgs,System.Windows.WeakEventManager.ListenerList)" /> whenever the relevant event from the provided source is handled.
             </summary>
             <param name="source">The source to begin listening on.</param>
         </member>
@@ -2189,9 +2088,7 @@
             <summary>
             Represents the WPF Plot control.
             </summary>
-            <remarks>
-            This file contains dependency properties used for defining the plot in XAML. These properties are only used when Model is null. In this case an internal PlotModel is created and the dependency properties are copied from the control to the internal PlotModel.
-            </remarks>
+            <remarks>This file contains dependency properties used for defining the plot in XAML. These properties are only used when Model is <c>null</c>. In this case an internal PlotModel is created and the dependency properties are copied from the control to the internal PlotModel.</remarks>
             <summary>
             Represents a WPF control that displays an OxyPlot plot.
             </summary>
@@ -2235,271 +2132,265 @@
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnManipulationStarted(System.Windows.Input.ManipulationStartedEventArgs)">
             <summary>
-            Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted"/> event occurs.
+            Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted" /> event occurs.
             </summary>
-            <param name="e">
-            The data for the event.
-            </param>
+            <param name="e">The data for the event.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnManipulationDelta(System.Windows.Input.ManipulationDeltaEventArgs)">
             <summary>
-            Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
+            Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta" /> event occurs.
             </summary>
-            <param name="e">
-            The data for the event.
-            </param>
+            <param name="e">The data for the event.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnManipulationCompleted(System.Windows.Input.ManipulationCompletedEventArgs)">
             <summary>
-            Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted"/> event occurs.
+            Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted" /> event occurs.
             </summary>
-            <param name="e">
-            The data for the event.
-            </param>
+            <param name="e">The data for the event.</param>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.ControllerProperty">
             <summary>
-            Defines the Controller property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.Controller"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.AutoAdjustPlotMarginsProperty">
             <summary>
-            The auto adjust plot margins property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.AutoAdjustPlotMargins"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.CultureProperty">
             <summary>
-            The culture property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.Culture"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.DefaultTrackerTemplateProperty">
             <summary>
-            The default tracker property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.DefaultTrackerTemplate"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.IsLegendVisibleProperty">
             <summary>
-            The is legend visible property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.IsLegendVisible"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.IsMouseWheelEnabledProperty">
             <summary>
-            The is mouse wheel enabled property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.IsMouseWheelEnabled"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendBackgroundProperty">
             <summary>
-            The legend background property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendBackground"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendBorderProperty">
             <summary>
-            The legend border property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendBorder"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendBorderThicknessProperty">
             <summary>
-            The legend border thickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendBorderThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendFontProperty">
             <summary>
-            The legend font property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendFont"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendFontSizeProperty">
             <summary>
-            The legend font size property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendFontSize"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendFontWeightProperty">
             <summary>
-            The legend font weight property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendFontWeight"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendItemAlignmentProperty">
             <summary>
-            The legend item alignment property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendItemAlignment"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendItemOrderProperty">
             <summary>
-            The legend item order property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendItemOrder"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendItemSpacingProperty">
             <summary>
-            The legend item spacing property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendItemSpacing"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendMarginProperty">
             <summary>
-            The legend margin property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendMargin"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendMaxWidthProperty">
             <summary>
-            The legend max width property
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendMaxWidth"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendOrientationProperty">
             <summary>
-            The legend orientation property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendOrientation"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendColumnSpacingProperty">
             <summary>
-            The legend column spacing property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendColumnSpacing"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendPaddingProperty">
             <summary>
-            The legend padding property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendPadding"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendPlacementProperty">
             <summary>
-            The legend placement property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendPlacement"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendPositionProperty">
             <summary>
-            The legend position property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendPosition"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendSymbolLengthProperty">
             <summary>
-            The legend symbol length property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendSymbolLength"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendSymbolMarginProperty">
             <summary>
-            The legend symbol margin property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendSymbolMargin"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendSymbolPlacementProperty">
             <summary>
-            The legend symbol placement property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendSymbolPlacement"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendTitleFontProperty">
             <summary>
-            The legend title font property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendTitleFont"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendTitleFontSizeProperty">
             <summary>
-            The legend title font size property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendTitleFontSize"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.LegendTitleFontWeightProperty">
             <summary>
-            The legend title font weight property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.LegendTitleFontWeight"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.ModelProperty">
             <summary>
-            The model property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.Model"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.PanCursorProperty">
             <summary>
-            The pan cursor property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.PanCursor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.PlotAreaBackgroundProperty">
             <summary>
-            The plot area background property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.PlotAreaBackground"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.PlotAreaBorderColorProperty">
             <summary>
-            The plot area border color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.PlotAreaBorderColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.PlotAreaBorderThicknessProperty">
             <summary>
-            The plot area border thickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.PlotAreaBorderThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.PlotMarginsProperty">
             <summary>
-            The plot margins property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.PlotMargins"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.PlotTypeProperty">
             <summary>
-            The plot type property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.PlotType"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.SubtitleFontSizeProperty">
             <summary>
-            The subtitle font size property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.SubtitleFontSize"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.SubtitleFontWeightProperty">
             <summary>
-            The subtitle font weight property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.SubtitleFontWeight"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.SubtitleProperty">
             <summary>
-            The subtitle property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.Subtitle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.TextColorProperty">
             <summary>
-            The text color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.TextColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.TitleFontProperty">
             <summary>
-            The title font property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.TitleFont"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.TitleFontSizeProperty">
             <summary>
-            The title font size property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.TitleFontSize"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.TitleFontWeightProperty">
             <summary>
-            The title font weight property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.TitleFontWeight"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.TitlePaddingProperty">
             <summary>
-            The title padding property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.TitlePadding"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.TitleProperty">
             <summary>
-            The title property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.Title"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.InvalidateFlagProperty">
             <summary>
-            The refresh flag property
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.InvalidateFlag"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.ZoomHorizontalCursorProperty">
             <summary>
-            The zoom horizontal cursor property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.ZoomHorizontalCursor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.ZoomRectangleCursorProperty">
             <summary>
-            The zoom rectangle cursor property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.ZoomRectangleCursor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.ZoomRectangleTemplateProperty">
             <summary>
-            The zoom rectangle template property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.ZoomRectangleTemplate"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.ZoomVerticalCursorProperty">
             <summary>
-            The zoom vertical cursor property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.ZoomVerticalCursor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.annotations">
@@ -2621,33 +2512,25 @@
             <summary>
             Invalidate the plot (not blocking the UI thread)
             </summary>
-            <param name="updateData">
-            The update Data.
-            </param>
+            <param name="updateData">The update Data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.SetCursorType(OxyPlot.CursorType)">
             <summary>
             Sets the cursor type.
             </summary>
-            <param name="cursorType">
-            The cursor type.
-            </param>
+            <param name="cursorType">The cursor type.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.ShowTracker(OxyPlot.TrackerHitResult)">
             <summary>
             Shows the tracker.
             </summary>
-            <param name="trackerHitResult">
-            The tracker data.
-            </param>
+            <param name="trackerHitResult">The tracker data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.ShowZoomRectangle(OxyPlot.OxyRect)">
             <summary>
             Shows the zoom rectangle.
             </summary>
-            <param name="r">
-            The rectangle.
-            </param>
+            <param name="r">The rectangle.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.SetClipboardText(System.String)">
             <summary>
@@ -2657,24 +2540,20 @@
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnApplyTemplate">
             <summary>
-            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> .
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" /> .
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.PanAllAxes(System.Windows.Vector)">
             <summary>
             Pans all axes.
             </summary>
-            <param name="delta">
-            The delta.
-            </param>
+            <param name="delta">The delta.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.ZoomAllAxes(System.Double)">
             <summary>
             Zooms all axes.
             </summary>
-            <param name="factor">
-            The zoom factor.
-            </param>
+            <param name="factor">The zoom factor.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.ResetAllAxes">
             <summary>
@@ -2685,51 +2564,35 @@
             <summary>
             Saves the plot as a bitmap.
             </summary>
-            <param name="fileName">
-            Name of the file.
-            </param>
-            <param name="width">
-            The width.
-            </param>
-            <param name="height">
-            The height.
-            </param>
-            <param name="background">
-            The background.
-            </param>
+            <param name="fileName">Name of the file.</param>
+            <param name="width">The width.</param>
+            <param name="height">The height.</param>
+            <param name="background">The background.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.SaveXaml(System.String)">
             <summary>
             Saves the plot as xaml.
             </summary>
-            <param name="fileName">
-            Name of the file.
-            </param>
+            <param name="fileName">Name of the file.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.ToBitmap">
             <summary>
             Renders the plot to a bitmap.
             </summary>
-            <returns>
-            A bitmap.
-            </returns>
+            <returns>A bitmap.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.ToXaml">
             <summary>
             Renders the plot to xaml.
             </summary>
-            <returns>
-            The xaml.
-            </returns>
+            <returns>The xaml.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.ArrangeOverride(System.Windows.Size)">
             <summary>
             Called to arrange and size the content of a <see cref="T:System.Windows.Controls.Control" /> object.
             </summary>
             <param name="arrangeBounds">The computed size that is used to arrange the content.</param>
-            <returns>
-            The size of the control.
-            </returns>
+            <returns>The size of the control.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnAppearanceChanged">
             <summary>
@@ -2740,33 +2603,25 @@
             <summary>
             Invoked when an unhandled KeyDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
             </summary>
-            <param name="e">
-            The <see cref="T:System.Windows.Input.KeyEventArgs"/> that contains the event data.
-            </param>
+            <param name="e">The <see cref="T:System.Windows.Input.KeyEventArgs" /> that contains the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnMouseDown(System.Windows.Input.MouseButtonEventArgs)">
             <summary>
             Invoked when an unhandled MouseDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
             </summary>
-            <param name="e">
-            The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.
-            </param>
+            <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnMouseMove(System.Windows.Input.MouseEventArgs)">
             <summary>
             Invoked when an unhandled MouseMove attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
             </summary>
-            <param name="e">
-            The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.
-            </param>
+            <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs" /> that contains the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnMouseUp(System.Windows.Input.MouseButtonEventArgs)">
             <summary>
             Invoked when an unhandled MouseUp routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
             </summary>
-            <param name="e">
-            The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the mouse button was released.
-            </param>
+            <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. The event data reports that the mouse button was released.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnMouseEnter(System.Windows.Input.MouseEventArgs)">
             <summary>
@@ -2784,15 +2639,13 @@
             <summary>
             Invoked when an unhandled MouseWheel attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
             </summary>
-            <param name="e">
-            The <see cref="T:System.Windows.Input.MouseWheelEventArgs"/> that contains the event data.
-            </param>
+            <param name="e">The <see cref="T:System.Windows.Input.MouseWheelEventArgs" /> that contains the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnVisualParentChanged(System.Windows.DependencyObject)">
             <summary>
             Called when the parent of visual object is changed.
             </summary>
-            <param name="oldParent">A value of type <see cref="T:System.Windows.DependencyObject"/> that represents the previous parent of the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object. If the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object did not have a previous parent, the value of the parameter is null.</param>
+            <param name="oldParent">A value of type <see cref="T:System.Windows.DependencyObject" /> that represents the previous parent of the <see cref="T:System.Windows.Media.Media3D.Visual3D" /> object. If the <see cref="T:System.Windows.Media.Media3D.Visual3D" /> object did not have a previous parent, the value of the parameter is <c>null</c>.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.PlotLoaded(System.Object,System.Windows.RoutedEventArgs)">
             <summary>
@@ -2812,34 +2665,22 @@
             <summary>
             Called when the visual appearance is changed.
             </summary>
-            <param name="d">
-            The d.
-            </param>
-            <param name="e">
-            The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-            </param>
+            <param name="d">The d.</param>
+            <param name="e">The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.ModelChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
             <summary>
             Called when the model is changed.
             </summary>
-            <param name="d">
-            The sender.
-            </param>
-            <param name="e">
-            The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-            </param>
+            <param name="d">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.DoCopy(System.Object,System.Windows.Input.ExecutedRoutedEventArgs)">
             <summary>
             Performs the copy operation.
             </summary>
-            <param name="sender">
-            The sender.
-            </param>
-            <param name="e">
-            The <see cref="T:System.Windows.Input.ExecutedRoutedEventArgs"/> instance containing the event data.
-            </param>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.Input.ExecutedRoutedEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.Invoke(System.Action)">
             <summary>
@@ -2857,23 +2698,15 @@
             <summary>
             Called when annotations is changed.
             </summary>
-            <param name="sender">
-            The sender.
-            </param>
-            <param name="e">
-            The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
-            </param>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnAxesChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
             <summary>
             Called when axes is changed.
             </summary>
-            <param name="sender">
-            The sender.
-            </param>
-            <param name="e">
-            The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
-            </param>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnModelChanged">
             <summary>
@@ -2884,39 +2717,27 @@
             <summary>
             Called when series is changed.
             </summary>
-            <param name="sender">
-            The sender.
-            </param>
-            <param name="e">
-            The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
-            </param>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.OnSizeChanged(System.Object,System.Windows.SizeChangedEventArgs)">
             <summary>
             Called when size of the control is changed.
             </summary>
-            <param name="sender">
-            The sender.
-            </param>
-            <param name="e">
-            The <see cref="T:System.Windows.SizeChangedEventArgs"/> instance containing the event data.
-            </param>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.SizeChangedEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.SyncLogicalTree(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
             <summary>
             Synchronizes the logical tree.
             </summary>
-            <param name="e">
-            The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
-            </param>
+            <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.UpdateModel(System.Boolean)">
             <summary>
-            Updates the model. If Model==null, an internal model will be created. The ActualModel.Update will be called (updates all series data).
+            Updates the model. If Model==<c>null</c>, an internal model will be created. The ActualModel.Update will be called (updates all series data).
             </summary>
-            <param name="updateData">
-            if set to <c>true</c> , all data collections will be updated.
-            </param>
+            <param name="updateData">if set to <c>true</c> , all data collections will be updated.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Plot.SynchronizeProperties">
             <summary>
@@ -2957,7 +2778,7 @@
             <summary>
             Gets the axes.
             </summary>
-            <value> The axes. </value>
+            <value>The axes.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.Culture">
             <summary>
@@ -2968,7 +2789,7 @@
             <summary>
             Gets or sets the tracker template.
             </summary>
-            <value> The tracker template. </value>
+            <value>The tracker template.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.IsLegendVisible">
             <summary>
@@ -3061,7 +2882,7 @@
             <summary>
             Gets or sets the legend position.
             </summary>
-            <value> The legend position. </value>
+            <value>The legend position.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.LegendSymbolLength">
             <summary>
@@ -3097,45 +2918,43 @@
             <summary>
             Gets or sets the model.
             </summary>
-            <value> The model. </value>
+            <value>The model.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.PanCursor">
             <summary>
             Gets or sets the pan cursor.
             </summary>
-            <value> The pan cursor. </value>
+            <value>The pan cursor.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.PlotAreaBackground">
             <summary>
             Gets or sets the background brush of the plot area.
             </summary>
-            <value> The brush.</value>
+            <value>The brush.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.PlotAreaBorderColor">
             <summary>
             Gets or sets the color of the plot area border.
             </summary>
-            <value> The color of the plot area border. </value>
+            <value>The color of the plot area border.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.PlotAreaBorderThickness">
             <summary>
             Gets or sets the thickness of the plot area border.
             </summary>
-            <value> The thickness of the plot area border. </value>
+            <value>The thickness of the plot area border.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.Controller">
             <summary>
             Gets or sets the plot controller.
             </summary>
-            <value>
-            The plot controller.
-            </value>
+            <value>The plot controller.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.PlotMargins">
             <summary>
             Gets or sets the plot margins.
             </summary>
-            <value> The plot margins. </value>
+            <value>The plot margins.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.PlotType">
             <summary>
@@ -3146,13 +2965,13 @@
             <summary>
             Gets the series.
             </summary>
-            <value> The series. </value>
+            <value>The series.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.Subtitle">
             <summary>
             Gets or sets the subtitle.
             </summary>
-            <value> The subtitle. </value>
+            <value>The subtitle.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.SubtitleFontSize">
             <summary>
@@ -3173,7 +2992,7 @@
             <summary>
             Gets or sets the title.
             </summary>
-            <value> The title. </value>
+            <value>The title.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.TitleFont">
             <summary>
@@ -3205,87 +3024,81 @@
             <summary>
             Gets or sets the horizontal zoom cursor.
             </summary>
-            <value> The zoom horizontal cursor. </value>
+            <value>The zoom horizontal cursor.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.ZoomRectangleCursor">
             <summary>
             Gets or sets the rectangle zoom cursor.
             </summary>
-            <value> The zoom rectangle cursor. </value>
+            <value>The zoom rectangle cursor.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.ZoomRectangleTemplate">
             <summary>
             Gets or sets the zoom rectangle template.
             </summary>
-            <value> The zoom rectangle template. </value>
+            <value>The zoom rectangle template.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.ZoomVerticalCursor">
             <summary>
             Gets or sets the vertical zoom cursor.
             </summary>
-            <value> The zoom vertical cursor. </value>
+            <value>The zoom vertical cursor.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.Annotations">
             <summary>
             Gets the annotations.
             </summary>
-            <value> The annotations. </value>
+            <value>The annotations.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.DisconnectCanvasWhileUpdating">
             <summary>
             Gets or sets a value indicating whether to disconnect the canvas while updating.
             </summary>
-            <value>
-            <c>true</c> if canvas should be disconnected while updating; otherwise, <c>false</c>.
-            </value>
+            <value><c>true</c> if canvas should be disconnected while updating; otherwise, <c>false</c>.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.IsRendering">
             <summary>
             Gets or sets a value indicating whether this instance is being rendered.
             </summary>
-            <remarks>
-            When the visual is removed from the visual tree, this property should be set to false.
-            </remarks>
+            <remarks>When the visual is removed from the visual tree, this property should be set to <c>false</c>.</remarks>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.TrackerDefinitions">
             <summary>
             Gets the tracker definitions.
             </summary>
-            <value> The tracker definitions. </value>
+            <value>The tracker definitions.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.ActualModel">
             <summary>
             Gets the actual model.
             </summary>
-            <value> The actual model. </value>
+            <value>The actual model.</value>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.ActualController">
             <summary>
             Gets the actual plot controller.
             </summary>
-            <value>
-            The actual plot controller.
-            </value>
+            <value>The actual plot controller.</value>
         </member>
         <member name="T:OxyPlot.Wpf.ColumnSeries">
             <summary>
-                This is a WPF wrapper of OxyPlot.BarSeries
+            This is a WPF wrapper of OxyPlot.BarSeries
             </summary>
         </member>
         <member name="T:OxyPlot.Wpf.BarSeriesBase`1">
             <summary>
-                This is a WPF wrapper of OxyPlot.BarSeries&lt;T&gt;.
+            This is a WPF wrapper of OxyPlot.BarSeries&lt;T&gt;.
             </summary>
             <typeparam name="T">The type of the items.</typeparam>
         </member>
         <member name="T:OxyPlot.Wpf.BarSeriesBase">
             <summary>
-                This is a WPF wrapper of OxyPlot.BarSeriesBase
+            This is a WPF wrapper of OxyPlot.BarSeriesBase
             </summary>
         </member>
         <member name="T:OxyPlot.Wpf.CategorizedSeries">
             <summary>
-                This is a WPF wrapper of OxyPlot.BarSeries
+            This is a WPF wrapper of OxyPlot.BarSeries
             </summary>
         </member>
         <member name="T:OxyPlot.Wpf.XYAxisSeries">
@@ -3305,22 +3118,22 @@
         </member>
         <member name="F:OxyPlot.Wpf.Series.ColorProperty">
             <summary>
-            The color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Series.Color"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Series.TitleProperty">
             <summary>
-            The title property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Series.Title"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Series.TrackerFormatStringProperty">
             <summary>
-            The tracker format string property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Series.TrackerFormatString"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Series.TrackerKeyProperty">
             <summary>
-            The tracker key property.
+            Identifies the <see cref="P:OxyPlot.Wpf.Series.TrackerKey"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.Series.#cctor">
@@ -3332,31 +3145,21 @@
             <summary>
             Creates the model.
             </summary>
-            <returns>
-            A series.
-            </returns>
+            <returns>A series.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.Series.AppearanceChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
             <summary>
             The appearance changed.
             </summary>
-            <param name="d">
-            The d.
-            </param>
-            <param name="e">
-            The e.
-            </param>
+            <param name="d">The d.</param>
+            <param name="e">The e.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Series.DataChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
             <summary>
             The data changed.
             </summary>
-            <param name="d">
-            The d.
-            </param>
-            <param name="e">
-            The e.
-            </param>
+            <param name="d">The d.</param>
+            <param name="e">The e.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Series.OnDataChanged">
             <summary>
@@ -3367,12 +3170,8 @@
             <summary>
             The on items source changed.
             </summary>
-            <param name="oldValue">
-            The old value.
-            </param>
-            <param name="newValue">
-            The new value.
-            </param>
+            <param name="oldValue">The old value.</param>
+            <param name="newValue">The new value.</param>
         </member>
         <member name="M:OxyPlot.Wpf.Series.OnVisualChanged">
             <summary>
@@ -3383,9 +3182,7 @@
             <summary>
             Synchronizes the properties.
             </summary>
-            <param name="s">
-            The series.
-            </param>
+            <param name="s">The series.</param>
         </member>
         <member name="P:OxyPlot.Wpf.Series.Color">
             <summary>
@@ -3416,18 +3213,16 @@
             <summary>
             Synchronizes the properties.
             </summary>
-            <param name="series">
-            The series.
-            </param>
+            <param name="series">The series.</param>
         </member>
         <member name="F:OxyPlot.Wpf.XYAxisSeries.XAxisKeyProperty">
             <summary>
-            The x axis key property.
+            Identifies the <see cref="P:OxyPlot.Wpf.XYAxisSeries.XAxisKey"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.XYAxisSeries.YAxisKeyProperty">
             <summary>
-            The y axis key property.
+            Identifies the <see cref="P:OxyPlot.Wpf.XYAxisSeries.YAxisKey"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.XYAxisSeries.SynchronizeProperties(OxyPlot.Series.Series)">
@@ -3448,76 +3243,74 @@
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.BaseValueProperty">
             <summary>
-                The bar width property.
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeriesBase.BaseValue"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.ColorFieldProperty">
             <summary>
-            The color field property
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeriesBase.ColorField"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.FillColorProperty">
             <summary>
-                The fill color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeriesBase.FillColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.IsStackedProperty">
             <summary>
-                The is stacked property.
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeriesBase.IsStacked"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.LabelFormatStringProperty">
             <summary>
-                The label format string property.
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeriesBase.LabelFormatString"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.LabelMarginProperty">
             <summary>
-            The label margin property
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeriesBase.LabelMargin"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.LabelPlacementProperty">
             <summary>
-            The label placement property
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeriesBase.LabelPlacement"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.NegativeFillColorProperty">
             <summary>
-                The negative fill color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeriesBase.NegativeFillColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.StackGroupProperty">
             <summary>
-            The stack group property
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeriesBase.StackGroup"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.StrokeColorProperty">
             <summary>
-                The stroke color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeriesBase.StrokeColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.StrokeThicknessProperty">
             <summary>
-                The stroke thickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeriesBase.StrokeThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.ValueFieldProperty">
             <summary>
-                The value field property.
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeriesBase.ValueField"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.BarSeriesBase.#cctor">
             <summary>
-                Initializes static members of the <see cref="T:OxyPlot.Wpf.BarSeriesBase"/> class.
+            Initializes static members of the <see cref="T:OxyPlot.Wpf.BarSeriesBase"/> class.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.BarSeriesBase.CreateModel">
             <summary>
-                Creates the model.
+            Creates the model.
             </summary>
-            <returns>
-                The series.
-            </returns>
+            <returns>The series.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.BarSeriesBase.SynchronizeProperties(OxyPlot.Series.Series)">
             <summary>
@@ -3527,78 +3320,68 @@
         </member>
         <member name="P:OxyPlot.Wpf.BarSeriesBase.BaseValue">
             <summary>
-                Gets or sets BaseValue.
+            Gets or sets BaseValue.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.BarSeriesBase.ColorField">
             <summary>
             Gets or sets the color field.
             </summary>
-            <value>
-            The color field.
-            </value>
+            <value>The color field.</value>
         </member>
         <member name="P:OxyPlot.Wpf.BarSeriesBase.FillColor">
             <summary>
             Gets or sets the color of the fill.
             </summary>
-            <value>
-            The color of the fill.
-            </value>
+            <value>The color of the fill.</value>
         </member>
         <member name="P:OxyPlot.Wpf.BarSeriesBase.IsStacked">
             <summary>
-                Gets or sets a value indicating whether the series is stacked.
+            Gets or sets a value indicating whether the series is stacked.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.BarSeriesBase.LabelFormatString">
             <summary>
-                Gets or sets the label format string.
+            Gets or sets the label format string.
             </summary>
-            <value> The label format string. </value>
+            <value>The label format string.</value>
         </member>
         <member name="P:OxyPlot.Wpf.BarSeriesBase.LabelMargin">
             <summary>
             Gets or sets the label margin.
             </summary>
-            <value>
-            The label margin.
-            </value>
+            <value>The label margin.</value>
         </member>
         <member name="P:OxyPlot.Wpf.BarSeriesBase.LabelPlacement">
             <summary>
             Gets or sets the label placement.
             </summary>
-            <value>
-            The label placement.
-            </value>
+            <value>The label placement.</value>
         </member>
         <member name="P:OxyPlot.Wpf.BarSeriesBase.NegativeFillColor">
             <summary>
-                Gets or sets NegativeFillColor.
+            Gets or sets NegativeFillColor.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.BarSeriesBase.StackGroup">
             <summary>
             Gets or sets the stack group.
             </summary>
-            <value>
-            The stack group.
-            </value>
+            <value>The stack group.</value>
         </member>
         <member name="P:OxyPlot.Wpf.BarSeriesBase.StrokeColor">
             <summary>
-                Gets or sets the stroke color.
+            Gets or sets the stroke color.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.BarSeriesBase.StrokeThickness">
             <summary>
-                Gets or sets the stroke thickness.
+            Gets or sets the stroke thickness.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.BarSeriesBase.ValueField">
             <summary>
-                Gets or sets the value field.
+            Gets or sets the value field.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.BarSeriesBase`1.SynchronizeProperties(OxyPlot.Series.Series)">
@@ -3609,30 +3392,28 @@
         </member>
         <member name="F:OxyPlot.Wpf.ColumnSeries.ColumnWidthProperty">
             <summary>
-                The bar width property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ColumnSeries.ColumnWidth"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.ColumnSeries.#cctor">
             <summary>
-                Initializes static members of the <see cref="T:OxyPlot.Wpf.ColumnSeries"/> class.
+            Initializes static members of the <see cref="T:OxyPlot.Wpf.ColumnSeries"/> class.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.ColumnSeries.#ctor">
             <summary>
-                Initializes a new instance of the <see cref="T:OxyPlot.Wpf.ColumnSeries"/> class.
+            Initializes a new instance of the <see cref="T:OxyPlot.Wpf.ColumnSeries"/> class.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.ColumnSeries.SynchronizeProperties(OxyPlot.Series.Series)">
             <summary>
-                Synchronizes the properties.
+            Synchronizes the properties.
             </summary>
-            <param name="series">
-                The series.
-            </param>
+            <param name="series">The series.</param>
         </member>
         <member name="P:OxyPlot.Wpf.ColumnSeries.ColumnWidth">
             <summary>
-                Gets or sets ColumnWidth.
+            Gets or sets ColumnWidth.
             </summary>
         </member>
         <member name="T:OxyPlot.Wpf.SvgExporter">
@@ -3699,7 +3480,7 @@
             <param name="fileName">The file name.</param>
             <param name="width">The width of the output bitmap.</param>
             <param name="height">The height of the output bitmap.</param>
-            <param name="background">The background color. The default value is null.</param>
+            <param name="background">The background color. The default value is <c>null</c>.</param>
             <param name="resolution">The resolution (resolution). The default value is 96.</param>
         </member>
         <member name="M:OxyPlot.Wpf.PngExporter.Export(OxyPlot.PlotModel,System.IO.Stream,System.Int32,System.Int32,OxyPlot.OxyColor,System.Int32)">
@@ -3710,7 +3491,7 @@
             <param name="stream">The stream.</param>
             <param name="width">The width of the output bitmap.</param>
             <param name="height">The height of the output bitmap.</param>
-            <param name="background">The background color. The default value is null.</param>
+            <param name="background">The background color. The default value is <c>null</c>.</param>
             <param name="resolution">The resolution (resolution). The default value is 96.</param>
         </member>
         <member name="M:OxyPlot.Wpf.PngExporter.ExportToBitmap(OxyPlot.PlotModel,System.Int32,System.Int32,OxyPlot.OxyColor,System.Int32)">
@@ -3752,9 +3533,7 @@
             <summary>
             Gets or sets the resolution of the output image.
             </summary>
-            <value>
-            The resolution in dots per inch (dpi).
-            </value>
+            <value>The resolution in dots per inch (dpi).</value>
         </member>
         <member name="P:OxyPlot.Wpf.PngExporter.Background">
             <summary>
@@ -3763,33 +3542,33 @@
         </member>
         <member name="T:OxyPlot.Wpf.BarSeries">
             <summary>
-                This is a WPF wrapper of OxyPlot.BarSeries
+            This is a WPF wrapper of OxyPlot.BarSeries
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeries.BarWidthProperty">
             <summary>
-                The bar width property.
+            Identifies the <see cref="P:OxyPlot.Wpf.BarSeries.BarWidth"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.BarSeries.#cctor">
             <summary>
-                Initializes static members of the <see cref="T:OxyPlot.Wpf.BarSeries"/> class.
+            Initializes static members of the <see cref="T:OxyPlot.Wpf.BarSeries"/> class.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.BarSeries.#ctor">
             <summary>
-                Initializes a new instance of the <see cref="T:OxyPlot.Wpf.BarSeries"/> class.
+            Initializes a new instance of the <see cref="T:OxyPlot.Wpf.BarSeries"/> class.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.BarSeries.SynchronizeProperties(OxyPlot.Series.Series)">
             <summary>
-                Synchronizes the properties.
+            Synchronizes the properties.
             </summary>
             <param name="series">The series.</param>
         </member>
         <member name="P:OxyPlot.Wpf.BarSeries.BarWidth">
             <summary>
-                Gets or sets the bar width.
+            Gets or sets the bar width.
             </summary>
         </member>
         <member name="T:OxyPlot.Wpf.TwoColorLineSeries">
@@ -3809,27 +3588,27 @@
         </member>
         <member name="F:OxyPlot.Wpf.DataPointSeries.CanTrackerInterpolatePointsProperty">
             <summary>
-            The can tracker interpolate points property.
+            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.CanTrackerInterpolatePoints"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.DataPointSeries.DataFieldXProperty">
             <summary>
-            The data field x property.
+            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.DataFieldX"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.DataPointSeries.DataFieldYProperty">
             <summary>
-            The data field y property.
+            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.DataFieldY"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.DataPointSeries.MappingProperty">
             <summary>
-            The mapping property.
+            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.Mapping"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.DataPointSeries.SmoothProperty">
             <summary>
-            The smooth property.
+            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.Smooth"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.DataPointSeries.SynchronizeProperties(OxyPlot.Series.Series)">
@@ -3857,106 +3636,102 @@
             <summary>
             Gets or sets the mapping.
             </summary>
-            <value>
-            The mapping.
-            </value>
+            <value>The mapping.</value>
         </member>
         <member name="P:OxyPlot.Wpf.DataPointSeries.Smooth">
             <summary>
             Gets or sets a value indicating whether this <see cref="T:OxyPlot.Wpf.DataPointSeries"/> is smooth.
             </summary>
-            <value>
-            <c>true</c> if smooth; otherwise, <c>false</c> .
-            </value>
+            <value><c>true</c> if smooth; otherwise, <c>false</c> .</value>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.BrokenLineColorProperty">
             <summary>
-            The BrokenLineColor property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.BrokenLineColor"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.BrokenLineStyleProperty">
             <summary>
-            The BrokenLineStyle property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.BrokenLineStyle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.BrokenLineThicknessProperty">
             <summary>
-            The BrokenLineThickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.BrokenLineThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.DashesProperty">
             <summary>
-            The dashes property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.Dashes"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.LabelFormatStringProperty">
             <summary>
-            The label format string property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LabelFormatString"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.LabelMarginProperty">
             <summary>
-            The label margin property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LabelMargin"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.LineJoinProperty">
             <summary>
-            The line join property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LineJoin"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.LineLegendPositionProperty">
             <summary>
-            The line legend position property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LineLegendPosition"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.LineStyleProperty">
             <summary>
-            The line style property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LineStyle"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.MarkerFillProperty">
             <summary>
-            The marker fill property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerFill"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.MarkerOutlineProperty">
             <summary>
-            The marker outline property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerOutline"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.MarkerResolutionProperty">
             <summary>
-            The marker resolution property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerResolution"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.MarkerSizeProperty">
             <summary>
-            The marker size property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerSize"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.MarkerStrokeProperty">
             <summary>
-            The marker stroke property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerStroke"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.MarkerStrokeThicknessProperty">
             <summary>
-            The marker stroke thickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerStrokeThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.MarkerTypeProperty">
             <summary>
-            The marker type property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerType"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.MinimumSegmentLengthProperty">
             <summary>
-            The minimum segment length property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MinimumSegmentLength"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineSeries.StrokeThicknessProperty">
             <summary>
-            The stroke thickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.StrokeThickness"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.LineSeries.#cctor">
@@ -3973,9 +3748,7 @@
             <summary>
             Creates the internal series.
             </summary>
-            <returns>
-            The internal series.
-            </returns>
+            <returns>The internal series.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.LineSeries.SynchronizeProperties(OxyPlot.Series.Series)">
             <summary>
@@ -4007,17 +3780,13 @@
             <summary>
             Gets or sets the label format string.
             </summary>
-            <value>
-            The label format string.
-            </value>
+            <value>The label format string.</value>
         </member>
         <member name="P:OxyPlot.Wpf.LineSeries.LabelMargin">
             <summary>
             Gets or sets the label margin.
             </summary>
-            <value>
-            The label margin.
-            </value>
+            <value>The label margin.</value>
         </member>
         <member name="P:OxyPlot.Wpf.LineSeries.LineJoin">
             <summary>
@@ -4048,9 +3817,7 @@
             <summary>
             Gets or sets the marker resolution.
             </summary>
-            <value>
-            The marker resolution.
-            </value>
+            <value>The marker resolution.</value>
         </member>
         <member name="P:OxyPlot.Wpf.LineSeries.MarkerSize">
             <summary>
@@ -4084,17 +3851,17 @@
         </member>
         <member name="F:OxyPlot.Wpf.TwoColorLineSeries.Color2Property">
             <summary>
-            The color 2 property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TwoColorLineSeries.Color2"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TwoColorLineSeries.LimitProperty">
             <summary>
-            The limit property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TwoColorLineSeries.Limit"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TwoColorLineSeries.LineStyle2Property">
             <summary>
-            The line style 2 property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TwoColorLineSeries.LineStyle2"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.TwoColorLineSeries.#ctor">
@@ -4106,9 +3873,7 @@
             <summary>
             Synchronizes the properties.
             </summary>
-            <param name="series">
-            The series.
-            </param>
+            <param name="series">The series.</param>
         </member>
         <member name="P:OxyPlot.Wpf.TwoColorLineSeries.Color2">
             <summary>
@@ -4132,67 +3897,67 @@
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.BinSizeProperty">
             <summary>
-            The bin size property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.BinSize"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.DataFieldSizeProperty">
             <summary>
-            The data field size property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.DataFieldSize"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.DataFieldTagProperty">
             <summary>
-            The data field tag property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.DataFieldTag"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.DataFieldValueProperty">
             <summary>
-            The data field value property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.DataFieldValue"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.DataFieldXProperty">
             <summary>
-            The data field x property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.DataFieldX"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.DataFieldYProperty">
             <summary>
-            The data field y property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.DataFieldY"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.MappingProperty">
             <summary>
-            The mapping property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.Mapping"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.MarkerFillProperty">
             <summary>
-            The marker fill property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.MarkerFill"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.MarkerOutlineProperty">
             <summary>
-            The marker outline property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.MarkerOutline"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.MarkerSizeProperty">
             <summary>
-            The marker size property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.MarkerSize"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.MarkerStrokeProperty">
             <summary>
-            The marker stroke property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.MarkerStroke"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.MarkerStrokeThicknessProperty">
             <summary>
-            The marker stroke thickness property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.MarkerStrokeThickness"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.ScatterSeries.MarkerTypeProperty">
             <summary>
-            The marker type property.
+            Identifies the <see cref="P:OxyPlot.Wpf.ScatterSeries.MarkerType"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.ScatterSeries.#ctor">
@@ -4204,17 +3969,13 @@
             <summary>
             Creates the internal series.
             </summary>
-            <returns>
-            The series.
-            </returns>
+            <returns>The series.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ScatterSeries.SynchronizeProperties(OxyPlot.Series.Series)">
             <summary>
             Synchronizes the properties.
             </summary>
-            <param name="series">
-            The series.
-            </param>
+            <param name="series">The series.</param>
         </member>
         <member name="P:OxyPlot.Wpf.ScatterSeries.BinSize">
             <summary>
@@ -4285,9 +4046,7 @@
             <summary>
             Gets or sets the color axis key.
             </summary>
-            <value>
-            The color axis key.
-            </value>
+            <value>The color axis key.</value>
         </member>
         <member name="T:OxyPlot.Wpf.TrackerControl">
             <summary>
@@ -4321,62 +4080,62 @@
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.HorizontalLineVisibilityProperty">
             <summary>
-            The horizontal line visibility property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerControl.HorizontalLineVisibility"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.VerticalLineVisibilityProperty">
             <summary>
-            The vertical line visibility property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerControl.VerticalLineVisibility"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.LineStrokeProperty">
             <summary>
-            The line stroke property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerControl.LineStroke"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.LineExtentsProperty">
             <summary>
-            The line extents property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerControl.LineExtents"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.LineDashArrayProperty">
             <summary>
-            The line dash array property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerControl.LineDashArray"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.BorderEdgeModeProperty">
             <summary>
-            The border edge mode property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerControl.BorderEdgeMode"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.ShowPointerProperty">
             <summary>
-            The show arrow property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerControl.ShowPointer"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.CornerRadiusProperty">
             <summary>
-            The corner radius property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerControl.CornerRadius"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.DistanceProperty">
             <summary>
-            The distance property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerControl.Distance"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.CanCenterHorizontallyProperty">
             <summary>
-            The can center horizontally property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerControl.CanCenterHorizontally"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.CanCenterVerticallyProperty">
             <summary>
-            The can center vertically property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerControl.CanCenterVertically"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.PositionProperty">
             <summary>
-            The position property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerControl.Position"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerControl.content">
@@ -4411,27 +4170,21 @@
         </member>
         <member name="M:OxyPlot.Wpf.TrackerControl.OnApplyTemplate">
             <summary>
-            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.TrackerControl.PositionChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
             <summary>
             Called when the position is changed.
             </summary>
-            <param name="sender">
-            The sender.
-            </param>
-            <param name="e">
-            The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-            </param>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:OxyPlot.Wpf.TrackerControl.OnPositionChanged(System.Windows.DependencyPropertyChangedEventArgs)">
             <summary>
             Called when the position is changed.
             </summary>
-            <param name="dependencyPropertyChangedEventArgs">
-            The dependency property changed event args.
-            </param>
+            <param name="dependencyPropertyChangedEventArgs">The dependency property changed event args.</param>
         </member>
         <member name="M:OxyPlot.Wpf.TrackerControl.UpdatePositionAndBorder">
             <summary>
@@ -4442,47 +4195,23 @@
             <summary>
             Create the border geometry.
             </summary>
-            <param name="ha">
-            The horizontal alignment.
-            </param>
-            <param name="va">
-            The vertical alignment.
-            </param>
-            <param name="width">
-            The width.
-            </param>
-            <param name="height">
-            The height.
-            </param>
-            <param name="margin">
-            The margin.
-            </param>
-            <returns>
-            The border geometry.
-            </returns>
+            <param name="ha">The horizontal alignment.</param>
+            <param name="va">The vertical alignment.</param>
+            <param name="width">The width.</param>
+            <param name="height">The height.</param>
+            <param name="margin">The margin.</param>
+            <returns>The border geometry.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.TrackerControl.CreatePointerBorderGeometry(System.Windows.HorizontalAlignment,System.Windows.VerticalAlignment,System.Double,System.Double,System.Windows.Thickness@)">
             <summary>
             Create a border geometry with a 'pointer'.
             </summary>
-            <param name="ha">
-            The horizontal alignment.
-            </param>
-            <param name="va">
-            The vertical alignment.
-            </param>
-            <param name="width">
-            The width.
-            </param>
-            <param name="height">
-            The height.
-            </param>
-            <param name="margin">
-            The margin.
-            </param>
-            <returns>
-            The border geometry.
-            </returns>
+            <param name="ha">The horizontal alignment.</param>
+            <param name="va">The vertical alignment.</param>
+            <param name="width">The width.</param>
+            <param name="height">The height.</param>
+            <param name="margin">The margin.</param>
+            <returns>The border geometry.</returns>
         </member>
         <member name="P:OxyPlot.Wpf.TrackerControl.BorderEdgeMode">
             <summary>
@@ -4521,7 +4250,7 @@
         </member>
         <member name="P:OxyPlot.Wpf.TrackerControl.CornerRadius">
             <summary>
-            Gets or sets the corner radius (only used when ShowPoint=false).
+            Gets or sets the corner radius (only used when ShowPoint=<c>false</c>).
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.TrackerControl.Distance">
@@ -4548,38 +4277,32 @@
             <summary>
             Represents a tracker definition.
             </summary>
-            <remarks>
-            The tracker definitions make it possible to show different trackers for different series.
-            The <see cref="P:OxyPlot.Series.Series.TrackerKey"/> property is matched with the <see cref="P:OxyPlot.Wpf.TrackerDefinition.TrackerKey"/> 
-            in the TrackerDefinitions collection in the <see cref="T:OxyPlot.Wpf.Plot"/> control.
-            </remarks>
+            <remarks>The tracker definitions make it possible to show different trackers for different series.
+            The <see cref="P:OxyPlot.Series.Series.TrackerKey"/> property is matched with the <see cref="P:OxyPlot.Wpf.TrackerDefinition.TrackerKey"/>
+            in the TrackerDefinitions collection in the <see cref="T:OxyPlot.Wpf.Plot"/> control.</remarks>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerDefinition.TrackerKeyProperty">
             <summary>
-            The tracker key property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerDefinition.TrackerKey"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TrackerDefinition.TrackerTemplateProperty">
             <summary>
-            The tracker template property.
+            Identifies the <see cref="P:OxyPlot.Wpf.TrackerDefinition.TrackerTemplate"/> dependency property.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.TrackerDefinition.TrackerKey">
             <summary>
             Gets or sets the tracker key.
             </summary>
-            <remarks>
-            The Plot will use this property to find the TrackerDefinition that matches the TrackerKey of the current series.
-            </remarks>
+            <remarks>The Plot will use this property to find the TrackerDefinition that matches the TrackerKey of the current series.</remarks>
         </member>
         <member name="P:OxyPlot.Wpf.TrackerDefinition.TrackerTemplate">
             <summary>
             Gets or sets the tracker template.
             </summary>
-            <remarks>
-            The tracker control will be added/removed from the Tracker overlay as necessary.
-            The DataContext of the tracker will be set to a TrackerHitResult with the current tracker data.
-            </remarks>
+            <remarks>The tracker control will be added/removed from the Tracker overlay as necessary.
+            The DataContext of the tracker will be set to a TrackerHitResult with the current tracker data.</remarks>
         </member>
         <member name="T:OxyPlot.Wpf.AreaSeries">
             <summary>
@@ -4588,32 +4311,32 @@
         </member>
         <member name="F:OxyPlot.Wpf.AreaSeries.Color2Property">
             <summary>
-            The color property.
+            Identifies the <see cref="P:OxyPlot.Wpf.AreaSeries.Color2"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.AreaSeries.ConstantY2Property">
             <summary>
-            The constant y 2 property.
+            Identifies the <see cref="P:OxyPlot.Wpf.AreaSeries.ConstantY2"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.AreaSeries.DataFieldX2Property">
             <summary>
-            The data field x 2 property.
+            Identifies the <see cref="P:OxyPlot.Wpf.AreaSeries.DataFieldX2"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.AreaSeries.DataFieldY2Property">
             <summary>
-            The data field y 2 property.
+            Identifies the <see cref="P:OxyPlot.Wpf.AreaSeries.DataFieldY2"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.AreaSeries.FillProperty">
             <summary>
-            The fill property.
+            Identifies the <see cref="P:OxyPlot.Wpf.AreaSeries.Fill"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.AreaSeries.Reverse2Property">
             <summary>
-            The reverse 2 property.
+            Identifies the <see cref="P:OxyPlot.Wpf.AreaSeries.Reverse2"/> dependency property.
             </summary>
         </member>
         <member name="M:OxyPlot.Wpf.AreaSeries.#ctor">
@@ -4625,17 +4348,13 @@
             <summary>
             Creates the internal series.
             </summary>
-            <returns>
-            The internal series.
-            </returns>
+            <returns>The internal series.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.AreaSeries.SynchronizeProperties(OxyPlot.Series.Series)">
             <summary>
             Synchronizes the properties.
             </summary>
-            <param name="series">
-            The series.
-            </param>
+            <param name="series">The series.</param>
         </member>
         <member name="P:OxyPlot.Wpf.AreaSeries.Color2">
             <summary>
@@ -4676,37 +4395,23 @@
             <summary>
             Calculate the distance between two points.
             </summary>
-            <param name="p1">
-            The first point.
-            </param>
-            <param name="p2">
-            The second point.
-            </param>
-            <returns>
-            The distance.
-            </returns>
+            <param name="p1">The first point.</param>
+            <param name="p2">The second point.</param>
+            <returns>The distance.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToBrush(OxyPlot.OxyColor)">
             <summary>
             Converts an <see cref="T:OxyPlot.OxyColor"/> to a <see cref="T:System.Windows.Media.Brush"/>.
             </summary>
-            <param name="c">
-            The color.
-            </param>
-            <returns>
-            A <see cref="T:System.Windows.Media.SolidColorBrush"/>.
-            </returns>
+            <param name="c">The color.</param>
+            <returns>A <see cref="T:System.Windows.Media.SolidColorBrush"/>.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToColor(OxyPlot.OxyColor)">
             <summary>
             Converts an <see cref="T:OxyPlot.OxyColor"/> to a <see cref="T:System.Windows.Media.Color"/>.
             </summary>
-            <param name="c">
-            The color.
-            </param>
-            <returns>
-            A Color.
-            </returns>
+            <param name="c">The color.</param>
+            <returns>A Color.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToThickness(OxyPlot.OxyThickness)">
             <summary>
@@ -4726,117 +4431,109 @@
             <summary>
             Converts a HorizontalAlignment to a HorizontalAlignment.
             </summary>
-            <param name="alignment">
-            The alignment.
-            </param>
-            <returns>
-            A HorizontalAlignment.
-            </returns>
+            <param name="alignment">The alignment.</param>
+            <returns>A HorizontalAlignment.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToVerticalAlignment(System.Windows.VerticalAlignment)">
             <summary>
             Converts a HorizontalAlignment to a VerticalAlignment.
             </summary>
-            <param name="alignment">
-            The alignment.
-            </param>
-            <returns>
-            A VerticalAlignment.
-            </returns>
+            <param name="alignment">The alignment.</param>
+            <returns>A VerticalAlignment.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToOxyColor(System.Windows.Media.Color)">
             <summary>
             Converts a Color to an OxyColor.
             </summary>
-            <param name="color">
-            The color.
-            </param>
-            <returns>
-            An OxyColor.
-            </returns>
+            <param name="color">The color.</param>
+            <returns>An OxyColor.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToOxyColor(System.Windows.Media.Brush)">
             <summary>
             Converts a <see cref="T:System.Windows.Media.Brush"/> to an <see cref="T:OxyPlot.OxyColor"/>.
             </summary>
-            <param name="brush">
-            The brush.
-            </param>
-            <returns>
-            An <see cref="T:OxyPlot.OxyColor"/>.
-            </returns>
+            <param name="brush">The brush.</param>
+            <returns>An <see cref="T:OxyPlot.OxyColor"/>.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToOxyThickness(System.Windows.Thickness)">
             <summary>
             Converts a Thickness to an <see cref="T:OxyPlot.OxyThickness"/>.
             </summary>
-            <param name="t">
-            The thickness.
-            </param>
-            <returns>
-            An <see cref="T:OxyPlot.OxyThickness"/>.
-            </returns>
+            <param name="t">The thickness.</param>
+            <returns>An <see cref="T:OxyPlot.OxyThickness"/>.</returns>
+        </member>
+        <member name="M:OxyPlot.Wpf.ConverterExtensions.ToPoint(OxyPlot.ScreenPoint)">
+            <summary>
+            Converts a <see cref="T:OxyPlot.ScreenPoint"/> to a <see cref="T:System.Windows.Point"/>.
+            </summary>
+            <param name="pt">The screen point.</param>
+            <returns>A <see cref="T:System.Windows.Point"/>.</returns>
+        </member>
+        <member name="M:OxyPlot.Wpf.ConverterExtensions.ToPixelAlignedPoint(OxyPlot.ScreenPoint)">
+            <summary>
+            Converts a <see cref="T:OxyPlot.ScreenPoint"/> to a pixel aligned<see cref="T:System.Windows.Point"/>.
+            </summary>
+            <param name="pt">The screen point.</param>
+            <returns>A pixel aligned <see cref="T:System.Windows.Point"/>.</returns>
+        </member>
+        <member name="M:OxyPlot.Wpf.ConverterExtensions.ToRect(OxyPlot.OxyRect)">
+            <summary>
+            Converts an <see cref="T:OxyPlot.OxyRect"/> to a <see cref="T:System.Windows.Rect"/>.
+            </summary>
+            <param name="r">The rectangle.</param>
+            <returns>A <see cref="T:System.Windows.Rect"/>.</returns>
+        </member>
+        <member name="M:OxyPlot.Wpf.ConverterExtensions.ToPixelAlignedRect(OxyPlot.OxyRect)">
+            <summary>
+            Converts an <see cref="T:OxyPlot.OxyRect"/> to a pixel aligned <see cref="T:System.Windows.Rect"/>.
+            </summary>
+            <param name="r">The rectangle.</param>
+            <returns>A pixel aligned<see cref="T:System.Windows.Rect"/>.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToPoint(OxyPlot.ScreenPoint,System.Boolean)">
             <summary>
             Converts a <see cref="T:OxyPlot.ScreenPoint"/> to a <see cref="T:System.Windows.Point"/>.
             </summary>
-            <param name="pt">
-            The screen point.
-            </param>
-            <param name="aliased">
-            use pixel alignment conversion if set to <c>true</c>.
-            </param>
-            <returns>
-            A <see cref="T:System.Windows.Point"/>.
-            </returns>
+            <param name="pt">The screen point.</param>
+            <param name="aliased">use pixel alignment conversion if set to <c>true</c>.</param>
+            <returns>A <see cref="T:System.Windows.Point"/>.</returns>
+        </member>
+        <member name="M:OxyPlot.Wpf.ConverterExtensions.ToPointCollection(System.Collections.Generic.IEnumerable{OxyPlot.ScreenPoint},System.Boolean)">
+            <summary>
+            Creates a point collection from the specified points.
+            </summary>
+            <param name="points">The points to convert.</param>
+            <param name="aliased">convert to pixel aligned points if set to <c>true</c>.</param>
+            <returns>The point collection.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToRect(OxyPlot.OxyRect,System.Boolean)">
             <summary>
             Converts an <see cref="T:OxyPlot.OxyRect"/> to a <see cref="T:System.Windows.Rect"/>.
             </summary>
-            <param name="r">
-            The rectangle.
-            </param>
-            <param name="aliased">
-            use pixel alignment if set to <c>true</c>.
-            </param>
-            <returns>
-            A <see cref="T:System.Windows.Rect"/>.
-            </returns>
+            <param name="r">The rectangle.</param>
+            <param name="aliased">use pixel alignment if set to <c>true</c>.</param>
+            <returns>A <see cref="T:System.Windows.Rect"/>.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToScreenPoint(System.Windows.Point)">
             <summary>
             Converts a <see cref="T:System.Windows.Point"/> to a <see cref="T:OxyPlot.ScreenPoint"/>.
             </summary>
-            <param name="pt">
-            The point.
-            </param>
-            <returns>
-            A <see cref="T:OxyPlot.ScreenPoint"/>.
-            </returns>
+            <param name="pt">The point.</param>
+            <returns>A <see cref="T:OxyPlot.ScreenPoint"/>.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToScreenPointArray(System.Windows.Point[])">
             <summary>
             Converts a Point array to a ScreenPoint array.
             </summary>
-            <param name="points">
-            The points.
-            </param>
-            <returns>
-            A ScreenPoint array.
-            </returns>
+            <param name="points">The points.</param>
+            <returns>A ScreenPoint array.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToScreenVector(System.Windows.Vector)">
             <summary>
             Converts the specified vector to a ScreenVector.
             </summary>
-            <param name="vector">
-            The vector.
-            </param>
-            <returns>
-            A <see cref="T:OxyPlot.ScreenVector"/>.
-            </returns>
+            <param name="vector">The vector.</param>
+            <returns>A <see cref="T:OxyPlot.ScreenVector"/>.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.Convert(System.Windows.Input.Key)">
             <summary>
@@ -4850,9 +4547,7 @@
             Converts the specified button.
             </summary>
             <param name="button">The button to convert.</param>
-            <returns>
-            The converted mouse button.
-            </returns>
+            <returns>The converted mouse button.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ConverterExtensions.ToMouseWheelEventArgs(System.Windows.Input.MouseWheelEventArgs,System.Windows.IInputElement)">
             <summary>
@@ -4999,18 +4694,10 @@
             <summary>
             The draw ellipses.
             </summary>
-            <param name="rectangles">
-            The rectangles.
-            </param>
-            <param name="fill">
-            The fill.
-            </param>
-            <param name="stroke">
-            The stroke.
-            </param>
-            <param name="thickness">
-            The thickness.
-            </param>
+            <param name="rectangles">The rectangles.</param>
+            <param name="fill">The fill.</param>
+            <param name="stroke">The stroke.</param>
+            <param name="thickness">The thickness.</param>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawLine(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.OxyPenLineJoin,System.Boolean)">
             <summary>
@@ -5062,18 +4749,10 @@
             <summary>
             Draws the rectangle.
             </summary>
-            <param name="rect">
-            The rectangle.
-            </param>
-            <param name="fill">
-            The fill.
-            </param>
-            <param name="stroke">
-            The stroke.
-            </param>
-            <param name="thickness">
-            The thickness.
-            </param>
+            <param name="rect">The rectangle.</param>
+            <param name="fill">The fill.</param>
+            <param name="stroke">The stroke.</param>
+            <param name="thickness">The thickness.</param>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawRectangles(System.Collections.Generic.IList{OxyPlot.OxyRect},OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double)">
             <summary>
@@ -5108,18 +4787,13 @@
             <param name="fontFamily">The font family.</param>
             <param name="fontSize">Size of the font.</param>
             <param name="fontWeight">The font weight.</param>
-            <returns>
-            The text size.
-            </returns>
+            <returns>The text size.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.SetToolTip(System.String)">
             <summary>
             Sets the tool tip for the following items.
             </summary>
-            <param name="text">
-            The text in the tooltip.
-            </param>
-            <params>This is only used in the plot controls.</params>
+            <param name="text">The text in the tooltip.</param>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawImage(OxyPlot.OxyImage,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Boolean)">
             <summary>
@@ -5153,57 +4827,33 @@
             <summary>
             Cleans up resources not in use.
             </summary>
-            <remarks>
-            This method is called at the end of each rendering.
-            </remarks>
+            <remarks>This method is called at the end of each rendering.</remarks>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.MeasureTextByGlyphTypeface(System.String,System.String,System.Double,System.Double)">
             <summary>
             Measures the size of the specified text by a faster method (using GlyphTypefaces).
             </summary>
-            <param name="text">
-            The text.
-            </param>
-            <param name="fontFamily">
-            The font family.
-            </param>
-            <param name="fontSize">
-            The font size.
-            </param>
-            <param name="fontWeight">
-            The font weight.
-            </param>
-            <returns>
-            The size of the text.
-            </returns>
+            <param name="text">The text.</param>
+            <param name="fontFamily">The font family.</param>
+            <param name="fontSize">The font size.</param>
+            <param name="fontWeight">The font weight.</param>
+            <returns>The size of the text.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.GetFontWeight(System.Double)">
             <summary>
             Gets the font weight.
             </summary>
-            <param name="fontWeight">
-            The font weight value.
-            </param>
-            <returns>
-            The font weight.
-            </returns>
+            <param name="fontWeight">The font weight value.</param>
+            <returns>The font weight.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.MeasureTextSize(System.Windows.Media.GlyphTypeface,System.Double,System.String)">
             <summary>
             Fast text size calculation
             </summary>
-            <param name="glyphTypeface">
-            The glyph typeface.
-            </param>
-            <param name="sizeInEm">
-            The size.
-            </param>
-            <param name="s">
-            The text.
-            </param>
-            <returns>
-            The text size.
-            </returns>
+            <param name="glyphTypeface">The glyph typeface.</param>
+            <param name="sizeInEm">The size.</param>
+            <param name="s">The text.</param>
+            <returns>The text size.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.CreateAndAdd``1(System.Double,System.Double)">
             <summary>
@@ -5218,9 +4868,7 @@
             <summary>
             The apply tooltip.
             </summary>
-            <param name="element">
-            The element.
-            </param>
+            <param name="element">The element.</param>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawLineSegmentsByStreamGeometry(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.OxyPenLineJoin,System.Boolean)">
             <summary>
@@ -5237,12 +4885,8 @@
             <summary>
             Gets the cached brush.
             </summary>
-            <param name="color">
-            The color.
-            </param>
-            <returns>
-            The brush.
-            </returns>
+            <param name="color">The color.</param>
+            <returns>The brush.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.GetCachedFontFamily(System.String)">
             <summary>
@@ -5280,17 +4924,13 @@
             <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
             <param name="lineJoin">The line join.</param>
             <param name="aliased">Render aliased if set to <c>true</c>.</param>
-            <remarks>
-            See <a href="https://oxyplot.codeplex.com/discussions/456679">discussion</a>.
-            </remarks>
+            <remarks>See <a href="https://oxyplot.codeplex.com/discussions/456679">discussion</a>.</remarks>
         </member>
         <member name="P:OxyPlot.Wpf.ShapesRenderContext.TextMeasurementMethod">
             <summary>
             Gets or sets the text measurement method.
             </summary>
-            <value>
-            The text measurement method.
-            </value>
+            <value>The text measurement method.</value>
         </member>
         <member name="P:OxyPlot.Wpf.ShapesRenderContext.BalancedLineDrawingThicknessLimit">
             <summary>
@@ -5301,20 +4941,14 @@
             <summary>
             Gets or sets a value indicating whether to use stream geometry for lines and polygons rendering.
             </summary>
-            <value>
-            <c>true</c> if stream geometry should be used; otherwise, <c>false</c> .
-            </value>
-            <remarks>
-            The XamlWriter does not serialize StreamGeometry, so set this to false if you want to export to XAML. Using stream geometry seems to be slightly faster than using path geometry.
-            </remarks>
+            <value><c>true</c> if stream geometry should be used; otherwise, <c>false</c> .</value>
+            <remarks>The XamlWriter does not serialize StreamGeometry, so set this to <c>false</c> if you want to export to XAML. Using stream geometry seems to be slightly faster than using path geometry.</remarks>
         </member>
         <member name="P:OxyPlot.Wpf.ShapesRenderContext.RendersToScreen">
             <summary>
             Gets or sets a value indicating whether the context renders to screen.
             </summary>
-            <value>
-            <c>true</c> if the context renders to screen; otherwise, <c>false</c>.
-            </value>
+            <value><c>true</c> if the context renders to screen; otherwise, <c>false</c>.</value>
         </member>
         <member name="T:OxyPlot.Wpf.Properties.Resources">
             <summary>

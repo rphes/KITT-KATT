@@ -2,9 +2,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -84,11 +86,23 @@ namespace KITT_Drive_dotNET.ViewModel
 		List<int> xRefList;
 		List<int> tRefList;
 
-		public IList<DataPoint> YPoints
+		//private List<DataPoint> _yPoints;
+
+		//public List<DataPoint> YPoints
+		//{
+		//	get { return _yPoints; }
+		//	set 
+		//	{
+		//		_yPoints = value;
+		//		RaisePropertyChanged("YPoints");
+		//	}
+		//}
+		public List<DataPoint> YPoints
 		{
-			get { return AutoControl.yPoints; }
+			get { return AutoControl.yPoints;}
 		}
-		
+
+		public PlotModel PlotModel { get; set; }
 		#endregion
 
 		#region Construction

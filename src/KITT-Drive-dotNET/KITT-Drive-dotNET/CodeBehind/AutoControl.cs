@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.LinearAlgebra.Generic;
-using MathNet.Numerics.LinearAlgebra.Double;
-using System.Windows.Threading;
 using OxyPlot;
-using OxyPlot.Wpf;
+using System;
+using System.Collections.Generic;
+using System.Windows.Threading;
 
 namespace KITT_Drive_dotNET
 {
@@ -34,7 +31,7 @@ namespace KITT_Drive_dotNET
 		//DateTime tZero; //obsolete at this point, see tRel
 		//TimeSpan tRel { get { return DateTime.Now - tZero; } } //obsolete at this point, when using a fixed sampletime it's easier to use that as reference
 		//TimeSpan tMax = new TimeSpan(0, 0, 0, 30);
-		TimeSpan tInit = new TimeSpan(0, 0, 0, 0);
+		TimeSpan tInit = new TimeSpan(0, 0, 0, 5);
 		int iteration = 0;
 
 		//Reference
@@ -42,20 +39,17 @@ namespace KITT_Drive_dotNET
 		public List<int> tRefList { get; set; }
 
 		//Throttle mapping
-		double[] forceMapper = {5, 0, -0.1};
+		double[] forceMapper = {2, 0, -0.025};
 		double forceMin = 0.1;
 
 		//Filtering
 		double[] lowPass = new double[3];
 		double fFall = 10; //Cut-off frequency of low-pass filter
 		double tExpectedSample = 0.3; //Expected sample time for dimensioning low-pass filter
-		List<double> dLeft = new List<double>(4); //Historic left sensor values
-		List<double> dRight = new List<double>(4); //Historic right sensor values
+		List<double> dLeft = new List<double>(new double[4]); //Historic left sensor values
+		List<double> dRight = new List<double>(new double[4]); //Historic right sensor values
 		double maxDeviation = 0.5;
 
-		//Graph
-		public IList<DataPoint> yPoints { get; set; }
-	
 		//Misc
 		short controlling = 0; //Modifier for enabling vehicle control
 
@@ -64,15 +58,20 @@ namespace KITT_Drive_dotNET
 		#region Construction
 		public AutoControl()
 		{
+			//Init timer
 			evTimer = new DispatcherTimer();
 			evTimer.Tick += evTimer_Tick;
 			evTimer.Interval = tInterval;
 
+			//Build matrices
 			A = DenseMatrix.OfArray(new double[,] { { 0, 1 }, { 0, -Data.Rho / Data.Mass } });
 			B = DenseMatrix.OfArray(new double[,] { { 0 }, { 1 / Data.Mass } });
 			C = DenseMatrix.OfArray(new double[,] { { 1, 0 } });
 			K = DenseMatrix.OfArray(new double[,] { { 0.54, 1.65 } }); //acker(A, B, [-0.6 -0.6]) in MATLAB
 			L = DenseMatrix.OfArray(new double[,] { { 3.9 }, { 3.61 } }); //acker(A', C', [-2 -2]') in MATLAB
+
+			//Init graph
+			initGraph();
 		}
 		#endregion
 
@@ -83,7 +82,8 @@ namespace KITT_Drive_dotNET
 			int speed;
 
 			//Obtain current filtered working distance
-			y = Math.Min(filter(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, ref dLeft), filter(Data.MainViewModel.VehicleViewModel.SensorDistanceRight, ref dRight));
+			Math.Min(filter(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, ref dLeft), filter(Data.MainViewModel.VehicleViewModel.SensorDistanceRight, ref dRight));
+			//y = Math.Min(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, Data.MainViewModel.VehicleViewModel.SensorDistanceRight)/100;
 
 			//Perform control routines
 			force = control();
@@ -95,7 +95,11 @@ namespace KITT_Drive_dotNET
 			//Update internal state and save required values
 			iteration++;
 
-			Data.Com.RequestStatus();
+			//Update graph data
+			updateGraphData();
+
+			//Request new status
+			//Data.Com.RequestStatus();
 		}
 		#endregion
 
@@ -161,7 +165,7 @@ namespace KITT_Drive_dotNET
 				x += tInterval.TotalSeconds / 2 * (curSlope + predSlope);
 				//System.Diagnostics.Debug.WriteLine("x: " + x);
 
-				return (controlling * -K * (x - xRef)).At(0, 0); //TODO check this
+				return (controlling * K * (x - xRef)).At(0, 0); //TODO check this
 			}
 			else
 				return 0;
@@ -176,7 +180,7 @@ namespace KITT_Drive_dotNET
 			//Unrealistic value filter based on historic values
 			if (iteration > 2)
 			{
-				expected = 0.2 * history[0] - 2 * history[1] + 0.5 * history[2];
+				expected = 2.5 * history[0] - 2 * history[1] + 0.5 * history[2];
 
 				if (Math.Abs(value - expected) > maxDeviation)
 					filtered = expected;
@@ -208,12 +212,12 @@ namespace KITT_Drive_dotNET
 				if (force > 0)
 				{
 					f = force - forceMin;
-					return (int)Math.Round(5 + forceMapper[0] * f + forceMapper[1] * Math.Pow(f, 2) + forceMapper[2] * Math.Pow(f, 3));
+					return (int)Math.Round(7 + forceMapper[0] * f + forceMapper[1] * Math.Pow(f, 2) + forceMapper[2] * Math.Pow(f, 3));
 				}
 				else
 				{
 					f = force + forceMin;
-					return (int)Math.Round(-5 + forceMapper[0] * f + forceMapper[1] * Math.Pow(f, 2) + forceMapper[2] * Math.Pow(f, 3));
+					return (int)Math.Round(-7 + forceMapper[0] * f + forceMapper[1] * Math.Pow(f, 2) + forceMapper[2] * Math.Pow(f, 3));
 				}
 			}
 		}
@@ -223,10 +227,17 @@ namespace KITT_Drive_dotNET
 			yPoints = new List<DataPoint>();
 		}
 
-		void updateGraph()
+		//Graph
+		public List<DataPoint> yPoints { get; set; }
+		void updateGraphData()
 		{
+			int tInt = (int)Math.Round(iteration * tInterval.TotalSeconds * 10);
 			double t = iteration * tInterval.TotalSeconds;
+			if (tInt % 5 != 0)
+				return;
 			yPoints.Add(new DataPoint(t, y));
+			//Data.MainViewModel.AutoControlViewModel.YPoints = yPoints;
+			Data.MainViewModel.AutoControlViewModel.UpdateBinding("YPoints");
 		}
 		#endregion
 	}

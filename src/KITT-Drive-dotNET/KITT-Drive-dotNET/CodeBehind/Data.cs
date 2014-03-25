@@ -37,6 +37,7 @@ namespace KITT_Drive_dotNET
 
 		#region Modules
 		public static MainViewModel MainViewModel = new MainViewModel();
+		public static MainWindow MainWindow = new MainWindow();
 		//public static Vehicle Car = new Vehicle();
 		//public static Control Ctr = new Control();
 		public static SerialInterface Com = new SerialInterface();

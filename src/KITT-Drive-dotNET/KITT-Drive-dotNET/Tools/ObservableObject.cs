@@ -24,6 +24,11 @@ namespace KITT_Drive_dotNET
 			OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
 		}
 
+		public void UpdateBinding(string propertyName)
+		{
+			RaisePropertyChanged(propertyName);
+		}
+
 		/// <summary>
 		/// Warns the developer if this Object does not have a public property with
 		/// the specified name. This method does not exist in a Release build.
