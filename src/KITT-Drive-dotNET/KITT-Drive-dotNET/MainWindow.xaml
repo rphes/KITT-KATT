@@ -55,16 +55,14 @@
 		</GroupBox>
 		<GroupBox Name="GroupBox_Auto" Header="Autonomous control" HorizontalAlignment="Stretch" Margin="490,10,10,10" VerticalAlignment="Stretch" DataContext="{Binding Path=AutoControlViewModel}">
 			<Grid>
-				<oxy:Plot Name="Plot1" Title="Live data" VerticalAlignment="Stretch" Margin="0,0,0,20" Model="{Binding PlotModel}">
+				<oxy:Plot Name="Plot1" Title="Live data" VerticalAlignment="Stretch" Margin="0,0,0,20">
 					<oxy:Plot.Axes>
-						<oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="1"/>
-						<oxy:LinearAxis Position="Left" />
+						<oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="1" MajorStep="0.2" MinorStep="0.1" IsPanEnabled="False"/>
+						<oxy:LinearAxis Position="Left" Minimum="-3" Maximum="3" MajorStep="1" MinorStep="0.2" IsPanEnabled="False"/>
 					</oxy:Plot.Axes>
 					<oxy:Plot.Series>
-						<oxy:LineSeries Name="Series1" ItemsSource="{Binding Path=YPoints}" CanTrackerInterpolatePoints="False"/>
+						<oxy:LineSeries ItemsSource="{Binding Path=YPoints}" Color="Black" MarkerSize="3"/>
 					</oxy:Plot.Series>
-						
-					
 				</oxy:Plot>
 				<Label Content="Go to:" Target="{Binding ElementName=TextBox_xRef}" VerticalAlignment="Bottom" HorizontalAlignment="Left"  Margin="10,0,10,15"/>
 				<TextBox Name="TextBox_xRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="120" Height="22" Margin="55,0,10,15" Text="{Binding Path=xRefString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

@@ -101,8 +101,6 @@ namespace KITT_Drive_dotNET.ViewModel
 		{
 			get { return AutoControl.yPoints;}
 		}
-
-		public PlotModel PlotModel { get; set; }
 		#endregion
 
 		#region Construction
@@ -115,6 +113,7 @@ namespace KITT_Drive_dotNET.ViewModel
 			StatusDict.Add(AutoControlStatus.Unbalanced, "State and time reference series must be of equal length");
 			StatusDict.Add(AutoControlStatus.Ready, "Ready");
 			StatusDict.Add(AutoControlStatus.Running, "Running");
+			
 		}
 		#endregion
 
@@ -177,6 +176,7 @@ namespace KITT_Drive_dotNET.ViewModel
 		#region Commands
 		void StartExecute()
 		{
+			validateRefs();
 			Status = AutoControlStatus.Running;
 			AutoControl.tRefList = tRefList;
 			AutoControl.xRefList = xRefList;
@@ -189,6 +189,7 @@ namespace KITT_Drive_dotNET.ViewModel
 				return false;
 			else
 				return validateRefs();
+			//return true;
 		}
 
 		public ICommand Start { get { return new RelayCommand(StartExecute, CanStartExecute); } }

@@ -231,13 +231,16 @@ namespace KITT_Drive_dotNET
 		public List<DataPoint> yPoints { get; set; }
 		void updateGraphData()
 		{
+			Random r = new Random();
+			double u = r.Next(-3,3);
 			int tInt = (int)Math.Round(iteration * tInterval.TotalSeconds * 10);
 			double t = iteration * tInterval.TotalSeconds;
 			if (tInt % 5 != 0)
 				return;
-			yPoints.Add(new DataPoint(t, y));
+			yPoints.Add(new DataPoint(t, u));
 			//Data.MainViewModel.AutoControlViewModel.YPoints = yPoints;
 			Data.MainViewModel.AutoControlViewModel.UpdateBinding("YPoints");
+			Data.MainWindow.Plot1.RefreshPlot(true);
 		}
 		#endregion
 	}
