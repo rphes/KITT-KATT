@@ -23,16 +23,19 @@ namespace KITT_Drive_dotNET
 			InitializeComponent();
 			this.DataContext = Data.MainViewModel;
 
-			//GroupBox_Control.DataContext = Data.MainViewModel.ControlViewModel;
-			//GroupBox_Status.DataContext = Data.Car;
-
 			Data.MainViewModel.ControlViewModel.PropertyChanged += Drive_PropertyChanged;
+			this.Closing += MainWindow_Closing;
 
 			throttleTimer = new DispatcherTimer();
 			throttleTimer.Tick += ThrottleTimer_Tick;
 			steerTimer = new DispatcherTimer();
 			steerTimer.Tick += SteerTimer_Tick;
 			throttleTimer.Interval = steerTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+		}
+
+		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			Data.Com.Dispose();
 		}
 		#endregion
 
@@ -202,18 +205,6 @@ namespace KITT_Drive_dotNET
 			Data.MainViewModel.ControlViewModel.Speed = Data.SpeedDefault;
 			Data.MainViewModel.ControlViewModel.Heading = Data.HeadingDefault;
 		}
-		#endregion
-
-		#region Slider vehicle controls
-		//private void Slider_Speed_DragCompleted(object sender, DragCompletedEventArgs e)
-		//{
-		//	Data.MainViewModel.ControlViewModel.Speed = (int)Slider_Speed.Value;
-		//}
-
-		//private void Slider_Heading_DragCompleted(object sender, DragCompletedEventArgs e)
-		//{
-		//	Data.MainViewModel.ControlViewModel.Heading = (int)Slider_Heading.Value;
-		//}
 		#endregion
 	}
 }

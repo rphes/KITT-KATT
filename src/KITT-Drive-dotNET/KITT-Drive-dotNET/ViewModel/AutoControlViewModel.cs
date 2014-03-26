@@ -49,6 +49,66 @@ namespace KITT_Drive_dotNET.ViewModel
 			}
 		}
 
+		public List<int> xRefList
+		{
+			get { return AutoControl.xRefList; }
+			set { AutoControl.xRefList = value; }
+		}
+
+		public List<int> tRefList
+		{
+			get { return AutoControl.tRefList; }
+			set { AutoControl.tRefList = value; }
+		}
+
+		public int xRefValue
+		{
+			get
+			{ 
+				if (ControlModeSliderIsEnabled)
+					return xRefList[0];
+
+				return 0;
+			}
+			set
+			{
+				if (ControlModeSliderIsEnabled)
+				{
+					xRefList = new List<int>();
+					xRefList.Add(value);
+					tRefList = new List<int>();
+					tRefList.Add(0);
+					RaisePropertyChanged("xRefValueString");
+				}
+			}
+		}
+
+		public string xRefValueString { get { return "Target distance: " + xRefValue + " cm from wall"; } }
+
+		private bool _controlModeSliderIsEnabled;
+
+		public bool ControlModeSliderIsEnabled
+		{
+			get { return _controlModeSliderIsEnabled; }
+			set
+			{
+				_controlModeSliderIsEnabled = value;
+				RaisePropertyChanged("ControlModeSliderIsEnabled");
+			}
+		}
+
+		private bool _controlModeTextArrayIsEnabled = true;
+
+		public bool ControlModeTextArrayIsEnabled
+		{
+			get { return _controlModeTextArrayIsEnabled; }
+			set
+			{
+				_controlModeTextArrayIsEnabled = value;
+				RaisePropertyChanged("ControlModeTextArrayIsEnabled");
+			}
+		}
+
 		private AutoControlStatus _status = AutoControlStatus.StringEmpty;
 
 		public AutoControlStatus Status
@@ -60,6 +120,7 @@ namespace KITT_Drive_dotNET.ViewModel
 				RaisePropertyChanged("Status");
 				RaisePropertyChanged("StatusString");
 				RaisePropertyChanged("StatusStringColor");
+				RaisePropertyChanged("StartStopButtonString");
 			}
 		}
 		
@@ -82,53 +143,34 @@ namespace KITT_Drive_dotNET.ViewModel
 					return new SolidColorBrush(Colors.Green);
 			}
 		}
-		
-		List<int> xRefList;
-		List<int> tRefList;
 
+		public string StartStopButtonString
+		{
+			get
+			{
+				if (Status == AutoControlStatus.Running)
+					return "Stop";
+
+				return "Go!";
+			}
+		}
+		
 		//Plot data
 		public double PlotMinimum { get { return PlotMaximum - AutoControl.MaxTimeSpan; } }
 		public double PlotMaximum {
 			get
 			{
-				if (YPoints != null && YPoints[0].X != 0)
+				if (YPoints != null && YPoints.Count > 1 && YPoints[YPoints.Count - 1].X > AutoControl.MaxTimeSpan)
 					return Math.Floor(YPoints[YPoints.Count - 1].X / (AutoControl.MaxTimeSpan * 0.5)) * AutoControl.MaxTimeSpan * 0.5 + 0.5 * AutoControl.MaxTimeSpan;
 
 				return AutoControl.MaxTimeSpan;
 			} 
 		}
 
-		public List<DataPoint> YPoints
-		{
-			get 
-			{
-				if (AutoControl.TBuffer == null)
-					return null;
+		public List<DataPoint> YPoints { get { return makeDatapoints(AutoControl.TBuffer, AutoControl.YBuffer); } }
+		public List<DataPoint> VPoints { get { return makeDatapoints(AutoControl.TBuffer, AutoControl.VBuffer); } }
+		public List<DataPoint> RPoints { get { return makeDatapoints(AutoControl.TBuffer, AutoControl.RBuffer); } }
 
-				List<DataPoint> l = new List<DataPoint>();
-
-				for (int i = 0; i < AutoControl.YBuffer.Count; i++)
-					l.Add(new DataPoint(AutoControl.TBuffer.ElementAt(i), AutoControl.YBuffer.ElementAt(i)));
-
-				return l;
-			}
-		}
-
-		public List<DataPoint> VPoints
-		{
-			get
-			{
-				if (AutoControl.TBuffer == null)
-					return null;
-
-				List<DataPoint> l = new List<DataPoint>();
-
-				for (int i = 0; i < AutoControl.VBuffer.Count; i++)
-					l.Add(new DataPoint(AutoControl.TBuffer.ElementAt(i), AutoControl.VBuffer.ElementAt(i)));
-
-				return l;
-			}
-		}
 		#endregion
 
 		#region Construction
@@ -146,13 +188,12 @@ namespace KITT_Drive_dotNET.ViewModel
 		#endregion
 
 		#region Methods
-		bool parseRefString(string s, out List<int> list)
+		List<int> parseRefString(string s)
 		{
 			if (String.IsNullOrEmpty(s))
 			{
-				list = null;
 				Status = AutoControlStatus.StringEmpty;
-				return false;
+				return null;
 			}
 
 			List<int> ints = new List<int>();
@@ -163,20 +204,21 @@ namespace KITT_Drive_dotNET.ViewModel
 				int parsed;
 				if (!int.TryParse(str, out parsed))
 				{
-					list = null;
 					Status = AutoControlStatus.ParseFailed;
-					return false;
+					return null;
 				}
 				ints.Add(parsed);
 			}
 
-			list = ints;
-			return true;
+			return ints;
 		}
 
 		bool validateRefs()
 		{
-			if (!parseRefString(xRefString, out xRefList) || !parseRefString(tRefString, out tRefList))
+			xRefList = parseRefString(xRefString);
+			tRefList = parseRefString(tRefString);
+
+			if (xRefList == null || tRefList == null)
 				return false;
 			
 			int prev = -1;
@@ -206,31 +248,52 @@ namespace KITT_Drive_dotNET.ViewModel
 			RaisePropertyChanged("PlotMinimum");
 			RaisePropertyChanged("YPoints");
 			RaisePropertyChanged("VPoints");
+			RaisePropertyChanged("RPoints");
+		}
+
+		List<DataPoint> makeDatapoints(List<double> xPoints, List<double> yPoints)
+		{
+			if (xPoints == null || yPoints == null)				
+				return null;
+
+			//if (xPoints.Count != yPoints.Count)
+			//	throw new System.ArgumentException("The count of both input queues must be equal");
+				
+			List<DataPoint> l = new List<DataPoint>();
+
+			for (int i = 0; i < xPoints.Count-1; i++)
+				l.Add(new DataPoint(xPoints[i], yPoints[i]));
+
+			return l;
 		}
 		#endregion
 
 		#region Commands
-		void StartExecute()
+		void StartStopExecute()
 		{
-			validateRefs();
-			Status = AutoControlStatus.Running;
-			AutoControl.tRefList = tRefList;
-			AutoControl.xRefList = xRefList;
-			AutoControl.Start();
+			if (Status != AutoControlStatus.Running)
+			{
+				Status = AutoControlStatus.Running;
+				AutoControl.Start();
+			}
+			else
+			{
+				Status = AutoControlStatus.Ready;
+				AutoControl.Stop();
+			}
 		}
 
-		bool CanStartExecute()
+		bool CanStartStopExecute()
 		{
 			if (Status == AutoControlStatus.Running)
-				return false;
-			else
+				return true;
+			else if (ControlModeTextArrayIsEnabled)
 				return validateRefs();
-			//return true;
+			else
+				return true;
 		}
 
-		public ICommand Start { get { return new RelayCommand(StartExecute, CanStartExecute); } }
-		#endregion
-
-		
+		public ICommand StartStop { get { return new RelayCommand(StartStopExecute, CanStartStopExecute); } }
+		#endregion		
 	}
 }

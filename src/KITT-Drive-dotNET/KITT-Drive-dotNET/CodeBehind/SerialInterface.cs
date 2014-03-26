@@ -27,8 +27,7 @@ namespace KITT_Drive_dotNET
 		{
 			get { return _lastError; }
 			protected set { _lastError = value; }
-		}
-		
+		}		
 		#endregion
 
 		#region Construction/Destruction
@@ -50,6 +49,11 @@ namespace KITT_Drive_dotNET
 			LastLine = "";
 		}
 
+		~SerialInterface()
+		{
+			Dispose(false);
+		}
+
 		public void Dispose()
 		{
 			Dispose(true);
@@ -60,12 +64,8 @@ namespace KITT_Drive_dotNET
 		{
 			if (disposing)
 			{
-				// free managed resources
 				if (SerialPort != null)
-				{
 					SerialPort.Close();
-					SerialPort.Dispose();
-				}
 			}
 		}
 
@@ -131,7 +131,7 @@ namespace KITT_Drive_dotNET
 				System.Diagnostics.Debug.WriteLine("Error occurred while sending string: " + data);
 				return;
 			}
-			//System.Diagnostics.Debug.WriteLine("Sent string: " + data);
+			System.Diagnostics.Debug.WriteLine("Sent string: " + data);
 		}
 
 		public void RequestStatus()
@@ -204,7 +204,7 @@ namespace KITT_Drive_dotNET
 				if (int.TryParse(data, out voltage))
 					Data.MainViewModel.VehicleViewModel.BatteryVoltage = voltage;
 			}
-			else if (response.Substring(0, 5) == "Audio")
+			else if (response.Length > 5 && response.Substring(0, 5) == "Audio")
 			{
 				//audio status readout
 				bool audiostatus = response[-1] != 0;
@@ -214,8 +214,6 @@ namespace KITT_Drive_dotNET
 			{
 				System.Diagnostics.Debug.WriteLine("Received unknown response: " + response + "could not parse...");
 			}
-
-			//TODO: parse lines "Drive: 159%%" and "L/R: 150%%"
 		}
 		#endregion
 
@@ -246,13 +244,14 @@ namespace KITT_Drive_dotNET
 					LastLine = lineBuffer; //line feed received, push linebuffer to output
 					lineBuffer = "";
 					parseResponse(LastLine);
-					//System.Diagnostics.Debug.WriteLine("Serial line received: " + LastLine);
+					System.Diagnostics.Debug.WriteLine("Serial line received: " + LastLine);
 				}
 				else if (rx == 4)
 					continue; //EOT received, discard
 				else
 					lineBuffer += (char)rx;
 			}
+			Data.MainViewModel.AutoControlViewModel.AutoControl.UpdateModel();
 		}
 
 		#endregion

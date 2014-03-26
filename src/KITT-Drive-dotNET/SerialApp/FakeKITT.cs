@@ -33,6 +33,7 @@ namespace SerialApp
 
 			int intdistance = (int)Math.Round(distance * 100);
 
+			System.Threading.Thread.Sleep(150);
 			Data.serial.SendString('D' + Data.car.ActualPWMHeading.ToString() + ' ' + Data.car.ActualPWMSpeed.ToString());
 			Data.serial.SendString('U' + intdistance.ToString() + ' ' + intdistance.ToString());
 		}

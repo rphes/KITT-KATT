@@ -22,21 +22,32 @@ namespace KITT_Drive_dotNET
 		Matrix<double> K; //Feedback gain
 		Matrix<double> L; //Observer gain
 		Matrix<double> x = DenseMatrix.OfArray(new double[,] { { 1 }, { 0 } }); //State matrix
-		Matrix<double> xRef = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } }); //Reference state matrix
+		Matrix<double> xRef //Reference state matrix
+		{
+			get
+			{
+				double val = 0;
+				for (int i = 0; i < xRefList.Count; i++)
+				{
+					if (tTotal.TotalSeconds >= tRefList[i])
+						val = (double)xRefList[i] / 100;
+					else
+						break;
+				}
+				return DenseMatrix.OfArray(new double[,] { { val }, { 0 } });
+			}
+		}
 		double y = 0; //Vehicle output
 		double t = 0; //Current time
 		int v = 0; //Calculated vehicle reference speed
 
-
-		//Model re-evaluation timer
-		DispatcherTimer evTimer;
-		TimeSpan tInterval = new TimeSpan(0, 0, 0, 0, 100);
-		//DateTime tZero; //obsolete at this point, see tRel
-		//TimeSpan tRel { get { return DateTime.Now - tZero; } } //obsolete at this point, when using a fixed sampletime it's easier to use that as reference
-		//TimeSpan tMax = new TimeSpan(0, 0, 0, 30);
-		TimeSpan tInit = new TimeSpan(0, 0, 0, 5);
+		//Time properties
+		DateTime tPrevious;
+		TimeSpan tDelta;
+		TimeSpan tInit = new TimeSpan(0, 0, 0, 0);
+		TimeSpan tTotal;
 		int iteration = 0;
-
+		
 		//Reference
 		public List<int> xRefList { get; set; }
 		public List<int> tRefList { get; set; }
@@ -46,23 +57,30 @@ namespace KITT_Drive_dotNET
 		double forceMin = 0.1;
 
 		//Filtering
+		public bool LowPassFilterIsEnabled { get; set; }
+		public bool ExpectedValueFilterIsEnabled { get; set; }
 		double[] lowPass = new double[3];
 		double fFall = 10; //Cut-off frequency of low-pass filter
 		double tExpectedSample = 0.3; //Expected sample time for dimensioning low-pass filter
-		List<double> dLeft = new List<double>(new double[4]); //Historic left sensor values
-		List<double> dRight = new List<double>(new double[4]); //Historic right sensor values
+		List<double> dLeft = new List<double>(4); //Historic left sensor values
+		List<double> dRight = new List<double>(4); //Historic right sensor values
 		double maxDeviation = 0.5;
 
 		//Plot data
+		DispatcherTimer evTimer;
+		TimeSpan tInterval = new TimeSpan(0, 0, 0, 0, 100);
+		int tick = 0;
 		public double MaxTimeSpan { get { return 10; } }
 		public int MaxDataPoints { get { return (int)(MaxTimeSpan / tInterval.TotalSeconds); } }
 		public int MaxPlotDataPoints { get { return (int)Math.Round(MaxDataPoints * 1.2); } }
-		public Queue<double> TBuffer { get; set; }
-		public Queue<double> YBuffer { get; set; }
-		public Queue<int> VBuffer { get; set; }
+		public List<double> TBuffer { get; set; } //Stores time points (x-values)
+		public List<double> YBuffer { get; set; } //Stores sensor distance points
+		public List<double> VBuffer { get; set; } //Stores output speed points
+		public List<double> RBuffer { get; set; } //Stores reference distance points
 
 		//Misc
 		short controlling = 0; //Modifier for enabling vehicle control
+		bool running = false;
 
 		#endregion
 
@@ -80,44 +98,27 @@ namespace KITT_Drive_dotNET
 			C = DenseMatrix.OfArray(new double[,] { { 1, 0 } });
 			K = DenseMatrix.OfArray(new double[,] { { 0.54, 1.65 } }); //acker(A, B, [-0.6 -0.6]) in MATLAB
 			L = DenseMatrix.OfArray(new double[,] { { 3.9 }, { 3.61 } }); //acker(A', C', [-2 -2]') in MATLAB
-
-			//Init graph
-			initGraph();
 		}
 		#endregion
 
 		#region Event handlers
 		void evTimer_Tick(object sender, EventArgs e)
 		{
-			double force;
+			//Get total execution time
+			t = tick * tInterval.TotalSeconds;
+			tick++;
 
-			//Obtain current filtered working distance
-			//y = Math.Min(filter(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, ref dLeft), filter(Data.MainViewModel.VehicleViewModel.SensorDistanceRight, ref dRight)) / 100;
-			y = Math.Min(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, Data.MainViewModel.VehicleViewModel.SensorDistanceRight)/100;
+			UpdateModel();
+			updatePlotData();
 
-			//Perform control routines
-			force = control();
+		}
+		public void UpdateModel()
+		{
+			if (!running)
+				return;
 
-			//Map force to PWM-value
-			v = map(force);
-			Data.MainViewModel.ControlViewModel.Speed = v;
-
-			//Update internal state and save required values
+			control();
 			iteration++;
-
-			//Update graph data
-			TBuffer.Enqueue(t);
-			YBuffer.Enqueue(y*100);
-			VBuffer.Enqueue(v);
-			if (TBuffer.Count == MaxPlotDataPoints)
-			{
-				TBuffer.Dequeue();
-				YBuffer.Dequeue();
-				VBuffer.Dequeue();
-			}
-			Data.MainViewModel.AutoControlViewModel.UpdatePlot();
-
-			//Request new status
 			Data.Com.RequestStatus();
 		}
 		#endregion
@@ -130,12 +131,72 @@ namespace KITT_Drive_dotNET
 			lowPass = makeLowPass();
 
 			//Empty/initialise plot buffers
-			TBuffer = new Queue<double>(MaxPlotDataPoints);
-			YBuffer = new Queue<double>(MaxPlotDataPoints);
-			VBuffer = new Queue<int>(MaxPlotDataPoints);
+			TBuffer = new List<double>(MaxPlotDataPoints);
+			YBuffer = new List<double>(MaxPlotDataPoints);
+			VBuffer = new List<double>(MaxPlotDataPoints);
+			RBuffer = new List<double>(MaxPlotDataPoints);
 
-			//Start the system
+			//Save current time
+			tPrevious = DateTime.Now;
+
+			//Enable everythinh
+			running = true;
+
+			//Subscribe to serial event
+			//Data.MainViewModel.VehicleViewModel.PropertyChanged += VehicleViewModel_PropertyChanged;
+
+			//Start plot updater
 			evTimer.Start();
+
+			//Request initial status
+			Data.Com.RequestStatus();
+		}
+
+		public void Stop()
+		{
+			evTimer.Stop();
+			running = false;
+		}
+
+		void control()
+		{
+			double force = 0;
+
+			tDelta = DateTime.Now - tPrevious;
+			tTotal += tDelta;
+			t = tTotal.TotalSeconds;
+			tPrevious = DateTime.Now;
+
+			//Check if the observer is done initializing
+			if (controlling == 0 && t > tInit.TotalSeconds)
+				controlling = 1;
+
+			//Obtain current filtered working distance
+			//y = Math.Min(filter(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft / 100, ref dLeft), filter(Data.MainViewModel.VehicleViewModel.SensorDistanceRight / 100, ref dRight));
+			y = Math.Min(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft / 100, Data.MainViewModel.VehicleViewModel.SensorDistanceRight / 100);
+
+			//Calculate new states and control
+			if (iteration > 0)
+			{
+				//Find next slope
+				Matrix<double> curSlope = getSlope(x);
+
+				//Find next predicted value via Euler's method
+				Matrix<double> predVal = x + curSlope * tDelta.TotalSeconds;
+
+				//Find next predicted slope
+				Matrix<double> predSlope = getSlope(predVal);
+
+				//Find next state
+				x += tDelta.TotalSeconds / 2 * (curSlope + predSlope);
+				//System.Diagnostics.Debug.WriteLine("x: " + x);
+
+				force = (controlling * K * (x - xRef)).At(0, 0); //TODO check this
+			}
+
+			//Map force to PWM-value
+			v = map(force);
+			Data.MainViewModel.ControlViewModel.Speed = v;
 		}
 
 		Matrix<double> getSlope(Matrix<double> var)
@@ -157,73 +218,41 @@ namespace KITT_Drive_dotNET
 			return new double[] { c1, c2, c3 };
 		}
 
-		double control()
-		{
-			//Get total execution time
-			t = iteration * tInterval.TotalSeconds;
-
-			//Check if the observer is done initializing
-			if (controlling == 0 && t > tInit.TotalSeconds)
-				controlling = 1;
-
-			//Calculate new states and control
-			if (iteration > 0)
-			{
-				//Determine reference value
-				for (int i = 0; i < xRefList.Count; i++)
-				{
-					if (t > tRefList[i])
-						xRef.At(0, 0, xRefList[i] / 100);
-					else
-						break;				
-				}
-
-				//Find next slope
-				Matrix<double> curSlope = getSlope(x);
-
-				//Find next predicted value via Euler's method
-				Matrix<double> predVal = x + curSlope * tInterval.TotalSeconds;
-
-				//Find next predicted slope
-				Matrix<double> predSlope = getSlope(predVal);
-
-				//Find next state
-				x += tInterval.TotalSeconds / 2 * (curSlope + predSlope);
-				//System.Diagnostics.Debug.WriteLine("x: " + x);
-
-				return (controlling * K * (x - xRef)).At(0, 0); //TODO check this
-			}
-			else
-				return 0;
-		}
 
 		double filter(double value, ref List<double> history)
 		{
+			int count = history.Count;
 			double filtered, expected;
 
 			filtered = value;
 
 			//Unrealistic value filter based on historic values
-			if (iteration > 2)
+			if (ExpectedValueFilterIsEnabled)
 			{
-				expected = 2.5 * history[0] - 2 * history[1] + 0.5 * history[2];
+				if (iteration > 2)
+				{
+					expected = 2.5 * history[count - 1] - 2 * history[count - 2] + 0.5 * history[count - 3];
 
-				if (Math.Abs(value - expected) > maxDeviation)
-					filtered = expected;
+					if (Math.Abs(value - expected) > maxDeviation)
+						filtered = expected;
+				}
 			}
 			
 			//Low-pass filter
-			filtered *= lowPass[2];
+			if (LowPassFilterIsEnabled)
+			{
+				filtered *= lowPass[2];
 
-			if (iteration > 0)
-				filtered += lowPass[0] * history[0];
-			if (iteration > 1)
-				filtered += lowPass[1] * history[1];
+				if (iteration > 0)
+					filtered += lowPass[count - 1] * history[0];
+				if (iteration > 1)
+					filtered += lowPass[count - 2] * history[1];
+			}
 
 			//Remove obsolete value and save new one
-			if (history.Count == 4)
-				history.RemoveAt(3);
-			history.Insert(0, filtered);
+			if (count == 4)
+				history.RemoveAt(0);
+			history.Add(filtered);
 
 			return filtered;
 		}
@@ -248,24 +277,23 @@ namespace KITT_Drive_dotNET
 			}
 		}
 
-		void initGraph()
+		private void updatePlotData()
 		{
-			//yPoints = new List<DataPoint>();
-		}
+			//Update graph data
+			TBuffer.Add(t);
+			YBuffer.Add(y * 100);
+			VBuffer.Add(v);
+			RBuffer.Add(xRef.At(0, 0) * 100);
+			if (TBuffer.Count == MaxPlotDataPoints)
+			{
+				TBuffer.RemoveAt(0);
+				YBuffer.RemoveAt(0);
+				VBuffer.RemoveAt(0);
+				RBuffer.RemoveAt(0);
+			}
 
-		////Graph
-		//public List<DataPoint> yPoints { get; set; }
-		//void updateGraphData()
-		//{
-		//	Random r = new Random();
-		//	double u = r.Next(-3,3);
-		//	int tInt = (int)Math.Round(iteration * tInterval.TotalSeconds * 10);
-		//	double t = iteration * tInterval.TotalSeconds;
-		//	if (tInt % 5 != 0)
-		//		return;
-		//	Data.MainViewModel.AutoControlViewModel.YPoints.Add(new DataPoint(t, u));
-		//	Data.MainViewModel.AutoControlViewModel.YPoints = new List<DataPoint>(Data.MainViewModel.AutoControlViewModel.YPoints);
-		//}
+			Data.MainViewModel.AutoControlViewModel.UpdatePlot();
+		}
 		#endregion
 	}
 }
