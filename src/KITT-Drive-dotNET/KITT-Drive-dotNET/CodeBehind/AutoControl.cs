@@ -24,6 +24,9 @@ namespace KITT_Drive_dotNET
 		Matrix<double> x = DenseMatrix.OfArray(new double[,] { { 1 }, { 0 } }); //State matrix
 		Matrix<double> xRef = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } }); //Reference state matrix
 		double y = 0; //Vehicle output
+		double t = 0; //Current time
+		int v = 0; //Calculated vehicle reference speed
+
 
 		//Model re-evaluation timer
 		DispatcherTimer evTimer;
@@ -49,6 +52,13 @@ namespace KITT_Drive_dotNET
 		List<double> dLeft = new List<double>(new double[4]); //Historic left sensor values
 		List<double> dRight = new List<double>(new double[4]); //Historic right sensor values
 		double maxDeviation = 0.5;
+
+		//Plot data
+		public double MaxTimeSpan { get { return 5; } }
+		public int MaxDataPoints { get { return (int)(MaxTimeSpan / tInterval.TotalSeconds); } }
+		public Queue<double> TBuffer { get; set; }
+		public Queue<double> YBuffer { get; set; }
+		public Queue<int> VBuffer { get; set; }
 
 		//Misc
 		short controlling = 0; //Modifier for enabling vehicle control
@@ -79,24 +89,32 @@ namespace KITT_Drive_dotNET
 		void evTimer_Tick(object sender, EventArgs e)
 		{
 			double force;
-			int speed;
 
 			//Obtain current filtered working distance
-			Math.Min(filter(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, ref dLeft), filter(Data.MainViewModel.VehicleViewModel.SensorDistanceRight, ref dRight));
+			y = Math.Min(filter(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, ref dLeft), filter(Data.MainViewModel.VehicleViewModel.SensorDistanceRight, ref dRight)) / 100;
 			//y = Math.Min(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, Data.MainViewModel.VehicleViewModel.SensorDistanceRight)/100;
 
 			//Perform control routines
 			force = control();
 
 			//Map force to PWM-value
-			speed = map(force);
-			Data.MainViewModel.ControlViewModel.Speed = speed;
+			v = map(force);
+			Data.MainViewModel.ControlViewModel.Speed = v;
 
 			//Update internal state and save required values
 			iteration++;
 
 			//Update graph data
-			updateGraphData();
+			TBuffer.Enqueue(t);
+			YBuffer.Enqueue(y);
+			VBuffer.Enqueue(v);
+			if (TBuffer.Count == MaxDataPoints)
+			{
+				TBuffer.Dequeue();
+				YBuffer.Dequeue();
+				VBuffer.Dequeue();
+			}
+			Data.MainViewModel.AutoControlViewModel.UpdatePlot();
 
 			//Request new status
 			//Data.Com.RequestStatus();
@@ -106,9 +124,16 @@ namespace KITT_Drive_dotNET
 		#region Methods
 		public void Start()
 		{
+			//Initialise some stuff
 			x = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } });
-			xRef = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } }); //TODO actually init this to the wanted values
 			lowPass = makeLowPass();
+
+			//Empty/initialise plot buffers
+			TBuffer = new Queue<double>(MaxDataPoints);
+			YBuffer = new Queue<double>(MaxDataPoints);
+			VBuffer = new Queue<int>(MaxDataPoints);
+
+			//Start the system
 			evTimer.Start();
 		}
 
@@ -134,10 +159,10 @@ namespace KITT_Drive_dotNET
 		double control()
 		{
 			//Get total execution time
-			double T = iteration * tInterval.TotalSeconds;
+			t = iteration * tInterval.TotalSeconds;
 
 			//Check if the observer is done initializing
-			if (controlling == 0 && T > tInit.TotalSeconds)
+			if (controlling == 0 && t > tInit.TotalSeconds)
 				controlling = 1;
 
 			//Calculate new states and control
@@ -146,7 +171,7 @@ namespace KITT_Drive_dotNET
 				//Determine reference value
 				for (int i = 0; i < xRefList.Count; i++)
 				{
-					if (T > tRefList[i])
+					if (t > tRefList[i])
 						xRef.At(0, 0, xRefList[i] / 100);
 					else
 						break;				
@@ -224,24 +249,22 @@ namespace KITT_Drive_dotNET
 
 		void initGraph()
 		{
-			yPoints = new List<DataPoint>();
+			//yPoints = new List<DataPoint>();
 		}
 
-		//Graph
-		public List<DataPoint> yPoints { get; set; }
-		void updateGraphData()
-		{
-			Random r = new Random();
-			double u = r.Next(-3,3);
-			int tInt = (int)Math.Round(iteration * tInterval.TotalSeconds * 10);
-			double t = iteration * tInterval.TotalSeconds;
-			if (tInt % 5 != 0)
-				return;
-			yPoints.Add(new DataPoint(t, u));
-			//Data.MainViewModel.AutoControlViewModel.YPoints = yPoints;
-			Data.MainViewModel.AutoControlViewModel.UpdateBinding("YPoints");
-			Data.MainWindow.Plot1.RefreshPlot(true);
-		}
+		////Graph
+		//public List<DataPoint> yPoints { get; set; }
+		//void updateGraphData()
+		//{
+		//	Random r = new Random();
+		//	double u = r.Next(-3,3);
+		//	int tInt = (int)Math.Round(iteration * tInterval.TotalSeconds * 10);
+		//	double t = iteration * tInterval.TotalSeconds;
+		//	if (tInt % 5 != 0)
+		//		return;
+		//	Data.MainViewModel.AutoControlViewModel.YPoints.Add(new DataPoint(t, u));
+		//	Data.MainViewModel.AutoControlViewModel.YPoints = new List<DataPoint>(Data.MainViewModel.AutoControlViewModel.YPoints);
+		//}
 		#endregion
 	}
 }

@@ -57,17 +57,18 @@
 			<Grid>
 				<oxy:Plot Name="Plot1" Title="Live data" VerticalAlignment="Stretch" Margin="0,0,0,20">
 					<oxy:Plot.Axes>
-						<oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="1" MajorStep="0.2" MinorStep="0.1" IsPanEnabled="False"/>
-						<oxy:LinearAxis Position="Left" Minimum="-3" Maximum="3" MajorStep="1" MinorStep="0.2" IsPanEnabled="False"/>
+						<oxy:LinearAxis Position="Bottom" Minimum="{Binding Path=PlotMinimum}" Maximum="{Binding Path=PlotMaximum}" MajorStep="1" MinorStep="0.5"/>
+						<oxy:LinearAxis Position="Left" Minimum="{Binding Source={x:Static local:Data.SpeedMin}}" Maximum="{Binding Source={x:Static local:Data.SpeedMax}}" MajorStep="5" MinorStep="1" />
 					</oxy:Plot.Axes>
 					<oxy:Plot.Series>
-						<oxy:LineSeries ItemsSource="{Binding Path=YPoints}" Color="Black" MarkerSize="3"/>
+						<oxy:LineSeries ItemsSource="{Binding Path=YPoints}" Color="Blue" MarkerSize="3"/>
+						<oxy:LineSeries ItemsSource="{Binding Path=VPoints}" Color="Red" MarkerSize="3"/>
 					</oxy:Plot.Series>
 				</oxy:Plot>
 				<Label Content="Go to:" Target="{Binding ElementName=TextBox_xRef}" VerticalAlignment="Bottom" HorizontalAlignment="Left"  Margin="10,0,10,15"/>
-				<TextBox Name="TextBox_xRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="120" Height="22" Margin="55,0,10,15" Text="{Binding Path=xRefString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				<TextBox Name="TextBox_xRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="120" Height="22" Margin="55,0,10,15" Text="{Binding Path=xRefString, UpdateSourceTrigger=PropertyChanged}"/>
 				<Label Content="at times:" Target="{Binding ElementName=TextBox_tRef}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="180,0,10,15"/>
-				<TextBox Name="TextBox_tRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="120" Height="22" Margin="240,0,10,15" Text="{Binding Path=tRefString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				<TextBox Name="TextBox_tRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="120" Height="22" Margin="240,0,10,15" Text="{Binding Path=tRefString, UpdateSourceTrigger=PropertyChanged}"/>
 				<Button Name="Button_AutoControl_Start" Content="Go!" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="70" Height="22" Margin="0,0,10,15" Command="{Binding Path=Start}"/>
 				<Label HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,-7" Content="{Binding Path=StatusString}" Foreground="{Binding Path=StatusStringColor}"/>
 			</Grid>

@@ -40,11 +40,14 @@ namespace OxyPlotTest
 		
 		int x = 0;
 
-		private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+		private void Window_PreviewMouseDown(object sender, MouseButtonEventArgs e)
 		{
 			Random r = new Random();
 			int y = r.Next(-50, 50);
-			PlotData.Add(new DataPoint(x,y));
+			ObservableCollection<DataPoint> copy = new ObservableCollection<DataPoint>(PlotData);
+			copy.Add(new DataPoint(x, y));
+			
+			PlotData = new ObservableCollection<DataPoint>(copy);
 			x++;
 		}
 

@@ -86,20 +86,49 @@ namespace KITT_Drive_dotNET.ViewModel
 		List<int> xRefList;
 		List<int> tRefList;
 
-		//private List<DataPoint> _yPoints;
+		//Plot data
+		public double PlotMinimum
+		{
+			get
+			{
+				if (YPoints != null)
+					return Math.Floor((YPoints[0].X + 0.5*AutoControl.MaxTimeSpan) / 10);
 
-		//public List<DataPoint> YPoints
-		//{
-		//	get { return _yPoints; }
-		//	set 
-		//	{
-		//		_yPoints = value;
-		//		RaisePropertyChanged("YPoints");
-		//	}
-		//}
+				return 0;
+			}
+		}
+		public double PlotMaximum { get { return PlotMinimum + AutoControl.MaxTimeSpan; } }
+
 		public List<DataPoint> YPoints
 		{
-			get { return AutoControl.yPoints;}
+			get 
+			{
+				if (AutoControl.TBuffer == null)
+					return null;
+
+				List<DataPoint> l = new List<DataPoint>();
+
+				for (int i = 0; i < AutoControl.YBuffer.Count; i++)
+					l.Add(new DataPoint(AutoControl.TBuffer.ElementAt(i), AutoControl.YBuffer.ElementAt(i)));
+
+				return l;
+			}
+		}
+
+		public List<DataPoint> VPoints
+		{
+			get
+			{
+				if (AutoControl.TBuffer == null)
+					return null;
+
+				List<DataPoint> l = new List<DataPoint>();
+
+				for (int i = 0; i < AutoControl.VBuffer.Count; i++)
+					l.Add(new DataPoint(AutoControl.TBuffer.ElementAt(i), AutoControl.VBuffer.ElementAt(i)));
+
+				return l;
+			}
 		}
 		#endregion
 
@@ -171,6 +200,14 @@ namespace KITT_Drive_dotNET.ViewModel
 			Status = AutoControlStatus.Ready;
 			return true;
 		}
+
+		public void UpdatePlot()
+		{
+			RaisePropertyChanged("PlotMaximum");
+			RaisePropertyChanged("PlotMinimum");
+			RaisePropertyChanged("YPoints");
+			RaisePropertyChanged("VPoints");
+		}
 		#endregion
 
 		#region Commands
@@ -194,5 +231,7 @@ namespace KITT_Drive_dotNET.ViewModel
 
 		public ICommand Start { get { return new RelayCommand(StartExecute, CanStartExecute); } }
 		#endregion
+
+		
 	}
 }
