@@ -80,6 +80,9 @@ namespace SerialApp
 
 		public void PutRxData(string varname, object data)
 		{
+			if (matlab == null)
+				return;
+
 			//push data to matlab
 			try
 			{

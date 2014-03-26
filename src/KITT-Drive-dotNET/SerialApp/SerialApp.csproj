@@ -54,6 +54,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data.cs" />
+    <Compile Include="FakeKITT.cs" />
     <Compile Include="Matlab.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="SerialInterface.cs" />

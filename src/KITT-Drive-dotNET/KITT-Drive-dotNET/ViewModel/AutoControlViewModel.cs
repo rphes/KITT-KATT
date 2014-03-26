@@ -87,17 +87,16 @@ namespace KITT_Drive_dotNET.ViewModel
 		List<int> tRefList;
 
 		//Plot data
-		public double PlotMinimum
-		{
+		public double PlotMinimum { get { return PlotMaximum - AutoControl.MaxTimeSpan; } }
+		public double PlotMaximum {
 			get
 			{
-				if (YPoints != null)
-					return Math.Floor((YPoints[0].X + 0.5*AutoControl.MaxTimeSpan) / 10);
+				if (YPoints != null && YPoints[0].X != 0)
+					return Math.Floor(YPoints[YPoints.Count - 1].X / (AutoControl.MaxTimeSpan * 0.5)) * AutoControl.MaxTimeSpan * 0.5 + 0.5 * AutoControl.MaxTimeSpan;
 
-				return 0;
-			}
+				return AutoControl.MaxTimeSpan;
+			} 
 		}
-		public double PlotMaximum { get { return PlotMinimum + AutoControl.MaxTimeSpan; } }
 
 		public List<DataPoint> YPoints
 		{

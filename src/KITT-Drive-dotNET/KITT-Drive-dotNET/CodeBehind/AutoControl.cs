@@ -54,8 +54,9 @@ namespace KITT_Drive_dotNET
 		double maxDeviation = 0.5;
 
 		//Plot data
-		public double MaxTimeSpan { get { return 5; } }
+		public double MaxTimeSpan { get { return 10; } }
 		public int MaxDataPoints { get { return (int)(MaxTimeSpan / tInterval.TotalSeconds); } }
+		public int MaxPlotDataPoints { get { return (int)Math.Round(MaxDataPoints * 1.2); } }
 		public Queue<double> TBuffer { get; set; }
 		public Queue<double> YBuffer { get; set; }
 		public Queue<int> VBuffer { get; set; }
@@ -91,8 +92,8 @@ namespace KITT_Drive_dotNET
 			double force;
 
 			//Obtain current filtered working distance
-			y = Math.Min(filter(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, ref dLeft), filter(Data.MainViewModel.VehicleViewModel.SensorDistanceRight, ref dRight)) / 100;
-			//y = Math.Min(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, Data.MainViewModel.VehicleViewModel.SensorDistanceRight)/100;
+			//y = Math.Min(filter(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, ref dLeft), filter(Data.MainViewModel.VehicleViewModel.SensorDistanceRight, ref dRight)) / 100;
+			y = Math.Min(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft, Data.MainViewModel.VehicleViewModel.SensorDistanceRight)/100;
 
 			//Perform control routines
 			force = control();
@@ -106,9 +107,9 @@ namespace KITT_Drive_dotNET
 
 			//Update graph data
 			TBuffer.Enqueue(t);
-			YBuffer.Enqueue(y);
+			YBuffer.Enqueue(y*100);
 			VBuffer.Enqueue(v);
-			if (TBuffer.Count == MaxDataPoints)
+			if (TBuffer.Count == MaxPlotDataPoints)
 			{
 				TBuffer.Dequeue();
 				YBuffer.Dequeue();
@@ -117,7 +118,7 @@ namespace KITT_Drive_dotNET
 			Data.MainViewModel.AutoControlViewModel.UpdatePlot();
 
 			//Request new status
-			//Data.Com.RequestStatus();
+			Data.Com.RequestStatus();
 		}
 		#endregion
 
@@ -129,9 +130,9 @@ namespace KITT_Drive_dotNET
 			lowPass = makeLowPass();
 
 			//Empty/initialise plot buffers
-			TBuffer = new Queue<double>(MaxDataPoints);
-			YBuffer = new Queue<double>(MaxDataPoints);
-			VBuffer = new Queue<int>(MaxDataPoints);
+			TBuffer = new Queue<double>(MaxPlotDataPoints);
+			YBuffer = new Queue<double>(MaxPlotDataPoints);
+			VBuffer = new Queue<int>(MaxPlotDataPoints);
 
 			//Start the system
 			evTimer.Start();
@@ -237,12 +238,12 @@ namespace KITT_Drive_dotNET
 				if (force > 0)
 				{
 					f = force - forceMin;
-					return (int)Math.Round(7 + forceMapper[0] * f + forceMapper[1] * Math.Pow(f, 2) + forceMapper[2] * Math.Pow(f, 3));
+					return (int)Math.Round(6 + forceMapper[0] * f + forceMapper[1] * Math.Pow(f, 2) + forceMapper[2] * Math.Pow(f, 3));
 				}
 				else
 				{
 					f = force + forceMin;
-					return (int)Math.Round(-7 + forceMapper[0] * f + forceMapper[1] * Math.Pow(f, 2) + forceMapper[2] * Math.Pow(f, 3));
+					return (int)Math.Round(-6 + forceMapper[0] * f + forceMapper[1] * Math.Pow(f, 2) + forceMapper[2] * Math.Pow(f, 3));
 				}
 			}
 		}

@@ -116,5 +116,20 @@ namespace SerialApp
 				Button_StartSerial.Content = "Start serial polling";
 			}
 		}
+
+		private void Button_FakeKITT_Click(object sender, RoutedEventArgs e)
+		{
+			if (Data.FakeKITT == false)
+			{
+				Data.FakeKITT = true;
+				Button_FakeKITT.Content = "Stop faking KITT";
+			}
+			else
+			{
+
+				Data.FakeKITT = false;
+				Button_FakeKITT.Content = "Fake KITT";
+			}
+		}
 	}
 }

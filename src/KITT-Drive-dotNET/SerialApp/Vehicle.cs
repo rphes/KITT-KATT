@@ -14,7 +14,7 @@ namespace SerialApp
 	{
 		#region Data members
 		//Status variables
-		private int _actualPWMSpeed;
+		private int _actualPWMSpeed = 150;
 
 		public int ActualPWMSpeed
 		{
@@ -28,7 +28,7 @@ namespace SerialApp
 			}
 		}
 
-		private int _actualPWMHeading;
+		private int _actualPWMHeading = 150;
 
 		public int ActualPWMHeading
 		{

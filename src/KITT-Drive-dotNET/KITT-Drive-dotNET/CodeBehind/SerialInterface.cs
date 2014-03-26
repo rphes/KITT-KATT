@@ -118,6 +118,9 @@ namespace KITT_Drive_dotNET
 		/// <param name="data">The string to send, without trailing newline character ('\n')</param>
 		public void SendString(string data)
 		{
+			if (!SerialPort.IsOpen)
+				return;
+
 			try
 			{
 				SerialPort.WriteLine(data);
@@ -128,7 +131,7 @@ namespace KITT_Drive_dotNET
 				System.Diagnostics.Debug.WriteLine("Error occurred while sending string: " + data);
 				return;
 			}
-			System.Diagnostics.Debug.WriteLine("Sent string: " + data);
+			//System.Diagnostics.Debug.WriteLine("Sent string: " + data);
 		}
 
 		public void RequestStatus()
@@ -243,7 +246,7 @@ namespace KITT_Drive_dotNET
 					LastLine = lineBuffer; //line feed received, push linebuffer to output
 					lineBuffer = "";
 					parseResponse(LastLine);
-					System.Diagnostics.Debug.WriteLine("Serial line received: " + LastLine);
+					//System.Diagnostics.Debug.WriteLine("Serial line received: " + LastLine);
 				}
 				else if (rx == 4)
 					continue; //EOT received, discard

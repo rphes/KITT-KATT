@@ -55,14 +55,15 @@
 		</GroupBox>
 		<GroupBox Name="GroupBox_Auto" Header="Autonomous control" HorizontalAlignment="Stretch" Margin="490,10,10,10" VerticalAlignment="Stretch" DataContext="{Binding Path=AutoControlViewModel}">
 			<Grid>
-				<oxy:Plot Name="Plot1" Title="Live data" VerticalAlignment="Stretch" Margin="0,0,0,20">
+				<oxy:Plot Name="Plot1" VerticalAlignment="Stretch" Margin="0,0,0,30" LegendPlacement="Inside" LegendPosition="RightTop" LegendMargin="-4">
 					<oxy:Plot.Axes>
-						<oxy:LinearAxis Position="Bottom" Minimum="{Binding Path=PlotMinimum}" Maximum="{Binding Path=PlotMaximum}" MajorStep="1" MinorStep="0.5"/>
-						<oxy:LinearAxis Position="Left" Minimum="{Binding Source={x:Static local:Data.SpeedMin}}" Maximum="{Binding Source={x:Static local:Data.SpeedMax}}" MajorStep="5" MinorStep="1" />
+						<oxy:LinearAxis Title="Time" TitleColor="Black" Position="Bottom" Minimum="{Binding Path=PlotMinimum}" Maximum="{Binding Path=PlotMaximum}" MajorStep="1" MinorStep="0.5" />
+						<oxy:LinearAxis Key="v" Title="Speed" TitleColor="Black" Position="Left" Minimum="{Binding Source={x:Static local:Data.SpeedMin}}" Maximum="{Binding Source={x:Static local:Data.SpeedMax}}" MajorStep="5" MinorStep="1" />
+						<oxy:LinearAxis Key="d" Title="Distance" TitleColor="Black" Position="Right" Minimum="{Binding Source={x:Static local:Data.SensorMinRange}}" Maximum="{Binding Source={x:Static local:Data.SensorMaxRange}}" MajorStep="50" MinorStep="10"/>
 					</oxy:Plot.Axes>
 					<oxy:Plot.Series>
-						<oxy:LineSeries ItemsSource="{Binding Path=YPoints}" Color="Blue" MarkerSize="3"/>
-						<oxy:LineSeries ItemsSource="{Binding Path=VPoints}" Color="Red" MarkerSize="3"/>
+						<oxy:LineSeries Title="Sensor distance" ItemsSource="{Binding Path=YPoints}" Color="Blue" MarkerSize="3" CanTrackerInterpolatePoints="False" YAxisKey="d"/>
+						<oxy:LineSeries Title="Output PWM speed" ItemsSource="{Binding Path=VPoints}" Color="Red" MarkerSize="3" CanTrackerInterpolatePoints="False" YAxisKey="v"/>
 					</oxy:Plot.Series>
 				</oxy:Plot>
 				<Label Content="Go to:" Target="{Binding ElementName=TextBox_xRef}" VerticalAlignment="Bottom" HorizontalAlignment="Left"  Margin="10,0,10,15"/>

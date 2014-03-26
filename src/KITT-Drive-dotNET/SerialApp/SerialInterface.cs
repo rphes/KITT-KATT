@@ -139,7 +139,7 @@ namespace SerialApp
 				System.Diagnostics.Debug.WriteLine("Error occurred while sending string: " + data);
 				return;
 			}
-			TextBuffer += data + '\n';
+			TextBuffer += "Sent: " + data + '\n';
 		}
 		#endregion
 
@@ -149,7 +149,11 @@ namespace SerialApp
 			char responseType = response[0];
 			string responseTypeAlt = response.Split(' ')[0];
 
-			if (responseTypeAlt == "Drive:" || responseTypeAlt == "L/R:")
+			if (responseType == 'S')
+			{
+
+			}
+			else if (responseTypeAlt == "Drive:" || responseTypeAlt == "L/R:")
 			{
 				int value;
 				string data = response.Split(' ')[1].TrimEnd('%');
@@ -203,6 +207,8 @@ namespace SerialApp
 			{
 				System.Diagnostics.Debug.WriteLine("Received unknown response: " + response + "could not parse...");
 			}
+
+			Data.fake.CalculateNewState();
 		}
 		#endregion
 

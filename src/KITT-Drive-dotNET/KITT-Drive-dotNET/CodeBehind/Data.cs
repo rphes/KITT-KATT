@@ -29,7 +29,7 @@ namespace KITT_Drive_dotNET
 		public static int PWMHeadingDefault { get { return HeadingDefault + PWMOffset; } }
 		//Sensors
 		public static int SensorMinRange { get { return 0; } }
-		public static int SensorMaxRange { get { return 200; } }
+		public static int SensorMaxRange { get { return 300; } }
 		//Battery
 		public static int BatteryVoltageMin { get { return 0; } }
 		public static int BatteryVoltageMax { get { return 20000; } }
