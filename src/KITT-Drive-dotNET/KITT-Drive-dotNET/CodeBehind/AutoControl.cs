@@ -98,6 +98,10 @@ namespace KITT_Drive_dotNET
 			C = DenseMatrix.OfArray(new double[,] { { 1, 0 } });
 			K = DenseMatrix.OfArray(new double[,] { { 0.54, 1.65 } }); //acker(A, B, [-0.6 -0.6]) in MATLAB
 			L = DenseMatrix.OfArray(new double[,] { { 3.9 }, { 3.61 } }); //acker(A', C', [-2 -2]') in MATLAB
+
+			//Enable filters
+			LowPassFilterIsEnabled = true;
+			ExpectedValueFilterIsEnabled = true;
 		}
 		#endregion
 
@@ -172,8 +176,8 @@ namespace KITT_Drive_dotNET
 				controlling = 1;
 
 			//Obtain current filtered working distance
-			//y = Math.Min(filter(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft / 100, ref dLeft), filter(Data.MainViewModel.VehicleViewModel.SensorDistanceRight / 100, ref dRight));
-			y = Math.Min(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft / 100, Data.MainViewModel.VehicleViewModel.SensorDistanceRight / 100);
+			y = Math.Min(filter((double)Data.MainViewModel.VehicleViewModel.SensorDistanceLeft / 100, ref dLeft), filter((double)Data.MainViewModel.VehicleViewModel.SensorDistanceRight / 100, ref dRight));
+			//y = Math.Min(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft / 100, Data.MainViewModel.VehicleViewModel.SensorDistanceRight / 100);
 
 			//Calculate new states and control
 			if (iteration > 0)
@@ -244,9 +248,9 @@ namespace KITT_Drive_dotNET
 				filtered *= lowPass[2];
 
 				if (iteration > 0)
-					filtered += lowPass[count - 1] * history[0];
+					filtered += lowPass[0] * history[count - 1];
 				if (iteration > 1)
-					filtered += lowPass[count - 2] * history[1];
+					filtered += lowPass[1] * history[count - 1];
 			}
 
 			//Remove obsolete value and save new one

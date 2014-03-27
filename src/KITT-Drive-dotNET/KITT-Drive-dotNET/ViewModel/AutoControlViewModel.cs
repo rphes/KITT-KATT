@@ -109,6 +109,26 @@ namespace KITT_Drive_dotNET.ViewModel
 			}
 		}
 
+		public bool ExpectedValueFilterIsEnabled
+		{
+			get { return AutoControl.ExpectedValueFilterIsEnabled; }
+			set
+			{
+				AutoControl.ExpectedValueFilterIsEnabled = value;
+				RaisePropertyChanged("ExpectedValueFilterIsEnabled");
+			}
+		}
+
+		public bool LowPassFilterIsEnabled
+		{
+			get { return AutoControl.LowPassFilterIsEnabled; }
+			set
+			{
+				AutoControl.LowPassFilterIsEnabled = value;
+				RaisePropertyChanged("LowPassFilterIsEnabled");
+			}
+		}
+
 		private AutoControlStatus _status = AutoControlStatus.StringEmpty;
 
 		public AutoControlStatus Status
@@ -273,6 +293,13 @@ namespace KITT_Drive_dotNET.ViewModel
 		{
 			if (Status != AutoControlStatus.Running)
 			{
+				if (xRefList == null)
+				{
+					xRefList = new List<int>();
+					xRefList.Add(0);
+					tRefList = new List<int>();
+					tRefList.Add(0);
+				}
 				Status = AutoControlStatus.Running;
 				AutoControl.Start();
 			}
