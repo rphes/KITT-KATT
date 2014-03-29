@@ -10,32 +10,29 @@ namespace SerialApp
 	{
 		const double maxspeed = 10 / 3.6;
 		const double maxpwmspeed = 15;
+		const double multiplier = 0.5;
 		DateTime timestamp;
-		double speed;
+		double speed = 0;
 		double distance = 2;
 
 		public void CalculateNewState()
 		{
 			double distancedriven;
-			TimeSpan delta = new TimeSpan(0, 0, 0, 0, 100);//DateTime.Now - timestamp;
+			TimeSpan delta = DateTime.Now - timestamp;
 			timestamp = DateTime.Now;
 			distancedriven = -speed * delta.TotalSeconds;
+			System.Diagnostics.Debug.WriteLine(distancedriven);
 			distance += distancedriven;
 
-			if (Data.car.ActualPWMSpeed > 155)
-				speed = Data.car.ActualPWMSpeed - 155;
-			else if (Data.car.ActualPWMSpeed < 145)
-				speed = Data.car.ActualPWMSpeed - 145;
-			else
-				speed = 0;
-
-			speed = maxspeed / maxpwmspeed * speed;
+			speed = Data.car.ActualPWMSpeed - 150;
+			speed = (maxspeed / maxpwmspeed) * speed;
 
 			int intdistance = (int)Math.Round(distance * 100);
 
 			System.Threading.Thread.Sleep(150);
 			Data.serial.SendString('D' + Data.car.ActualPWMHeading.ToString() + ' ' + Data.car.ActualPWMSpeed.ToString());
 			Data.serial.SendString('U' + intdistance.ToString() + ' ' + intdistance.ToString());
+			Data.serial.SendByte(4); //append EOT to terminate status response
 		}
 	}
 }

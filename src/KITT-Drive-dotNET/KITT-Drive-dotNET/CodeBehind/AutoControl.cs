@@ -53,8 +53,8 @@ namespace KITT_Drive_dotNET
 		public List<int> tRefList { get; set; }
 
 		//Throttle mapping
-		double[] forceMapper = {2, 0, -0.025};
-		double forceMin = 0.1;
+		double[] forceMapper = {10, 0, -0.025};
+		double forceMin = 0.02;
 
 		//Filtering
 		public bool LowPassFilterIsEnabled { get; set; }
@@ -93,15 +93,15 @@ namespace KITT_Drive_dotNET
 			evTimer.Interval = tInterval;
 
 			//Build matrices
-			A = DenseMatrix.OfArray(new double[,] { { 0, 1 }, { 0, -Data.Rho / Data.Mass } });
-			B = DenseMatrix.OfArray(new double[,] { { 0 }, { 1 / Data.Mass } });
+			A = DenseMatrix.OfArray(new double[,] { { 0, 1 }, { 0, -0.5063 } });
+			B = DenseMatrix.OfArray(new double[,] { { 0 }, { 6.25 } });
 			C = DenseMatrix.OfArray(new double[,] { { 1, 0 } });
-			K = DenseMatrix.OfArray(new double[,] { { 0.54, 1.65 } }); //acker(A, B, [-0.6 -0.6]) in MATLAB
-			L = DenseMatrix.OfArray(new double[,] { { 3.9 }, { 3.61 } }); //acker(A', C', [-2 -2]') in MATLAB
+			K = DenseMatrix.OfArray(new double[,] { { 0.2955, 0.3542 } }); //acker(A, B, [-0.6 -0.6]) in MATLAB--INVALID
+			L = DenseMatrix.OfArray(new double[,] { { 7.7937 }, { 13.2544 } }); //acker(A', C', [-2 -2]') in MATLAB--INVALID
 
-			//Enable filters
-			LowPassFilterIsEnabled = true;
-			ExpectedValueFilterIsEnabled = true;
+			//Disable filters by default
+			LowPassFilterIsEnabled = false;
+			ExpectedValueFilterIsEnabled = false;
 		}
 		#endregion
 
@@ -112,7 +112,7 @@ namespace KITT_Drive_dotNET
 			t = tick * tInterval.TotalSeconds;
 			tick++;
 
-			UpdateModel();
+			//UpdateModel();
 			updatePlotData();
 
 		}
@@ -130,6 +130,9 @@ namespace KITT_Drive_dotNET
 		#region Methods
 		public void Start()
 		{
+			//Request initial status
+			Data.Com.RequestStatus();
+
 			//Initialise some stuff
 			x = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } });
 			lowPass = makeLowPass();
@@ -150,10 +153,7 @@ namespace KITT_Drive_dotNET
 			//Data.MainViewModel.VehicleViewModel.PropertyChanged += VehicleViewModel_PropertyChanged;
 
 			//Start plot updater
-			evTimer.Start();
-
-			//Request initial status
-			Data.Com.RequestStatus();
+			evTimer.Start();		
 		}
 
 		public void Stop()
@@ -297,6 +297,9 @@ namespace KITT_Drive_dotNET
 			}
 
 			Data.MainViewModel.AutoControlViewModel.UpdatePlot();
+
+			//Ping
+			Data.MainViewModel.AutoControlViewModel.UpdateBinding("PingString");
 		}
 		#endregion
 	}

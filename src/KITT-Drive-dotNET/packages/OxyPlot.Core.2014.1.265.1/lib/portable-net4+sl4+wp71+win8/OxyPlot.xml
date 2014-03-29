@@ -1113,6 +1113,63 @@
             <param name="modifiers">The modifier key(s).</param>
             <param name="command">A plot controller command that takes mouse wheel event arguments.</param>
         </member>
+        <member name="M:OxyPlot.PlotControllerExtensions.UnbindMouseDown(OxyPlot.IPlotController,OxyPlot.OxyMouseButton,OxyPlot.OxyModifierKeys,System.Int32)">
+            <summary>
+            Unbinds the specified mouse down gesture.
+            </summary>
+            <param name="controller">The controller.</param>
+            <param name="mouseButton">The mouse button.</param>
+            <param name="modifiers">The modifier keys.</param>
+            <param name="clickCount">The click count.</param>
+        </member>
+        <member name="M:OxyPlot.PlotControllerExtensions.UnbindKeyDown(OxyPlot.IPlotController,OxyPlot.OxyKey,OxyPlot.OxyModifierKeys)">
+            <summary>
+            Unbinds the specified key down gesture.
+            </summary>
+            <param name="controller">The controller.</param>
+            <param name="key">The key.</param>
+            <param name="modifiers">The modifier keys.</param>
+        </member>
+        <member name="M:OxyPlot.PlotControllerExtensions.UnbindMouseEnter(OxyPlot.IPlotController)">
+            <summary>
+            Unbinds the mouse enter gesture.
+            </summary>
+            <param name="controller">The controller.</param>
+        </member>
+        <member name="M:OxyPlot.PlotControllerExtensions.UnbindTouchDown(OxyPlot.IPlotController)">
+            <summary>
+            Unbinds the touch down gesture.
+            </summary>
+            <param name="controller">The controller.</param>
+        </member>
+        <member name="M:OxyPlot.PlotControllerExtensions.UnbindMouseWheel(OxyPlot.IPlotController)">
+            <summary>
+            Unbinds the mouse wheel gesture.
+            </summary>
+            <param name="controller">The controller.</param>
+        </member>
+        <member name="T:OxyPlot.HitTestArguments">
+            <summary>
+            Represents arguments for the hit test.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.HitTestArguments.#ctor(OxyPlot.ScreenPoint,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.HitTestArguments"/> class.
+            </summary>
+            <param name="point">The point.</param>
+            <param name="tolerance">The tolerance.</param>
+        </member>
+        <member name="P:OxyPlot.HitTestArguments.Point">
+            <summary>
+            Gets the point to hit test.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.HitTestArguments.Tolerance">
+            <summary>
+            Gets the hit test tolerance.
+            </summary>
+        </member>
         <member name="T:OxyPlot.PlotElementCollection`1">
             <summary>
             Represents a collection of <see cref="T:OxyPlot.PlotElement"/> objects.
@@ -8404,13 +8461,14 @@
             <param name="sender">The sender.</param>
             <param name="e">The <see cref="T:OxyPlot.OxyTouchEventArgs"/> instance containing the event data.</param>
         </member>
-        <member name="M:OxyPlot.UIPlotElement.HitTest(OxyPlot.ScreenPoint,System.Double)">
+        <member name="M:OxyPlot.UIPlotElement.HitTest(OxyPlot.HitTestArguments)">
             <summary>
             Tests if the plot element is hit by the specified point.
             </summary>
-            <param name="point">The point.</param>
-            <param name="tolerance">The tolerance.</param>
-            <returns>A hit test result.</returns>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            A hit test result.
+            </returns>
         </member>
         <member name="E:OxyPlot.UIPlotElement.KeyDown">
             <summary>
@@ -8486,13 +8544,14 @@
             <param name="position">The position.</param>
             <returns>A data point</returns>
         </member>
-        <member name="M:OxyPlot.Annotations.Annotation.HitTest(OxyPlot.ScreenPoint,System.Double)">
+        <member name="M:OxyPlot.Annotations.Annotation.HitTest(OxyPlot.HitTestArguments)">
             <summary>
             Tests if the plot element is hit by the specified point.
             </summary>
-            <param name="point">The point.</param>
-            <param name="tolerance">The tolerance.</param>
-            <returns>A hit test result.</returns>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            A hit test result.
+            </returns>
         </member>
         <member name="M:OxyPlot.Annotations.Annotation.GetClippingRect">
             <summary>
@@ -8507,7 +8566,7 @@
         </member>
         <member name="P:OxyPlot.Annotations.Annotation.XAxis">
             <summary>
-            Gets or sets the X axis.
+            Gets the X axis.
             </summary>
             <value>The X axis.</value>
         </member>
@@ -8519,7 +8578,7 @@
         </member>
         <member name="P:OxyPlot.Annotations.Annotation.YAxis">
             <summary>
-            Gets or sets the Y axis.
+            Gets the Y axis.
             </summary>
             <value>The Y axis.</value>
         </member>
@@ -8552,13 +8611,14 @@
             <param name="rc">The render context.</param>
             <param name="model">The plot model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.RectangleAnnotation.HitTest(OxyPlot.ScreenPoint,System.Double)">
+        <member name="M:OxyPlot.Annotations.RectangleAnnotation.HitTest(OxyPlot.HitTestArguments)">
             <summary>
             Tests if the plot element is hit by the specified point.
             </summary>
-            <param name="point">The point.</param>
-            <param name="tolerance">The tolerance.</param>
-            <returns>A hit test result.</returns>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            A hit test result.
+            </returns>
         </member>
         <member name="P:OxyPlot.Annotations.RectangleAnnotation.Fill">
             <summary>
@@ -8628,13 +8688,14 @@
             <param name="rc">The render context.</param>
             <param name="model">The plot model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.TextAnnotation.HitTest(OxyPlot.ScreenPoint,System.Double)">
+        <member name="M:OxyPlot.Annotations.TextAnnotation.HitTest(OxyPlot.HitTestArguments)">
             <summary>
             Tests if the plot element is hit by the specified point.
             </summary>
-            <param name="point">The point.</param>
-            <param name="tolerance">The tolerance.</param>
-            <returns>A hit test result.</returns>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            A hit test result.
+            </returns>
         </member>
         <member name="M:OxyPlot.Annotations.TextAnnotation.GetTextBounds(OxyPlot.ScreenPoint,OxyPlot.OxySize,OxyPlot.OxyThickness,System.Double,OxyPlot.HorizontalAlignment,OxyPlot.VerticalAlignment)">
             <summary>
@@ -8723,13 +8784,14 @@
             <param name="rc">The render context.</param>
             <param name="model">The plot model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.PolygonAnnotation.HitTest(OxyPlot.ScreenPoint,System.Double)">
+        <member name="M:OxyPlot.Annotations.PolygonAnnotation.HitTest(OxyPlot.HitTestArguments)">
             <summary>
             Tests if the plot element is hit by the specified point.
             </summary>
-            <param name="point">The point.</param>
-            <param name="tolerance">The tolerance.</param>
-            <returns>A hit test result.</returns>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            A hit test result.
+            </returns>
         </member>
         <member name="P:OxyPlot.Annotations.PolygonAnnotation.Color">
             <summary>
@@ -8818,13 +8880,14 @@
             <param name="rc">The render context.</param>
             <param name="model">The model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.PathAnnotation.HitTest(OxyPlot.ScreenPoint,System.Double)">
+        <member name="M:OxyPlot.Annotations.PathAnnotation.HitTest(OxyPlot.HitTestArguments)">
             <summary>
             Tests if the plot element is hit by the specified point.
             </summary>
-            <param name="point">The point.</param>
-            <param name="tolerance">The tolerance.</param>
-            <returns>A hit test result.</returns>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            A hit test result.
+            </returns>
         </member>
         <member name="M:OxyPlot.Annotations.PathAnnotation.GetScreenPoints">
             <summary>
@@ -9106,13 +9169,14 @@
             <param name="rc">The render context.</param>
             <param name="model">The plot model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.ArrowAnnotation.HitTest(OxyPlot.ScreenPoint,System.Double)">
+        <member name="M:OxyPlot.Annotations.ArrowAnnotation.HitTest(OxyPlot.HitTestArguments)">
             <summary>
             Tests if the plot element is hit by the specified point.
             </summary>
-            <param name="point">The point.</param>
-            <param name="tolerance">The tolerance.</param>
-            <returns>A hit test result.</returns>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            A hit test result.
+            </returns>
         </member>
         <member name="P:OxyPlot.Annotations.ArrowAnnotation.ArrowDirection">
             <summary>
@@ -9194,13 +9258,14 @@
             <param name="rc">The render context.</param>
             <param name="model">The plot model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.EllipseAnnotation.HitTest(OxyPlot.ScreenPoint,System.Double)">
+        <member name="M:OxyPlot.Annotations.EllipseAnnotation.HitTest(OxyPlot.HitTestArguments)">
             <summary>
             Tests if the plot element is hit by the specified point.
             </summary>
-            <param name="point">The point.</param>
-            <param name="tolerance">The tolerance.</param>
-            <returns>A hit test result.</returns>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            A hit test result.
+            </returns>
         </member>
         <member name="P:OxyPlot.Annotations.EllipseAnnotation.Fill">
             <summary>
@@ -9342,13 +9407,14 @@
             <param name="rc">The render context.</param>
             <param name="model">The plot model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.ImageAnnotation.HitTest(OxyPlot.ScreenPoint,System.Double)">
+        <member name="M:OxyPlot.Annotations.ImageAnnotation.HitTest(OxyPlot.HitTestArguments)">
             <summary>
             Tests if the plot element is hit by the specified point.
             </summary>
-            <param name="point">The point.</param>
-            <param name="tolerance">The tolerance.</param>
-            <returns>A hit test result.</returns>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            A hit test result.
+            </returns>
         </member>
         <member name="M:OxyPlot.Annotations.ImageAnnotation.GetPoint(OxyPlot.PlotLength,OxyPlot.PlotLength,OxyPlot.IRenderContext,OxyPlot.PlotModel)">
             <summary>
@@ -9500,13 +9566,14 @@
             <param name="rc">The render context.</param>
             <param name="model">The model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.TileMapAnnotation.HitTest(OxyPlot.ScreenPoint,System.Double)">
+        <member name="M:OxyPlot.Annotations.TileMapAnnotation.HitTest(OxyPlot.HitTestArguments)">
             <summary>
             Tests if the plot element is hit by the specified point.
             </summary>
-            <param name="point">The point.</param>
-            <param name="tolerance">The tolerance.</param>
-            <returns>A hit test result.</returns>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            A hit test result.
+            </returns>
         </member>
         <member name="M:OxyPlot.Annotations.TileMapAnnotation.LatLonToTile(System.Double,System.Double,System.Int32,System.Double@,System.Double@)">
             <summary>
@@ -9632,7 +9699,7 @@
             <summary>
             Mantissa function.
             </summary>
-            <remarks>See also <a href="http://en.wikipedia.org/wiki/Mantissa">Wikipedia</a>.</remarks>
+            <seealso cref="!:http://en.wikipedia.org/wiki/Mantissa"/>
         </member>
         <member name="F:OxyPlot.Axes.Axis.offset">
             <summary>
@@ -9646,7 +9713,7 @@
         </member>
         <member name="F:OxyPlot.Axes.Axis.position">
             <summary>
-            The position.
+            The position of the axis.
             </summary>
         </member>
         <member name="M:OxyPlot.Axes.Axis.#ctor">
@@ -9857,23 +9924,9 @@
             </summary>
             <param name="value">The value.</param>
         </member>
-        <member name="M:OxyPlot.Axes.Axis.PostInverseTransform(System.Double)">
-            <summary>
-            Applies a transformation after the inverse transform of the value. This is used in logarithmic axis.
-            </summary>
-            <param name="x">The value to transform.</param>
-            <returns>The transformed value.</returns>
-        </member>
-        <member name="M:OxyPlot.Axes.Axis.PreTransform(System.Double)">
-            <summary>
-            Applies a transformation before the transform the value. This is used in logarithmic axis.
-            </summary>
-            <param name="x">The value to transform.</param>
-            <returns>The transformed value.</returns>
-        </member>
         <member name="M:OxyPlot.Axes.Axis.ResetDataMaxMin">
             <summary>
-            Resets the data maximum and minimum.
+            Resets the <see cref="P:OxyPlot.Axes.Axis.DataMaximum"/> and <see cref="P:OxyPlot.Axes.Axis.DataMinimum"/> values.
             </summary>
         </member>
         <member name="M:OxyPlot.Axes.Axis.UpdateActualMaxMin">
@@ -9908,6 +9961,24 @@
             Resets the current values.
             </summary>
             <remarks>The current values may be modified during update of max/min and rendering.</remarks>
+        </member>
+        <member name="M:OxyPlot.Axes.Axis.PostInverseTransform(System.Double)">
+            <summary>
+            Applies a transformation after the inverse transform of the value.
+            </summary>
+            <param name="x">The value to transform.</param>
+            <returns>The transformed value.</returns>
+            <remarks>If this method is overridden, the <see cref="M:OxyPlot.Axes.Axis.InverseTransform(System.Double)"/> method must also be overridden.
+            See <see cref="T:OxyPlot.Axes.LogarithmicAxis"/> for examples on how to implement this.</remarks>
+        </member>
+        <member name="M:OxyPlot.Axes.Axis.PreTransform(System.Double)">
+            <summary>
+            Applies a transformation before the transform the value.
+            </summary>
+            <param name="x">The value to transform.</param>
+            <returns>The transformed value.</returns>
+            <remarks>If this method is overridden, the <see cref="M:OxyPlot.Axes.Axis.Transform(System.Double)"/> method must also be overridden.
+            See <see cref="T:OxyPlot.Axes.LogarithmicAxis"/> for examples on how to implement this.</remarks>
         </member>
         <member name="M:OxyPlot.Axes.Axis.CalculateActualMaximum">
             <summary>
@@ -10466,6 +10537,13 @@
             <param name="ppt">The previous point (screen coordinates).</param>
             <param name="cpt">The current point (screen coordinates).</param>
         </member>
+        <member name="M:OxyPlot.Axes.LogarithmicAxis.InverseTransform(System.Double)">
+            <summary>
+            Inverse transforms the specified screen coordinate. This method can only be used with non-polar coordinate systems.
+            </summary>
+            <param name="sx">The screen coordinate.</param>
+            <returns>The value.</returns>
+        </member>
         <member name="M:OxyPlot.Axes.LogarithmicAxis.Transform(System.Double)">
             <summary>
             Transforms the specified coordinate to screen coordinates.
@@ -10480,6 +10558,16 @@
             <param name="factor">The zoom factor.</param>
             <param name="x">The coordinate to zoom at.</param>
         </member>
+        <member name="M:OxyPlot.Axes.LogarithmicAxis.UpdateActualMaxMin">
+            <summary>
+            Updates the <see cref="!:ActualMaximum"/> and <see cref="!:ActualMinimum"/> values.
+            </summary>
+            <remarks>
+            If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum
+            values will be used. If Maximum or Minimum have been set, these values will be used. Otherwise the maximum and minimum values
+            of the series will be used, including the 'padding'.
+            </remarks>
+        </member>
         <member name="M:OxyPlot.Axes.LogarithmicAxis.PostInverseTransform(System.Double)">
             <summary>
             Applies a transformation after the inverse transform of the value. This is used in logarithmic axis.
@@ -10493,14 +10581,6 @@
             </summary>
             <param name="x">The value to transform.</param>
             <returns>The transformed value.</returns>
-        </member>
-        <member name="M:OxyPlot.Axes.LogarithmicAxis.UpdateActualMaxMin">
-            <summary>
-            Updates the actual maximum and minimum values.
-            If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
-            If Maximum or Minimum have been set, these values will be used.
-            Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
-            </summary>
         </member>
         <member name="P:OxyPlot.Axes.LogarithmicAxis.Base">
             <summary>
@@ -12665,63 +12745,65 @@
             <param name="rc">The rendering context.</param>
             <param name="legendBox">The legend rectangle.</param>
         </member>
-        <member name="M:OxyPlot.Series.Series.HitTest(OxyPlot.ScreenPoint,System.Double)">
+        <member name="M:OxyPlot.Series.Series.HitTest(OxyPlot.HitTestArguments)">
             <summary>
             Tests if the plot element is hit by the specified point.
             </summary>
-            <param name="point">The point.</param>
-            <param name="tolerance">The tolerance.</param>
-            <returns>A hit test result.</returns>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            A hit test result.
+            </returns>
         </member>
         <member name="M:OxyPlot.Series.Series.AreAxesRequired">
             <summary>
-            Check if this data series requires X/Y axes. (e.g. Pie series do not require axes)
+            Checks if this data series requires X/Y axes. (e.g. Pie series do not require axes)
             </summary>
-            <returns>True if no axes are required.</returns>
+            <returns><c>true</c> if axes are required.</returns>
         </member>
         <member name="M:OxyPlot.Series.Series.EnsureAxes">
             <summary>
-            Ensures that the axes of the series is defined.
+            Ensures that the axes of the series are defined.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.Series.IsUsing(OxyPlot.Axes.Axis)">
             <summary>
-            Check if the data series is using the specified axis.
+            Checks if the data series is using the specified axis.
             </summary>
-            <param name="axis">An axis which should be checked if used</param>
-            <returns>True if the axis is in use.</returns>
+            <param name="axis">The axis that should be checked.</param>
+            <returns><c>true</c> if the axis is in use.</returns>
         </member>
         <member name="M:OxyPlot.Series.Series.SetDefaultValues(OxyPlot.PlotModel)">
             <summary>
-            Sets default values (colors, line style etc) from the plot model.
+            Sets the default values (colors, line style etc.) from the plot model.
             </summary>
             <param name="model">A plot model.</param>
         </member>
         <member name="M:OxyPlot.Series.Series.UpdateAxisMaxMin">
             <summary>
-            Updates the axis maximum and minimum values.
+            Updates the maximum and minimum values of the axes used by this series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.Series.UpdateData">
             <summary>
-            Updates the data.
+            Updates the data of the series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.Series.UpdateValidData">
             <summary>
-            Updates the valid data.
+            Updates the valid data of the series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.Series.UpdateMaxMin">
             <summary>
-            Updates the maximum and minimum of the series.
+            Updates the maximum and minimum values of the series.
             </summary>
+            <remarks>This method is called when the <see cref="T:OxyPlot.PlotModel"/> is updated with the <c>updateData</c> parameter set to <c>true</c>.</remarks>
         </member>
         <member name="P:OxyPlot.Series.Series.Background">
             <summary>
-            Gets or sets the background color of the series. The background area is defined by the x and y axes.
+            Gets or sets the background color of the series.
             </summary>
-            <value>The background color.</value>
+            <remarks>This property defines the background color in the area defined by the x and y axes used by this series.</remarks>
         </member>
         <member name="P:OxyPlot.Series.Series.IsVisible">
             <summary>
@@ -12730,19 +12812,25 @@
         </member>
         <member name="P:OxyPlot.Series.Series.Title">
             <summary>
-            Gets or sets the title of the Series.
+            Gets or sets the title of the series.
             </summary>
-            <value>The title.</value>
+            <value>The title that is shown in the legend of the plot. The default value is <c>null</c>. When the value is <c>null</c>, this series will not be shown in the legend.</value>
         </member>
         <member name="P:OxyPlot.Series.Series.TrackerFormatString">
             <summary>
             Gets or sets a format string used for the tracker.
             </summary>
+            <remarks>
+            The arguments for the format string may be different for each type of series. See the documentation.
+            </remarks>
         </member>
         <member name="P:OxyPlot.Series.Series.TrackerKey">
             <summary>
             Gets or sets the key for the tracker to use on this series.
             </summary>
+            <remarks>
+            This key may be used by the plot control to show a custom tracker for the series.
+            </remarks>
         </member>
         <member name="M:OxyPlot.Series.ItemsSeries.UpdateValidData">
             <summary>

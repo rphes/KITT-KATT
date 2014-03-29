@@ -16,8 +16,20 @@ namespace KITT_Drive_dotNET
 		//Status variables
 		public int ActualPWMSpeed { get; set; }
 		public int ActualPWMHeading { get; set; }
-		public int SensorDistanceLeft { get; set; }
-		public int SensorDistanceRight { get; set; }
+
+		private int _sensorDistanceLeft;
+		public int SensorDistanceLeft 
+		{ 
+			get { return _sensorDistanceLeft; }
+			set { _sensorDistanceLeft = (int)Math.Round(Data.Clamp(value, Data.SensorMinRange, Data.SensorMaxRange)); }
+		}
+
+		private int _sensorDistanceRight;
+		public int SensorDistanceRight
+		{
+			get { return _sensorDistanceRight; }
+			set { _sensorDistanceRight = (int)Math.Round(Data.Clamp(value, Data.SensorMinRange, Data.SensorMaxRange)); }
+		}
 		public int BatteryVoltage { get; set; }
 		public bool AudioStatus { get; set; }
 		#endregion

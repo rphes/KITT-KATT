@@ -191,6 +191,14 @@ namespace KITT_Drive_dotNET.ViewModel
 		public List<DataPoint> VPoints { get { return makeDatapoints(AutoControl.TBuffer, AutoControl.VBuffer); } }
 		public List<DataPoint> RPoints { get { return makeDatapoints(AutoControl.TBuffer, AutoControl.RBuffer); } }
 
+		public string PingString
+		{
+			get
+			{
+				return Math.Round(Data.Com.Ping.TotalMilliseconds) + " ms";
+			}
+		}
+
 		#endregion
 
 		#region Construction

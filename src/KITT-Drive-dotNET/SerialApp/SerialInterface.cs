@@ -120,7 +120,7 @@ namespace SerialApp
 		{
 			byte[] buf = { data };
 			SerialPort.Write(buf, 0, 1);
-			System.Diagnostics.Debug.WriteLine("Serial byte sent: {0:X}", data);
+			//System.Diagnostics.Debug.WriteLine("Serial byte sent: {0:X}", data);
 		}
 
 		/// <summary>
@@ -151,7 +151,7 @@ namespace SerialApp
 
 			if (responseType == 'S')
 			{
-
+				Data.fake.CalculateNewState();
 			}
 			else if (responseTypeAlt == "Drive:" || responseTypeAlt == "L/R:")
 			{
@@ -207,8 +207,6 @@ namespace SerialApp
 			{
 				System.Diagnostics.Debug.WriteLine("Received unknown response: " + response + "could not parse...");
 			}
-
-			Data.fake.CalculateNewState();
 		}
 		#endregion
 

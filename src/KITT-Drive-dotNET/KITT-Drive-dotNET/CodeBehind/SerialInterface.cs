@@ -30,6 +30,11 @@ namespace KITT_Drive_dotNET
 		}		
 		#endregion
 
+		DateTime lastStatusRequest;
+		DateTime lastResponse;
+
+		public TimeSpan Ping;
+
 		#region Construction/Destruction
 		public SerialInterface()
 		{
@@ -131,12 +136,14 @@ namespace KITT_Drive_dotNET
 				System.Diagnostics.Debug.WriteLine("Error occurred while sending string: " + data);
 				return;
 			}
-			System.Diagnostics.Debug.WriteLine("Sent string: " + data);
+			
+			//System.Diagnostics.Debug.WriteLine("Sent string: " + data);
 		}
 
 		public void RequestStatus()
 		{
 			SendString("S");
+			lastStatusRequest = DateTime.Now;
 		}
 
 		public void DoDrive(int dir, int speed)
@@ -244,10 +251,14 @@ namespace KITT_Drive_dotNET
 					LastLine = lineBuffer; //line feed received, push linebuffer to output
 					lineBuffer = "";
 					parseResponse(LastLine);
-					System.Diagnostics.Debug.WriteLine("Serial line received: " + LastLine);
+					//System.Diagnostics.Debug.WriteLine("Serial line received: " + LastLine);
 				}
 				else if (rx == 4)
+				{
+					lastResponse = DateTime.Now; //full status received
+					Ping = lastResponse - lastStatusRequest;
 					continue; //EOT received, discard
+				}
 				else
 					lineBuffer += (char)rx;
 			}

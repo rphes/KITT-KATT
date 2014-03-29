@@ -76,12 +76,12 @@
         </member>
         <member name="T:OxyPlot.Xps.FlowDocumentReportWriter">
             <summary>
-            XPS report writer using MigraDoc.
+            Provides an XPS report writer.
             </summary>
         </member>
         <member name="F:OxyPlot.Xps.FlowDocumentReportWriter.doc">
             <summary>
-            The doc.
+            The document.
             </summary>
         </member>
         <member name="F:OxyPlot.Xps.FlowDocumentReportWriter.disposed">
@@ -101,7 +101,7 @@
         </member>
         <member name="M:OxyPlot.Xps.FlowDocumentReportWriter.Print">
             <summary>
-            The print.
+            Prints the document.
             </summary>
         </member>
         <member name="M:OxyPlot.Xps.FlowDocumentReportWriter.Save(System.String,System.Double,System.Double)">
@@ -114,50 +114,50 @@
         </member>
         <member name="M:OxyPlot.Xps.FlowDocumentReportWriter.WriteDrawing(OxyPlot.Reporting.DrawingFigure)">
             <summary>
-            The write drawing.
+            Writes a drawing.
             </summary>
-            <param name="d">The d.</param>
+            <param name="d">The drawing.</param>
         </member>
         <member name="M:OxyPlot.Xps.FlowDocumentReportWriter.WriteEquation(OxyPlot.Reporting.Equation)">
             <summary>
-            The write equation.
+            Writes an equation.
             </summary>
             <param name="equation">The equation.</param>
         </member>
         <member name="M:OxyPlot.Xps.FlowDocumentReportWriter.WriteHeader(OxyPlot.Reporting.Header)">
             <summary>
-            The write header.
+            Writes a header.
             </summary>
-            <param name="h">The h.</param>
+            <param name="h">The header.</param>
         </member>
         <member name="M:OxyPlot.Xps.FlowDocumentReportWriter.WriteImage(OxyPlot.Reporting.Image)">
             <summary>
-            The write image.
+            Writes an image.
             </summary>
-            <param name="i">The i.</param>
+            <param name="i">The image.</param>
         </member>
         <member name="M:OxyPlot.Xps.FlowDocumentReportWriter.WriteParagraph(OxyPlot.Reporting.Paragraph)">
             <summary>
-            The write paragraph.
+            Writes a paragraph.
             </summary>
-            <param name="pa">The pa.</param>
+            <param name="pa">The paragraph.</param>
         </member>
         <member name="M:OxyPlot.Xps.FlowDocumentReportWriter.WritePlot(OxyPlot.Reporting.PlotFigure)">
             <summary>
-            The write plot.
+            Writes a plot.
             </summary>
             <param name="plot">The plot.</param>
         </member>
         <member name="M:OxyPlot.Xps.FlowDocumentReportWriter.WriteReport(OxyPlot.Reporting.Report,OxyPlot.Reporting.ReportStyle)">
             <summary>
-            The write report.
+            Writes a report.
             </summary>
             <param name="report">The report.</param>
             <param name="reportStyle">The style.</param>
         </member>
         <member name="M:OxyPlot.Xps.FlowDocumentReportWriter.WriteTable(OxyPlot.Reporting.Table)">
             <summary>
-            The write table.
+            Writes a table.
             </summary>
             <param name="t">The t.</param>
         </member>
@@ -170,16 +170,16 @@
         </member>
         <member name="M:OxyPlot.Xps.FlowDocumentReportWriter.AddPageBody(System.Windows.Documents.DocumentPaginator,System.Int32,System.Windows.Controls.Canvas,System.Windows.Thickness)">
             <summary>
-            The add page body.
+            Adds a page body.
             </summary>
-            <param name="sourceFlowDocPaginator">The source flow doc paginator.</param>
-            <param name="pageNo">The page no.</param>
+            <param name="sourceFlowDocPaginator">The source flow document paginator.</param>
+            <param name="pageNumber">The page number.</param>
             <param name="pageCanvas">The page canvas.</param>
             <param name="margins">The margins.</param>
         </member>
         <member name="M:OxyPlot.Xps.FlowDocumentReportWriter.AddPageToDocument(System.Windows.Documents.FixedDocument,System.Windows.Controls.Canvas,System.Windows.Size)">
             <summary>
-            The add page to document.
+            Adds a page to the document.
             </summary>
             <param name="fixedDocument">The fixed document.</param>
             <param name="pageCanvas">The page canvas.</param>
@@ -217,12 +217,12 @@
         </member>
         <member name="P:OxyPlot.Xps.FlowDocumentReportWriter.FlowDocument">
             <summary>
-            Gets FlowDocument.
+            Gets the FlowDocument.
             </summary>
         </member>
         <member name="P:OxyPlot.Xps.FlowDocumentReportWriter.Style">
             <summary>
-            Gets or sets Style.
+            Gets or sets the report style.
             </summary>
         </member>
     </members>

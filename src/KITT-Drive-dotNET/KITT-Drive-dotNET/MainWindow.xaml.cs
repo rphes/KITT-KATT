@@ -132,7 +132,10 @@ namespace KITT_Drive_dotNET
 			}
 
 			if (key == Key.Q)
+			{
 				Data.MainViewModel.ControlViewModel.Stop();
+				Data.MainViewModel.AutoControlViewModel.AutoControl.Stop();
+			}
 		}
 
 		private void Window_KeyUp(object sender, KeyEventArgs e)

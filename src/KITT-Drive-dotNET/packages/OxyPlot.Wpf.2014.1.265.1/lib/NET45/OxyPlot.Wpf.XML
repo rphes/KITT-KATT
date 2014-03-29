@@ -1955,6 +1955,16 @@
             <param name="culture">The culture to use in the converter.</param>
             <returns>A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.</returns>
         </member>
+        <member name="T:OxyPlot.Wpf.PlotCommands">
+            <summary>
+            Provides a standard set of commands for the <see cref="T:OxyPlot.Wpf.Plot"/> control.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.PlotCommands.ResetAxes">
+            <summary>
+            Gets the value that represents the Reset all axes command.
+            </summary>
+        </member>
         <member name="T:OxyPlot.Wpf.RenderingEventListener">
             <summary>
             Provides a weak event listener that pass the CompositionTarget.Rendering event to the specified handler.
@@ -2762,11 +2772,6 @@
         <member name="M:OxyPlot.Wpf.Plot.UpdateVisuals">
             <summary>
             Updates the visuals.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.Plot.ResetAxesCommand">
-            <summary>
-            Gets the reset axes command.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.AutoAdjustPlotMargins">
