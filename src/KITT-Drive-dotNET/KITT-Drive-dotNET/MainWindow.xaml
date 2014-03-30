@@ -104,9 +104,7 @@
 				</GroupBox>
 
 				<GroupBox Name="GroupBox_Ping" Header="Ping" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,155,10,0" Width="196">
-					<Grid>
-						<Label Content="{Binding Path=PingString}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="25,28,0,0"/>
-					</Grid>
+					<Label Content="{Binding Path=PingString}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="25,0,0,0" FontSize="22"/>
 				</GroupBox>
 			</Grid>
 		</GroupBox>

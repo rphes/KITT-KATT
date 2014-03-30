@@ -8,5 +8,106 @@
 \begin{document}
 
 \chapter{System integration}
+Now that we have discussed all of the individual subsystem designs, we can describe how these were put together for the final design. The system was developed to achieve optimal performance during the mid-term challenge, which consists of charging the supercapacitor bank to \SI{20}{V} with our contactless charging system (not mounted on KITT), as well as letting KITT drive to a position as close to a wall as possible, in the least possible amount of time. \\
+For the charging system, \textit{integration} was not really necessary, since the subsystem itself has proved itself working just fine already \ref{}. The control system, however, still needs some work. We described the physical and mathematical background of our design in the previous section \ref{}, but every design needs an implementation.
+
+\section{The user interface}
+For controlling KITT in a simple way and at the same time being able to view live sensor and calculated state data, we have implemented the controller in conjunction with a graphical user interface (GUI). This GUI provides access to key features in controlling KITT, like the target distance and some model parameters, as well as a dashboard which displays KITT's current state, such as the current position, battery voltage and the likes. This way we are able to debug and adapt the underlying control routines more easily, which, in theory, increases development efficiency.
+\\\\
+The control routines themselves are essentially the previously derived state equations \ref{} wrapped in the programming language of our choice, as well as some functions that help obtaining the required data for evaluating these equations. The user interface only provides an easy way to influence these procedures (like modifying model parameters), and displays some of the obtained data in an easy-to-read way. A rough diagram of the program's structure is shown in Figure~\ref{fig:int-controller}. For flexibility, we developed two main control programs, one in MATLAB, which provides rapid prototyping in a cross-platform environment and one in Microsoft's .NET (C\#), which was supposed to bring us better performance and a better looking GUI.
+
+\usetikzlibrary{shapes,arrows}
+\tikzstyle{block} = [
+	rectangle,
+	draw,
+	fill=blue!20, 
+    text width=7em, 
+    text centered,
+    rounded corners,
+    minimum height=4em
+]
+\tikzstyle{every edge} = [
+	draw,
+	>=triangle 90
+]
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[node distance = 5cm, auto]
+		% Nodes
+		\node [block] (gui) {User interface};
+		\node [block, below left= 3cm of gui] (comm) {Communications};
+		\node [block, above left= 3cm of gui] (control) {Control};
+		\coordinate[right= 3cm of gui] (1);
+		\coordinate[left= 3cm of comm] (2);
+		% Edges
+		\path (1) edge [->] node {User interaction} (gui.east);
+		\path ([xshift=-7]gui.north) edge [->] node [left, near start]{Influence control} ([yshift=-7]control.east);
+		\path ([yshift=7]control.east) edge [->] node [right, near start]{Display state data} ([xshift=7]gui.north);
+		\path ([xshift=-7]gui.south) edge [->] node [left, near start]{Connect with KITT} ([yshift=7]comm.east);
+		\path ([yshift=-7]comm.east) edge [->] node [right, near start]{Display KITT's status} ([xshift=7]gui.south);
+		\path ([xshift=-7]control.south) edge [->] node [right, very near start]{Control KITT} ([xshift=-7]comm.north);
+		\path ([xshift=7]comm.north) edge [->] node [left, very near start]{Obtain sensor data} ([xshift=7]control.south);
+		\path ([yshift=7]comm.west) edge [->] node [above]{To KITT} ([yshift=7]2);
+		\path ([yshift=-7]2) edge [->] node [below]{From KITT} ([yshift=-7]comm.west);
+	\end{tikzpicture}
+	\caption{Rough diagram of the structure of the control program}
+	\label{fig:int-controller}
+\end{figure}
+
+\subsection{MATLAB}
+MATLAB provides rapid prototyping, because of the great amount of mathematical operations and concepts (like matrices) available in its scripting language. All concepts were first implemented in MATLAB for testing, after which they could be ported to .NET. One of the drawbacks of MATLAB is that object-oriented programming, e.g. when designing a user interface, can be somewhat cumbersome at times.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{resource/gui-matlab.png}
+	\caption{The MATLAB GUI, KITT is simulated}
+	\label{fig:int-gui-matlab}
+\end{figure}
+
+Our MATLAB program as shown in Figure~\ref{fig:int-gui-matlab} provides very much configurability, like the ability to change model parameters \textit{on the fly} for directly influencing KITT's behaviour while testing. It also features two graphs updated in real-time for displaying KITT's output and state data as well as the actual calculated excitation speed.
+\\\\
+A problem we ran into during design implementation was the fact that our model accepts a force in newton as control input, whereas KITT expects a PWM speed from \num{135} to \num{165}. This meant we had to create a function for converting a certain force in newton to a PWM drive excitation. Since KITT will do nothing as long as the drive excitation is not higher than 155 or lower than 145, we thought we could model the force-excitation characteristic with a third order polynomial:
+
+\begin{equation}
+	e_{PWM} = c_{1}F^3 + c_{2}F^2 + c_{3}F,
+\end{equation}
+
+Where $e_{PWM}$ is the PWM excitation for KITT, $c_{n}, n = 1, 2, 3$ are the polynomial coefficients and $F$ is the force calculated by the program. Figure~\ref{fig:int-mapping} shows an example of a characteristic for arbitrary coefficients.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{resource/mapping.pdf}
+	\caption{An example of force to PWM excitation mapping using a third order polynomial with arbitrary coefficients}
+	\label{fig:int-mapping}
+\end{figure}
+
+For testing the controller of course a serial connection for sending and retrieving data from KITT was required. To this end a simple script utilizing MATLAB's built-in serial functionality was created. Using this script we noticed very high communication latencies from \SI{200}{ms} to as high as \SI{600}{ms}. Because this latency makes accurate control of KITT very hard, a second serial module was written in native C-code. This seemed to decrease the latency somewhat, but the line between parking KITT around \SI{20}{cm} from the wall and driving straight into the wall was still very thin.
+\\
+The source code of the MATLAB GUI can be found in Appendix~\ref{app:gui-matlab}.
+
+\subsection{.NET}
+Our .NET implementation has the same mathematical backbone as the MATLAB GUI. It is structured very differently. Each subsystem, like control, user input, serial communication and status data storage is contained in a separate \textit{class}. Apart from this it provides the possibility to control KITT manually via mouse and keyboard input. It also handles serial communication asynchronously. Whenever the program receives data from KITT, it will directly process it and store the new state values in a set of variables (in a class) that can be accessed by all other classes at each given time. This way the program does not have to wait on KITT during execution, which should theoretically speed up the process.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{resource/gui-dotnet.png}
+	\caption{The .NET GUI, KITT is simulated}
+	\label{fig:int-gui-dotnet}
+\end{figure}
+
+In Figure~\ref{fig:int-gui-dotnet} the .NET GUI is shown in action, we see that the simulated KITT converges to the the given reference distance as expected. In tests with this program with a real KITT, we observed latencies of around \SI{20}{ms}, which is significantly lower than the latencies using MATLAB. This renders the overall performance of the .NET program higher.
+\\
+The source code of the .NET GUI can be found in Appendix~\ref{app:gui-dotnet}.
+
+\section{Testing the programs}
+Most ideally we would perform our tests on an actual KITT car, but since this was not always possible, we wrote programs to simulate KITT's behaviour with in both MATLAB and C#. These programs utilize a \textit{virtual} or \textit{pseudo} COM-port. This way the simulator can operate on, for example COM1, sending data to the control program via COM0 and vice versa. This provides an easy way to observe an estimate of the performance of the control system with a real KITT.
+\\
+Source code of both programs can be found in Appendix \ref{app:kitt-sim}.
 
 \end{document}
+
+% TODO
+% fix references
+% include matlab screenshot plus description
+% fix appendices

@@ -181,7 +181,7 @@ namespace KITT_Drive_dotNET.ViewModel
 			get
 			{
 				if (YPoints != null && YPoints.Count > 1 && YPoints[YPoints.Count - 1].X > AutoControl.MaxTimeSpan)
-					return Math.Floor(YPoints[YPoints.Count - 1].X / (AutoControl.MaxTimeSpan * 0.5)) * AutoControl.MaxTimeSpan * 0.5 + 0.5 * AutoControl.MaxTimeSpan;
+					return Math.Floor(YPoints[YPoints.Count - 1].X / (AutoControl.MaxTimeSpan * 0.8)) * AutoControl.MaxTimeSpan * 0.8 + 0.8 * AutoControl.MaxTimeSpan;
 
 				return AutoControl.MaxTimeSpan;
 			} 

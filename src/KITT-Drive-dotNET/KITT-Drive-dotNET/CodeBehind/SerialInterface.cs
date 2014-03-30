@@ -257,12 +257,12 @@ namespace KITT_Drive_dotNET
 				{
 					lastResponse = DateTime.Now; //full status received
 					Ping = lastResponse - lastStatusRequest;
+					Data.MainViewModel.AutoControlViewModel.AutoControl.UpdateModel();
 					continue; //EOT received, discard
 				}
 				else
 					lineBuffer += (char)rx;
 			}
-			Data.MainViewModel.AutoControlViewModel.AutoControl.UpdateModel();
 		}
 
 		#endregion
