@@ -9,12 +9,14 @@
 
 \chapter{System integration}
 Now that we have discussed all of the individual subsystem designs, we can describe how these were put together for the final design. The system was developed to achieve optimal performance during the mid-term challenge, which consists of charging the supercapacitor bank to \SI{20}{V} with our contactless charging system (not mounted on KITT), as well as letting KITT drive to a position as close to a wall as possible, in the least possible amount of time. \\
-For the charging system, \textit{integration} was not really necessary, since the subsystem itself has proved itself working just fine already \ref{}. The control system, however, still needs some work. We described the physical and mathematical background of our design in the previous section \ref{}, but every design needs an implementation.
+For the charging system, \textit{integration} was not really necessary, since the subsystem itself has proved itself working just fine already as described in Chapter~\ref{ch:charging}. During the mid-term challenge, we were able to charge the capacitor bank to little under \SI{20}{V} in around \SI{3.5}{minutes}, before the overcurrent protection kicked in and the overvoltage buffer started buzzing softly.
+\\
+The control system, however, still needed some work. We described the physical and mathematical background of our design in the previous chapter (Chapter~\ref{ch:control}, but every design needs an implementation.
 
 \section{The user interface}
 For controlling KITT in a simple way and at the same time being able to view live sensor and calculated state data, we have implemented the controller in conjunction with a graphical user interface (GUI). This GUI provides access to key features in controlling KITT, like the target distance and some model parameters, as well as a dashboard which displays KITT's current state, such as the current position, battery voltage and the likes. This way we are able to debug and adapt the underlying control routines more easily, which, in theory, increases development efficiency.
 \\\\
-The control routines themselves are essentially the previously derived state equations \ref{} wrapped in the programming language of our choice, as well as some functions that help obtaining the required data for evaluating these equations. The user interface only provides an easy way to influence these procedures (like modifying model parameters), and displays some of the obtained data in an easy-to-read way. A rough diagram of the program's structure is shown in Figure~\ref{fig:int-controller}. For flexibility, we developed two main control programs, one in MATLAB, which provides rapid prototyping in a cross-platform environment and one in Microsoft's .NET (C\#), which was supposed to bring us better performance and a better looking GUI.
+The control routines themselves are essentially the previously derived state equations wrapped in the programming language of our choice, as well as some functions that help obtaining the required data for evaluating these equations. The user interface only provides an easy way to influence these procedures (like modifying model parameters), and displays some of the obtained data in an easy-to-read way. A rough diagram of the program's structure is shown in Figure~\ref{fig:int-controller}. For flexibility, we developed two main control programs, one in MATLAB, which provides rapid prototyping in a cross-platform environment and one in Microsoft's .NET (C\#), which was supposed to bring us better performance and a better looking GUI.
 
 \usetikzlibrary{shapes,arrows}
 \tikzstyle{block} = [
@@ -65,15 +67,8 @@ MATLAB provides rapid prototyping, because of the great amount of mathematical o
 	\label{fig:int-gui-matlab}
 \end{figure}
 
-Our MATLAB program as shown in Figure~\ref{fig:int-gui-matlab} provides very much configurability, like the ability to change model parameters \textit{on the fly} for directly influencing KITT's behaviour while testing. It also features two graphs updated in real-time for displaying KITT's output and state data as well as the actual calculated excitation speed.
-\\\\
-A problem we ran into during design implementation was the fact that our model accepts a force in newton as control input, whereas KITT expects a PWM speed from \num{135} to \num{165}. This meant we had to create a function for converting a certain force in newton to a PWM drive excitation. Since KITT will do nothing as long as the drive excitation is not higher than 155 or lower than 145, we thought we could model the force-excitation characteristic with a third order polynomial:
-
-\begin{equation}
-	e_{PWM} = c_{1}F^3 + c_{2}F^2 + c_{3}F,
-\end{equation}
-
-Where $e_{PWM}$ is the PWM excitation for KITT, $c_{n}, n = 1, 2, 3$ are the polynomial coefficients and $F$ is the force calculated by the program. Figure~\ref{fig:int-mapping} shows an example of a characteristic for arbitrary coefficients.
+Our MATLAB program as shown in Figure~\ref{fig:int-gui-matlab} provides very much configurability, like the ability to change model parameters \textit{on the fly} for directly influencing KITT's behaviour while testing. It also features two graphs updated in real-time for displaying KITT's output and state data as well as the actual calculated excitation speed. We see that the simulated KITT converges to the reference distance, indicating the controller theoretically works. Tests with the real KITT and the mid-term challenge itself, proved that the controller works in real-life as well.
+A small discrepancy we can spot in the behaviour is that the (simulated) KITT does not reach the reference distance but stops at a small distance from it. This is due to the fact that we map every excitation $145 < \text{PWM}(u) < 155$ to zero, which essentially decreases the resolution of the control process. This behaviour will return in the C\# GUI, since the same mapping function is used in it. To overcome this, we could decide to map $145 < \text{PWM}(u) < 155$, or a range somewhat smaller, to \num{144} or \num{156} in stead of zero, so KITT will always drive when not on, or at least really close to his target position. This could, however, result in bouncy behaviour, caused by ever continuing overshoot due to the excitation being too high to realize the required accuracy. 
 
 \begin{figure}[H]
 	\centering
@@ -96,7 +91,7 @@ Our .NET implementation has the same mathematical backbone as the MATLAB GUI. It
 	\label{fig:int-gui-dotnet}
 \end{figure}
 
-In Figure~\ref{fig:int-gui-dotnet} the .NET GUI is shown in action, we see that the simulated KITT converges to the the given reference distance as expected. In tests with this program with a real KITT, we observed latencies of around \SI{20}{ms}, which is significantly lower than the latencies using MATLAB. This renders the overall performance of the .NET program higher.
+In Figure~\ref{fig:int-gui-dotnet} the .NET GUI is shown in action, we see that the simulated KITT converges to the the given reference distance as expected, including a little offset as explained earlier. In tests with this program with a real KITT, we observed latencies of around \SI{20}{ms}, which is significantly lower than the latencies using MATLAB. This renders the overall performance of the .NET program higher.
 \\
 The source code of the .NET GUI can be found in Appendix~\ref{app:gui-dotnet}.
 
@@ -108,6 +103,4 @@ Source code of both programs can be found in Appendix \ref{app:kitt-sim}.
 \end{document}
 
 % TODO
-% fix references
-% include matlab screenshot plus description
 % fix appendices
