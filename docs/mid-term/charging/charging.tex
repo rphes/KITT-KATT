@@ -6,7 +6,54 @@
 \addbibresource{../../library/bibliography.bib}
 
 \begin{document}
-
 \chapter{Contactless charging}
+It was assigned to us to design, build and implement a contactless charging system for KITT. The block system overview of the charging system can be observed in figure ?????. Our task was to design, build and implement the DC/DC converter shown in the latter figure. How this task was completed is to be elaborated in this chapter. Moreover, while designing the charging system several choices regarding components had to be made. The motivation for our choices will briefly be explained throughout this chapter. \\
+
+% FIGURE!!! FIGURE!!!
+
+
+\section{DC/DC converter}
+The first step in designing our DC/DC converter meant we had to incorporate the used UC3525 Regulating
+Pulse Width Modulator and the IRS2001PBF Gate Drivers into a full bridge converter (the
+DC/AC step), while at the same time integrating the given overcurrent protection circuit in the correct
+way. Since connection schemes for both the UC3525 and the IRS2001PBF were given in their respective
+datasheets uc3525a-datasheet, irs2001pbf-datasheet this did not pose much of a problem. The focus
+was not on calculating the resistors and capacitors values, therefore we will not discuss the choices we
+made regarding these values. However, we will discuss our choice of the used MOSFET transistors and
+diodes. The most important factors in picking the correct transistor for our application were static and
+dynamic power dissipation. \\
+While choosing a MOSFET	there where three MOSFETs (IPP50CN10N, IPP028N08N3G, PSMN017) available. Our circuit parameters were well within their given margins. This meant that all of them could be used for making a working DC/DC converter. The factor on which the suitability of each MOSFETs was tested is as already mentioned the power dissipation. The results of calculating the power dissipation of each transistor are shown in Table~\ref{tab:ass2-power-loss}. These calculations are made with formula ??? in Apendix ????.
+
+\begin{table}[H]
+	\centering
+	\caption{MOSFET power loss calculations}
+	\label{tab:ass2-power-loss}
+	\begin{tabular}{c c c c c c c}
+		\hline\hline
+		MOSFET & $R_{DS(on)}$ & $C_{in}$ & $C_{out}$ & Static loss & Dynamic loss & Total loss \\
+		\hline
+		IPP50CN10N & \SI{49}{m\ohm} & \SI{822}{pF} & \SI{120}{pF} & \SI{0.098}{W} & \SI{0.021}{W} & \SI{0.119}{W} \\
+		IPP028N08N3G & \SI{2.8}{m\ohm} & \SI{10700}{pF} & \SI{2890}{pF} & \SI{0.006}{W} & \SI{0.306}{W} & \SI{0.311}{W} \\
+		PSMN017 & \SI{13.7}{m\ohm} & \SI{1573}{pF} & \SI{154}{pF} & \SI{0.027}{W} & \SI{0.039}{W} & \SI{0.066}{W} \\
+		\hline
+		\end{tabular}
+\end{table}
+
+It can be seen in the table that PSMN017 has the lowest power dissipation and thus making it the most suitable MOSFET. \\ 
+As for the diodes we had two different types(SB540, SF61) at our disposal. For choosing a propper diode the power dissipation for each component was calculated once again. The formula used to calculate the power dissipation can be found in Appendix ???. From the calculations it turned out that the SB540 diode dissipated just 56\% of the power dissipated by the SF61 diode. Making SB540 thereby the most suitable diode for our system. \\ 
+Implementing the PWM-generator, two gate drivers, the overcurrent protection circuit and the rectifier
+with overvoltage buzzer circuit resulted in the schematics found in Appendix ??. 
+
+
+\section{Transformer}
 
 \end{document}
+
+%The total dissipation of the MOSFETs can be calculated with
+
+%\begin{equation}
+%P = I_{DS}R_{DS(on)}D +	(C_{in}V_{GS}^2 + C_{out}V_{DS}^2)f_{s}
+%\end{equation}.
+
+%Herein $I_{DS}$ is the drain-source current through the transistor, $R_{DS(on)}$ is the transistors drain-source resistance when switched on, $D$ is the duty-cycle of the PWM control signal, $C_{in}$ and $C_{out}$ are the transistor’s in- and output capacitances, $V_{GS}$ is the gate-source voltage on the
+%transitor (15 V), $V_{DS}$ is the drain-source voltage on the transistor (15 V) and $f_{s}$ is the switching frequency (100 kHz). 
