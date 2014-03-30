@@ -7,12 +7,19 @@
 
 \begin{document}
 \chapter{Contactless charging}
-It was assigned to us to design, build and implement a contactless charging system for KITT. The block system overview of the charging system can be observed in figure ?????. Our task was to design, build and implement the DC/DC converter shown in the latter figure. How this task was completed is to be elaborated in this chapter. Moreover, while designing the charging system several choices regarding components had to be made. The motivation for our choices will briefly be explained throughout this chapter. \\
+It was assigned to us to design, build and implement a contactless charging system for KITT. The block system overview of the charging system can be observed in Figure~\ref{fig:contactless_charging}. Our task was to design, build and implement the DC/DC converter shown in the latter figure. How this task was completed is to be elaborated in this chapter. Moreover, while designing the charging system several choices regarding components had to be made. The motivation for our choices will briefly be explained throughout this chapter. \\
 
-% FIGURE!!! FIGURE!!!
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{resource/contactless_charging.png}
+	\end{center}
+	\caption{The wireless charging system with supercapacitors}
+	\label{fig:contactless_charging}
+\end{figure}
+\end{document}
 
 
-\section{DC/DC converter}
+\section{Power electronics}
 The first step in designing our DC/DC converter meant we had to incorporate the used UC3525 Regulating
 Pulse Width Modulator and the IRS2001PBF Gate Drivers into a full bridge converter (the
 DC/AC step), while at the same time integrating the given overcurrent protection circuit in the correct
@@ -46,7 +53,73 @@ with overvoltage buzzer circuit resulted in the schematics found in Appendix ??.
 
 
 \section{Transformer}
+As can be seen in Figure~\ref{fig:contactless_charging} the only thing left to complete the DC/DC converter is the air-core transformer. Firstly one must design and build the coils for our transformer. After completing this a compensation circuit can be added. \\
+Target parameters for the coils were an inner diameter of 50 mm for both coils and inductances of 22 μH for the secondary coil and 100 μH for the primary coil. The actual coils build had the following acceptable parameters:
 
+\begin{table}[H]
+	\centering
+	\caption{Measured coil parameters}
+	\label{tab:ass2-coil-params-meas}
+	\begin{tabular}{c c c}
+		\hline\hline
+		Coil & Inductance & DC-resistance \\
+		\hline
+		Primary & \SI{94.5}{\micro H} & \SI{250}{m\ohm} \\
+		Secondary & \SI{25.2}{\micro H} & \SI{65}{m\ohm} \\
+		\hline
+		\end{tabular}
+\end{table}
+
+Then, we calculated the coils’ mutual inductance and coupling factor via the ostrich approach as given
+in the Student Manual. The results are:
+\begin{table}[H]
+	\centering
+	\caption{Mutual inductance and coupling factor at varying distance}
+	\label{tab:ass2-coil-mutual}
+	\begin{tabular}{c c c c c}
+		\hline\hline
+		Distance & Aiding inductance & Opposing inductance & Mutual inductance & Coupling factor \\
+		\hline
+		\SI{0}{cm} & \SI{184.3}{\micro H} & \SI{58.6}{\micro H} & \SI{314.2}{\micro H} & 0.64 \\
+		\SI{2}{cm} & \SI{151.5}{\micro H} & \SI{86.8}{\micro H} & \SI{161.8}{\micro H} & 0.33 \\
+		\SI{4}{cm} & \SI{135.6}{\micro H} & \SI{100.0}{\micro H} & \SI{88.9}{\micro H} & 0.18 \\
+		\SI{6}{cm} & \SI{127.5}{\micro H} & \SI{107.0}{\micro H} & \SI{51.2}{\micro H} & 0.11 \\
+		\hline
+		\end{tabular}
+\end{table}
+
+\section{Integration and implementation}
+After soldering the
+PCB we got from our consultant we hooked it up to an oscilloscope, on which we then measured tidy
+square waves for the gate drivers and power outputs, whose frequency and duty-cycle could be varied by
+changing the values of the two potmeters in the design. While inspecting the rectifier output waveform,
+we obtained a nice DC-signal, with very little ripple, due to the high switching frequency (i.e. compared
+to for example the rectifier used during EPO1 at 𝟧𝟢 Hz). Actual waveforms of the entire converter,
+including air transformer and compensation, can be found in Appendix ??. \\
+The charging system was also equiped with a compensation circuit as shown in Figure~\ref{fig:ass2-eq-circ}. To test our design, we studied its waveforms using the oscilloscope. Screenshots of this are included in Appendix?????????. From this waveforms may be concluded that the inverter generates a correct waveform and this waveform is transferred correctly by the two coils. We measured a steady DC-signal at the load. We also performed the same power transfer measurements as with the uncompensated converter, whose results are displayed in Table~\ref{tab:ass2-power}.
+
+\begin{table}[H]
+	\centering
+	\caption{Power transfer measurements - compensated}
+	\label{tab:ass2-power}
+	\begin{tabular}{c c c c c c c}
+		\hline\hline
+		Distance & Source voltage & Source current & Source power & Load voltage & Load power & Efficiency \\
+		\hline
+		\SI{2}{cm} & \SI{19.998}{V} & \SI{1.2472}{A} & \SI{24.942}{W} & \SI{14.8}{V} & \SI{21.3}{W} & \SI{85.6}{\percent} \\
+		\hline
+		\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{resource/cpt-equivalent-circuit-rc.pdf}
+	\end{center}
+	\caption{Equivalent circuit with compensation}
+	\label{fig:ass2-eq-circ}
+\end{figure}
+
+The complete charging system had to be tested at a distance of 6cm. Therefore performance of the system had to be optimized for a distance at 6cm. Requirements were that the system was fully charged to $20$V within four minutes, the system had to be in solid resonance and the charging limiter should be working. Since the system had to be in solid resonance the frequency was no option of variation to maximize charging speed. For this reason the duty cycle was changed in order to maximize the charging speed of the system at 6cm. This was done by trial and error. The result was a system at resonance for a frequency at $100$kHz, a duty cycle of 40\% and a maximal charging speed of 3,75 minutes. Our system thus met all the requirements. 
 \end{document}
 
 %The total dissipation of the MOSFETs can be calculated with
