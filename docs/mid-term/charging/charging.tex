@@ -59,12 +59,10 @@ transitor (15 V), $V_{DS}$ is the drain-source voltage on the transistor (15 V) 
 It can be seen in the table that PSMN017 has the lowest power dissipation and thus making it the most suitable MOSFET. \\ 
 As for the diodes we had two different types(SB540, SF61) at our disposal. For choosing a propper diode the power dissipation for each component was calculated once again. When assuming that the output voltage is near constant, the static dissipation, in context of the inverter, is given by
 \begin{equation}
-\label{eq:ass1-diode-static-power}
 	P_s = I V_{fw} D_{d}
 \end{equation}
 in which $I$ represents the current flowing through the diodes, $V_{fw}$ the forward voltage drop and $D_{d}$ the \textit{diode duty cycle}. The diode duty cycle determines the percentage of time in which current flows through the diode with respect to the switching frequency. $D_{d}$ is given by
 \begin{equation}
-\label{eq:ass1-diode-dutycycle}
 	D_d = \frac{1}{2}+\arcsin{ \left( \frac{V_{min}}{V_{max}}-1 \right) }
 \end{equation}
 in which the minumum and maximum output voltage of the inverter is represented by $V_{min}$ and $V_{max}$. \\

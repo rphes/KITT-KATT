@@ -19,17 +19,14 @@
 \section{Diodes}
 For the diodes we again calculate the total power loss. When assuming that the output voltage is near constant, the static dissipation, in context of the inverter, is given by
 \begin{equation}
-\label{eq:ass1-diode-static-power}
 	P_s = I V_{fw} D_{d}
 \end{equation}
 in which $I$ represents the current flowing through the diodes, $V_{fw}$ the forward voltage drop and $D_{d}$ the \textit{diode duty cycle}. The diode duty cycle determines the percentage of time in which current flows through the diode with respect to the switching frequency. $D_{d}$ is given by
 \begin{equation}
-\label{eq:ass1-diode-dutycycle}
 	D_d = \frac{1}{2}+\arcsin{ \left( \frac{V_{min}}{V_{max}}-1 \right) }
 \end{equation}
 in which the minumum and maximum output voltage of the inverter is represented by $V_{min}$ and $V_{max}$. The dynamic power dissipation is per diode given by
 \begin{equation}
-\label{eq:ass1-diode-dynamic-power}
 	P_s = C_j V_{DS}^2
 \end{equation}
 in which the junction capacitance is represented by $C_j$. The combination of these formulas yields the total power dissipation.
@@ -236,6 +233,7 @@ If one can assume that
 then the linearized relative uncertainty $u_{d,rel}$ magically simplifies to $r$. An attentive reader would be able to verify this result by inspection. \textit{Mathematica 9 Student Edition} was used for aid in algebraic manipulation and simplification of the equations. Unfortunately, the signal processing of the ultrasonic sensors is handled by KITT.
 
 \chapter{Numerically solving KITT}
+\label{app:num}
 
 \textit{Note that this section does not give mathematically formal derivations and statements. This section is meant to tickle the readers intuition, to raise some understanding for the methods we used to solve our differential equations.}
 
