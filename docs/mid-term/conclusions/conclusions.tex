@@ -8,7 +8,13 @@
 \begin{document}
 
 \chapter{Conclusions}
+Looking back on the previous quarter and its results, some conclusions can be drawn. With respect to the contact-less charging, we can conclude that this went relatively smoothly. Fine tuning the duty cycle and frequency was required to achieve optimal results, but all goals were reached eventually: the overcurrent and overvoltage protections work and the charging time for the system was 3:45 minutes, less than the specified maximum of 4 minutes. \\
+Major improvements have been made regarding the latency of the Bluetooth connection to the car, reducing it by a factor of up to 30. This helps give a more accurate representation of the state of KITT. Setting up the Bluetooth connection was simplified in the C\# program and the connection was not lost within the operating limits of the wireless devices. The reliability of the acoustic sensor is not as good as expected, most likely due to physical damage: the right sensor did not work at all during the demonstration and before that would output seemingly random dips. To improve the latter behavior, a linear prediction filter has been implemented to eliminate the effect of these dips.\\
+Extensive simulation and testing has been done to implement an observer and compensator according to the seperation principle that make up the control system. Effort was made to implement a mapping from the drive excitation signal to a PWM signal.\\
+Integration of the subsystems was mainly done by developing a gui in C\# and a prototyping gui in \texttt{MATLAB}. In order to test the programs without access to KITT was done with virtual COM ports. \\
+Eventually, the complete integrated system worked almost as specified. Especially the control system did not function as well as expected, but during the demonstration the old \texttt{MATLAB} system was used, not the newer C\# program.
 
 \section{Future work}
+Improvements to the control system are in the works with the goal of decreasing latency and improving control speed. Further, more functionality is to be added to KITT in the form of an audio beacon to determine the exact location of KITT in a grid surrounded by four microphones. Along with this, the control system implementation needs to be adjusted to \textit{avoid} obstacles in stead of merely \textit{detecting} them and stopping in front of them. Finally, the charging system must be implemented on KITT to charge it wirelessly. Because the charging system already works and is compatible with KITT, this is a matter of mounting it to the chassis.
 
 \end{document}
