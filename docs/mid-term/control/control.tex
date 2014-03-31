@@ -109,7 +109,7 @@ Equation~\ref{eq:ctrl-err} tells us the the system is observable, if $\mat{A} - 
 	\label{fig:ctrl-bond}
 \end{figure}
 
-The only thing which remained was determining the system matrices $\mat{A}$, $\mat{B}$, $\mat{C}$ and $\mat{D}$ and  the feedback matrix $\mat{L}$. For the system matrices, we did two things; \textbf{(1)}, we used the \textit{System Identification Toolbox} of MATLAB in combination with experiments to fit a state-space model, and \textbf{(2)}, we used the bond graph depicted in Figure~\ref{fig:ctrl-bond} to derive the state-space model shown in Equation~\ref{eq:ctrl-bond-model}. Here the battery voltage is denoted by $v$, the inductance of the motor by $L$, the internal resistance of the motor by $R$, the motor constant by $k_t$, the gear constant by $k_g$, the radius of the wheels by $r_w$, the mass of KITT by $m$, the rolling resistance coefficient by $\rho$ and $k_t k_g/r_w$ by $r$ and a generalized notation of position and velocity is used. The observability matrix $\mathcal{O}$ and the controllability matrix $\mathcal{C}$ revealed that the system was both obversable and controllable. Eventually we let $L \to 0$ to reduce the order of the model to two.
+The only thing which remained was determining the system matrices $\mat{A}$, $\mat{B}$, $\mat{C}$ and $\mat{D}$ and  the feedback matrix $\mat{L}$. For the system matrices, we did two things; \textbf{(1)}, we used the \textit{System Identification Toolbox} of MATLAB in combination with experiments to fit a state-space model, and \textbf{(2)}, we used the bond graph depicted in Figure~\ref{fig:ctrl-bond} to derive the state-space model shown in Equation~\ref{eq:ctrl-bond-model}. Here the battery voltage is denoted by $v$, the inductance of the motor by $L$, the internal resistance of the motor by $R$, the motor constant by $k_t$, the gear constant by $k_g$, the radius of the wheels by $r_w$, the mass of KITT by $m$, the rolling resistance coefficient by $\rho$ and $k_t k_g/r_w$ by $r$ and a generalized notation of position and velocity is used. The observability matrix $\mathcal{O}$ and the controllability matrix $\mathcal{C}$ revealed that the system was both observable and controllable. Eventually we let $L \to 0$ to reduce the order of the model to two.
 
 \begin{align} \label{eq:ctrl-bond-model}
 	\dot{\vec{x}} = \frac{d}{dt}
@@ -144,7 +144,7 @@ The only thing which remained was determining the system matrices $\mat{A}$, $\m
 	\end{bmatrix}
 \end{align}
 
-To determine the poles, we defined a measure of performance for each pair of poles. We let the observer track measurement data which constisted of the drive excitation $\vec{u}$ and distances measured $\vec{y}$. The observer produced the tracked distance $\mat{C} \hat{\vec{x}} = \hat{\vec{y}}$. If the time interval between $\vec{y}_n$ and $\vec{y}_{n+1}$ is $T$, then we defined the error $e_i$ of experiment $i$ to be
+To determine the poles, we defined a measure of performance for each pair of poles. We let the observer track measurement data which consisted of the drive excitation $\vec{u}$ and distances measured $\vec{y}$. The observer produced the tracked distance $\mat{C} \hat{\vec{x}} = \hat{\vec{y}}$. If the time interval between $\vec{y}_n$ and $\vec{y}_{n+1}$ is $T$, then we defined the error $e_i$ of experiment $i$ to be
 
 \begin{equation}
 	e_i = \int_{0}^{t_f} || \vec{y}(t) - \hat{\vec{y}}(t) || dt = \sum_{0}^{N} ||\vec{y}_n - \hat{\vec{y}_n} ||.
@@ -161,7 +161,7 @@ Figure~\ref{fig:ctrl-poles} shows the error of many different pairs of poles. It
 \end{figure}
 
 \section{Compensator design}
-Lets go back to Figure~\ref{fig:ctrl-model} and say we actually know the internal state $\vec{x}$. System identification and modelling revealed that when $\vec{x}$ is of the form $\tr{(d,\dot{d})}$, where $d$ is the distance measured and $\dot{d}$ the velocity of KITT, $\mat{A}$, $\mat{B}$, $\mat{C}$ and $\mat{D}$ are of the form
+Lets go back to Figure~\ref{fig:ctrl-model} and say we actually know the internal state $\vec{x}$. System identification and modeling revealed that when $\vec{x}$ is of the form $\tr{(d,\dot{d})}$, where $d$ is the distance measured and $\dot{d}$ the velocity of KITT, $\mat{A}$, $\mat{B}$, $\mat{C}$ and $\mat{D}$ are of the form
 
 \begin{equation}
 	\mat{A} = \begin{bmatrix}
@@ -208,7 +208,7 @@ Here $x_{ref}=\tr{(d_{ref},0)}$. If we argue that $\mat{A} - \mat{B} \mat{K}$ re
 	\end{bmatrix}.
 \end{equation}
 
-Further simplifing Equation~\ref{eq:ctrl-comp-feedback} yields
+Further simplifying Equation~\ref{eq:ctrl-comp-feedback} yields
 
 \begin{equation} \label{eq:ctrl-comp-feedback2}
 	\begin{bmatrix}
@@ -223,7 +223,7 @@ Further simplifing Equation~\ref{eq:ctrl-comp-feedback} yields
 Evaluating Equation~\ref{eq:ctrl-comp-feedback2} yields $x_1$ = $d_{ref}$ and $x_2=0$. This means that the model shown in Figure~\ref{fig:ctrl-model} converges to a state where KITT is not moving at a specified distance $d_{ref}$. In other words, we specify the position at which KITT stops moving. The only thing which remains, is determining the poles of $\mat{A} - \mat{B} \mat{K}$. We want KITT to stop at our specified position as fast as possible, without overshooting. Therefore, KITT must critically damped converge to a distance $d_{ref}$. If $\lambda_1$ and $\lambda_2$ are the eigenvalues of $\mat{A} - \mat{B} \mat{K}$, then $\lambda_1$ and $\lambda_2$ must be real and negative with $\lambda_1 - \lambda_2$ minimized. The exact value of $\lambda_1$ and $\lambda_2$ depends on the latency we are dealing with. We adjusted these eigenvalues on-the-go to achieve an optimized result.
 
 \section{Controller design}
-Putting together the observer and the compensator together yields the controller. This closed-loop system is depicted in Figure~\ref{fig:ctrl-controller}. Note that we discussed the design of the observer and compensator, as if they could be designed seperately. This is exactly what the serperation principle states. 
+Putting together the observer and the compensator together yields the controller. This closed-loop system is depicted in Figure~\ref{fig:ctrl-controller}. Note that we discussed the design of the observer and compensator, as if they could be designed separately. This is exactly what the separation principle states. 
 
 \begin{figure}[H]
 	\centering
@@ -255,7 +255,7 @@ After some testing, we noticed that the motors did not do anything with a PWM si
 	\end{array} \right.
 \end{equation}
 
-Here the drive excitation is denoted by $u$, the first-order coefficient (FOC) by $a_1$, the third-order coefficient (TOC) by $a_2$ and the excitation threshold by $u_t$. The FOC mostly determines the relation between the exicitation and PWM signal. To tweak for non-linear effects, we introduced the TOC. The combination of the latency and minimum driving speed of KITT determines the accuracy at which we can control KITT. Therefore, we can only correct for certain errors. This is the reason we introduced a excitation threshold; the threshold prevents oscillations due to latency.
+Here the drive excitation is denoted by $u$, the first-order coefficient (FOC) by $a_1$, the third-order coefficient (TOC) by $a_2$ and the excitation threshold by $u_t$. The FOC mostly determines the relation between the excitation and PWM signal. To tweak for non-linear effects, we introduced the TOC. The combination of the latency and minimum driving speed of KITT determines the accuracy at which we can control KITT. Therefore, we can only correct for certain errors. This is the reason we introduced a excitation threshold; the threshold prevents oscillations due to latency.
 
 Finally, we had to solve the designed state-space model. There are numerous numerical methods which are designed for solving differential equations. To improve the convergence of a numerical approximation, one can use two methods; \textbf{(1)}, use higher-order methods which inherently converge faster, or \textbf{(2)}, instead of evaluating one time step $T$, evaluate $N$ steps with time $T/N$. We used a fourth-order method of the Runge-Kutta family to approximate the state-space model. Appendix~\ref{app:num} gives a brief introduction to numerically solving KITT.
 
