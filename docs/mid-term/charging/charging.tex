@@ -26,7 +26,7 @@ The first step in designing our DC/DC converter meant we had to incorporate the 
 Pulse Width Modulator and the IRS2001PBF Gate Drivers into a full bridge converter (the
 DC/AC step), while at the same time integrating the given overcurrent protection circuit in the correct
 way. Since connection schemes for both the UC3525 and the IRS2001PBF were given in their respective
-datasheets uc3525a-datasheet, irs2001pbf-datasheet this did not pose much of a problem. The focus
+datasheets \cite{uc3525a-datasheet}, \cite{irs2001pbf-datasheet} this did not pose much of a problem. The focus
 was not on calculating the resistors and capacitors values, therefore we will not discuss the choices we
 made regarding these values. However, we will discuss our choice of the used MOSFET transistors and
 diodes. The most important factors in picking the correct transistor for our application were static and
@@ -35,8 +35,8 @@ dynamic power dissipation. \\
 While choosing a MOSFET	there where three MOSFETs (IPP50CN10N, IPP028N08N3G, PSMN017) available. Our circuit parameters were well within their given margins. This meant that all of them could be used for making a working DC/DC converter. The factor on which the suitability of each MOSFETs was tested is, as already mentioned, the power dissipation. The total dissipation of the MOSFETs can be calculated with
 
 \begin{equation}
-P = I_{DS}R_{DS(on)}D +	(C_{in}V_{GS}^2 + C_{out}V_{DS}^2)f_{s}
-\end{equation}.
+P = I_{DS}R_{DS(on)}D +	(C_{in}V_{GS}^2 + C_{out}V_{DS}^2)f_{s}.
+\end{equation}
 
 Herein $I_{DS}$ is the drain-source current through the transistor, $R_{DS(on)}$ is the transistors drain-source resistance when switched on, $D$ is the duty-cycle of the PWM control signal, $C_{in}$ and $C_{out}$ are the transistor’s in- and output capacitances, $V_{GS}$ is the gate-source voltage on the
 transitor (15 V), $V_{DS}$ is the drain-source voltage on the transistor (15 V) and $f_{s}$ is the switching frequency (100 kHz).  The results of calculating the power dissipation of each transistor are shown in Table~\ref{tab:ass2_powerloss}. 
@@ -56,8 +56,7 @@ transitor (15 V), $V_{DS}$ is the drain-source voltage on the transistor (15 V) 
 	    \label{tab:ass2_powerloss}
 \end{table}
 
-It can be seen in the table that PSMN017 has the lowest power dissipation and thus making it the most suitable MOSFET. \\ 
-As for the diodes we had two different types(SB540, SF61) at our disposal. For choosing a propper diode the power dissipation for each component was calculated once again. When assuming that the output voltage is near constant, the static dissipation, in context of the inverter, is given by
+It can be seen in the table that PSMN017 has the lowest power dissipation and thus making it the most suitable MOSFET. As for the diodes we had two different types(SB540, SF61) at our disposal. For choosing a propper diode the power dissipation for each component was calculated once again. When assuming that the output voltage is near constant, the static dissipation, in context of the inverter, is given by
 \begin{equation}
 	P_s = I V_{fw} D_{d}
 \end{equation}
@@ -65,22 +64,15 @@ in which $I$ represents the current flowing through the diodes, $V_{fw}$ the for
 \begin{equation}
 	D_d = \frac{1}{2}+\arcsin{ \left( \frac{V_{min}}{V_{max}}-1 \right) }
 \end{equation}
-in which the minumum and maximum output voltage of the inverter is represented by $V_{min}$ and $V_{max}$. \\
+in which the minumum and maximum output voltage of the inverter is represented by $V_{min}$ and $V_{max}$.
 
-From the calculations it turned out that the SB540 diode dissipated just 56\% of the power dissipated by the SF61 diode. Making SB540 thereby the most appropriate diode for our system. \\ 
-Implementing the PWM-generator, two gate drivers, the overcurrent protection circuit and the rectifier
-with overvoltage buzzer circuit resulted in the schematics found in Appendix~\ref{app:chargingsystem}. \\
-
-
-
-
-
-
+From the calculations it turned out that the SB540 diode dissipated just 56\% of the power dissipated by the SF61 diode. Making SB540 thereby the most appropriate diode for our system. Implementing the PWM-generator, two gate drivers, the overcurrent protection circuit and the rectifier
+with overvoltage buzzer circuit resulted in the schematics found in Appendix~\ref{app:schematics}.
 
 \section{Transformer}
-As can be seen in Figure~\ref{fig:contactless_charging} the only thing left to complete the DC/DC converter is the air-core transformer. Firstly one must design and build the coils for our transformer. After completing this a compensation circuit can be added. \\
+As can be seen in Figure~\ref{fig:contactless_charging} the only thing left to complete the DC/DC converter is the air-core transformer. Firstly one must design and build the coils for our transformer. After completing this a compensation circuit can be added. This compensation circuit nullifies the effect of the inductances. The only limiting factor which then remains, is the mutual inductance. Therefore, by moving the coils further apart, the power transfer increases. However, at a certain point the leakage inductances become significant and consequently the power transfer decreases.
 
-Target parameters for the coils were an inner diameter of \SI{50}{cm} for both coils and inductances of \SI{22}{μH} for the secondary coil and \SI{100}{μH} for the primary coil. The actual coils build had the following acceptable parameters:
+Target parameters for the coils were an inner diameter of \SI{50}{cm} for both coils and inductances of \SI{22}{μH} for the secondary coil and \SI{100}{μH} for the primary coil. The actual coils built had the parameters shown in Figure~\ref{tab:ass2-coil-params-meas}.
 
 \begin{table}[H]
 	\centering
@@ -97,7 +89,8 @@ Target parameters for the coils were an inner diameter of \SI{50}{cm} for both c
 \end{table}
 
 Then, we calculated the coils’ mutual inductance and coupling factor via the ostrich approach as given
-in the Student Manual. The results are:
+in the Student Manual. The results are shown in Figure~\ref{tab:ass2_coil_mutual}.
+
 \begin{table}[H]
 	\centering
 	\begin{tabular}{c c c c c}
@@ -117,8 +110,6 @@ in the Student Manual. The results are:
 
 
 
-
-
 \section{Testing}
 After soldering the
 PCB we got from our consultant we hooked it up to an oscilloscope, on which we then measured tidy
@@ -126,10 +117,9 @@ square waves for the gate drivers and power outputs, whose frequency and duty-cy
 changing the values of the two potmeters in the design. While inspecting the rectifier output waveform,
 we obtained a nice DC-signal, with very little ripple, due to the high switching frequency (i.e. compared
 to for example the rectifier used during EPO1 at \SI{50}{Hz}). Actual waveforms of the entire converter,
-including air transformer and compensation, can be found in Appendix~\ref{app:chargingsystem}. \\
+including air transformer and compensation, can be found in Appendix~\ref{app:chargingsystem}.
 
-
-The charging system was also equiped with a compensation circuit as shown in Figure~\ref{fig:ass2_eq_circ}. Firstly we used this formula:
+The charging system was also equiped with a compensation circuit as shown in Figure~\ref{fig:ass2_eq_circ}. Firstly we determined the transfer function.
 
 \begin{equation} \label{eq:ass3-transfer-function}
 	|H(s)| = \frac{s M Z_L}{(s M)^2 - (s L_2 + R_2 + (s C_2)^{-1} + Z_L) ( s L_1 + R1 + (s C_1)^{-1}))} .
@@ -145,7 +135,7 @@ With this formula it was possible to simulate the power transfer for a circuit w
 \end{figure}
 
 
- To test our design, we studied its waveforms using the oscilloscope. Screenshots of this are included in Appendix~\ref{app:chargingsystem}. From this waveforms may be concluded that the inverter generates a correct waveform and this waveform is transferred correctly by the two coils. We measured a steady DC-signal at the load. The results are displayed in Table~\ref{tab:ass2_power}. \\
+ To test our design, we studied its waveforms using the oscilloscope. Screenshots of this are included in Appendix~\ref{app:chargingsystem}. From this waveforms may be concluded that the inverter generates a correct waveform and this waveform is transferred correctly by the two coils. We measured a steady DC-signal at the load. The results are displayed in Table~\ref{tab:ass2_power}.
 
 
 \begin{table}[H]
@@ -182,8 +172,6 @@ With this formula it was possible to simulate the power transfer for a circuit w
 	\caption{Equivalent circuit with compensation}
 	\label{fig:ass2_eq_circ}
 \end{figure}
-
-
 
 
 

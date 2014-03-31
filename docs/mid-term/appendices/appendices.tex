@@ -13,23 +13,27 @@
 % - Signal filtering
 % - Using the Doppler effect to increase measurement accuracy
 % - Introduction to numerically solving differential equations
-\chapter{Charging system}
-\label{app:chargingsystem}
 
-\section{Diodes}
-For the diodes we again calculate the total power loss. When assuming that the output voltage is near constant, the static dissipation, in context of the inverter, is given by
-\begin{equation}
-	P_s = I V_{fw} D_{d}
-\end{equation}
-in which $I$ represents the current flowing through the diodes, $V_{fw}$ the forward voltage drop and $D_{d}$ the \textit{diode duty cycle}. The diode duty cycle determines the percentage of time in which current flows through the diode with respect to the switching frequency. $D_{d}$ is given by
-\begin{equation}
-	D_d = \frac{1}{2}+\arcsin{ \left( \frac{V_{min}}{V_{max}}-1 \right) }
-\end{equation}
-in which the minumum and maximum output voltage of the inverter is represented by $V_{min}$ and $V_{max}$. The dynamic power dissipation is per diode given by
-\begin{equation}
-	P_s = C_j V_{DS}^2
-\end{equation}
-in which the junction capacitance is represented by $C_j$. The combination of these formulas yields the total power dissipation.
+
+% Yo, als je deze tekst letterlijk in je chapter zet moet je 't wel weghalen uit de Appendix...
+
+% \chapter{Charging system}
+% \label{app:chargingsystem}
+
+% \section{Diodes}
+% For the diodes we again calculate the total power loss. When assuming that the output voltage is near constant, the static dissipation, in context of the inverter, is given by
+% \begin{equation}
+% 	P_s = I V_{fw} D_{d}
+% \end{equation}
+% in which $I$ represents the current flowing through the diodes, $V_{fw}$ the forward voltage drop and $D_{d}$ the \textit{diode duty cycle}. The diode duty cycle determines the percentage of time in which current flows through the diode with respect to the switching frequency. $D_{d}$ is given by
+% \begin{equation}
+% 	D_d = \frac{1}{2}+\arcsin{ \left( \frac{V_{min}}{V_{max}}-1 \right) }
+% \end{equation}
+% in which the minumum and maximum output voltage of the inverter is represented by $V_{min}$ and $V_{max}$. The dynamic power dissipation is per diode given by
+% \begin{equation}
+% 	P_s = C_j V_{DS}^2
+% \end{equation}
+% in which the junction capacitance is represented by $C_j$. The combination of these formulas yields the total power dissipation.
 
 \chapter{Inverter Schematics}
 \label{app:schematics}
