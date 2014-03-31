@@ -56,7 +56,7 @@ transitor (15 V), $V_{DS}$ is the drain-source voltage on the transistor (15 V) 
 	    \label{tab:ass2_powerloss}
 \end{table}
 
-It can be seen in the table that PSMN017 has the lowest power dissipation and thus making it the most suitable MOSFET. As for the diodes we had two different types(SB540, SF61) at our disposal. For choosing a propper diode the power dissipation for each component was calculated once again. When assuming that the output voltage is near constant, the static dissipation, in context of the inverter, is given by
+It can be seen in the table that PSMN017 has the lowest power dissipation and thus making it the most suitable MOSFET. As for the diodes we had two different types (SB540, SF61) at our disposal. For choosing a propper diode the power dissipation for each component was calculated once again. When assuming that the output voltage is near constant, the static dissipation, in context of the inverter, is given by
 \begin{equation}
 	P_s = I V_{fw} D_{d}
 \end{equation}
@@ -89,7 +89,7 @@ Target parameters for the coils were an inner diameter of \SI{50}{cm} for both c
 \end{table}
 
 Then, we calculated the coils’ mutual inductance and coupling factor via the ostrich approach as given
-in the Student Manual. The results are shown in Figure~\ref{tab:ass2_coil_mutual}.
+in \cite{epo4-manual}. The results are shown in Figure~\ref{tab:ass2_coil_mutual}.
 
 \begin{table}[H]
 	\centering
@@ -147,7 +147,7 @@ With this formula it was possible to simulate the power transfer for a circuit w
 		\SI{2}{cm} & \SI{19.998}{V} & \SI{1.2472}{A} & \SI{24.942}{W} & \SI{14.8}{V} & \SI{21.3}{W} & \SI{85.6}{\percent} \\
 		\hline
 		\end{tabular}
-			\caption{powerwer transfer measurements - compensated}
+			\caption{Power transfer measurements - compensated}
 			\label{tab:ass2_power}
 \end{table}
 
@@ -178,7 +178,7 @@ With this formula it was possible to simulate the power transfer for a circuit w
 
 
 \section{Demonstration}
-The charging system's functionality had to be demonstrated at a distance of \SI{6}{cm}. Therefore the performance of the system had to be optimized for a distance at 6cm. Requirements were that the system was fully charged to \SI{20}{V} within four minutes, the system had to be in solid resonance and the charging limiter should be working. Since the system had to be in solid resonance the frequency was no option of variation to maximize charging speed. For this reason the duty cycle was changed in order to maximize the charging speed of the system at \SI{6}{cm}. This was done by trial and error. The result was a system at resonance for a frequency at \SI{100}{kHz}, a duty cycle of 40\% and a maximal charging speed of 3:45 minutes. Our charging system met all the requirements. 
+The charging system's functionality had to be demonstrated at a distance of \SI{6}{cm}. Therefore the performance of the system had to be optimized for a distance at \SI{6}{cm}. Requirements were that the system was fully charged to \SI{20}{V} within four minutes, the system had to be in solid resonance and the charging limiter should be working. Since the system had to be in solid resonance the frequency was no option of variation to maximize charging speed. For this reason the duty cycle was changed in order to maximize the charging speed of the system at \SI{6}{cm}. This was done by trial and error. The result was a system at resonance for a frequency at \SI{100}{kHz}, a duty cycle of 40\% and a maximal charging speed of 3:45 minutes. Our charging system met all the requirements. 
 \end{document}
 
 
