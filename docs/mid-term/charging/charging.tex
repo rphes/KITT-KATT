@@ -18,9 +18,6 @@ It was assigned to us to design, build and implement a contactless charging syst
 	\label{fig:contactless_charging}
 \end{figure}
 
-
-
-
 \section{Power electronics}
 The first step in designing our DC/DC converter meant we had to incorporate the used UC3525 Regulating
 Pulse Width Modulator and the IRS2001PBF Gate Drivers into a full bridge converter (the
@@ -39,7 +36,7 @@ P = I_{DS}R_{DS(on)}D +	(C_{in}V_{GS}^2 + C_{out}V_{DS}^2)f_{s}.
 \end{equation}
 
 Herein $I_{DS}$ is the drain-source current through the transistor, $R_{DS(on)}$ is the transistors drain-source resistance when switched on, $D$ is the duty-cycle of the PWM control signal, $C_{in}$ and $C_{out}$ are the transistor’s in- and output capacitances, $V_{GS}$ is the gate-source voltage on the
-transitor (15 V), $V_{DS}$ is the drain-source voltage on the transistor (15 V) and $f_{s}$ is the switching frequency (100 kHz).  The results of calculating the power dissipation of each transistor are shown in Table~\ref{tab:ass2_powerloss}. 
+transitor (15 V), $V_{DS}$ is the drain-source voltage on the transistor (15 V) and $f_{s}$ is the switching frequency (100 kHz).  The results of calculating the power dissipation of each transistor are shown in Table~\ref{tab:ass2-powerloss}. 
 
 \begin{table}[H]
 	\centering
@@ -53,7 +50,7 @@ transitor (15 V), $V_{DS}$ is the drain-source voltage on the transistor (15 V) 
 		\hline
 		\end{tabular}
 		\caption{MOSFET power loss calculations}
-	    \label{tab:ass2_powerloss}
+	    \label{tab:ass2-powerloss}
 \end{table}
 
 It can be seen in the table that PSMN017 has the lowest power dissipation and thus making it the most suitable MOSFET. As for the diodes we had two different types (SB540, SF61) at our disposal. For choosing a propper diode the power dissipation for each component was calculated once again. When assuming that the output voltage is near constant, the static dissipation, in context of the inverter, is given by
@@ -107,9 +104,6 @@ in \cite{epo4-manual}. The results are shown in Figure~\ref{tab:ass2_coil_mutual
 		\label{tab:ass2_coil_mutual}
 \end{table}
 
-
-
-
 \section{Testing}
 After soldering the
 PCB we got from our consultant we hooked it up to an oscilloscope, on which we then measured tidy
@@ -117,7 +111,24 @@ square waves for the gate drivers and power outputs, whose frequency and duty-cy
 changing the values of the two potmeters in the design. While inspecting the rectifier output waveform,
 we obtained a nice DC-signal, with very little ripple, due to the high switching frequency (i.e. compared
 to for example the rectifier used during EPO1 at \SI{50}{Hz}). Actual waveforms of the entire converter,
-including air transformer and compensation, can be found in Appendix~\ref{app:waveforms}.
+including air transformer and compensation, are shown in Figure~\ref{fig:charging-osc-coil-primary} and Figure~\ref{fig:charging-osc-coil-secondary}.
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{subfigure}[h]{0.48\textwidth}
+			\includegraphics[width=\textwidth]{resource/osc-coil-primary.png}
+			\caption{Voltage of the two ends of the primary coil with respect to ground}
+			\label{fig:charging-osc-coil-primary}
+		\end{subfigure}
+		\quad
+		\begin{subfigure}[h]{0.48\textwidth}
+			\includegraphics[width=\textwidth]{resource/osc-coil-secondary.png}
+			\caption{Voltage of the two ends of the secondary coil with respect to ground}
+			\label{fig:charging-osc-coil-secondary}
+		\end{subfigure}
+	\end{center}
+	\caption{Inverter voltage waveforms at primary and secondary side}
+\end{figure}
 
 The charging system was also equiped with a compensation circuit as shown in Figure~\ref{fig:ass2_eq_circ}. Firstly we determined the transfer function.
 
@@ -172,10 +183,6 @@ With this formula it was possible to simulate the power transfer for a circuit w
 	\caption{Equivalent circuit with compensation}
 	\label{fig:ass2_eq_circ}
 \end{figure}
-
-
-
-
 
 \section{Demonstration}
 The charging system's functionality had to be demonstrated at a distance of \SI{6}{cm}. Therefore the performance of the system had to be optimized for a distance at \SI{6}{cm}. Requirements were that the system was fully charged to \SI{20}{V} within four minutes, the system had to be in solid resonance and the charging limiter should be working. Since the system had to be in solid resonance the frequency was no option of variation to maximize charging speed. For this reason the duty cycle was changed in order to maximize the charging speed of the system at \SI{6}{cm}. This was done by trial and error. The result was a system at resonance for a frequency at \SI{100}{kHz}, a duty cycle of 40\% and a maximal charging speed of 3:45 minutes. Our charging system met all the requirements. 
