@@ -8,6 +8,7 @@
 \begin{document}
 
 \chapter{Conclusions}
+\label{ch:conclusions}
 Looking back on the previous quarter and its results, some conclusions can be drawn. With respect to the contact-less charging, we can conclude that this went relatively smoothly. Fine tuning the duty cycle and frequency was required to achieve optimal results, but all goals were reached eventually: the overcurrent and overvoltage protections work and the charging time for the system was 3:45 minutes, less than the specified maximum of 4 minutes. \\
 Major improvements have been made regarding the latency of the Bluetooth connection to the car, reducing it by a factor of up to 30. This helps give a more accurate representation of the state of KITT. Setting up the Bluetooth connection was simplified in the C\# program and the connection was not lost within the operating limits of the wireless devices. The reliability of the acoustic sensor is not as good as expected, most likely due to physical damage: the right sensor did not work at all during the demonstration and before that would output seemingly random dips. To improve the latter behavior, a linear prediction filter has been implemented to eliminate the effect of these dips.\\
 Extensive simulation and testing has been done to implement an observer and compensator according to the seperation principle that make up the control system. Effort was made to implement a mapping from the drive excitation signal to a PWM signal.\\
