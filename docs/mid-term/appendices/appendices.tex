@@ -15,15 +15,6 @@
 % - Introduction to numerically solving differential equations
 \chapter{Charging system}
 \label{app:chargingsystem}
-\subsection{MOSFETs}
-The total dissipation of the MOSFETs can be calculated with
-
-\begin{equation}
-P = I_{DS}R_{DS(on)}D +	(C_{in}V_{GS}^2 + C_{out}V_{DS}^2)f_{s}
-\end{equation}.
-
-Herein $I_{DS}$ is the drain-source current through the transistor, $R_{DS(on)}$ is the transistors drain-source resistance when switched on, $D$ is the duty-cycle of the PWM control signal, $C_{in}$ and $C_{out}$ are the transistor’s in- and output capacitances, $V_{GS}$ is the gate-source voltage on the
-transitor (15 V), $V_{DS}$ is the drain-source voltage on the transistor (15 V) and $f_{s}$ is the switching frequency (100 kHz). 
 
 \subsection{Diodes}
 For the diodes we again calculate the total power loss. When assuming that the output voltage is near constant, the static dissipation, in context of the inverter, is given by
@@ -46,12 +37,12 @@ in which the junction capacitance is represented by $C_j$. The combination of th
 \chapter{Inverter Schematics}
 \label{app:schematics}
 The following pages will contain the final design of the inverter.
-\insertpdf{1-6}{appendices/resource/schematics-rc.pdf}
+\insertpdf{1-6}{resources/schematics-rc.pdf}
 
 \subsection{PCB Layout}
 \label{app:pcb_layout}
 The following pages will contain a two dimensional view of each layer of the PCB. Also, a combined view is included.
-\insertpdf{1-3}{appendices/resource/pcb-layout-rc.pdf}
+\insertpdf{1-3}{resources/pcb-layout-rc.pdf}
 
 \subsection{Inverter Waveforms}
 Figure~\ref{fig:app-osc-coil-primary} and Figure~\ref{fig:app-osc-coil-secondary} show the results of the measurements of the inverter.
@@ -59,13 +50,13 @@ Figure~\ref{fig:app-osc-coil-primary} and Figure~\ref{fig:app-osc-coil-secondary
 \begin{figure}[H]
 	\begin{center}
 		\begin{subfigure}[h]{0.48\textwidth}
-			\includegraphics[width=\textwidth]{resource/osc-coil-primary.png}
+			\includegraphics[width=\textwidth]{resources/osc-coil-primary.png}
 			\caption{Voltage of the two ends of the primary coil with respect to ground}
 			\label{fig:app-osc-coil-primary}
 		\end{subfigure}
 		\quad
 		\begin{subfigure}[h]{0.48\textwidth}
-			\includegraphics[width=\textwidth]{resource/osc-coil-secondary.png}
+			\includegraphics[width=\textwidth]{resources/osc-coil-secondary.png}
 			\caption{Voltage of the two ends of the secondary coil with respect to ground}
 			\label{fig:app-osc-coil-secondary}
 		\end{subfigure}

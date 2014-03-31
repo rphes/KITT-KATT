@@ -13,8 +13,9 @@ namespace DesignReporter
 		static string docsPath;
 		static DirectoryInfo docs;
         static FileInfo outputPath = new FileInfo("sourcecode.tex");
-		static String start = 
-@"\documentclass{report}
+		static String start =
+@"%!TEX program = xelatex
+\documentclass{report}
 \input{docs/library/import}
 \input{docs/library/style}
 \addbibresource{docs/library/bibliography.bib}
