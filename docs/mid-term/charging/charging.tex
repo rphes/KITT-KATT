@@ -113,7 +113,21 @@ The charging system was also equiped with a compensation circuit as shown in Fig
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[width=0.8\linewidth]{resource/cpt-equivalent-circuit-rc.pdf}
+		% \includegraphics[width=0.8\linewidth]{resource/cpt-equivalent-circuit-rc.pdf}
+		\begin{circuitikz}[scale=1.2]
+			 \draw (0,0) node[ground] {} to[american voltage source,l=$V_s$] (0,4)
+				to[C, l=$C_1$] (2,4)
+				to[R, l=$R_1$] (4,4)
+				to[L, l=$L_1$] (4,2);
+
+			\draw (4,0) node[ground] {} to[american controlled voltage source, l=$j \omega M I_2$, i<=$I_1$] (4,2);
+
+			\draw (6,0) node[ground] {} to[american controlled voltage source, l_=$j \omega M I_1$, i<=$I_2$] (6,2)
+				to[L, l=$L_2$] (6,4)
+				to[R, l=$R_2$] (8,4)
+				to[C, l=$C_2$] (10,4)
+				to[R, l=$R_L$] (10,0) node[ground] {};
+		\end{circuitikz}
 	\end{center}
 	\caption{Equivalent circuit with compensation}
 	\label{fig:ass2_eq_circ}
