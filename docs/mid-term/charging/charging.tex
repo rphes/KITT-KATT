@@ -29,7 +29,7 @@ was not on calculating the resistors and capacitors values, therefore we will no
 made regarding these values. However, we will discuss our choice of the used MOSFET transistors and
 diodes. The most important factors in picking the correct transistor for our application were static and
 dynamic power dissipation. \\
-While choosing a MOSFET	there where three MOSFETs (IPP50CN10N, IPP028N08N3G, PSMN017) available. Our circuit parameters were well within their given margins. This meant that all of them could be used for making a working DC/DC converter. The factor on which the suitability of each MOSFETs was tested is, as already mentioned, the power dissipation. The results of calculating the power dissipation of each transistor are shown in Table \ref{ass2_power_loss}. How these calculations were made can be seen in Appendix~\ref{app:chargingsytem}. 
+While choosing a MOSFET	there where three MOSFETs (IPP50CN10N, IPP028N08N3G, PSMN017) available. Our circuit parameters were well within their given margins. This meant that all of them could be used for making a working DC/DC converter. The factor on which the suitability of each MOSFETs was tested is, as already mentioned, the power dissipation. The results of calculating the power dissipation of each transistor are shown in Table \ref{ass2_power_loss}. How these calculations were made can be seen in Appendix~\ref{app:chargingsystem}. 
 
 \begin{table}[H]
 	\centering
@@ -47,9 +47,9 @@ While choosing a MOSFET	there where three MOSFETs (IPP50CN10N, IPP028N08N3G, PSM
 \end{table}
 
 It can be seen in the table that PSMN017 has the lowest power dissipation and thus making it the most suitable MOSFET. \\ 
-As for the diodes we had two different types(SB540, SF61) at our disposal. For choosing a propper diode the power dissipation for each component was calculated once again. The formula used to calculate the power dissipation can be found in Appendix~\ref{app:chargingsytem}. From the calculations it turned out that the SB540 diode dissipated just 56\% of the power dissipated by the SF61 diode. Making SB540 thereby the most appropriate diode for our system. \\ 
+As for the diodes we had two different types(SB540, SF61) at our disposal. For choosing a propper diode the power dissipation for each component was calculated once again. The formula used to calculate the power dissipation can be found in Appendix~\ref{app:chargingsystem}. From the calculations it turned out that the SB540 diode dissipated just 56\% of the power dissipated by the SF61 diode. Making SB540 thereby the most appropriate diode for our system. \\ 
 Implementing the PWM-generator, two gate drivers, the overcurrent protection circuit and the rectifier
-with overvoltage buzzer circuit resulted in the schematics found in Appendix~\ref{app:chargingsytem}. 
+with overvoltage buzzer circuit resulted in the schematics found in Appendix~\ref{app:chargingsystem}. 
 
 
 \section{Transformer}
@@ -95,8 +95,8 @@ square waves for the gate drivers and power outputs, whose frequency and duty-cy
 changing the values of the two potmeters in the design. While inspecting the rectifier output waveform,
 we obtained a nice DC-signal, with very little ripple, due to the high switching frequency (i.e. compared
 to for example the rectifier used during EPO1 at 𝟧𝟢 Hz). Actual waveforms of the entire converter,
-including air transformer and compensation, can be found in Appendix ??. \\
-The charging system was also equiped with a compensation circuit as shown in Figure~\ref{fig:ass2_eq_circ}. To test our design, we studied its waveforms using the oscilloscope. Screenshots of this are included in Appendix?????????. From this waveforms may be concluded that the inverter generates a correct waveform and this waveform is transferred correctly by the two coils. We measured a steady DC-signal at the load. The results are displayed in Table~\ref{tab:ass2_power}.
+including air transformer and compensation, can be found in Appendix~\ref{app:chargingsystem}. \\
+The charging system was also equiped with a compensation circuit as shown in Figure~\ref{fig:ass2_eq_circ}. To test our design, we studied its waveforms using the oscilloscope. Screenshots of this are included in Appendix~\ref{app:chargingsystem}. From this waveforms may be concluded that the inverter generates a correct waveform and this waveform is transferred correctly by the two coils. We measured a steady DC-signal at the load. The results are displayed in Table~\ref{tab:ass2_power}.
 
 \begin{table}[H]
 	\centering
