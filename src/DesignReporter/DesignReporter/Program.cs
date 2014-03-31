@@ -132,7 +132,7 @@ namespace DesignReporter
 					string pathescaped = fi.FullName.Replace(outputPath.Directory.FullName + "\\", "").Replace('\\', '/');
 
 					//Add source code to file
-					file.WriteLine(String.Format("\\label{{lst:{0}}}\r\n\\includecode[{1}]{{{2}}}{{{3}}}\r\n", caption.ToLower().Replace('/', '-'), extensions[ext], caption, pathescaped));
+					file.WriteLine(String.Format("\\includecode[{1}]{{{2}}}{{{3}}}{{lst:{0}}}\r\n", caption.Replace('/', '-'), extensions[ext], caption, pathescaped));
 					
 					//Count lines
 					if (ext == ".vhdl" || ext == ".vhd")
