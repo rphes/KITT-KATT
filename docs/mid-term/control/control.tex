@@ -54,7 +54,7 @@ The controller must have knowledge of the current position and velocity of the c
 	\label{fig:ctrl-model}
 \end{figure}
 
-The observer observes the input $\vec{u}$ and output $\vec{y}$ and determines, by doing that, the internal state $\vec{x}$ of KITT. We modelled the observer by making also use of a state-space representation. Logically thinking, the observer must obey two constraints; \textbf{(1)}, the internal state $\hat{\vec{x}}$ of the observer must converge to $\vec{x}$ if $t \to \infty$ and \textbf{(2)}, if $\hat{\vec{x}} = \vec{x}$, then the states should not diverge. To fulfil \textbf{(1)}, we introduce a feedback matrix $\mat{L}$ which will be discussed later, and to satisfy \textbf{(2)}, the system, input, ouput and feedthrough matrix of the observer should match KITT's.
+The observer observes the input $\vec{u}$ and output $\vec{y}$ and determines, by doing that, the internal state $\vec{x}$ of KITT. We modelled the observer by making also use of a state-space representation. Logically thinking, the observer must obey two constraints; \textbf{(1)}, the internal state $\hat{\vec{x}}$ of the observer must converge to $\vec{x}$ if $t \to \infty$ and \textbf{(2)}, if $\hat{\vec{x}} = \vec{x}$, then the states should not diverge. To fulfil \textbf{(1)}, we introduce a feedback matrix $\mat{L}$ which will be discussed later, and to satisfy \textbf{(2)}, the system, input, output and feedthrough matrix of the observer should match KITT's.
 
 \begin{figure}[H]
 	\centering
@@ -108,7 +108,7 @@ Equation~\ref{eq:ctrl-err} tells us the the system is observable, if $\mat{A} - 
 	\label{fig:ctrl-bond}
 \end{figure}
 
-The only thing which remained was determining the system matrices $\mat{A}$, $\mat{B}$, $\mat{C}$ and $\mat{D}$ and  the feedback matrix $\mat{L}$. For the system matrices, we did two things; \textbf{(1)}, we used the \textit{System Identification Toolbox} of MATLAB in combination with experiments to fit a state-space model, and \textbf{(2)}, we used the bond graph depicted in Figure~\ref{fig:ctrl-bond} to derive the state-space model shown in Equation~\ref{eq:ctrl-bond-model}. Here the battery voltage is denoted by $v$, the inductance of the motor by $L$, the internal resistance of the motor by $R$, the motor constant by $k_t$, the gear constant by $k_g$, the radius of the wheels by $r_w$, the mass of KITT by $m$, the rolling resistance co\"efficient by $\rho$ and $k_t k_g/r_w$ by $r$ and a generalized notation of position and velocity is used. The observability matrix $\mathcal{O}$ and the controllability matrix $\mathcal{C}$ revealed that the system was both obversable and controllable. Eventually we let $L \to 0$ to reduce the order of the model to two.
+The only thing which remained was determining the system matrices $\mat{A}$, $\mat{B}$, $\mat{C}$ and $\mat{D}$ and  the feedback matrix $\mat{L}$. For the system matrices, we did two things; \textbf{(1)}, we used the \textit{System Identification Toolbox} of MATLAB in combination with experiments to fit a state-space model, and \textbf{(2)}, we used the bond graph depicted in Figure~\ref{fig:ctrl-bond} to derive the state-space model shown in Equation~\ref{eq:ctrl-bond-model}. Here the battery voltage is denoted by $v$, the inductance of the motor by $L$, the internal resistance of the motor by $R$, the motor constant by $k_t$, the gear constant by $k_g$, the radius of the wheels by $r_w$, the mass of KITT by $m$, the rolling resistance coefficient by $\rho$ and $k_t k_g/r_w$ by $r$ and a generalized notation of position and velocity is used. The observability matrix $\mathcal{O}$ and the controllability matrix $\mathcal{C}$ revealed that the system was both obversable and controllable. Eventually we let $L \to 0$ to reduce the order of the model to two.
 
 \begin{align} \label{eq:ctrl-bond-model}
 	\dot{\vec{x}} = \frac{d}{dt}
@@ -181,7 +181,7 @@ Let us introduce the feedback law $\vec{u} = -\mat{K}(\vec{x}-\vec{x}_{ref})$. R
 \end{equation}
 
 
-Here $x_{ref}=\tr{(d_{ref},0)}$. If we argue that $\mat{A} - \mat{B} \mat{K}$ renders the system asymptotically, then rewriting Equation~\ref{eq:ctrl-comp} using $\dot{\vec{x}} \to 0$ when $t \to \infty$ yields
+Here $x_{ref}=\tr{(d_{ref},0)}$. If we argue that $\mat{A} - \mat{B} \mat{K}$ renders the system asymptotically stable, then rewriting Equation~\ref{eq:ctrl-comp} using $\dot{\vec{x}} \to 0$ when $t \to \infty$ yields
 
 \begin{equation} \label{eq:ctrl-comp-feedback}
 	(\mat{B} \mat{K} - \mat{A}) \vec{x} = \mat{B} \mat{K} \vec{x}_{ref} = 
@@ -219,7 +219,7 @@ Further simplifing Equation~\ref{eq:ctrl-comp-feedback} yields
 	\end{bmatrix}.
 \end{equation}
 
-Evaluating Equation~\ref{eq:ctrl-comp-feedback2} yields $x_1$ = $d_{ref}$ and $x_2=0$. This means that the model shown in Figure~\ref{fig:ctrl-model} converges to a state where KITT is not moving at a specified distance $d_{ref}$. In other words, we specify the position at which KITT stops moving. The only thing which remains, is determining the poles of $\mat{A} - \mat{B} \mat{K}$. We want KITT to stop at our specified position as fast as possible, without overshooting. Therefore, KITT must critically damped converge to a distance $d_{ref}$. If $\lambda_1$ and $\lambda_2$ are the eigenvalues of $\mat{A} - \mat{B} \mat{K}$, then $\lambda_1$ and $\lambda_2$ must be real, negative with $\lambda_1 - \lambda_2$ minimized. The exact value of $\lambda_1$ and $\lambda_2$ depends on the latency we are dealing with. We adjusted these eigenvalues on-the-go to achieve an optimized result.
+Evaluating Equation~\ref{eq:ctrl-comp-feedback2} yields $x_1$ = $d_{ref}$ and $x_2=0$. This means that the model shown in Figure~\ref{fig:ctrl-model} converges to a state where KITT is not moving at a specified distance $d_{ref}$. In other words, we specify the position at which KITT stops moving. The only thing which remains, is determining the poles of $\mat{A} - \mat{B} \mat{K}$. We want KITT to stop at our specified position as fast as possible, without overshooting. Therefore, KITT must critically damped converge to a distance $d_{ref}$. If $\lambda_1$ and $\lambda_2$ are the eigenvalues of $\mat{A} - \mat{B} \mat{K}$, then $\lambda_1$ and $\lambda_2$ must be real and negative with $\lambda_1 - \lambda_2$ minimized. The exact value of $\lambda_1$ and $\lambda_2$ depends on the latency we are dealing with. We adjusted these eigenvalues on-the-go to achieve an optimized result.
 
 \section{Controller design}
 Putting together the observer and the compensator together yields the controller. This closed-loop system is depicted in Figure~\ref{fig:ctrl-controller}. Note that we discussed the design of the observer and compensator, as if they could be designed seperately. This is exactly what the serperation principle states. 
@@ -249,13 +249,13 @@ After some testing, we noticed that the motors did not do anything with a PWM si
 
 \begin{equation} \label{eq:ctrl-mapping}
 	\text{PWM}(u) = \left\{ \begin{array}{l l}
-		155 + a_1 u + a_2 u^3 & \quad \text{ if } u > u_b, \\
-		145 + a_1 u + a_2 u^3 & \quad \text{ if } u < -u_b.
+		155 + a_1 u + a_2 u^3 & \quad \text{ if } u > u_t, \\
+		145 + a_1 u + a_2 u^3 & \quad \text{ if } u < -u_t.
 	\end{array} \right.
 \end{equation}
 
-Here the drive excitation is denoted by $u$, the first-order coefficient (FOC) by $a_1$, the third-order coefficient (TOC) by $a_2$ and the excitation threshold by $u_b$. The FOC mostly determines the relation between the exicitation and PWM signal. To tweak for non-linear effects, we introduced the TOC. The combination of the latency and minimum driving speed of KITT determines the accuracy at which we can control KITT. Therefore, we can only correct for certain errors. This is the reason we introduced a excitation threshold; the threshold prevents oscillations due to latency.
+Here the drive excitation is denoted by $u$, the first-order coefficient (FOC) by $a_1$, the third-order coefficient (TOC) by $a_2$ and the excitation threshold by $u_t$. The FOC mostly determines the relation between the exicitation and PWM signal. To tweak for non-linear effects, we introduced the TOC. The combination of the latency and minimum driving speed of KITT determines the accuracy at which we can control KITT. Therefore, we can only correct for certain errors. This is the reason we introduced a excitation threshold; the threshold prevents oscillations due to latency.
 
-Finally, we have to solve the designed state-space model. There are numerous numerical methods which are designed for solving differential equations. To improve the convergence of a numerical approximation, one can use two methods; \textbf{(1)}, use higher-order methods which inherently converge faster, or \textbf{(2)}, instead of evaluating one time step $T$, evaluate $N$ steps with time $T/N$. We used a fourth-order method of the Runge-Kutta family to approximate the state-space model. Appendix~\ref{app:num} gives a brief introduction to numerically solving KIT.
+Finally, we had to solve the designed state-space model. There are numerous numerical methods which are designed for solving differential equations. To improve the convergence of a numerical approximation, one can use two methods; \textbf{(1)}, use higher-order methods which inherently converge faster, or \textbf{(2)}, instead of evaluating one time step $T$, evaluate $N$ steps with time $T/N$. We used a fourth-order method of the Runge-Kutta family to approximate the state-space model. Appendix~\ref{app:num} gives a brief introduction to numerically solving KITT.
 
 \end{document}
