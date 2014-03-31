@@ -78,7 +78,7 @@ Figure~\ref{fig:app-osc-coil-primary} and Figure~\ref{fig:app-osc-coil-secondary
 
 \chapter{Signal filtering}
 \label{app:signal-filtering}
-\subsection{Prediction filter}
+\section{Prediction filter}
 To process measured values, consistent sensor output is required. However, every now and then, the sensors output unrealistic values. To overcome this problem, we have created a finite impulse response filter which would predict the next measured value. If the measured value differs too much from the predicted value, the measured value is replaced.
 
 Let the measured distances be $x_i$ with $i \in [0,n]$. If the sample time is $T$, then the current observed speed is given by
@@ -118,7 +118,7 @@ Note that
 	E[y_n] = \left( \sum_{n=-\infty}^{\infty} h_n \right) E[x_n] = E[x_n].
 \end{equation}
 
-\subsection{Noise filtering}
+\section{Noise filtering}
 
 Consider a ordinary second-order low pass filter with transfer function
 
@@ -315,6 +315,9 @@ One might notice that the first two terms of Equation~\ref{eq:app-approx} can be
 \end{equation}
 
 This indicates that the a second-order approximation is given by a linear combination of the slope at $t=t_0$ and $t=t_0+\Delta t$. This result yields us Heun's method, which is a second-order Runge-Kutta method. 
+
+\chapter{Source code}
+\inputfrom{../../}{sourcecode}
 
 \end{appendices}
 \end{document}
