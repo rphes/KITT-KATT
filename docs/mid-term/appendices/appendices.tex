@@ -237,75 +237,83 @@ then the linearized relative uncertainty $u_{d,rel}$ magically simplifies to $r$
 
 \chapter{Numerically solving KITT}
 
-\textit{Note that this section does not give mathematically formal derivations and statements. This section is meant to tickle the readers intuition.}
+\textit{Note that this section does not give mathematically formal derivations and statements. This section is meant to tickle the readers intuition, to raise some understanding for the methods we used to solve our differential equations.}
 
 The solution of our state-space model is obtained by solving
 
 \begin{equation}
-	\dot{\vec{x}}=\mat{A}\vec{x}+\mat{B}\vec{u}.
+\dot{\vec{x}}=\mat{A}\vec{x}+\mat{B}\vec{u}.
 \end{equation}
 
-We can simplify this problem to 
+We can simplify this problem to
 
 \begin{equation}
-	\dot{x}=f(x).
+\dot{x}=f(x).
 \end{equation}
 
 We can rewrite this equation using Taylor series expansion.
 
 \begin{align}
-	\frac{dx}{dt} &= f(x), \\
-	x(t_0+\Delta t) &\approx
-		x(t_0)+
-		\left. \Delta t \frac{dx}{dt} \right|_{t=t_0}+
-		\frac{\Delta t^2}{2}\left. \frac{d^2x}{dt^2} \right|_{t=t_0}+
-		\text{h.o.t.}, \\
-	x(t_0+\Delta t) &\approx
-		x(t_0)+
-		\Delta t \left(
-			\left. \frac{dx}{dt} \right|_{t=t_0}+
-			\frac{\Delta t}{2}\left. \frac{d^2x}{dt^2} \right|_{t=t_0}
-		\right) + \text{h.o.t.} \label{eq:app-approx}
+\frac{dx}{dt} &= f(x), \\
+x(t_0+\Delta t) &\approx
+x(t_0)+
+\left. \Delta t \frac{dx}{dt} \right|_{t=t_0}+
+\frac{\Delta t^2}{2}\left. \frac{d^2x}{dt^2} \right|_{t=t_0}+
+\dots, \\
+x(t_0+\Delta t) &\approx
+x(t_0)+
+\Delta t \left(
+\left. \frac{dx}{dt} \right|_{t=t_0}+
+\frac{\Delta t}{2}\left. \frac{d^2x}{dt^2} \right|_{t=t_0}
+\right) + \dots \label{eq:app-approx}
 \end{align}
 
 Evaluating the derivative at $t=t_0+\Delta t$ yields
 
 \begin{equation}
-	\left. \frac{dx}{dt} \right|_{t=t_0+\Delta t} = 
-		\left. \frac{dx}{dt} \right|_{t=t_0} +
-		\Delta t \left. \frac{d^2x}{dt^2} \right|_{t=t_0} +
-		\text{h.o.t.}
+\left. \frac{dx}{dt} \right|_{t=t_0+\Delta t} =
+\left. \frac{dx}{dt} \right|_{t=t_0} +
+\Delta t \left. \frac{d^2x}{dt^2} \right|_{t=t_0} + \dots
 \end{equation}
 
-One might notice that the first two terms of Equation~\ref{eq:app-approx} can be written as a linear combination
+One might notice that the second and third term of right hand side of Equation~\ref{eq:app-approx} can be written as a linear combination
 
 \begin{equation}
-	a \left. \frac{dx}{dt} \right|_{t=t_0} +
-	b \left. \frac{dx}{dt} \right|_{t=t_0+\Delta t} =
-		\left. \frac{dx}{dt} \right|_{t=t_0}+
-		\frac{\Delta t}{2}\left. \frac{d^2x}{dt^2} \right|_{t=t_0},
+a \left. \frac{dx}{dt} \right|_{t=t_0} +
+b \left. \frac{dx}{dt} \right|_{t=t_0+\Delta t} =
+\left. \frac{dx}{dt} \right|_{t=t_0}+
+\frac{\Delta t}{2}\left. \frac{d^2x}{dt^2} \right|_{t=t_0},
 \end{equation}
 
 \begin{equation}
-	\begin{bmatrix}
-		1 & 1 \\
-		0 & 1 
-	\end{bmatrix} \begin{bmatrix}
-		a \\
-		b 
-	\end{bmatrix} = \begin{bmatrix}
-		1 \\
-		1/2
-	\end{bmatrix} \Leftrightarrow \begin{bmatrix}
-		a \\
-		b
-	\end{bmatrix} = \begin{bmatrix}
-		1/2 \\ 
-		1/2
-	\end{bmatrix}.
+\begin{bmatrix}
+1 & 1 \\
+0 & 1
+\end{bmatrix} \begin{bmatrix}
+a \\
+b
+\end{bmatrix} = \begin{bmatrix}
+1 \\
+1/2
+\end{bmatrix} \Leftrightarrow \begin{bmatrix}
+a \\
+b
+\end{bmatrix} = \begin{bmatrix}
+1/2 \\
+1/2
+\end{bmatrix}.
 \end{equation}
 
-This indicates that the a second-order approximation is given by a linear combination of the slope at $t=t_0$ and $t=t_0+\Delta t$. This result yields us Heun's method, which is a second-order Runge-Kutta method. 
+This indicates that the a second-order approximation is given by a linear combination of the slope at $t=t_0$ and $t=t_0+\Delta t$. However, there is one problem; $x(t_0 + \Delta t)$ is unknown, which makes it hard to evaluate the derivative at that point. This motivates us to do the following approximation.
+
+\begin{align}
+\tilde{x} &= x(t_0)+ \Delta t \left. \frac{dx}{dt} \right|_{t=t_0}, \\
+x(t_0+\Delta t) &\approx x(t_0) + \frac{\Delta t}{2}\left(\left. \frac{dx}{dt} \right|_{t=t_0} + f(\tilde{x})\right).
+\end{align}
+
+One can use the same reasoning to derive a fourth order Runge-Kutta method, which is what we used to numerically approximate KITT.
+
+
 
 \chapter{Source code}
 \inputfrom{../../}{sourcecode}
