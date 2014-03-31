@@ -8,6 +8,7 @@
 \begin{document}
 
 \chapter{System integration}
+\label{ch:integration}
 Now that we have discussed all of the individual subsystem designs, we can describe how these were put together for the final design. The system was developed to achieve optimal performance during the mid-term challenge, which consists of charging the supercapacitor bank to \SI{20}{V} with our contactless charging system (not mounted on KITT), as well as letting KITT drive to a position as close to a wall as possible, in the least possible amount of time. \\
 For the charging system, \textit{integration} was not really necessary, since the subsystem itself has proved itself working just fine already as described in Chapter~\ref{ch:charging}. During the mid-term challenge, we were able to charge the capacitor bank to little under \SI{20}{V} in around \SI{3.5}{minutes}, before the overcurrent protection kicked in and the overvoltage buffer started buzzing softly.
 \\
@@ -79,7 +80,7 @@ A small discrepancy we can spot in the behaviour is that the (simulated) KITT do
 
 For testing the controller of course a serial connection for sending and retrieving data from KITT was required. To this end a simple script utilizing MATLAB's built-in serial functionality was created. Using this script we noticed very high communication latencies from \SI{200}{ms} to as high as \SI{600}{ms}. Because this latency makes accurate control of KITT very hard, a second serial module was written in native C-code. This seemed to decrease the latency somewhat, but the line between parking KITT around \SI{20}{cm} from the wall and driving straight into the wall was still very thin.
 \\
-The source code of the MATLAB GUI can be found in Appendix~\ref{app:gui-matlab}.
+The source code of the MATLAB GUI can be found in Appendix~\ref{appsec:kitt-mat}. Source of the serial module is found in Appendix~\ref{appsec:kitt-serial-c}.
 
 \subsection{.NET}
 Our .NET implementation has the same mathematical backbone as the MATLAB GUI. It is structured very differently. Each subsystem, like control, user input, serial communication and status data storage is contained in a separate \textit{class}. Apart from this it provides the possibility to control KITT manually via mouse and keyboard input. It also handles serial communication asynchronously. Whenever the program receives data from KITT, it will directly process it and store the new state values in a set of variables (in a class) that can be accessed by all other classes at each given time. This way the program does not have to wait on KITT during execution, which should theoretically speed up the process.
@@ -93,14 +94,11 @@ Our .NET implementation has the same mathematical backbone as the MATLAB GUI. It
 
 In Figure~\ref{fig:int-gui-dotnet} the .NET GUI is shown in action, we see that the simulated KITT converges to the the given reference distance as expected, including a little offset as explained earlier. In tests with this program with a real KITT, we observed latencies of around \SI{20}{ms}, which is significantly lower than the latencies using MATLAB. This renders the overall performance of the .NET program higher.
 \\
-The source code of the .NET GUI can be found in Appendix~\ref{app:gui-dotnet}.
+The source code of the .NET GUI can be found in Appendix~\ref{appsec:kitt-drive-dotnet}.
 
 \section{Testing the programs}
 Most ideally we would perform our tests on an actual KITT car, but since this was not always possible, we wrote programs to simulate KITT's behaviour with in both MATLAB and C\#. These programs utilize a \textit{virtual} or \textit{pseudo} COM-port. This way the simulator can operate on, for example COM1, sending data to the control program via COM0 and vice versa. This provides an easy way to observe an estimate of the performance of the control system with a real KITT.
 \\
-Source code of both programs can be found in Appendix \ref{app:kitt-sim}.
+Source code of both programs can be found in Appendix~\ref{appsubsubsec:kitt-mat-kitt-c-emu} (MATLAB) and \ref{appsec:serialapp} (C\#).
 
 \end{document}
-
-% TODO
-% fix appendices
