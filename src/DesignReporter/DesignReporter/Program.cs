@@ -76,9 +76,9 @@ namespace DesignReporter
         }
 
 		/// <summary>
-		/// Recursively process all directories contained in the give root directory
+		/// Recursively process all directories contained in the given root directory
 		/// </summary>
-		/// <param name="d">The directory to start ing</param>
+		/// <param name="d">The directory to start in</param>
 		/// <param name="l">The current recursivity level</param>
 		static void processDirectory(DirectoryInfo d, int l)
 		{
@@ -93,7 +93,7 @@ namespace DesignReporter
 			files.Sort((x, y) => StringComparer.OrdinalIgnoreCase.Compare(x.FullName, y.FullName));
 			IEnumerable<FileInfo> fileQuery =
 			from fileQ in files
-			where !fileQ.FullName.Contains("obj") && !fileQ.FullName.Contains("Visual Micro") && !fileQ.FullName.Contains("robotsim") && !fileQ.FullName.Contains("Properties") && !fileQ.FullName.Contains("App.") && !fileQ.FullName.Contains("quartus") && !fileQ.FullName.Contains("DesignReporter") && !fileQ.FullName.Contains("UBERGRAPH") && extensions.ContainsKey(fileQ.Extension)
+			where !fileQ.FullName.Contains("obj") && !fileQ.FullName.Contains("Visual Micro") && !fileQ.FullName.Contains("robotsim") && !fileQ.FullName.Contains("Properties") && !fileQ.FullName.Contains("quartus") && !fileQ.FullName.Contains("DesignReporter") && !fileQ.FullName.Contains("UBERGRAPH") && extensions.ContainsKey(fileQ.Extension)
 			select fileQ;
 
 			if (fileQuery.Count() > 0)
@@ -113,7 +113,7 @@ namespace DesignReporter
 				}
 				else
 				{
-					bookmarkLevel = "subsection";
+					bookmarkLevel = "subsubsection";
 					bookmarkName = d.Parent.Parent.Name + " - " + d.Parent.Name + " - " + d.Name;
 					labelPrefix = "appsubsubsec";
 				}
