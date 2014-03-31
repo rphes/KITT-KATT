@@ -7,6 +7,7 @@
 
 \begin{document}
 \chapter{Contactless charging}
+\label{Contactless charging}
 It was assigned to us to design, build and implement a contactless charging system for KITT. The block system overview of the charging system can be observed in Figure~\ref{fig:contactless_charging}. Our task was to design, build and implement the DC/DC converter shown in the latter figure. How this task was completed is to be elaborated in this chapter. Moreover, while designing the charging system several choices regarding components had to be made. The motivation for our choices will briefly be explained throughout this chapter. \\	
 
 \begin{figure}[H]
@@ -28,7 +29,7 @@ was not on calculating the resistors and capacitors values, therefore we will no
 made regarding these values. However, we will discuss our choice of the used MOSFET transistors and
 diodes. The most important factors in picking the correct transistor for our application were static and
 dynamic power dissipation. \\
-While choosing a MOSFET	there where three MOSFETs (IPP50CN10N, IPP028N08N3G, PSMN017) available. Our circuit parameters were well within their given margins. This meant that all of them could be used for making a working DC/DC converter. The factor on which the suitability of each MOSFETs was tested is, as already mentioned, the power dissipation. The results of calculating the power dissipation of each transistor are shown in Table \ref{ass2_power_loss}. These calculations are made with formula ??? in Apendix ????.
+While choosing a MOSFET	there where three MOSFETs (IPP50CN10N, IPP028N08N3G, PSMN017) available. Our circuit parameters were well within their given margins. This meant that all of them could be used for making a working DC/DC converter. The factor on which the suitability of each MOSFETs was tested is, as already mentioned, the power dissipation. The results of calculating the power dissipation of each transistor are shown in Table \ref{ass2_power_loss}. How these calculations were made can be seen in Appendix~\ref{app:chargingsytem}. 
 
 \begin{table}[H]
 	\centering
@@ -46,9 +47,9 @@ While choosing a MOSFET	there where three MOSFETs (IPP50CN10N, IPP028N08N3G, PSM
 \end{table}
 
 It can be seen in the table that PSMN017 has the lowest power dissipation and thus making it the most suitable MOSFET. \\ 
-As for the diodes we had two different types(SB540, SF61) at our disposal. For choosing a propper diode the power dissipation for each component was calculated once again. The formula used to calculate the power dissipation can be found in Appendix ???. From the calculations it turned out that the SB540 diode dissipated just 56\% of the power dissipated by the SF61 diode. Making SB540 thereby the most appropriate diode for our system. \\ 
+As for the diodes we had two different types(SB540, SF61) at our disposal. For choosing a propper diode the power dissipation for each component was calculated once again. The formula used to calculate the power dissipation can be found in Appendix~\ref{app:chargingsytem}. From the calculations it turned out that the SB540 diode dissipated just 56\% of the power dissipated by the SF61 diode. Making SB540 thereby the most appropriate diode for our system. \\ 
 Implementing the PWM-generator, two gate drivers, the overcurrent protection circuit and the rectifier
-with overvoltage buzzer circuit resulted in the schematics found in Appendix ??. 
+with overvoltage buzzer circuit resulted in the schematics found in Appendix~\ref{app:chargingsytem}. 
 
 
 \section{Transformer}
@@ -122,11 +123,4 @@ The charging system was also equiped with a compensation circuit as shown in Fig
 The charging system's functionality had to be demonstrated at a distance of 6cm. Therefore the performance of the system had to be optimized for a distance at 6cm. Requirements were that the system was fully charged to $20$V within four minutes, the system had to be in solid resonance and the charging limiter should be working. Since the system had to be in solid resonance the frequency was no option of variation to maximize charging speed. For this reason the duty cycle was changed in order to maximize the charging speed of the system at 6cm. This was done by trial and error. The result was a system at resonance for a frequency at $100$kHz, a duty cycle of 40\% and a maximal charging speed of 3:75 minutes. Our charging system met all the requirements. 
 \end{document}
 
-%The total dissipation of the MOSFETs can be calculated with
 
-%\begin{equation}
-%P = I_{DS}R_{DS(on)}D +	(C_{in}V_{GS}^2 + C_{out}V_{DS}^2)f_{s}
-%\end{equation}.
-
-%Herein $I_{DS}$ is the drain-source current through the transistor, $R_{DS(on)}$ is the transistors drain-source resistance when switched on, $D$ is the duty-cycle of the PWM control signal, $C_{in}$ and $C_{out}$ are the transistor’s in- and output capacitances, $V_{GS}$ is the gate-source voltage on the
-%transitor (15 V), $V_{DS}$ is the drain-source voltage on the transistor (15 V) and $f_{s}$ is the switching frequency (100 kHz). 
