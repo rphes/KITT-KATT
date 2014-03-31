@@ -15,15 +15,6 @@
 % - Introduction to numerically solving differential equations
 \chapter{Charging system}
 \label{app:chargingsystem}
-\subsection{MOSFETs}
-The total dissipation of the MOSFETs can be calculated with
-
-\begin{equation}
-P = I_{DS}R_{DS(on)}D +	(C_{in}V_{GS}^2 + C_{out}V_{DS}^2)f_{s}
-\end{equation}.
-
-Herein $I_{DS}$ is the drain-source current through the transistor, $R_{DS(on)}$ is the transistors drain-source resistance when switched on, $D$ is the duty-cycle of the PWM control signal, $C_{in}$ and $C_{out}$ are the transistor’s in- and output capacitances, $V_{GS}$ is the gate-source voltage on the
-transitor (15 V), $V_{DS}$ is the drain-source voltage on the transistor (15 V) and $f_{s}$ is the switching frequency (100 kHz). 
 
 \subsection{Diodes}
 For the diodes we again calculate the total power loss. When assuming that the output voltage is near constant, the static dissipation, in context of the inverter, is given by
