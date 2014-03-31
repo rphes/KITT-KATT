@@ -1,0 +1,1 @@
+EPOCommunications('open','/dev/ttyp0')

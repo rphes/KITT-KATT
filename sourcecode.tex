@@ -3,64 +3,261 @@
 \input{docs/library/style}
 \addbibresource{docs/library/bibliography.bib}
 
-\title{EPO-2: Source code}
+\title{EPO-4 B2: Source code}
 \author{Julio Ballesteros \and Sjoerd Bosma \and Wessel Bruinsma \and Robin Hes}
-
 
 \begin{document}
 
 
+\section{KITT-Drive-dotNET}
+\label{appsec:kitt-drive-dotnet}
+\label{lst:MainWindow.xaml}
+\includecode[xaml]{MainWindow.xaml}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/MainWindow.xaml}
 
-\section{AutoControl.cs}
-\label{appsec:AutoControl.cs}
-\includecode[csharp]{CodeBehind/AutoControl.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/CodeBehind/AutoControl.cs}
+\label{lst:MainWindow.xaml.cs}
+\includecode[csharp]{MainWindow.xaml.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/MainWindow.xaml.cs}
 
-\section{Control.cs}
-\label{appsec:Control.cs}
-\includecode[csharp]{CodeBehind/Control.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/CodeBehind/Control.cs}
+\subsection{KITT-Drive-dotNET - CodeBehind}
+\label{appsubsec:kitt-drive-dotnet-codebehind}
+\label{lst:AutoControl.cs}
+\includecode[csharp]{AutoControl.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/CodeBehind/AutoControl.cs}
 
-\section{Data.cs}
-\label{appsec:Data.cs}
-\includecode[csharp]{CodeBehind/Data.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/CodeBehind/Data.cs}
+\label{lst:Control.cs}
+\includecode[csharp]{Control.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/CodeBehind/Control.cs}
 
-\section{SerialInterface.cs}
-\label{appsec:SerialInterface.cs}
-\includecode[csharp]{CodeBehind/SerialInterface.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/CodeBehind/SerialInterface.cs}
+\label{lst:Data.cs}
+\includecode[csharp]{Data.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/CodeBehind/Data.cs}
 
-\section{Vehicle.cs}
-\label{appsec:Vehicle.cs}
-\includecode[csharp]{CodeBehind/Vehicle.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/CodeBehind/Vehicle.cs}
+\label{lst:SerialInterface.cs}
+\includecode[csharp]{SerialInterface.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/CodeBehind/SerialInterface.cs}
 
-\section{MainWindow.xaml}
-\label{appsec:MainWindow.xaml}
-\includecode[xaml]{KITT-Drive-dotNET/MainWindow.xaml}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/MainWindow.xaml}
+\label{lst:Vehicle.cs}
+\includecode[csharp]{Vehicle.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/CodeBehind/Vehicle.cs}
 
-\section{MainWindow.xaml.cs}
-\label{appsec:MainWindow.xaml.cs}
-\includecode[csharp]{KITT-Drive-dotNET/MainWindow.xaml.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/MainWindow.xaml.cs}
+\subsection{KITT-Drive-dotNET - Tools}
+\label{appsubsec:kitt-drive-dotnet-tools}
+\label{lst:ObservableObject.cs}
+\includecode[csharp]{ObservableObject.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/Tools/ObservableObject.cs}
 
-\section{ObservableObject.cs}
-\label{appsec:ObservableObject.cs}
-\includecode[csharp]{Tools/ObservableObject.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/Tools/ObservableObject.cs}
+\label{lst:RelayCommand.cs}
+\includecode[csharp]{RelayCommand.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/Tools/RelayCommand.cs}
 
-\section{RelayCommand.cs}
-\label{appsec:RelayCommand.cs}
-\includecode[csharp]{Tools/RelayCommand.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/Tools/RelayCommand.cs}
+\subsection{KITT-Drive-dotNET - ViewModel}
+\label{appsubsec:kitt-drive-dotnet-viewmodel}
+\label{lst:AutoControlViewModel.cs}
+\includecode[csharp]{AutoControlViewModel.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/ViewModel/AutoControlViewModel.cs}
 
-\section{AutoControlViewModel.cs}
-\label{appsec:AutoControlViewModel.cs}
-\includecode[csharp]{ViewModel/AutoControlViewModel.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/ViewModel/AutoControlViewModel.cs}
+\label{lst:ControlViewModel.cs}
+\includecode[csharp]{ControlViewModel.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/ViewModel/ControlViewModel.cs}
 
-\section{ControlViewModel.cs}
-\label{appsec:ControlViewModel.cs}
-\includecode[csharp]{ViewModel/ControlViewModel.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/ViewModel/ControlViewModel.cs}
+\label{lst:MainViewModel.cs}
+\includecode[csharp]{MainViewModel.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/ViewModel/MainViewModel.cs}
 
-\section{MainViewModel.cs}
-\label{appsec:MainViewModel.cs}
-\includecode[csharp]{ViewModel/MainViewModel.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/ViewModel/MainViewModel.cs}
+\label{lst:VehicleViewModel.cs}
+\includecode[csharp]{VehicleViewModel.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/ViewModel/VehicleViewModel.cs}
 
-\section{VehicleViewModel.cs}
-\label{appsec:VehicleViewModel.cs}
-\includecode[csharp]{ViewModel/VehicleViewModel.cs}{src/KITT-Drive-dotNET/KITT-Drive-dotNET/ViewModel/VehicleViewModel.cs}
+\section{SerialApp}
+\label{appsec:serialapp}
+\label{lst:Data.cs}
+\includecode[csharp]{Data.cs}{src/KITT-Drive-dotNET/SerialApp/Data.cs}
+
+\label{lst:FakeKITT.cs}
+\includecode[csharp]{FakeKITT.cs}{src/KITT-Drive-dotNET/SerialApp/FakeKITT.cs}
+
+\label{lst:MainWindow.xaml}
+\includecode[xaml]{MainWindow.xaml}{src/KITT-Drive-dotNET/SerialApp/MainWindow.xaml}
+
+\label{lst:MainWindow.xaml.cs}
+\includecode[csharp]{MainWindow.xaml.cs}{src/KITT-Drive-dotNET/SerialApp/MainWindow.xaml.cs}
+
+\label{lst:Matlab.cs}
+\includecode[csharp]{Matlab.cs}{src/KITT-Drive-dotNET/SerialApp/Matlab.cs}
+
+\label{lst:ObservableObject.cs}
+\includecode[csharp]{ObservableObject.cs}{src/KITT-Drive-dotNET/SerialApp/ObservableObject.cs}
+
+\label{lst:SerialInterface.cs}
+\includecode[csharp]{SerialInterface.cs}{src/KITT-Drive-dotNET/SerialApp/SerialInterface.cs}
+
+\label{lst:Vehicle.cs}
+\includecode[csharp]{Vehicle.cs}{src/KITT-Drive-dotNET/SerialApp/Vehicle.cs}
+
+\section{KITT-Mat}
+\label{appsec:kitt-mat}
+\label{lst:calculate-model.m}
+\includecode[matlab]{calculate-model.m}{src/KITT-Mat/calculate_model.m}
+
+\label{lst:close-window.m}
+\includecode[matlab]{close-window.m}{src/KITT-Mat/close_window.m}
+
+\label{lst:gui.m}
+\includecode[matlab]{gui.m}{src/KITT-Mat/gui.m}
+
+\label{lst:loop.m}
+\includecode[matlab]{loop.m}{src/KITT-Mat/loop.m}
+
+\label{lst:status-update.m}
+\includecode[matlab]{status-update.m}{src/KITT-Mat/status_update.m}
+
+\label{lst:stop.m}
+\includecode[matlab]{stop.m}{src/KITT-Mat/stop.m}
+
+\subsection{KITT-Mat - callbacks}
+\label{appsubsec:kitt-mat-callbacks}
+\label{lst:butConnect-callback.m}
+\includecode[matlab]{butConnect-callback.m}{src/KITT-Mat/callbacks/butConnect_callback.m}
+
+\label{lst:butControl-callback.m}
+\includecode[matlab]{butControl-callback.m}{src/KITT-Mat/callbacks/butControl_callback.m}
+
+\label{lst:butLoad-callback.m}
+\includecode[matlab]{butLoad-callback.m}{src/KITT-Mat/callbacks/butLoad_callback.m}
+
+\label{lst:butLPFilter-callback.m}
+\includecode[matlab]{butLPFilter-callback.m}{src/KITT-Mat/callbacks/butLPFilter_callback.m}
+
+\label{lst:butPFilter-callback.m}
+\includecode[matlab]{butPFilter-callback.m}{src/KITT-Mat/callbacks/butPFilter_callback.m}
+
+\label{lst:butSensor-callback.m}
+\includecode[matlab]{butSensor-callback.m}{src/KITT-Mat/callbacks/butSensor_callback.m}
+
+\label{lst:butSnap-callback.m}
+\includecode[matlab]{butSnap-callback.m}{src/KITT-Mat/callbacks/butSnap_callback.m}
+
+\label{lst:butTrack-callback.m}
+\includecode[matlab]{butTrack-callback.m}{src/KITT-Mat/callbacks/butTrack_callback.m}
+
+\label{lst:key-press.m}
+\includecode[matlab]{key-press.m}{src/KITT-Mat/callbacks/key_press.m}
+
+\label{lst:sBound-value-callback.m}
+\includecode[matlab]{sBound-value-callback.m}{src/KITT-Mat/callbacks/sBound_value_callback.m}
+
+\label{lst:sFOC-value-callback.m}
+\includecode[matlab]{sFOC-value-callback.m}{src/KITT-Mat/callbacks/sFOC_value_callback.m}
+
+\label{lst:sPoles-value-callback.m}
+\includecode[matlab]{sPoles-value-callback.m}{src/KITT-Mat/callbacks/sPoles_value_callback.m}
+
+\label{lst:sRef-value-callback.m}
+\includecode[matlab]{sRef-value-callback.m}{src/KITT-Mat/callbacks/sRef_value_callback.m}
+
+\label{lst:sRes-value-callback.m}
+\includecode[matlab]{sRes-value-callback.m}{src/KITT-Mat/callbacks/sRes_value_callback.m}
+
+\label{lst:sTOC-value-callback.m}
+\includecode[matlab]{sTOC-value-callback.m}{src/KITT-Mat/callbacks/sTOC_value_callback.m}
+
+\label{lst:sWeight-value-callback.m}
+\includecode[matlab]{sWeight-value-callback.m}{src/KITT-Mat/callbacks/sWeight_value_callback.m}
+
+\subsection{KITT-Mat - defs}
+\label{appsubsec:kitt-mat-defs}
+\label{lst:Cfg.m}
+\includecode[matlab]{Cfg.m}{src/KITT-Mat/defs/Cfg.m}
+
+\label{lst:LowPassFilter.m}
+\includecode[matlab]{LowPassFilter.m}{src/KITT-Mat/defs/LowPassFilter.m}
+
+\label{lst:PredictionFilter.m}
+\includecode[matlab]{PredictionFilter.m}{src/KITT-Mat/defs/PredictionFilter.m}
+
+\label{lst:SensorMode.m}
+\includecode[matlab]{SensorMode.m}{src/KITT-Mat/defs/SensorMode.m}
+
+\label{lst:SnapData.m}
+\includecode[matlab]{SnapData.m}{src/KITT-Mat/defs/SnapData.m}
+
+\subsection{KITT-Mat - kitt}
+\label{appsubsec:kitt-mat-kitt}
+\label{lst:KITT-serial.m}
+\includecode[matlab]{KITT-serial.m}{src/KITT-Mat/kitt/KITT_serial.m}
+
+\label{lst:KITT-status.m}
+\includecode[matlab]{KITT-status.m}{src/KITT-Mat/kitt/KITT_status.m}
+
+\subsection{KITT-Mat - kitt - c}
+\label{appsubsubsec:kitt-mat-kitt-c}
+\label{lst:KITT-serial.m}
+\includecode[matlab]{KITT-serial.m}{src/KITT-Mat/kitt/c/KITT_serial.m}
+
+\subsection{KITT-Mat - kitt - c\_emu}
+\label{appsubsubsec:kitt-mat-kitt-c-emu}
+\label{lst:KITT-serial.m}
+\includecode[matlab]{KITT-serial.m}{src/KITT-Mat/kitt/c_emu/KITT_serial.m}
+
+\subsection{KITT-Mat - kitt - matlab}
+\label{appsubsubsec:kitt-mat-kitt-matlab}
+\label{lst:KITT-serial.m}
+\includecode[matlab]{KITT-serial.m}{src/KITT-Mat/kitt/matlab/KITT_serial.m}
+
+\subsection{KITT-Mat - kitt - matlab\_emu}
+\label{appsubsubsec:kitt-mat-kitt-matlab-emu}
+\label{lst:KITT-serial.m}
+\includecode[matlab]{KITT-serial.m}{src/KITT-Mat/kitt/matlab_emu/KITT_serial.m}
+
+\subsection{KITT-Mat - ui}
+\label{appsubsec:kitt-mat-ui}
+\label{lst:add-line-point.m}
+\includecode[matlab]{add-line-point.m}{src/KITT-Mat/ui/add_line_point.m}
+
+\label{lst:create-fancy-label.m}
+\includecode[matlab]{create-fancy-label.m}{src/KITT-Mat/ui/create_fancy_label.m}
+
+\label{lst:reset-axes.m}
+\includecode[matlab]{reset-axes.m}{src/KITT-Mat/ui/reset_axes.m}
+
+\label{lst:reset-line.m}
+\includecode[matlab]{reset-line.m}{src/KITT-Mat/ui/reset_line.m}
+
+\label{lst:shift-axes.m}
+\includecode[matlab]{shift-axes.m}{src/KITT-Mat/ui/shift_axes.m}
+
+\section{EPOCommunications}
+\label{appsec:epocommunications}
+\label{lst:close.m}
+\includecode[matlab]{close.m}{src/KITT-Serial-C/EPOCommunications/close.m}
+
+\label{lst:data.m}
+\includecode[matlab]{data.m}{src/KITT-Serial-C/EPOCommunications/data.m}
+
+\label{lst:EPOCommunications.c}
+\includecode[c]{EPOCommunications.c}{src/KITT-Serial-C/EPOCommunications/EPOCommunications.c}
+
+\label{lst:fulltest.m}
+\includecode[matlab]{fulltest.m}{src/KITT-Serial-C/EPOCommunications/fulltest.m}
+
+\label{lst:init.m}
+\includecode[matlab]{init.m}{src/KITT-Serial-C/EPOCommunications/init.m}
+
+\label{lst:make.m}
+\includecode[matlab]{make.m}{src/KITT-Serial-C/EPOCommunications/make.m}
+
+\section{kitt\_com\_test}
+\label{appsec:kitt-com-test}
+\label{lst:com.c}
+\includecode[c]{com.c}{src/KITT-Serial-C/kitt_com_test/com.c}
+
+\section{kitt\_emu}
+\label{appsec:kitt-emu}
+\label{lst:kitt.c}
+\includecode[c]{kitt.c}{src/KITT-Serial-C/kitt_emu/kitt.c}
+
+\section{libs}
+\label{appsec:libs}
+\label{lst:serial.c}
+\includecode[c]{serial.c}{src/KITT-Serial-C/libs/serial.c}
+
+\label{lst:serial.h}
+\includecode[c]{serial.h}{src/KITT-Serial-C/libs/serial.h}
+
+\subsection{libs - mex}
+\label{appsubsec:libs-mex}
+\label{lst:serial.c}
+\includecode[c]{serial.c}{src/KITT-Serial-C/libs/mex/serial.c}
+
+\label{lst:serial.h}
+\includecode[c]{serial.h}{src/KITT-Serial-C/libs/mex/serial.h}
 
 \end{document}
