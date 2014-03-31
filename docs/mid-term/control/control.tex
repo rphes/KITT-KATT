@@ -19,7 +19,7 @@
 One of the two mid-term challenges was for KITT to drive autonomously at a wall and stop as close as possible in front of that wall. We designed a controller to accomplish this seemingly easy task. The controller consists of two components; the \textit{observer} and the \textit{compensator}. We will explain both of these in further detail.
 
 \section{Observer design}
-The controller must have knowledge of the current position and velocity of the car to be able to succesfully control KITT. Generalizing, we can say that the controller must have knowledge of the current \textit{state} of KITT. The observer's task is to keep track of the internal state of KITT. This internal state consists of a linear combination of all generalized positions and momenta of respectively all inductive and capacitive components of the system. If we consider KITT a state-space model, we can define inputs and output. Figure~\ref{fig:ctrl-model} shows this line of thought.
+The controller must have knowledge of the current position and velocity of the car to be able to successfully control KITT. Generalizing, we can say that the controller must have knowledge of the current \textit{state} of KITT. The observer's task is to keep track of the internal state of KITT. This internal state consists of a linear combination of all generalized positions and momenta of respectively all inductive and capacitive components of the system. If we consider KITT a state-space model, we can define inputs and an output. Figure~\ref{fig:ctrl-model} shows this line of thought.
 
 \usetikzlibrary{shapes,arrows}
 \tikzstyle{block} = [
@@ -55,7 +55,7 @@ The controller must have knowledge of the current position and velocity of the c
 	\label{fig:ctrl-model}
 \end{figure}
 
-The observer observes the input $\vec{u}$ and output $\vec{y}$ and determines, by doing that, the internal state $\vec{x}$ of KITT. We modelled the observer by making also use of a state-space representation. Logically thinking, the observer must obey two constraints; \textbf{(1)}, the internal state $\hat{\vec{x}}$ of the observer must converge to $\vec{x}$ if $t \to \infty$ and \textbf{(2)}, if $\hat{\vec{x}} = \vec{x}$, then the states should not diverge. To fulfil \textbf{(1)}, we introduce a feedback matrix $\mat{L}$ which will be discussed later, and to satisfy \textbf{(2)}, the system, input, output and feedthrough matrix of the observer should match KITT's.
+The observer observes the input $\vec{u}$ and output $\vec{y}$ and determines, by doing that, the internal state $\vec{x}$ of KITT. We modeled the observer by making also use of a state-space representation. Logically thinking, the observer must obey to two constraints; \textbf{(1)}, the internal state $\hat{\vec{x}}$ of the observer must converge to $\vec{x}$ if $t \to \infty$ and \textbf{(2)}, if $\hat{\vec{x}} = \vec{x}$, then the states should not diverge. To fulfill \textbf{(1)}, we introduce a feedback matrix $\mat{L}$ which will be discussed later, and to satisfy \textbf{(2)}, the system, input-, output- and feed-through matrix of the observer should match KITT's.
 
 \begin{figure}[H]
 	\centering
@@ -85,7 +85,7 @@ We can show constraint \textbf{(1)} by evaluating the error $\vec{e}=\vec{x}-\ha
 	\dot{\vec{e}}=\dot{\vec{x}} - \dot{\hat{\vec{x}}} = \mat{A} (\vec{x} - \hat{\vec{x}}) - \mat{L} (\vec{y} - \hat{\vec{y}}) = (\mat{A} - \mat{L} \mat{C}) (\vec{x} - \hat{\vec{x}}) = (\mat{A} - \mat{L}\mat{C}) \vec{e}
 \end{equation}
 
-Equation~\ref{eq:ctrl-err} tells us the the system is observable, if $\mat{A} - \mat{L}\mat{C}$ renders $\vec{e}$ asymptotically stable. This defines the observability of the pair $(\mat{L}, \mat{A})$. The duality between observability and controllability tells us that $(\mat{L},\mat{A})$ is observable if $(\tr{\mat{A}},\tr{\mat{L}})$ is controllable. Therefore, we used the MATLAB command \texttt{place(A',C',poles)'} to calculate $\mat{L}$.
+Equation~\ref{eq:ctrl-err} tells us the the system is observable, if $\mat{A} - \mat{L}\mat{C}$ renders $\vec{e}$ asymptotically stable. This defines the observability of the pair $(\mat{C}, \mat{A})$. The duality between observability and controllability tells us that $(\mat{C},\mat{A})$ is observable if $(\tr{\mat{A}},\tr{\mat{C}})$ is controllable. Therefore, we used the MATLAB command \texttt{place(A',C',poles)'} to calculate $\mat{L}$.
 
 \begin{figure}[H]
 	\centering
@@ -154,7 +154,7 @@ Figure~\ref{fig:ctrl-poles} shows the error of many different pairs of poles. It
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[width=.6\linewidth]{resource/pole-fitness.pdf}
+		\includegraphics[width=.7\linewidth]{resource/pole-fitness.pdf}
 	\end{center}
 	\caption{Performance of different pairs of poles of the observer}
 	\label{fig:ctrl-poles}
