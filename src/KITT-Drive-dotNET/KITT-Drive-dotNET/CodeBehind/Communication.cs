@@ -5,7 +5,7 @@ using System.Text;
 
 namespace KITT_Drive_dotNET
 {
-	public class SerialInterface : IDisposable
+	public class Communication : IDisposable
 	{
 		#region Data members
 		public SerialPort SerialPort;
@@ -36,7 +36,7 @@ namespace KITT_Drive_dotNET
 		public TimeSpan Ping;
 
 		#region Construction/Destruction
-		public SerialInterface()
+		public Communication()
 		{
 			SerialPort = new SerialPort();
 			SerialPort.BaudRate = 115200;
@@ -54,7 +54,7 @@ namespace KITT_Drive_dotNET
 			LastLine = "";
 		}
 
-		~SerialInterface()
+		~Communication()
 		{
 			Dispose(false);
 		}

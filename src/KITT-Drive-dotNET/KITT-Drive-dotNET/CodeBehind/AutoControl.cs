@@ -123,7 +123,7 @@ namespace KITT_Drive_dotNET
 
 			control();
 			iteration++;
-			Data.Com.RequestStatus();
+			Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
 		}
 		#endregion
 
@@ -131,7 +131,7 @@ namespace KITT_Drive_dotNET
 		public void Start()
 		{
 			//Request initial status
-			Data.Com.RequestStatus();
+			Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
 
 			//Initialise some stuff
 			x = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } });

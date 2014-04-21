@@ -8,6 +8,14 @@ namespace KITT_Drive_dotNET.ViewModel
 {
 	public class MainViewModel
 	{
+		private CommunicationViewModel _communicationViewModel = new CommunicationViewModel();
+
+		public CommunicationViewModel CommunicationViewModel
+		{
+			get { return _communicationViewModel; }
+			set { _communicationViewModel = value; }
+		}
+
 		private ControlViewModel _controlViewModel = new ControlViewModel();
 
 		public ControlViewModel ControlViewModel

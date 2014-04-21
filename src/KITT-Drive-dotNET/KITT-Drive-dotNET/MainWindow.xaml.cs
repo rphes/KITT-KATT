@@ -35,61 +35,16 @@ namespace KITT_Drive_dotNET
 
 		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			Data.Com.Dispose();
+			Data.MainViewModel.CommunicationViewModel.Communication.Dispose();
 		}
 		#endregion
 
 		#region Command transmission
 		private void Drive_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-			if (Data.Com != null && Data.Com.SerialPort.IsOpen && (e.PropertyName == "SpeedString" || e.PropertyName == "HeadingString"))
+			if (Data.MainViewModel.CommunicationViewModel.Communication != null && Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen && (e.PropertyName == "SpeedString" || e.PropertyName == "HeadingString"))
 			{
-				Data.Com.DoDrive(Data.MainViewModel.ControlViewModel.PWMHeading, Data.MainViewModel.ControlViewModel.PWMSpeed);
-			}
-		}
-		#endregion
-
-		#region Communication controls
-		private void ComboBox_COM_DropDownOpened(object sender, System.EventArgs e)
-		{
-			string[] ports = SerialPort.GetPortNames();
-			ComboBox_COM.Items.Clear();
-
-			foreach (string port in ports)
-			{
-				ComboBox_COM.Items.Add(port);
-			}
-		}
-
-		private void Button_Connect_Click(object sender, RoutedEventArgs e)
-		{
-			string port = Convert.ToString(ComboBox_COM.SelectedValue);
-
-			if (!Data.Com.SerialPort.IsOpen)
-			{
-				if (!String.IsNullOrEmpty(port) && port.Substring(0, 3) == "COM")
-				{
-					Data.Com.SerialPort.PortName = port;
-					if (Data.Com.OpenPort() != 0)
-					{
-						MessageBox.Show(Data.Com.LastError, "Could not open port", MessageBoxButton.OK, MessageBoxImage.Error);
-					}
-					else
-					{
-						Button_Connect.Content = "Disconnect";
-						ComboBox_COM.IsEnabled = false;
-					}
-				}
-				else
-				{
-					MessageBox.Show("Please select a COM-port", "No port selected", MessageBoxButton.OK, MessageBoxImage.Error);
-				}
-			}
-			else
-			{
-				Data.Com.SerialPort.Close();
-				Button_Connect.Content = "Connect";
-				ComboBox_COM.IsEnabled = true;
+				Data.MainViewModel.CommunicationViewModel.Communication.DoDrive(Data.MainViewModel.ControlViewModel.PWMHeading, Data.MainViewModel.ControlViewModel.PWMSpeed);
 			}
 		}
 		#endregion
@@ -97,7 +52,7 @@ namespace KITT_Drive_dotNET
 		#region Key vehicle controls
 		private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
 		{
-			if (Data.Com == null || !Data.Com.SerialPort.IsOpen || e.IsRepeat) return;
+			if (Data.MainViewModel.CommunicationViewModel.Communication == null || !Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen || e.IsRepeat) return;
 
 			Key key = e.Key;
 
@@ -142,7 +97,7 @@ namespace KITT_Drive_dotNET
 		{
 			Key key = e.Key;
 
-			if (Data.Com == null || !Data.Com.SerialPort.IsOpen || !(key == Key.W || key == Key.A || key == Key.S || key == Key.D))
+			if (Data.MainViewModel.CommunicationViewModel.Communication == null || !Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen || !(key == Key.W || key == Key.A || key == Key.S || key == Key.D))
 				return;
 
 			if (key == Key.W || key == Key.S)
@@ -200,7 +155,7 @@ namespace KITT_Drive_dotNET
 
 		private void Button_Status_Click(object sender, RoutedEventArgs e)
 		{
-			Data.Com.RequestStatus();
+			Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
 		}
 
 		private void Button_STOP_Click(object sender, RoutedEventArgs e)

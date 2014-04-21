@@ -195,7 +195,7 @@ namespace KITT_Drive_dotNET.ViewModel
 		{
 			get
 			{
-				return Math.Round(Data.Com.Ping.TotalMilliseconds) + " ms";
+				return Math.Round(Data.MainViewModel.CommunicationViewModel.Communication.Ping.TotalMilliseconds) + " ms";
 			}
 		}
 
