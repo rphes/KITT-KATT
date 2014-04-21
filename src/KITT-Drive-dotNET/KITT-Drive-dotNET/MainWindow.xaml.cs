@@ -52,7 +52,8 @@ namespace KITT_Drive_dotNET
 		#region Key vehicle controls
 		private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
 		{
-			if (Data.MainViewModel.CommunicationViewModel.Communication == null || !Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen || e.IsRepeat) return;
+			if ((!Data.MainViewModel.ControlViewModel.CanControl && e.Key != Key.Q) || e.IsRepeat)
+				return;
 
 			Key key = e.Key;
 
@@ -97,7 +98,7 @@ namespace KITT_Drive_dotNET
 		{
 			Key key = e.Key;
 
-			if (Data.MainViewModel.CommunicationViewModel.Communication == null || !Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen || !(key == Key.W || key == Key.A || key == Key.S || key == Key.D))
+			if (!Data.MainViewModel.ControlViewModel.CanControl || !(key == Key.W || key == Key.A || key == Key.S || key == Key.D))
 				return;
 
 			if (key == Key.W || key == Key.S)
@@ -128,40 +129,6 @@ namespace KITT_Drive_dotNET
 				Data.MainViewModel.ControlViewModel.Throttle(Direction.up, false);
 			else if (throttleTimerKey == Key.S)
 				Data.MainViewModel.ControlViewModel.Throttle(Direction.down, false);
-		}
-		#endregion
-
-		#region Button vehicle controls
-		private void Button_ThrottleUp_Click(object sender, RoutedEventArgs e)
-		{
-			Data.MainViewModel.ControlViewModel.Throttle(Direction.up, true);
-		}
-
-		private void Button_ThrottleDown_Click(object sender, RoutedEventArgs e)
-		{
-            Data.MainViewModel.ControlViewModel.Throttle(Direction.down, true);
-		}
-
-		private void Button_SteerLeft_Click(object sender, RoutedEventArgs e)
-		{
-            Data.MainViewModel.ControlViewModel.Steer(Direction.left, true);
-		}
-
-		private void Button_SteerRight_Click(object sender, RoutedEventArgs e)
-		{
-            Data.MainViewModel.ControlViewModel.Steer(Direction.right, true);
-		}
-
-
-		private void Button_Status_Click(object sender, RoutedEventArgs e)
-		{
-			Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
-		}
-
-		private void Button_STOP_Click(object sender, RoutedEventArgs e)
-		{
-			Data.MainViewModel.ControlViewModel.Speed = Data.SpeedDefault;
-			Data.MainViewModel.ControlViewModel.Heading = Data.HeadingDefault;
 		}
 		#endregion
 	}

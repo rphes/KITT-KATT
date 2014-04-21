@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace KITT_Drive_dotNET.ViewModel
@@ -22,6 +23,17 @@ namespace KITT_Drive_dotNET.ViewModel
 		const double headingIncrementInitial = 20;
 		//Decrement multiplier
 		const double decrementMultiplier = 0.9;
+
+		public bool CanControl
+		{
+			get
+			{
+				if (Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen && Data.MainViewModel.AutoControlViewModel.Status != AutoControlStatus.Running)
+					return true;
+				else
+					return false;
+			}
+		}
 
 		public double Speed
 		{
@@ -193,7 +205,57 @@ namespace KITT_Drive_dotNET.ViewModel
 		{
 			Heading = Data.HeadingDefault;
 			Speed = Data.SpeedDefault;
+
+			if (Data.MainViewModel.AutoControlViewModel.Status == AutoControlStatus.Running)
+				Data.MainViewModel.AutoControlViewModel.Stop();
 		}
+		#endregion
+
+		#region Commands
+		bool CanControlExecute()
+		{
+			return CanControl;
+		}
+		bool CanStopExecute()
+		{
+			if (Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen)
+				return true;
+			else
+				return false;
+		}
+
+		void ThrottleUpExecute()
+		{
+			Throttle(Direction.up, true);
+		}
+		void ThrottleDownExecute()
+		{
+			Throttle(Direction.down, true);
+		}
+		void SteerLeftExecute()
+		{
+			Steer(Direction.left, true);
+		}
+		void SteerRightExecute()
+		{
+			Steer(Direction.right, true);
+		}
+		void GetStatusExecute()
+		{
+			Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
+		}
+		void StopExecute()
+		{
+			Stop();
+		}
+
+		public ICommand ThrottleUp { get { return new RelayCommand(ThrottleUpExecute, CanControlExecute); } }
+		public ICommand ThrottleDown { get { return new RelayCommand(ThrottleDownExecute, CanControlExecute); } }
+		public ICommand SteerLeft { get { return new RelayCommand(SteerLeftExecute, CanControlExecute); } }
+		public ICommand SteerRight { get { return new RelayCommand(SteerRightExecute, CanControlExecute); } }
+		public ICommand GetStatus { get { return new RelayCommand(GetStatusExecute, CanControlExecute); } }
+		public ICommand DoStop { get { return new RelayCommand(StopExecute, CanStopExecute); } }
+
 		#endregion
 	}
 }
