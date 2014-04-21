@@ -210,24 +210,24 @@ namespace KITT_Drive_dotNET
 		}
 
 		protected void placePoles(double value) {
-			// Calculate controllability matrix
 			// Check for dimensions
 			int n;
 			Matrix<double> controllabilityMatrix;
 			if (A.ColumnCount != A.RowCount || A.ColumnCount <= 0) {
 				// TODO: Throw exception
-			} else {
-				n = A.ColumnCount;
-				
-				for (int i = 0; i < n; i++) {
-					Matrix<double> vec = B;
+			}
 
-					for (int j; j < i; j++) {
-						vec = A*vec;
-					}
+			n = A.ColumnCount;
+			
+			// Calculate controllability matrix
+			for (int i = 0; i < n; i++) {
+				Matrix<double> vec = B;
 
-					controllabilityMatrix.SetColumn(i, vec);
+				for (int j; j < i; j++) {
+					vec = A*vec;
 				}
+
+				controllabilityMatrix.SetColumn(i, vec);
 			}
 
 			// Unity vector
