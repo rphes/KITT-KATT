@@ -1,0 +1,56 @@
+%!TEX program = xelatex 
+\documentclass[11pt,titlepage]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\newcommand{\mat}[1]{\mathbf{#1}}
+
+\chapter*{MBC}
+A general model-based controller is given by
+\begin{align*}
+	\dot{\hat{\vec{x}}} &= (\mat{A}-\mat{B}\mat{K}-\mat{L}\mat{C}) \vec{x} + \mat{B}\mat{K} \vec{x}_{ref} + \mat{L} \vec{y}=f(\vec{x},\vec{x}_{ref},\vec{y}), \\
+	\hat{\vec{y}} &= \mat{C} \hat{\vec{x}} = g(\hat{\vec{x}}).
+\end{align*}
+A first-order approximation is then achieved by executing $N$ times per time step $T$
+\begin{align*}
+	x_{n+1} = x_{n} + \frac{T}{N}f(x_n, x_{ref}, \text{sensor\_data})
+\end{align*}
+and then calculating the drive excitation signal by
+\begin{align*}
+	\text{PWM} = \operatorname{map}(g(x)).
+\end{align*}
+The reference state $\vec{x}_{ref}$ is usually given by
+\begin{equation*}
+	\vec{x}_{ref} = \begin{bmatrix}
+		\text{reference\_distance} \\
+		0
+	\end{bmatrix} \text{ or }
+	\vec{x}_{ref} = \begin{bmatrix}
+		\text{reference\_distance} \\
+		0 \\
+		0
+	\end{bmatrix}.
+\end{equation*}
+
+\chapter*{TFBC}
+A transfer function-based controller (TFBC) such as PID is given by
+\begin{align*}
+	\dot{\hat{\vec{x}}} &= \mat{A} \hat{\vec{x}} + \mat{B}(\vec{y}-\vec{y}_{ref})=f(\hat{\vec{x}},\vec{y}_{ref},\vec{y}), \\
+	\hat{\vec{y}} &= \mat{C} \hat{\vec{x}} + \mat{D} (\vec{y}-\vec{y}_{ref})=g(\hat{\vec{x}},\vec{y}_{ref},\vec{y}).
+\end{align*}
+A first-order approximation is then achieved by executing $N$ times per time step $T$
+\begin{align*}
+	x_{n+1} = x_{n} + \frac{T}{N}f(x_n, \text{reference\_distance}, \text{sensor\_data})
+\end{align*}
+and then calculating the drive excitation signal by
+\begin{align*}
+	\text{PWM} = \operatorname{map}(g(x, \text{reference\_distance}, \text{sensor\_data})).
+\end{align*}
+
+\chapter*{Notes}
+Higher-order approximations could be implemented too if $N$ is getting too big. When the systems seems to be unstable, check the polarity of the feedback.
+
+\end{document}
