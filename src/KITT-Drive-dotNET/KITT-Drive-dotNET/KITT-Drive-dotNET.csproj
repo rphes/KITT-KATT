@@ -93,6 +93,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CodeBehind\Model3AutoControl.cs" />
+    <Compile Include="CodeBehind\Model2AutoControl.cs" />
     <Compile Include="Tools\ObservableObject.cs" />
     <Compile Include="CodeBehind\Communication.cs" />
     <Compile Include="CodeBehind\AutoControl.cs" />

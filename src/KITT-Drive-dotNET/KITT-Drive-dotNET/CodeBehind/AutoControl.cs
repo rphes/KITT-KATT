@@ -10,19 +10,20 @@ namespace KITT_Drive_dotNET
 	/// <summary>
 	/// Implements a system model, for tracking and controlling KITT
 	/// </summary>
-	public class AutoControl
+	public abstract class AutoControl
 	{
 		#region Data members
 		//KITT parameters
 
 		//Model essentials
-		Matrix<double> A;
-		Matrix<double> B;
-		Matrix<double> C;
-		Matrix<double> K; //Feedback gain
-		Matrix<double> L; //Observer gain
-		Matrix<double> x = DenseMatrix.OfArray(new double[,] { { 1 }, { 0 } }); //State matrix
-		Matrix<double> xRef //Reference state matrix
+		protected Matrix<double> A;
+		protected Matrix<double> B;
+		protected Matrix<double> C;
+		protected Matrix<double> D;
+		protected Matrix<double> K; //Feedback gain
+		protected Matrix<double> L; //Observer gain
+		protected Matrix<double> x; //State matrix
+		protected Matrix<double> xRef //Reference state matrix
 		{
 			get
 			{
@@ -37,39 +38,39 @@ namespace KITT_Drive_dotNET
 				return DenseMatrix.OfArray(new double[,] { { val }, { 0 } });
 			}
 		}
-		double y = 0; //Vehicle output
-		double t = 0; //Current time
-		int v = 0; //Calculated vehicle reference speed
+		protected double y = 0; //Vehicle output
+		protected double t = 0; //Current time
+		protected int v = 0; //Calculated vehicle reference speed
 
 		//Time properties
-		DateTime tPrevious;
-		TimeSpan tDelta;
-		TimeSpan tInit = new TimeSpan(0, 0, 0, 0);
-		TimeSpan tTotal;
-		int iteration = 0;
+		protected DateTime tPrevious;
+		protected TimeSpan tDelta;
+		protected TimeSpan tInit = new TimeSpan(0, 0, 0, 0);
+		protected TimeSpan tTotal;
+		protected int iteration = 0;
 		
 		//Reference
 		public List<int> xRefList { get; set; }
 		public List<int> tRefList { get; set; }
 
 		//Throttle mapping
-		double[] forceMapper = {10, 0, -0.025};
-		double forceMin = 0.02;
+		protected double[] forceMapper = { 10, 0, -0.025 };
+		protected double forceMin = 0.02;
 
 		//Filtering
 		public bool LowPassFilterIsEnabled { get; set; }
 		public bool ExpectedValueFilterIsEnabled { get; set; }
-		double[] lowPass = new double[3];
-		double fFall = 10; //Cut-off frequency of low-pass filter
-		double tExpectedSample = 0.3; //Expected sample time for dimensioning low-pass filter
-		List<double> dLeft = new List<double>(4); //Historic left sensor values
-		List<double> dRight = new List<double>(4); //Historic right sensor values
-		double maxDeviation = 0.5;
+		protected double[] lowPass = new double[3];
+		protected double fFall = 10; //Cut-off frequency of low-pass filter
+		protected double tExpectedSample = 0.3; //Expected sample time for dimensioning low-pass filter
+		protected List<double> dLeft = new List<double>(4); //Historic left sensor values
+		protected List<double> dRight = new List<double>(4); //Historic right sensor values
+		protected double maxDeviation = 0.5;
 
 		//Plot data
-		DispatcherTimer evTimer;
-		TimeSpan tInterval = new TimeSpan(0, 0, 0, 0, 100);
-		int tick = 0;
+		protected DispatcherTimer evTimer;
+		protected TimeSpan tInterval = new TimeSpan(0, 0, 0, 0, 100);
+		protected int tick = 0;
 		public double MaxTimeSpan { get { return 10; } }
 		public int MaxDataPoints { get { return (int)(MaxTimeSpan / tInterval.TotalSeconds); } }
 		public int MaxPlotDataPoints { get { return (int)Math.Round(MaxDataPoints * 1.2); } }
@@ -79,8 +80,8 @@ namespace KITT_Drive_dotNET
 		public List<double> RBuffer { get; set; } //Stores reference distance points
 
 		//Misc
-		short controlling = 0; //Modifier for enabling vehicle control
-		bool running = false;
+		protected short controlling = 0; //Modifier for enabling vehicle control
+		protected bool running = false;
 
 		#endregion
 
@@ -92,13 +93,6 @@ namespace KITT_Drive_dotNET
 			evTimer.Tick += evTimer_Tick;
 			evTimer.Interval = tInterval;
 
-			//Build matrices
-			A = DenseMatrix.OfArray(new double[,] { { 0, 1 }, { 0, -0.5063 } });
-			B = DenseMatrix.OfArray(new double[,] { { 0 }, { 6.25 } });
-			C = DenseMatrix.OfArray(new double[,] { { 1, 0 } });
-			K = DenseMatrix.OfArray(new double[,] { { 0.2955, 0.3542 } }); //acker(A, B, [-0.6 -0.6]) in MATLAB--INVALID
-			L = DenseMatrix.OfArray(new double[,] { { 7.7937 }, { 13.2544 } }); //acker(A', C', [-2 -2]') in MATLAB--INVALID
-
 			//Disable filters by default
 			LowPassFilterIsEnabled = false;
 			ExpectedValueFilterIsEnabled = false;
@@ -106,7 +100,7 @@ namespace KITT_Drive_dotNET
 		#endregion
 
 		#region Event handlers
-		void evTimer_Tick(object sender, EventArgs e)
+		protected void evTimer_Tick(object sender, EventArgs e)
 		{
 			//Get total execution time
 			t = tick * tInterval.TotalSeconds;
@@ -146,12 +140,9 @@ namespace KITT_Drive_dotNET
 			//Save current time
 			tPrevious = DateTime.Now;
 
-			//Enable everythinh
+			//Enable everything
 			running = true;
-
-			//Subscribe to serial event
-			//Data.MainViewModel.VehicleViewModel.PropertyChanged += VehicleViewModel_PropertyChanged;
-
+			
 			//Start plot updater
 			evTimer.Start();		
 		}
@@ -162,7 +153,7 @@ namespace KITT_Drive_dotNET
 			running = false;
 		}
 
-		void control()
+		protected void control()
 		{
 			double force = 0;
 
@@ -193,9 +184,8 @@ namespace KITT_Drive_dotNET
 
 				//Find next state
 				x += tDelta.TotalSeconds / 2 * (curSlope + predSlope);
-				//System.Diagnostics.Debug.WriteLine("x: " + x);
 
-				force = (controlling * K * (x - xRef)).At(0, 0); //TODO check this
+				force = (controlling * K * (x - xRef)).At(0, 0);
 			}
 
 			//Map force to PWM-value
@@ -203,7 +193,7 @@ namespace KITT_Drive_dotNET
 			Data.MainViewModel.ControlViewModel.Speed = v;
 		}
 
-		Matrix<double> getSlope(Matrix<double> var)
+		virtual protected Matrix<double> getSlope(Matrix<double> var)
 		{
 			return	
 				(A - L * C - B * K * controlling) * var + //(A - BK - LC)x
@@ -211,7 +201,7 @@ namespace KITT_Drive_dotNET
 				L * y; //Ly
 		}
 
-		double[] makeLowPass()
+		protected double[] makeLowPass()
 		{
 			double c1, c2, c3;
 			double a = 1 / (2 * Math.PI * fFall * tExpectedSample);
@@ -222,8 +212,7 @@ namespace KITT_Drive_dotNET
 			return new double[] { c1, c2, c3 };
 		}
 
-
-		double filter(double value, ref List<double> history)
+		protected double filter(double value, ref List<double> history)
 		{
 			int count = history.Count;
 			double filtered, expected;
@@ -261,7 +250,7 @@ namespace KITT_Drive_dotNET
 			return filtered;
 		}
 
-		int map(double force)
+		protected int map(double force)
 		{
 			if (Math.Abs(force) < forceMin)
 				return Data.SpeedDefault;
@@ -281,7 +270,7 @@ namespace KITT_Drive_dotNET
 			}
 		}
 
-		private void updatePlotData()
+		protected void updatePlotData()
 		{
 			//Update graph data
 			TBuffer.Add(t);

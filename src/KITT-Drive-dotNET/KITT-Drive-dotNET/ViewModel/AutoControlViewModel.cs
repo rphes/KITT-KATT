@@ -17,7 +17,7 @@ namespace KITT_Drive_dotNET.ViewModel
 	public class AutoControlViewModel : ObservableObject
 	{
 		#region Properties
-		private AutoControl _autoControl = new AutoControl();
+		private AutoControl _autoControl = new Model2AutoControl();
 
 		public AutoControl AutoControl
 		{
@@ -191,13 +191,7 @@ namespace KITT_Drive_dotNET.ViewModel
 		public List<DataPoint> VPoints { get { return makeDatapoints(AutoControl.TBuffer, AutoControl.VBuffer); } }
 		public List<DataPoint> RPoints { get { return makeDatapoints(AutoControl.TBuffer, AutoControl.RBuffer); } }
 
-		public string PingString
-		{
-			get
-			{
-				return Math.Round(Data.MainViewModel.CommunicationViewModel.Communication.Ping.TotalMilliseconds) + " ms";
-			}
-		}
+		public string PingString { get { return Math.Round(Data.MainViewModel.CommunicationViewModel.Communication.Ping.TotalMilliseconds) + " ms"; } }
 
 		#endregion
 
