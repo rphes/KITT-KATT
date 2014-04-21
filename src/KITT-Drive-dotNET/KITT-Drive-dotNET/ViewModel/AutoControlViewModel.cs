@@ -210,6 +210,24 @@ namespace KITT_Drive_dotNET.ViewModel
 		#endregion
 
 		#region Methods
+		public void Start()
+		{
+			if (xRefList == null)
+			{
+				xRefList = new List<int>();
+				xRefList.Add(0);
+				tRefList = new List<int>();
+				tRefList.Add(0);
+			}
+			Status = AutoControlStatus.Running;
+			AutoControl.Start();
+		}
+
+		public void Stop()
+		{
+			Status = AutoControlStatus.Ready;
+			AutoControl.Stop();
+		}
 		List<int> parseRefString(string s)
 		{
 			if (String.IsNullOrEmpty(s))
@@ -294,22 +312,9 @@ namespace KITT_Drive_dotNET.ViewModel
 		void StartStopExecute()
 		{
 			if (Status != AutoControlStatus.Running)
-			{
-				if (xRefList == null)
-				{
-					xRefList = new List<int>();
-					xRefList.Add(0);
-					tRefList = new List<int>();
-					tRefList.Add(0);
-				}
-				Status = AutoControlStatus.Running;
-				AutoControl.Start();
-			}
+				Start();
 			else
-			{
-				Status = AutoControlStatus.Ready;
-				AutoControl.Stop();
-			}
+				Stop();
 		}
 
 		bool CanStartStopExecute()

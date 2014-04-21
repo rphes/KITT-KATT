@@ -61,8 +61,8 @@ namespace KITT_Drive_dotNET
 		public bool LowPassFilterIsEnabled { get; set; }
 		public bool ExpectedValueFilterIsEnabled { get; set; }
 		protected double[] lowPass = new double[3];
-		protected double fFall = 10; //Cut-off frequency of low-pass filter
-		protected double tExpectedSample = 0.3; //Expected sample time for dimensioning low-pass filter
+		protected double fFall = 100; //Cut-off frequency of low-pass filter
+		protected double tExpectedSample = 0.05; //Expected sample time for dimensioning low-pass filter
 		protected List<double> dLeft = new List<double>(4); //Historic left sensor values
 		protected List<double> dRight = new List<double>(4); //Historic right sensor values
 		protected double maxDeviation = 0.5;
@@ -124,6 +124,17 @@ namespace KITT_Drive_dotNET
 		#region Methods
 		public void Start()
 		{
+			//Reset or initialise values
+			tick = 0;
+			iteration = 0;
+			tPrevious = DateTime.Now;
+			t = 0;
+			v = 0;
+			y = 0;
+			tTotal = new TimeSpan(0);
+			dLeft = new List<double>(3);
+			dRight = new List<double>(3);
+
 			//Request initial status
 			Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
 
@@ -131,14 +142,11 @@ namespace KITT_Drive_dotNET
 			x = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } });
 			lowPass = makeLowPass();
 
-			//Empty/initialise plot buffers
+			//Empty or initialise plot buffers
 			TBuffer = new List<double>(MaxPlotDataPoints);
 			YBuffer = new List<double>(MaxPlotDataPoints);
 			VBuffer = new List<double>(MaxPlotDataPoints);
 			RBuffer = new List<double>(MaxPlotDataPoints);
-
-			//Save current time
-			tPrevious = DateTime.Now;
 
 			//Enable everything
 			running = true;
@@ -205,7 +213,7 @@ namespace KITT_Drive_dotNET
 		{
 			double c1, c2, c3;
 			double a = 1 / (2 * Math.PI * fFall * tExpectedSample);
-			c1 = 2 * (Math.Pow(a, 2) + a) / (Math.Pow(a, 2 + 2 * a + 1));
+			c1 = 2 * (Math.Pow(a, 2) + a) / (Math.Pow(a, 2) + 2 * a + 1);
 			c2 = Math.Pow(-a, 2) / (Math.Pow(a, 2) + 2 * a + 1);
 			c3 = 1 / (Math.Pow(a, 2) + 2 * a + 1);
 
@@ -222,7 +230,7 @@ namespace KITT_Drive_dotNET
 			//Unrealistic value filter based on historic values
 			if (ExpectedValueFilterIsEnabled)
 			{
-				if (iteration > 2)
+				if (count == 3)
 				{
 					expected = 2.5 * history[count - 1] - 2 * history[count - 2] + 0.5 * history[count - 3];
 
@@ -236,16 +244,17 @@ namespace KITT_Drive_dotNET
 			{
 				filtered *= lowPass[2];
 
-				if (iteration > 0)
+				if (count > 0)
 					filtered += lowPass[0] * history[count - 1];
-				if (iteration > 1)
-					filtered += lowPass[1] * history[count - 1];
+				if (count > 1)
+					filtered += lowPass[1] * history[count - 2];
 			}
 
 			//Remove obsolete value and save new one
-			if (count == 4)
+			if (count == 3)
 				history.RemoveAt(0);
-			history.Add(filtered);
+			if (iteration > 0)
+				history.Add(filtered);
 
 			return filtered;
 		}
