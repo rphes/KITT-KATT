@@ -17,7 +17,7 @@ namespace KITT_Drive_dotNET.ViewModel
 	public class AutoControlViewModel : ObservableObject
 	{
 		#region Properties
-		private AutoControl _autoControl = new Model2AutoControl();
+		private AutoControl _autoControl = new Model3AutoControl();
 
 		public AutoControl AutoControl
 		{
@@ -178,8 +178,9 @@ namespace KITT_Drive_dotNET.ViewModel
 		public string ScaleString { get; set; }
 		public string PoleString { get; set; }
 		public string GearRatioString { get; set; }
+		public string WeightString { get; set; }
 
-		double scale, pole;
+		double scale, pole, weight;
 		int gear;
 
 		//Plot data
@@ -343,15 +344,15 @@ namespace KITT_Drive_dotNET.ViewModel
 			if (AutoControl.GetType().Name == "Model2AutoControl")
 				AutoControl = new Model2AutoControl();
 			else if (AutoControl.GetType().Name == "Model3AutoControl")
-				AutoControl = new Model3AutoControl();
+				AutoControl = new Model3AutoControl(scale, weight, gear);
 
-			AutoControl.scale = scale;
 			AutoControl.placeCompensatorPoles(pole);
 		}
 
 		bool CanReinitializeExecute()
 		{
 			if (Double.TryParse(ScaleString, out scale) &&
+				Double.TryParse(WeightString, out weight) &&
 				Double.TryParse(PoleString, out pole) &&
 				Int32.TryParse(GearRatioString, out gear) &&
 				Status != AutoControlStatus.Running)

@@ -42,7 +42,7 @@ namespace KITT_Drive_dotNET
 		#endregion
 
 		#region Modules
-		public static MainViewModel MainViewModel = new MainViewModel();	
+		public static MainViewModel MainViewModel = new MainViewModel();
 		#endregion
 
 		#region Utility methods

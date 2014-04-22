@@ -117,7 +117,9 @@
 						<Label Target="{Binding ElementName=TextBox_Pole}" Content="Pole" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,0"/>
 						<TextBox Name="TextBox_GearRatio" Text="{Binding Path=GearRatioString}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="24" Height="22" Margin="0,5,0,0"/>
 						<Label Target="{Binding ElementName=TextBox_GearRatio}" Content="Gear ratio" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="90,5,0,0"/>
-						<Button Name="Button_Reinitialize" Content="Reinitialize" Command="{Binding Path=Reinitialize}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="22" Margin="0,0,10,2"/>
+						<TextBox Name="TextBox_Weight" Text="{Binding Path=WeightString}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="24" Height="22" Margin="0,5,0,2"/>
+						<Label Target="{Binding ElementName=TextBox_Weight}" Content="Weight" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="75,5,0,0"/>
+						<Button Name="Button_Reinitialize" Content="Go" Command="{Binding Path=Reinitialize}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="22" Margin="0,0,5,2" />
 					</Grid>
 				</GroupBox>
 			</Grid>
