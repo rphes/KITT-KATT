@@ -17,7 +17,7 @@ namespace KITT_Drive_dotNET.ViewModel
 	public class AutoControlViewModel : ObservableObject
 	{
 		#region Properties
-		private AutoControl _autoControl = new Model2AutoControl();
+		private AutoControl _autoControl = new Model3AutoControl();
 
 		public AutoControl AutoControl
 		{

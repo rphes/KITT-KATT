@@ -35,12 +35,15 @@ namespace KITT_Drive_dotNET
 					else
 						break;
 				}
-				return DenseMatrix.OfArray(new double[,] { { val }, { 0 } });
+				Matrix<double> m = new DenseMatrix(A.RowCount, 1);
+				m.At(0, 0, val);
+				return m;
 			}
 		}
 		protected double y = 0; //Vehicle output
 		protected double t = 0; //Current time
 		protected int v = 0; //Calculated vehicle reference speed
+		protected const int numsteps = 100;
 
 		//Time properties
 		protected DateTime tPrevious;
@@ -139,7 +142,7 @@ namespace KITT_Drive_dotNET
 			Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
 
 			//Initialise some stuff
-			x = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } });
+			x = new DenseMatrix(A.RowCount, 1);
 			lowPass = makeLowPass();
 
 			//Empty or initialise plot buffers
@@ -176,22 +179,24 @@ namespace KITT_Drive_dotNET
 
 			//Obtain current filtered working distance
 			y = Math.Min(filter((double)Data.MainViewModel.VehicleViewModel.SensorDistanceLeft / 100, ref dLeft), filter((double)Data.MainViewModel.VehicleViewModel.SensorDistanceRight / 100, ref dRight));
-			//y = Math.Min(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft / 100, Data.MainViewModel.VehicleViewModel.SensorDistanceRight / 100);
 
 			//Calculate new states and control
 			if (iteration > 0)
 			{
-				//Find next slope
-				Matrix<double> curSlope = getSlope(x);
-
-				//Find next predicted value via Euler's method
-				Matrix<double> predVal = x + curSlope * tDelta.TotalSeconds;
-
-				//Find next predicted slope
-				Matrix<double> predSlope = getSlope(predVal);
-
 				//Find next state
-				x += tDelta.TotalSeconds / 2 * (curSlope + predSlope);
+				for (int i = 0; i < numsteps; i++ )
+				{
+					//Find next slope
+					Matrix<double> curSlope = getSlope(x);
+
+					//Find next predicted value via Euler's method
+					Matrix<double> predVal = x + curSlope * tDelta.TotalSeconds;
+
+					//Find next predicted slope
+					Matrix<double> predSlope = getSlope(predVal);
+
+					x += tDelta.TotalSeconds / numsteps / 2 * (curSlope + predSlope);
+				}					
 
 				force = (controlling * K * (x - xRef)).At(0, 0);
 			}

@@ -4,6 +4,29 @@
         <name>OxyPlot</name>
     </assembly>
     <members>
+        <member name="T:OxyPlot.IPlotElement">
+            <summary>
+            Specifies functionality of an element of a plot.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.IPlotElement.GetElementHashCode">
+            <summary>
+            Returns a hash code for this element.
+            </summary>
+            <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+            <remarks>This method creates the hash code by reflecting the value of all public properties.</remarks>
+        </member>
+        <member name="T:OxyPlot.Series.IScatterPointProvider">
+            <summary>
+            Defines functionality to provide a <see cref="T:OxyPlot.Series.ScatterPoint"/>.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Series.IScatterPointProvider.GetScatterPoint">
+            <summary>
+            Gets the <see cref="T:OxyPlot.Series.ScatterPoint"/> that represents the element.
+            </summary>
+            <returns>A <see cref="T:OxyPlot.Series.ScatterPoint"/>.</returns>
+        </member>
         <member name="T:OxyPlot.OxyMouseEnterGesture">
             <summary>
             Defines a mouse enter gesture that can be used to invoke a command.
@@ -1566,46 +1589,16 @@
             </summary>
             <returns>The C# code.</returns>
         </member>
-        <member name="T:OxyPlot.IDataPoint">
-            <summary>
-            Defines a point.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.IDataPoint.X">
-            <summary>
-            Gets or sets the x-coordinate.
-            </summary>
-            <value>The x-coordinate.</value>
-        </member>
-        <member name="P:OxyPlot.IDataPoint.Y">
-            <summary>
-            Gets or sets the y-coordinate.
-            </summary>
-            <value>The y-coordinate.</value>
-        </member>
-        <member name="T:OxyPlot.DataPointExtensions">
-            <summary>
-            Provides extension methods for <see cref="T:OxyPlot.IDataPoint"/>.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.DataPointExtensions.IsValid(OxyPlot.IDataPoint)">
-            <summary>
-            Returns whether the coordinate contains a NaN value.
-            </summary>
-            <value><c>true</c></value>
-            <param name="p">The point to evaluate.</param>
-            <returns><value><c>true</c></value> if neither the X nor Y coordinates are NaN values; otherwise, <value><c>false</c></value>.</returns>
-        </member>
         <member name="T:OxyPlot.IDataPointProvider">
             <summary>
-            Provides functionality to create data points.
+            Defines functionality to provide a <see cref="T:OxyPlot.DataPoint"/>.
             </summary>
         </member>
         <member name="M:OxyPlot.IDataPointProvider.GetDataPoint">
             <summary>
-            Gets the data point.
+            Gets the <see cref="T:OxyPlot.DataPoint"/> that represents the element.
             </summary>
-            <returns>The data point.</returns>
+            <returns>A <see cref="T:OxyPlot.DataPoint"/>.</returns>
         </member>
         <member name="T:OxyPlot.DataPoint">
             <summary>
@@ -1646,6 +1639,12 @@
             Returns a <see cref="T:System.String"/> that represents this instance.
             </summary>
             <returns>A <see cref="T:System.String"/> that represents this instance.</returns>
+        </member>
+        <member name="M:OxyPlot.DataPoint.IsDefined">
+            <summary>
+            Determines whether this point is defined.
+            </summary>
+            <returns><c>true</c> if this point is defined; otherwise, <c>false</c>.</returns>
         </member>
         <member name="P:OxyPlot.DataPoint.X">
             <summary>
@@ -2034,7 +2033,7 @@
             <remarks>CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
             See also <a href="http://www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html">blog post</a>.</remarks>
         </member>
-        <member name="M:OxyPlot.CanonicalSplineHelper.CreateSpline(System.Collections.Generic.IList{OxyPlot.IDataPoint},System.Double,System.Collections.Generic.IList{System.Double},System.Boolean,System.Double)">
+        <member name="M:OxyPlot.CanonicalSplineHelper.CreateSpline(System.Collections.Generic.List{OxyPlot.DataPoint},System.Double,System.Collections.Generic.IList{System.Double},System.Boolean,System.Double)">
             <summary>
             Creates a spline of data points.
             </summary>
@@ -2415,6 +2414,29 @@
             </summary>
             <value>The width.</value>
         </member>
+        <member name="T:OxyPlot.Decimator">
+            <summary>
+            Provides functionality to decimate lines.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Decimator.Decimate(System.Collections.Generic.List{OxyPlot.ScreenPoint},System.Collections.Generic.List{OxyPlot.ScreenPoint})">
+            <summary>
+            Decimates lines by reducing all points that have the same integer x value to a maximum of 4 points (first, min, max, last).
+            </summary>
+            <param name="input">The input points.</param>
+            <param name="output">The decimated points.</param>
+        </member>
+        <member name="M:OxyPlot.Decimator.AddVerticalPoints(System.Collections.Generic.List{OxyPlot.ScreenPoint},System.Double,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Adds vertical points to the <paramref name="result" /> list.
+            </summary>
+            <param name="result">The result.</param>
+            <param name="x">The x coordinate.</param>
+            <param name="firstY">The first y.</param>
+            <param name="lastY">The last y.</param>
+            <param name="minY">The minimum y.</param>
+            <param name="maxY">The maximum y.</param>
+        </member>
         <member name="T:OxyPlot.SutherlandHodgmanClipping">
             <summary>
             Provides polygon clipping by the Sutherland-Hodgman algorithm.
@@ -2539,44 +2561,15 @@
             </summary>
             <param name="rect">The clipping rectangle.</param>
         </member>
-        <member name="M:OxyPlot.CohenSutherlandClipping.#ctor(System.Double,System.Double,System.Double,System.Double)">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.CohenSutherlandClipping"/> class.
-            </summary>
-            <param name="xmin">The minimum x.</param>
-            <param name="xmax">The maximum x.</param>
-            <param name="ymin">The minimum y.</param>
-            <param name="ymax">The maximum y.</param>
-        </member>
-        <member name="M:OxyPlot.CohenSutherlandClipping.ClipLine(System.Double@,System.Double@,System.Double@,System.Double@)">
-            <summary>
-            Cohen–Sutherland clipping algorithm clips a line from
-            P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with
-            diagonal from <code>(xmin, ymin)</code> to <code>(xmax, ymax)</code>.
-            </summary>
-            <param name="x0">X coordinate of the first point.</param>
-            <param name="y0">Y coordinate of the first point.</param>
-            <param name="x1">X coordinate of the second point.</param>
-            <param name="y1">Y coordinate of the second point.</param>
-            <returns><c>true</c> if the line is inside.</returns>
-        </member>
         <member name="M:OxyPlot.CohenSutherlandClipping.ClipLine(OxyPlot.ScreenPoint@,OxyPlot.ScreenPoint@)">
             <summary>
             Cohen–Sutherland clipping algorithm clips a line from
             P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with
             diagonal from <code>(xmin, ymin)</code> to <code>(xmax, ymax)</code>.
             </summary>
-            <param name="s0">The s 0.</param>
-            <param name="s1">The s 1.</param>
+            <param name="p0">The point P0.</param>
+            <param name="p1">The point P1.</param>
             <returns><c>true</c> if the line is inside</returns>
-        </member>
-        <member name="M:OxyPlot.CohenSutherlandClipping.IsInside(System.Double,System.Double)">
-            <summary>
-            Determines whether the specified point is inside the rectangle.
-            </summary>
-            <param name="x">The x coordinate.</param>
-            <param name="y">The y coordinate.</param>
-            <returns><c>true</c> if the specified point is inside; otherwise, <c>false</c>.</returns>
         </member>
         <member name="M:OxyPlot.CohenSutherlandClipping.IsInside(OxyPlot.ScreenPoint)">
             <summary>
@@ -2584,16 +2577,6 @@
             </summary>
             <param name="s">The point.</param>
             <returns><c>true</c> if the specified point is inside; otherwise, <c>false</c>.</returns>
-        </member>
-        <member name="M:OxyPlot.CohenSutherlandClipping.ComputeOutCode(System.Double,System.Double)">
-            <summary>
-            Computes the out code.
-            </summary>
-            <param name="x">The x.</param>
-            <param name="y">The y.</param>
-            <returns>The out code.</returns>
-            <remarks>Compute the bit code for a point (x, y) using the clip rectangle
-            bounded diagonally by <code>(xmin, ymin)</code> to <code>(xmax, ymax)</code>.</remarks>
         </member>
         <member name="T:OxyPlot.OxyPenLineJoin">
             <summary>
@@ -3942,14 +3925,14 @@
         </member>
         <member name="M:OxyPlot.IRenderContext.SetClip(OxyPlot.OxyRect)">
             <summary>
-            Sets the clip rectangle.
+            Sets the clipping rectangle.
             </summary>
-            <param name="rect">The clip rectangle.</param>
-            <returns>True if the clip rectangle was set.</returns>
+            <param name="clippingRect">The clipping rectangle.</param>
+            <returns><c>true</c> if the clip rectangle was set.</returns>
         </member>
         <member name="M:OxyPlot.IRenderContext.ResetClip">
             <summary>
-            Resets the clip rectangle.
+            Resets the clipping rectangle.
             </summary>
         </member>
         <member name="P:OxyPlot.IRenderContext.RendersToScreen">
@@ -4114,6 +4097,22 @@
             Resets the clip rectangle.
             </summary>
         </member>
+        <member name="M:OxyPlot.RenderContextBase.CreateEllipse(OxyPlot.OxyRect,System.Int32)">
+            <summary>
+            Creates an ellipse polygon.
+            </summary>
+            <param name="rect">The bounding rectangle.</param>
+            <param name="n">The number of points.</param>
+            <returns>The points defining the ellipse.</returns>
+            <remarks>Note that this is very slow, not optimized in any way.</remarks>
+        </member>
+        <member name="M:OxyPlot.RenderContextBase.CreateRectangle(OxyPlot.OxyRect)">
+            <summary>
+            Creates a rectangle polygon.
+            </summary>
+            <param name="rect">The rectangle.</param>
+            <returns>The points defining the rectangle.</returns>
+        </member>
         <member name="P:OxyPlot.RenderContextBase.RendersToScreen">
             <summary>
             Gets or sets a value indicating whether the context renders to screen.
@@ -4140,19 +4139,20 @@
             The horizontal/vertical distance to the end points of the stars.
             </summary>
         </member>
-        <member name="M:OxyPlot.RenderingExtensions.DrawClippedLine(OxyPlot.IRenderContext,System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyRect,System.Double,OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.OxyPenLineJoin,System.Boolean,System.Action{System.Collections.Generic.IList{OxyPlot.ScreenPoint}})">
+        <member name="M:OxyPlot.RenderingExtensions.DrawClippedLine(OxyPlot.IRenderContext,System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyRect,System.Double,OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.OxyPenLineJoin,System.Boolean,System.Collections.Generic.List{OxyPlot.ScreenPoint},System.Action{System.Collections.Generic.IList{OxyPlot.ScreenPoint}})">
             <summary>
-            Draws the clipped line.
+            Draws a clipped polyline through the specified points.
             </summary>
             <param name="rc">The render context.</param>
             <param name="points">The points.</param>
             <param name="clippingRectangle">The clipping rectangle.</param>
-            <param name="minDistSquared">The squared minimum distance.</param>
-            <param name="stroke">The stroke.</param>
+            <param name="minDistSquared">The minimum line segment length (squared).</param>
+            <param name="stroke">The stroke color.</param>
             <param name="strokeThickness">The stroke thickness.</param>
             <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
             <param name="lineJoin">The line join.</param>
-            <param name="aliased">if set to <c>true</c> [aliased].</param>
+            <param name="aliased">Set to <c>true</c> to draw as an aliased line.</param>
+            <param name="outputBuffer">The output buffer.</param>
             <param name="pointsRendered">The points rendered callback.</param>
         </member>
         <member name="M:OxyPlot.RenderingExtensions.DrawClippedLineSegments(OxyPlot.IRenderContext,System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyRect,OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.OxyPenLineJoin,System.Boolean)">
@@ -4166,7 +4166,7 @@
             <param name="strokeThickness">The stroke thickness.</param>
             <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
             <param name="lineJoin">The line join.</param>
-            <param name="aliased">if set to <c>true</c> [aliased].</param>
+            <param name="aliased">Set to <c>true</c> to draw as an aliased line.</param>
         </member>
         <member name="M:OxyPlot.RenderingExtensions.DrawImage(OxyPlot.IRenderContext,OxyPlot.OxyImage,System.Double,System.Double,System.Double,System.Double,System.Double,System.Boolean)">
             <summary>
@@ -4395,6 +4395,136 @@
             <param name="pts">The points (screen coordinates).</param>
             <remarks>If the line contains one point, another point is added.
             If the line contains two points at the same position, the points are moved 2 pixels apart.</remarks>
+        </member>
+        <member name="T:OxyPlot.XkcdRenderingDecorator">
+            <summary>
+            Provides 'XKCD style' to an <see cref="T:OxyPlot.IRenderContext"/>.
+            </summary>
+            <remarks>See <a href="http://matplotlib.org/xkcd/">Matplotlib</a> and <a href="http://xkcd.com/">xkcd</a>.</remarks>
+        </member>
+        <member name="F:OxyPlot.XkcdRenderingDecorator.rc">
+            <summary>
+            The decorated <see cref="T:OxyPlot.IRenderContext"/>. This is the one that does the actual rendering.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.XkcdRenderingDecorator.r">
+            <summary>
+            The random number generator.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.XkcdRenderingDecorator.#ctor(OxyPlot.IRenderContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.XkcdRenderingDecorator"/> class.
+            </summary>
+            <param name="rc">The decorated render context.</param>
+        </member>
+        <member name="M:OxyPlot.XkcdRenderingDecorator.DrawLine(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.OxyPenLineJoin,System.Boolean)">
+            <summary>
+            Draws a polyline.
+            </summary>
+            <param name="points">The points.</param>
+            <param name="stroke">The stroke color.</param>
+            <param name="thickness">The stroke thickness.</param>
+            <param name="dashArray">The dash array.</param>
+            <param name="lineJoin">The line join type.</param>
+            <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        </member>
+        <member name="M:OxyPlot.XkcdRenderingDecorator.DrawPolygon(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.OxyPenLineJoin,System.Boolean)">
+            <summary>
+            Draws a polygon. The polygon can have stroke and/or fill.
+            </summary>
+            <param name="points">The points.</param>
+            <param name="fill">The fill color.</param>
+            <param name="stroke">The stroke color.</param>
+            <param name="thickness">The stroke thickness.</param>
+            <param name="dashArray">The dash array.</param>
+            <param name="lineJoin">The line join type.</param>
+            <param name="aliased">If set to <c>true</c> the shape will be aliased.</param>
+        </member>
+        <member name="M:OxyPlot.XkcdRenderingDecorator.DrawText(OxyPlot.ScreenPoint,System.String,OxyPlot.OxyColor,System.String,System.Double,System.Double,System.Double,OxyPlot.HorizontalAlignment,OxyPlot.VerticalAlignment,System.Nullable{OxyPlot.OxySize})">
+            <summary>
+            Draws the text.
+            </summary>
+            <param name="p">The position of the text.</param>
+            <param name="text">The text.</param>
+            <param name="fill">The fill color.</param>
+            <param name="fontFamily">The font family.</param>
+            <param name="fontSize">Size of the font.</param>
+            <param name="fontWeight">The font weight.</param>
+            <param name="rotate">The rotation angle.</param>
+            <param name="halign">The horizontal alignment.</param>
+            <param name="valign">The vertical alignment.</param>
+            <param name="maxSize">The maximum size of the text.</param>
+        </member>
+        <member name="M:OxyPlot.XkcdRenderingDecorator.MeasureText(System.String,System.String,System.Double,System.Double)">
+            <summary>
+            Measures the text.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="fontFamily">The font family.</param>
+            <param name="fontSize">Size of the font.</param>
+            <param name="fontWeight">The font weight.</param>
+            <returns>
+            The text size.
+            </returns>
+        </member>
+        <member name="M:OxyPlot.XkcdRenderingDecorator.SetToolTip(System.String)">
+            <summary>
+            Sets the tool tip for the following items.
+            </summary>
+            <param name="text">The text in the tooltip.</param>
+        </member>
+        <member name="M:OxyPlot.XkcdRenderingDecorator.CleanUp">
+            <summary>
+            Cleans up resources not in use.
+            </summary>
+            <remarks>
+            This method is called at the end of each rendering.
+            </remarks>
+        </member>
+        <member name="M:OxyPlot.XkcdRenderingDecorator.DrawImage(OxyPlot.OxyImage,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Boolean)">
+            <summary>
+            Draws the specified portion of the specified <see cref="T:OxyPlot.OxyImage"/> at the specified location and with the specified size.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+            <param name="srcY">The y-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+            <param name="srcWidth">Width of the portion of the source image to draw.</param>
+            <param name="srcHeight">Height of the portion of the source image to draw.</param>
+            <param name="destX">The x-coordinate of the upper-left corner of drawn image.</param>
+            <param name="destY">The y-coordinate of the upper-left corner of drawn image.</param>
+            <param name="destWidth">The width of the drawn image.</param>
+            <param name="destHeight">The height of the drawn image.</param>
+            <param name="opacity">The opacity.</param>
+            <param name="interpolate">Interpolate if set to <c>true</c>.</param>
+        </member>
+        <member name="M:OxyPlot.XkcdRenderingDecorator.SetClip(OxyPlot.OxyRect)">
+            <summary>
+            Sets the clipping rectangle.
+            </summary>
+            <param name="clippingRect">The clipping rectangle.</param>
+            <returns>
+              <c>true</c> if the clip rectangle was set.
+            </returns>
+        </member>
+        <member name="M:OxyPlot.XkcdRenderingDecorator.ResetClip">
+            <summary>
+            Resets the clip rectangle.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.XkcdRenderingDecorator.GetFontFamily(System.String)">
+            <summary>
+            Gets the xkcdified font family name.
+            </summary>
+            <param name="fontFamily">The original font family.</param>
+            <returns>The actual font family.</returns>
+        </member>
+        <member name="M:OxyPlot.XkcdRenderingDecorator.Xkcdify(System.Collections.Generic.IList{OxyPlot.ScreenPoint})">
+            <summary>
+            Xkcdifies the specified points.
+            </summary>
+            <param name="points">The points to xkcdify.</param>
+            <returns>The xkcdified points.</returns>
         </member>
         <member name="T:OxyPlot.OxyKey">
             <summary>
@@ -6570,16 +6700,6 @@
             <param name="extension">The extension.</param>
             <returns>A file name.</returns>
         </member>
-        <member name="M:OxyPlot.StringHelper.CreateList(System.IFormatProvider,System.Collections.IEnumerable,System.String,System.String)">
-            <summary>
-            Creates a string from a collection of items.
-            </summary>
-            <param name="provider">The provider.</param>
-            <param name="items">The items.</param>
-            <param name="formatstring">The format string to apply to each item.</param>
-            <param name="separator">The separator.</param>
-            <returns>The collection as a string.</returns>
-        </member>
         <member name="T:OxyPlot.FractionHelper">
             <summary>
             Provides functionality to generate fraction strings from double values.
@@ -6687,14 +6807,24 @@
             Provides utility methods reflection based support methods.
             </summary>
         </member>
-        <member name="M:OxyPlot.ReflectionHelper.FillList``1(System.Collections.IEnumerable,System.String,System.Collections.Generic.IList{``0})">
+        <member name="M:OxyPlot.ReflectionHelper.FillList``1(System.Collections.Generic.List{``0},System.Collections.IEnumerable,System.String)">
             <summary>
-            Fills a list by the specified property of a source list/enumerable.
+            Fills a target by the specified property of a source target/enumerable.
             </summary>
-            <typeparam name="T">The type of the destination list items (and the source property).</typeparam>
-            <param name="source">The source list.</param>
+            <typeparam name="T">The type of the destination target items (and the source property).</typeparam>
+            <param name="target">The target list to be filled.</param>
+            <param name="source">The source target.</param>
             <param name="propertyName">The property name.</param>
-            <param name="list">The list to be filled.</param>
+            <exception cref="T:System.InvalidOperationException">Could not find property.</exception>
+        </member>
+        <member name="M:OxyPlot.ReflectionHelper.FillList(System.Collections.Generic.List{OxyPlot.DataPoint},System.Collections.IEnumerable,System.String,System.String)">
+            <summary>
+            Adds data points from the specified source to the specified destination.
+            </summary>
+            <param name="target">The destination target.</param>
+            <param name="itemsSource">The source.</param>
+            <param name="dataFieldX">The x-coordinate data field.</param>
+            <param name="dataFieldY">The y-coordinate data field.</param>
         </member>
         <member name="T:OxyPlot.Conrec">
             <summary>
@@ -6963,11 +7093,11 @@
             <param name="bytes">The image data.</param>
             <returns>An <see cref="T:OxyPlot.OxyImageInfo"/> structure.</returns>
         </member>
-        <member name="M:OxyPlot.IImageDecoder.Decode(System.IO.Stream)">
+        <member name="M:OxyPlot.IImageDecoder.Decode(System.Byte[])">
             <summary>
-            Decodes an image from the specified stream.
+            Decodes an image from the specified byte array.
             </summary>
-            <param name="s">The stream.</param>
+            <param name="bytes">The image data.</param>
             <returns>The 32-bit pixel data. The indexing is [x,y] where [0,0] is top-left.</returns>
         </member>
         <member name="T:OxyPlot.IImageEncoder">
@@ -7000,14 +7130,18 @@
             Gets information about the image in the specified byte array.
             </summary>
             <param name="bytes">The image data.</param>
-            <returns>An <see cref="T:OxyPlot.OxyImageInfo"/> structure.</returns>
+            <returns>
+            An <see cref="T:OxyPlot.OxyImageInfo"/> structure.
+            </returns>
         </member>
-        <member name="M:OxyPlot.BmpDecoder.Decode(System.IO.Stream)">
+        <member name="M:OxyPlot.BmpDecoder.Decode(System.Byte[])">
             <summary>
-            Decodes an image from the specified stream.
+            Decodes an image from the specified byte array.
             </summary>
-            <param name="s">The stream.</param>
-            <returns>The 32-bit pixel data.</returns>
+            <param name="bytes">The image data.</param>
+            <returns>
+            The 32-bit pixel data.
+            </returns>
         </member>
         <member name="T:OxyPlot.BmpEncoder">
             <summary>
@@ -7083,11 +7217,11 @@
             <returns>An <see cref="T:OxyPlot.OxyImageInfo"/> structure.</returns>
             <exception cref="T:System.FormatException">Wrong length of pHYs chunk.</exception>
         </member>
-        <member name="M:OxyPlot.PngDecoder.Decode(System.IO.Stream)">
+        <member name="M:OxyPlot.PngDecoder.Decode(System.Byte[])">
             <summary>
-            Decodes an image from the specified stream.
+            Decodes an image from the specified byte array.
             </summary>
-            <param name="s">The stream.</param>
+            <param name="bytes">The image data.</param>
             <returns>The 32-bit pixel data, indexed as [x,y].</returns>
         </member>
         <member name="M:OxyPlot.PngDecoder.Deflate(System.Byte[])">
@@ -8224,11 +8358,12 @@
             Initializes a new instance of the <see cref="T:OxyPlot.PlotElement"/> class.
             </summary>
         </member>
-        <member name="M:OxyPlot.PlotElement.GetHashCode">
+        <member name="M:OxyPlot.PlotElement.GetElementHashCode">
             <summary>
-            Returns a hash code for this instance by reflection (!) on all public properties.
+            Returns a hash code for this element.
             </summary>
             <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+            <remarks>This method creates the hash code by reflecting the value of all public properties.</remarks>
         </member>
         <member name="M:OxyPlot.PlotElement.Format(System.String,System.Object,System.Object[])">
             <summary>
@@ -8412,6 +8547,15 @@
             </summary>
             <value>The actual selection color.</value>
         </member>
+        <member name="M:OxyPlot.UIPlotElement.HitTest(OxyPlot.HitTestArguments)">
+            <summary>
+            Tests if the plot element is hit by the specified point.
+            </summary>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            A hit test result.
+            </returns>
+        </member>
         <member name="M:OxyPlot.UIPlotElement.OnMouseDown(System.Object,OxyPlot.OxyMouseDownEventArgs)">
             <summary>
             Raises the <see cref="E:OxyPlot.UIPlotElement.MouseDown"/> event.
@@ -8461,13 +8605,13 @@
             <param name="sender">The sender.</param>
             <param name="e">The <see cref="T:OxyPlot.OxyTouchEventArgs"/> instance containing the event data.</param>
         </member>
-        <member name="M:OxyPlot.UIPlotElement.HitTest(OxyPlot.HitTestArguments)">
+        <member name="M:OxyPlot.UIPlotElement.HitTestOverride(OxyPlot.HitTestArguments)">
             <summary>
-            Tests if the plot element is hit by the specified point.
+            When overridden in a derived class, tests if the plot element is hit by the specified point.
             </summary>
             <param name="args">The hit test arguments.</param>
             <returns>
-            A hit test result.
+            The result of the hit test.
             </returns>
         </member>
         <member name="E:OxyPlot.UIPlotElement.KeyDown">
@@ -8530,7 +8674,7 @@
             <param name="y">The y coordinate.</param>
             <returns>A screen point.</returns>
         </member>
-        <member name="M:OxyPlot.Annotations.Annotation.Transform(OxyPlot.IDataPoint)">
+        <member name="M:OxyPlot.Annotations.Annotation.Transform(OxyPlot.DataPoint)">
             <summary>
             Transforms the specified data point to a screen point.
             </summary>
@@ -8544,7 +8688,7 @@
             <param name="position">The position.</param>
             <returns>A data point</returns>
         </member>
-        <member name="M:OxyPlot.Annotations.Annotation.HitTest(OxyPlot.HitTestArguments)">
+        <member name="M:OxyPlot.Annotations.Annotation.HitTestOverride(OxyPlot.HitTestArguments)">
             <summary>
             Tests if the plot element is hit by the specified point.
             </summary>
@@ -8611,13 +8755,13 @@
             <param name="rc">The render context.</param>
             <param name="model">The plot model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.RectangleAnnotation.HitTest(OxyPlot.HitTestArguments)">
+        <member name="M:OxyPlot.Annotations.RectangleAnnotation.HitTestOverride(OxyPlot.HitTestArguments)">
             <summary>
-            Tests if the plot element is hit by the specified point.
+            When overridden in a derived class, tests if the plot element is hit by the specified point.
             </summary>
             <param name="args">The hit test arguments.</param>
             <returns>
-            A hit test result.
+            The result of the hit test.
             </returns>
         </member>
         <member name="P:OxyPlot.Annotations.RectangleAnnotation.Fill">
@@ -8688,13 +8832,13 @@
             <param name="rc">The render context.</param>
             <param name="model">The plot model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.TextAnnotation.HitTest(OxyPlot.HitTestArguments)">
+        <member name="M:OxyPlot.Annotations.TextAnnotation.HitTestOverride(OxyPlot.HitTestArguments)">
             <summary>
-            Tests if the plot element is hit by the specified point.
+            When overridden in a derived class, tests if the plot element is hit by the specified point.
             </summary>
             <param name="args">The hit test arguments.</param>
             <returns>
-            A hit test result.
+            The result of the hit test.
             </returns>
         </member>
         <member name="M:OxyPlot.Annotations.TextAnnotation.GetTextBounds(OxyPlot.ScreenPoint,OxyPlot.OxySize,OxyPlot.OxyThickness,System.Double,OxyPlot.HorizontalAlignment,OxyPlot.VerticalAlignment)">
@@ -8784,13 +8928,13 @@
             <param name="rc">The render context.</param>
             <param name="model">The plot model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.PolygonAnnotation.HitTest(OxyPlot.HitTestArguments)">
+        <member name="M:OxyPlot.Annotations.PolygonAnnotation.HitTestOverride(OxyPlot.HitTestArguments)">
             <summary>
-            Tests if the plot element is hit by the specified point.
+            When overridden in a derived class, tests if the plot element is hit by the specified point.
             </summary>
             <param name="args">The hit test arguments.</param>
             <returns>
-            A hit test result.
+            The result of the hit test.
             </returns>
         </member>
         <member name="P:OxyPlot.Annotations.PolygonAnnotation.Color">
@@ -8818,7 +8962,7 @@
         </member>
         <member name="P:OxyPlot.Annotations.PolygonAnnotation.Points">
             <summary>
-            Gets or sets the points.
+            Gets the points.
             </summary>
             <value>The points.</value>
         </member>
@@ -8880,13 +9024,13 @@
             <param name="rc">The render context.</param>
             <param name="model">The model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.PathAnnotation.HitTest(OxyPlot.HitTestArguments)">
+        <member name="M:OxyPlot.Annotations.PathAnnotation.HitTestOverride(OxyPlot.HitTestArguments)">
             <summary>
-            Tests if the plot element is hit by the specified point.
+            When overridden in a derived class, tests if the plot element is hit by the specified point.
             </summary>
             <param name="args">The hit test arguments.</param>
             <returns>
-            A hit test result.
+            The result of the hit test.
             </returns>
         </member>
         <member name="M:OxyPlot.Annotations.PathAnnotation.GetScreenPoints">
@@ -9169,20 +9313,20 @@
             <param name="rc">The render context.</param>
             <param name="model">The plot model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.ArrowAnnotation.HitTest(OxyPlot.HitTestArguments)">
+        <member name="M:OxyPlot.Annotations.ArrowAnnotation.HitTestOverride(OxyPlot.HitTestArguments)">
             <summary>
-            Tests if the plot element is hit by the specified point.
+            When overridden in a derived class, tests if the plot element is hit by the specified point.
             </summary>
             <param name="args">The hit test arguments.</param>
             <returns>
-            A hit test result.
+            The result of the hit test.
             </returns>
         </member>
         <member name="P:OxyPlot.Annotations.ArrowAnnotation.ArrowDirection">
             <summary>
             Gets or sets the arrow direction.
             </summary>
-            <remarks>Setting this property overrides the StartPoint property.</remarks>
+            <remarks>Setting this property overrides the <see cref="P:OxyPlot.Annotations.ArrowAnnotation.StartPoint"/> property.</remarks>
         </member>
         <member name="P:OxyPlot.Annotations.ArrowAnnotation.Color">
             <summary>
@@ -9191,7 +9335,7 @@
         </member>
         <member name="P:OxyPlot.Annotations.ArrowAnnotation.EndPoint">
             <summary>
-            Gets or sets the end point.
+            Gets or sets the end point of the arrow.
             </summary>
         </member>
         <member name="P:OxyPlot.Annotations.ArrowAnnotation.HeadLength">
@@ -9220,7 +9364,7 @@
         </member>
         <member name="P:OxyPlot.Annotations.ArrowAnnotation.StartPoint">
             <summary>
-            Gets or sets the start point.
+            Gets or sets the start point of the arrow.
             </summary>
             <remarks>This property is overridden by the ArrowDirection property, if set.</remarks>
         </member>
@@ -9258,13 +9402,13 @@
             <param name="rc">The render context.</param>
             <param name="model">The plot model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.EllipseAnnotation.HitTest(OxyPlot.HitTestArguments)">
+        <member name="M:OxyPlot.Annotations.EllipseAnnotation.HitTestOverride(OxyPlot.HitTestArguments)">
             <summary>
-            Tests if the plot element is hit by the specified point.
+            When overridden in a derived class, tests if the plot element is hit by the specified point.
             </summary>
             <param name="args">The hit test arguments.</param>
             <returns>
-            A hit test result.
+            The result of the hit test.
             </returns>
         </member>
         <member name="P:OxyPlot.Annotations.EllipseAnnotation.Fill">
@@ -9381,7 +9525,7 @@
             <param name="horizontalAlignment">The horizontal alignment.</param>
             <param name="verticalAlignment">The vertical alignment.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.ImageAnnotation.#ctor(OxyPlot.OxyImage,OxyPlot.IDataPoint,OxyPlot.HorizontalAlignment,OxyPlot.VerticalAlignment)">
+        <member name="M:OxyPlot.Annotations.ImageAnnotation.#ctor(OxyPlot.OxyImage,OxyPlot.DataPoint,OxyPlot.HorizontalAlignment,OxyPlot.VerticalAlignment)">
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Annotations.ImageAnnotation"/> class.
             </summary>
@@ -9407,13 +9551,13 @@
             <param name="rc">The render context.</param>
             <param name="model">The plot model.</param>
         </member>
-        <member name="M:OxyPlot.Annotations.ImageAnnotation.HitTest(OxyPlot.HitTestArguments)">
+        <member name="M:OxyPlot.Annotations.ImageAnnotation.HitTestOverride(OxyPlot.HitTestArguments)">
             <summary>
-            Tests if the plot element is hit by the specified point.
+            When overridden in a derived class, tests if the plot element is hit by the specified point.
             </summary>
             <param name="args">The hit test arguments.</param>
             <returns>
-            A hit test result.
+            The result of the hit test.
             </returns>
         </member>
         <member name="M:OxyPlot.Annotations.ImageAnnotation.GetPoint(OxyPlot.PlotLength,OxyPlot.PlotLength,OxyPlot.IRenderContext,OxyPlot.PlotModel)">
@@ -9507,6 +9651,11 @@
             Represents a polyline annotation.
             </summary>
         </member>
+        <member name="F:OxyPlot.Annotations.PolylineAnnotation.points">
+            <summary>
+            The points.
+            </summary>
+        </member>
         <member name="M:OxyPlot.Annotations.PolylineAnnotation.GetScreenPoints">
             <summary>
             Gets the screen points.
@@ -9515,7 +9664,7 @@
         </member>
         <member name="P:OxyPlot.Annotations.PolylineAnnotation.Points">
             <summary>
-            Gets or sets the points.
+            Gets the points.
             </summary>
             <value>The points.</value>
         </member>
@@ -9565,15 +9714,6 @@
             </summary>
             <param name="rc">The render context.</param>
             <param name="model">The model.</param>
-        </member>
-        <member name="M:OxyPlot.Annotations.TileMapAnnotation.HitTest(OxyPlot.HitTestArguments)">
-            <summary>
-            Tests if the plot element is hit by the specified point.
-            </summary>
-            <param name="args">The hit test arguments.</param>
-            <returns>
-            A hit test result.
-            </returns>
         </member>
         <member name="M:OxyPlot.Annotations.TileMapAnnotation.LatLonToTile(System.Double,System.Double,System.Int32,System.Double@,System.Double@)">
             <summary>
@@ -9699,7 +9839,6 @@
             <summary>
             Mantissa function.
             </summary>
-            <seealso cref="!:http://en.wikipedia.org/wiki/Mantissa"/>
         </member>
         <member name="F:OxyPlot.Axes.Axis.offset">
             <summary>
@@ -9721,33 +9860,12 @@
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.Axis"/> class.
             </summary>
         </member>
-        <member name="M:OxyPlot.Axes.Axis.#ctor(OxyPlot.Axes.AxisPosition,System.Double,System.Double,System.String)">
+        <member name="M:OxyPlot.Axes.Axis.ToDouble(System.Object)">
             <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Axes.Axis"/> class.
+            Converts the value of the specified object to a double precision floating point number. DateTime objects are converted using DateTimeAxis.ToDouble and TimeSpan objects are converted using TimeSpanAxis.ToDouble
             </summary>
-            <param name="pos">The position of the axis.</param>
-            <param name="minimum">The minimum value.</param>
-            <param name="maximum">The maximum value.</param>
-            <param name="title">The axis title.</param>
-        </member>
-        <member name="M:OxyPlot.Axes.Axis.Transform(OxyPlot.DataPoint,OxyPlot.Axes.Axis,OxyPlot.Axes.Axis)">
-            <summary>
-            Transforms the specified point to screen coordinates.
-            </summary>
-            <param name="p">The point.</param>
-            <param name="xaxis">The x axis.</param>
-            <param name="yaxis">The y axis.</param>
-            <returns>The transformed point.</returns>
-        </member>
-        <member name="M:OxyPlot.Axes.Axis.Transform(System.Double,System.Double,OxyPlot.Axes.Axis,OxyPlot.Axes.Axis)">
-            <summary>
-            Transforms the specified point to screen coordinates.
-            </summary>
-            <param name="x">The x-coordinate of the point.</param>
-            <param name="y">The y-coordinate of the point.</param>
-            <param name="xaxis">The x-axis.</param>
-            <param name="yaxis">The y-axis.</param>
-            <returns>The transformed point.</returns>
+            <param name="value">The value.</param>
+            <returns>The floating point number value.</returns>
         </member>
         <member name="M:OxyPlot.Axes.Axis.InverseTransform(OxyPlot.ScreenPoint,OxyPlot.Axes.Axis,OxyPlot.Axes.Axis)">
             <summary>
@@ -9757,15 +9875,6 @@
             <param name="xaxis">The x axis.</param>
             <param name="yaxis">The y axis.</param>
             <returns>The data point.</returns>
-        </member>
-        <member name="M:OxyPlot.Axes.Axis.Transform(OxyPlot.IDataPoint,OxyPlot.Axes.Axis,OxyPlot.Axes.Axis)">
-            <summary>
-            Transforms the specified point to screen coordinates.
-            </summary>
-            <param name="p">The point.</param>
-            <param name="xaxis">The x axis.</param>
-            <param name="yaxis">The y axis.</param>
-            <returns>The transformed point.</returns>
         </member>
         <member name="M:OxyPlot.Axes.Axis.CoerceActualMaxMin">
             <summary>
@@ -10495,14 +10604,14 @@
             <param name="pos">The position.</param>
             <param name="title">The title.</param>
         </member>
-        <member name="M:OxyPlot.Axes.LogarithmicAxis.#ctor(OxyPlot.Axes.AxisPosition,System.Double,System.Double,System.String)">
+        <member name="M:OxyPlot.Axes.LogarithmicAxis.#ctor(OxyPlot.Axes.AxisPosition,System.String,System.Double,System.Double)">
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.LogarithmicAxis"/> class.
             </summary>
             <param name="position">The position.</param>
-            <param name="minimum">The minimum.</param>
-            <param name="maximum">The maximum.</param>
             <param name="title">The title.</param>
+            <param name="minimum">The minimum value.</param>
+            <param name="maximum">The maximum value.</param>
         </member>
         <member name="M:OxyPlot.Axes.LogarithmicAxis.CoerceActualMaxMin">
             <summary>
@@ -10516,13 +10625,6 @@
             <param name="majorLabelValues">The major label values.</param>
             <param name="majorTickValues">The major tick values.</param>
             <param name="minorTickValues">The minor tick values.</param>
-        </member>
-        <member name="M:OxyPlot.Axes.LogarithmicAxis.IsValidValue(System.Double)">
-            <summary>
-            Determines whether the specified value is valid.
-            </summary>
-            <param name="value">The value.</param>
-            <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c>.</returns>
         </member>
         <member name="M:OxyPlot.Axes.LogarithmicAxis.IsXyAxis">
             <summary>
@@ -10560,7 +10662,7 @@
         </member>
         <member name="M:OxyPlot.Axes.LogarithmicAxis.UpdateActualMaxMin">
             <summary>
-            Updates the <see cref="!:ActualMaximum"/> and <see cref="!:ActualMinimum"/> values.
+            Updates the <see cref="P:OxyPlot.Axes.Axis.ActualMaximum"/> and <see cref="P:OxyPlot.Axes.Axis.ActualMinimum"/> values.
             </summary>
             <remarks>
             If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum
@@ -10613,25 +10715,25 @@
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.LinearAxis"/> class.
             </summary>
-            <param name="pos">The position of the axis.</param>
+            <param name="position">The position of the axis.</param>
             <param name="title">The title.</param>
         </member>
         <member name="M:OxyPlot.Axes.LinearAxis.#ctor(OxyPlot.Axes.AxisPosition,System.Double,System.Double,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.LinearAxis"/> class.
             </summary>
-            <param name="pos">The position of the axis.</param>
-            <param name="minimum">The minimum.</param>
-            <param name="maximum">The maximum.</param>
+            <param name="position">The position of the axis.</param>
+            <param name="minimum">The minimum value.</param>
+            <param name="maximum">The maximum value.</param>
             <param name="title">The title.</param>
         </member>
         <member name="M:OxyPlot.Axes.LinearAxis.#ctor(OxyPlot.Axes.AxisPosition,System.Double,System.Double,System.Double,System.Double,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.LinearAxis"/> class.
             </summary>
-            <param name="pos">The position of the axis.</param>
-            <param name="minimum">The minimum.</param>
-            <param name="maximum">The maximum.</param>
+            <param name="position">The position of the axis.</param>
+            <param name="minimum">The minimum value.</param>
+            <param name="maximum">The maximum value.</param>
             <param name="majorStep">The major step.</param>
             <param name="minorStep">The minor step.</param>
             <param name="title">The title.</param>
@@ -10797,13 +10899,6 @@
             <param name="majorTickValues">The major tick values.</param>
             <param name="minorTickValues">The minor tick values.</param>
         </member>
-        <member name="M:OxyPlot.Axes.AngleAxis.IsValidValue(System.Double)">
-            <summary>
-            Determines whether the specified value is valid.
-            </summary>
-            <param name="value">The value.</param>
-            <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c> .</returns>
-        </member>
         <member name="M:OxyPlot.Axes.AngleAxis.InverseTransform(System.Double,System.Double,OxyPlot.Axes.Axis)">
             <summary>
             Inverse transforms the specified screen point.
@@ -10943,6 +11038,16 @@
             <remarks>The category axis is using the index of the label collection items as coordinates.
             If you have 5 categories in the Labels collection, the categories will be placed at coordinates 0 to 4.
             The range of the axis will be from -0.5 to 4.5 (excluding padding).</remarks>
+        </member>
+        <member name="F:OxyPlot.Axes.CategoryAxis.labels">
+            <summary>
+            The labels.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Axes.CategoryAxis.itemsSourceLabels">
+            <summary>
+            The labels from the <see cref="P:OxyPlot.Axes.CategoryAxis.ItemsSource"/>.
+            </summary>
         </member>
         <member name="F:OxyPlot.Axes.CategoryAxis.currentBarOffset">
             <summary>
@@ -11167,8 +11272,16 @@
         </member>
         <member name="P:OxyPlot.Axes.CategoryAxis.Labels">
             <summary>
-            Gets or sets the labels collection.
+            Gets the list of category labels.
             </summary>
+        </member>
+        <member name="P:OxyPlot.Axes.CategoryAxis.ActualLabels">
+            <summary>
+            Gets the actual category labels.
+            </summary>
+            <value>
+            The actual labels.
+            </value>
         </member>
         <member name="P:OxyPlot.Axes.CategoryAxis.BarOffset">
             <summary>
@@ -11415,18 +11528,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.DateTimeAxis"/> class.
             </summary>
-            <param name="pos">The position.</param>
-            <param name="title">The axis title.</param>
-            <param name="format">The string format for the axis values.</param>
-            <param name="intervalType">The interval type.</param>
-        </member>
-        <member name="M:OxyPlot.Axes.DateTimeAxis.#ctor(System.DateTime,System.DateTime,OxyPlot.Axes.AxisPosition,System.String,System.String,OxyPlot.Axes.DateTimeIntervalType)">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Axes.DateTimeAxis"/> class.
-            </summary>
-            <param name="firstDateTime">The first date/time on the axis.</param>
-            <param name="lastDateTime">The last date/time on the axis.</param>
-            <param name="pos">The position of the axis.</param>
+            <param name="position">The position of the axis.</param>
             <param name="title">The axis title.</param>
             <param name="format">The string format for the axis values.</param>
             <param name="intervalType">The interval type.</param>
@@ -11435,7 +11537,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.DateTimeAxis"/> class.
             </summary>
-            <param name="pos">The position of the axis.</param>
+            <param name="position">The position of the axis.</param>
             <param name="firstDateTime">The first date/time on the axis.</param>
             <param name="lastDateTime">The last date/time on the axis.</param>
             <param name="title">The axis title.</param>
@@ -11733,7 +11835,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.TimeSpanAxis"/> class.
             </summary>
-            <param name="pos">The position.</param>
+            <param name="position">The position of the axis.</param>
             <param name="title">The axis title.</param>
             <param name="format">The string format for the axis values.</param>
         </member>
@@ -11741,9 +11843,9 @@
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.TimeSpanAxis"/> class.
             </summary>
-            <param name="pos">The position.</param>
-            <param name="min">The min.</param>
-            <param name="max">The max.</param>
+            <param name="position">The position of the axis.</param>
+            <param name="minimum">The minimum value.</param>
+            <param name="maximum">The maximum value.</param>
             <param name="title">The axis title.</param>
             <param name="format">The string format for the axis values.</param>
         </member>
@@ -12131,7 +12233,7 @@
             The default format string.
             </summary>
         </member>
-        <member name="M:OxyPlot.TrackerHitResult.#ctor(OxyPlot.Series.Series,OxyPlot.IDataPoint,OxyPlot.ScreenPoint,System.Object,System.Double,System.String)">
+        <member name="M:OxyPlot.TrackerHitResult.#ctor(OxyPlot.Series.Series,OxyPlot.DataPoint,OxyPlot.ScreenPoint,System.Object,System.Double,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.TrackerHitResult"/> class.
             </summary>
@@ -12745,15 +12847,6 @@
             <param name="rc">The rendering context.</param>
             <param name="legendBox">The legend rectangle.</param>
         </member>
-        <member name="M:OxyPlot.Series.Series.HitTest(OxyPlot.HitTestArguments)">
-            <summary>
-            Tests if the plot element is hit by the specified point.
-            </summary>
-            <param name="args">The hit test arguments.</param>
-            <returns>
-            A hit test result.
-            </returns>
-        </member>
         <member name="M:OxyPlot.Series.Series.AreAxesRequired">
             <summary>
             Checks if this data series requires X/Y axes. (e.g. Pie series do not require axes)
@@ -12798,6 +12891,15 @@
             Updates the maximum and minimum values of the series.
             </summary>
             <remarks>This method is called when the <see cref="T:OxyPlot.PlotModel"/> is updated with the <c>updateData</c> parameter set to <c>true</c>.</remarks>
+        </member>
+        <member name="M:OxyPlot.Series.Series.HitTestOverride(OxyPlot.HitTestArguments)">
+            <summary>
+            When overridden in a derived class, tests if the plot element is hit by the specified point.
+            </summary>
+            <param name="args">The hit test arguments.</param>
+            <returns>
+            The result of the hit test.
+            </returns>
         </member>
         <member name="P:OxyPlot.Series.Series.Background">
             <summary>
@@ -12887,7 +12989,7 @@
             <param name="y">The y coordinate.</param>
             <returns>A screen point.</returns>
         </member>
-        <member name="M:OxyPlot.Series.XYAxisSeries.Transform(OxyPlot.IDataPoint)">
+        <member name="M:OxyPlot.Series.XYAxisSeries.Transform(OxyPlot.DataPoint)">
             <summary>
             Transforms the specified data point to a screen point by the axes of this series.
             </summary>
@@ -12930,7 +13032,7 @@
         </member>
         <member name="M:OxyPlot.Series.XYAxisSeries.UpdateMaxMin">
             <summary>
-            Updates the max/minimum values.
+            Updates the maximum and minimum values of the series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.XYAxisSeries.GetClippingRect">
@@ -12939,7 +13041,7 @@
             </summary>
             <returns>The clipping rectangle.</returns>
         </member>
-        <member name="M:OxyPlot.Series.XYAxisSeries.GetNearestInterpolatedPointInternal(System.Collections.Generic.IList{OxyPlot.IDataPoint},OxyPlot.ScreenPoint)">
+        <member name="M:OxyPlot.Series.XYAxisSeries.GetNearestInterpolatedPointInternal(System.Collections.Generic.List{OxyPlot.DataPoint},OxyPlot.ScreenPoint)">
             <summary>
             Gets the point on the curve that is nearest the specified point.
             </summary>
@@ -12947,7 +13049,7 @@
             <param name="point">The point.</param>
             <returns>A tracker hit result if a point was found.</returns>
         </member>
-        <member name="M:OxyPlot.Series.XYAxisSeries.GetNearestPointInternal(System.Collections.Generic.IEnumerable{OxyPlot.IDataPoint},OxyPlot.ScreenPoint)">
+        <member name="M:OxyPlot.Series.XYAxisSeries.GetNearestPointInternal(System.Collections.Generic.IEnumerable{OxyPlot.DataPoint},OxyPlot.ScreenPoint)">
             <summary>
             Gets the nearest point.
             </summary>
@@ -12955,21 +13057,48 @@
             <param name="point">The point (screen coordinates).</param>
             <returns>A <see cref="T:OxyPlot.TrackerHitResult"/> if a point was found, <c>null</c> otherwise.</returns>
         </member>
-        <member name="M:OxyPlot.Series.XYAxisSeries.IsValidPoint(OxyPlot.IDataPoint,OxyPlot.Axes.Axis,OxyPlot.Axes.Axis)">
+        <member name="M:OxyPlot.Series.XYAxisSeries.IsValidPoint(OxyPlot.DataPoint)">
             <summary>
             Determines whether the specified point is valid.
             </summary>
             <param name="pt">The point.</param>
-            <param name="xaxis">The x axis.</param>
-            <param name="yaxis">The y axis.</param>
             <returns><c>true</c> if the point is valid; otherwise, <c>false</c> .</returns>
         </member>
-        <member name="M:OxyPlot.Series.XYAxisSeries.ToDouble(System.Object)">
+        <member name="M:OxyPlot.Series.XYAxisSeries.IsValidPoint(System.Double,System.Double)">
             <summary>
-            Converts the value of the specified object to a double precision floating point number. DateTime objects are converted using DateTimeAxis.ToDouble and TimeSpan objects are converted using TimeSpanAxis.ToDouble
+            Determines whether the specified point is valid.
             </summary>
-            <param name="value">The value.</param>
-            <returns>The floating point number value.</returns>
+            <param name="x">The x coordinate.</param>
+            <param name="y">The y coordinate.</param>
+            <returns><c>true</c> if the point is valid; otherwise, <c>false</c> . </returns>
+        </member>
+        <member name="M:OxyPlot.Series.XYAxisSeries.InternalUpdateMaxMin(System.Collections.Generic.List{OxyPlot.DataPoint})">
+            <summary>
+            Updates the Max/Min limits from the specified <see cref="T:OxyPlot.DataPoint"/> list.
+            </summary>
+            <param name="points">The list of points.</param>
+        </member>
+        <member name="M:OxyPlot.Series.XYAxisSeries.InternalUpdateMaxMin``1(System.Collections.Generic.List{``0},System.Func{``0,System.Double},System.Func{``0,System.Double})">
+            <summary>
+            Updates the Max/Min limits from the specified list.
+            </summary>
+            <typeparam name="T">The type of the elements in the list.</typeparam>
+            <param name="items">The items.</param>
+            <param name="xf">A function that provides the x value for each item.</param>
+            <param name="yf">A function that provides the y value for each item.</param>
+            <exception cref="T:System.ArgumentNullException">The items argument cannot be null.</exception>
+        </member>
+        <member name="M:OxyPlot.Series.XYAxisSeries.InternalUpdateMaxMin``1(System.Collections.Generic.List{``0},System.Func{``0,System.Double},System.Func{``0,System.Double},System.Func{``0,System.Double},System.Func{``0,System.Double})">
+            <summary>
+            Updates the Max/Min limits from the specified collection.
+            </summary>
+            <typeparam name="T">The type of the items in the collection.</typeparam>
+            <param name="items">The items.</param>
+            <param name="xmin">A function that provides the x minimum for each item.</param>
+            <param name="xmax">A function that provides the x maximum for each item.</param>
+            <param name="ymin">A function that provides the y minimum for each item.</param>
+            <param name="ymax">A function that provides the y maximum for each item.</param>
+            <exception cref="T:System.ArgumentNullException">The items argument cannot be null.</exception>
         </member>
         <member name="M:OxyPlot.Series.XYAxisSeries.VerifyAxes">
             <summary>
@@ -13119,7 +13248,7 @@
         </member>
         <member name="M:OxyPlot.Series.BarSeriesBase.UpdateMaxMin">
             <summary>
-            Updates the maximum/minimum value on the value axis from the bar values.
+            Updates the maximum and minimum values of the series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.BarSeriesBase.UpdateValidData">
@@ -13418,7 +13547,7 @@
         </member>
         <member name="M:OxyPlot.Series.ErrorColumnSeries.UpdateMaxMin">
             <summary>
-            Updates the maximum/minimum value on the value axis from the bar values.
+            Updates the maximum and minimum values of the series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.ErrorColumnSeries.RenderItem(OxyPlot.IRenderContext,OxyPlot.OxyRect,System.Double,System.Double,System.Double,OxyPlot.Series.BarItemBase,OxyPlot.OxyRect)">
@@ -13565,7 +13694,7 @@
         </member>
         <member name="M:OxyPlot.Series.BoxPlotSeries.UpdateMaxMin">
             <summary>
-            Updates the max/minimum values.
+            Updates the maximum and minimum values of the series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.BoxPlotSeries.InternalUpdateMaxMin(System.Collections.Generic.IList{OxyPlot.Series.BoxPlotItem})">
@@ -13733,7 +13862,12 @@
         </member>
         <member name="M:OxyPlot.Series.HeatMapSeries.UpdateMaxMin">
             <summary>
-            Updates the max/minimum values.
+            Updates the maximum and minimum values of the series.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Series.HeatMapSeries.UpdateAxisMaxMin">
+            <summary>
+            Updates the axes to include the max and min of this series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.HeatMapSeries.RenderLabels(OxyPlot.IRenderContext,OxyPlot.OxyRect)">
@@ -14077,13 +14211,6 @@
             <param name="width">The width.</param>
             <param name="height">The height.</param>
         </member>
-        <member name="M:OxyPlot.PlotModel.EnsureMarginIsBigEnough(OxyPlot.OxyThickness@,System.Double)">
-            <summary>
-            Increases margin size if needed, do it on all borders
-            </summary>
-            <param name="currentMargin">The current margin.</param>
-            <param name="minBorderSize">Minimum size of the border.</param>
-        </member>
         <member name="M:OxyPlot.PlotModel.EnsureMarginIsBigEnough(OxyPlot.OxyThickness@,System.Double,OxyPlot.Axes.AxisPosition)">
             <summary>
             Increases margin size if needed, do it on the specified border.
@@ -14100,12 +14227,19 @@
             <param name="axesOfPositionTier">The axes of position tier.</param>
             <returns>The maximum size.</returns>
         </member>
+        <member name="M:OxyPlot.PlotModel.IsPlotMarginAutoSized(OxyPlot.Axes.AxisPosition)">
+            <summary>
+            Determines whether the plot margin for the specified axis position is auto-sized.
+            </summary>
+            <param name="position">The axis position.</param>
+            <returns><c>true</c> if it is auto-sized.</returns>
+        </member>
         <member name="M:OxyPlot.PlotModel.AdjustPlotMargins(OxyPlot.IRenderContext)">
             <summary>
             Adjusts the plot margins.
             </summary>
             <param name="rc">The render context.</param>
-            <returns>The adjust plot margins.</returns>
+            <returns><c>true</c> if the margins were adjusted.</returns>
         </member>
         <member name="M:OxyPlot.PlotModel.AdjustAxesPositions(OxyPlot.IRenderContext,System.Collections.Generic.IList{OxyPlot.Axes.Axis})">
             <summary>
@@ -14468,11 +14602,6 @@
             </summary>
             <value>The annotations.</value>
         </member>
-        <member name="P:OxyPlot.PlotModel.AutoAdjustPlotMargins">
-            <summary>
-            Gets or sets a value indicating whether to auto adjust plot margins.
-            </summary>
-        </member>
         <member name="P:OxyPlot.PlotModel.Axes">
             <summary>
             Gets the axes.
@@ -14710,7 +14839,8 @@
         </member>
         <member name="P:OxyPlot.PlotModel.PlotMargins">
             <summary>
-            Gets or sets the minimum margins around the plot (this should be large enough to fit the axes). The default value is (60, 4, 4, 40). Set AutoAdjustPlotMargins if you want the margins to be adjusted when the axes require more space.
+            Gets or sets the margins around the plot (this should be large enough to fit the axes). 
+            If any of the values is set to <c>double.NaN</c>, the margin is adjusted to the value required by the axes.
             </summary>
         </member>
         <member name="P:OxyPlot.PlotModel.PlotType">
@@ -14730,6 +14860,14 @@
             Gets the series.
             </summary>
             <value>The series.</value>
+        </member>
+        <member name="P:OxyPlot.PlotModel.RenderingDecorator">
+            <summary>
+            Gets or sets the rendering decorator.
+            </summary>
+            <value>
+            The rendering decorator.
+            </value>
         </member>
         <member name="P:OxyPlot.PlotModel.Subtitle">
             <summary>
@@ -14779,6 +14917,14 @@
             Gets or sets the color of the subtitle.
             </summary>
             <value>The color of the subtitle.</value>
+        </member>
+        <member name="P:OxyPlot.PlotModel.TitleHorizontalAlignment">
+            <summary>
+            Gets or sets the horizontal alignment of the title and subtitle.
+            </summary>
+            <value>
+            The alignment.
+            </value>
         </member>
         <member name="P:OxyPlot.PlotModel.TitleArea">
             <summary>
@@ -15007,6 +15153,21 @@
         <member name="F:OxyPlot.LegendSymbolPlacement.Right">
             <summary>
             Render symbols to the right of the labels.
+            </summary>
+        </member>
+        <member name="T:OxyPlot.TitleHorizontalAlignment">
+            <summary>
+            Specifies the horizontal alignment of the titles.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.TitleHorizontalAlignment.CenteredWithinPlotArea">
+            <summary>
+            Centered within the plot area.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.TitleHorizontalAlignment.CenteredWithinView">
+            <summary>
+            Centered within the client view (excluding padding defined in <see cref="P:OxyPlot.PlotModel.Padding"/>).
             </summary>
         </member>
         <member name="T:OxyPlot.Reporting.NamespaceDoc">
@@ -16414,12 +16575,22 @@
         </member>
         <member name="T:OxyPlot.Series.DataPointSeries">
             <summary>
-            Provides an abstract base class for series that contain a collection of <see cref="T:OxyPlot.IDataPoint"/>s.
+            Provides an abstract base class for series that contain a collection of <see cref="T:OxyPlot.DataPoint"/>s.
             </summary>
         </member>
         <member name="F:OxyPlot.Series.DataPointSeries.points">
             <summary>
             The list of data points.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.DataPointSeries.itemsSourcePoints">
+            <summary>
+            The data points from the items source.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.DataPointSeries.ownsItemsSourcePoints">
+            <summary>
+            Specifies if the itemsSourcePoints list can be modified.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.DataPointSeries.#ctor">
@@ -16442,7 +16613,7 @@
         </member>
         <member name="M:OxyPlot.Series.DataPointSeries.UpdateMaxMin">
             <summary>
-            Updates the max/min from the data points.
+            Updates the maximum and minimum values of the series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.DataPointSeries.GetItem(System.Int32)">
@@ -16452,26 +16623,15 @@
             <param name="i">The index of the item.</param>
             <returns>The item of the index.</returns>
         </member>
-        <member name="M:OxyPlot.Series.DataPointSeries.AddDataPoints(System.Collections.Generic.IList{OxyPlot.IDataPoint})">
+        <member name="M:OxyPlot.Series.DataPointSeries.ClearItemsSourcePoints">
             <summary>
-            The add data points.
+            Clears or creates the <see cref="F:OxyPlot.Series.DataPointSeries.itemsSourcePoints"/> list.
             </summary>
-            <param name="pts">The points.</param>
         </member>
-        <member name="M:OxyPlot.Series.DataPointSeries.AddDataPoints(System.Collections.Generic.IList{OxyPlot.IDataPoint},System.Collections.IEnumerable,System.String,System.String)">
+        <member name="M:OxyPlot.Series.DataPointSeries.UpdateItemsSourcePoints">
             <summary>
-            Adds data points from the specified source to the specified destination.
+            Updates the points from the <see cref="P:OxyPlot.Series.ItemsSeries.ItemsSource"/>.
             </summary>
-            <param name="dest">The destination list.</param>
-            <param name="itemsSource">The source.</param>
-            <param name="dataFieldX">The x-coordinate data field.</param>
-            <param name="dataFieldY">The y-coordinate data field.</param>
-        </member>
-        <member name="M:OxyPlot.Series.DataPointSeries.InternalUpdateMaxMin(System.Collections.Generic.IList{OxyPlot.IDataPoint})">
-            <summary>
-            Updates the Max/Min limits from the specified point list.
-            </summary>
-            <param name="pts">The points.</param>
         </member>
         <member name="P:OxyPlot.Series.DataPointSeries.CanTrackerInterpolatePoints">
             <summary>
@@ -16499,9 +16659,9 @@
         </member>
         <member name="P:OxyPlot.Series.DataPointSeries.Points">
             <summary>
-            Gets or sets the points list.
+            Gets the list of points.
             </summary>
-            <value>The points list.</value>
+            <value>A list of <see cref="T:OxyPlot.DataPoint"/>.</value>
         </member>
         <member name="P:OxyPlot.Series.DataPointSeries.Smooth">
             <summary>
@@ -16509,9 +16669,30 @@
             </summary>
             <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
         </member>
+        <member name="P:OxyPlot.Series.DataPointSeries.ActualPoints">
+            <summary>
+            Gets the list of points that should be rendered.
+            </summary>
+            <value>A list of <see cref="T:OxyPlot.DataPoint"/>.</value>
+        </member>
         <member name="F:OxyPlot.Series.LineSeries.ToleranceDivisor">
             <summary>
             The divisor value used to calculate tolerance for line smoothing.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.LineSeries.outputBuffer">
+            <summary>
+            The output buffer.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.LineSeries.contiguousScreenPointsBuffer">
+            <summary>
+            The buffer for contiguous screen points.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.LineSeries.decimatorBuffer">
+            <summary>
+            The buffer for decimated points.
             </summary>
         </member>
         <member name="F:OxyPlot.Series.LineSeries.defaultColor">
@@ -16584,30 +16765,29 @@
         </member>
         <member name="M:OxyPlot.Series.LineSeries.UpdateMaxMin">
             <summary>
-            Updates the axes to include the max and min of this series.
+            Updates the maximum and minimum values of the series.
             </summary>
         </member>
-        <member name="M:OxyPlot.Series.LineSeries.CalculateBrokenLines(System.Collections.Generic.ICollection{System.Collections.Generic.ICollection{OxyPlot.IDataPoint}})">
+        <member name="M:OxyPlot.Series.LineSeries.RenderPoints(OxyPlot.IRenderContext,OxyPlot.OxyRect,System.Collections.Generic.ICollection{OxyPlot.DataPoint})">
             <summary>
-            Calculates the collection of broken lines delimiting a collection of continuous lines.
+            Renders the points as line, broken line and markers.
             </summary>
-            <param name="contiguousLineSegments">The collection of contiguous lines for which to calculate the delimiting broken lines.</param>
-            <returns><see cref="T:OxyPlot.IDataPoint"/> pairs representing the broken lines delimiting the passed collection of contiguous lines.</returns>
+            <param name="rc">The rendering context.</param>
+            <param name="clippingRect">The clipping rectangle.</param>
+            <param name="points">The points to render.</param>
         </member>
-        <member name="M:OxyPlot.Series.LineSeries.ExtractContiguousLines(System.Collections.Generic.IEnumerable{OxyPlot.IDataPoint})">
-            <summary>
-            Extracts all contiguous line segments from the line represented by the collection of points passed to the method.
-            </summary>
-            <param name="points">The line from which to extract all contiguous segments.</param>
-            <returns>A collection of <see cref="T:OxyPlot.IDataPoint"/> arrays which represent all contiguous line segments in the passed points collection.</returns>
-        </member>
-        <member name="M:OxyPlot.Series.LineSeries.ExtractNextContiguousLineSegment(System.Collections.Generic.IEnumerator{OxyPlot.IDataPoint})">
+        <member name="M:OxyPlot.Series.LineSeries.ExtractNextContiguousLineSegment(System.Collections.Generic.IEnumerator{OxyPlot.DataPoint},System.Nullable{OxyPlot.ScreenPoint}@,System.Collections.Generic.List{OxyPlot.ScreenPoint},System.Collections.Generic.List{OxyPlot.ScreenPoint})">
             <summary>
             Extracts a single contiguous line segment beginning with the element at the position of the enumerator when the method
             is called. Initial invalid data points are ignored.
             </summary>
-            <param name="enumerator">The enumerator to use to traverse the collection. The enumerator must be on a valid element.</param>
-            <returns>A collection of contiguous data points.</returns>
+            <param name="pointEnumerator">The enumerator to use to traverse the collection. The enumerator must be on a valid element.</param>
+            <param name="previousContiguousLineSegmentEndPoint">Initially set to null, but I will update I won't give a broken line if this is null</param>
+            <param name="broken">place to put broken segment</param>
+            <param name="contiguous">place to put contiguous segment</param>
+            <returns>
+              <c>true</c> if line segments are extracted, <c>false</c> if reached end.
+            </returns>
         </member>
         <member name="M:OxyPlot.Series.LineSeries.RenderPointLabels(OxyPlot.IRenderContext,OxyPlot.OxyRect)">
             <summary>
@@ -16623,17 +16803,17 @@
             <param name="rc">The render context.</param>
             <param name="clippingRect">The clipping rectangle.</param>
         </member>
-        <member name="M:OxyPlot.Series.LineSeries.RenderPoints(OxyPlot.IRenderContext,OxyPlot.OxyRect,System.Collections.Generic.IList{OxyPlot.ScreenPoint})">
+        <member name="M:OxyPlot.Series.LineSeries.RenderLineAndMarkers(OxyPlot.IRenderContext,OxyPlot.OxyRect,System.Collections.Generic.IList{OxyPlot.ScreenPoint})">
             <summary>
-            Renders the transformed points.
+            Renders the transformed points as a line (smoothed if <see cref="P:OxyPlot.Series.DataPointSeries.Smooth"/> is <c>true</c>) and markers (if <see cref="P:OxyPlot.Series.LineSeries.MarkerType"/> is not <c>None</c>).
             </summary>
             <param name="rc">The render context.</param>
             <param name="clippingRect">The clipping rectangle.</param>
             <param name="pointsToRender">The points to render.</param>
         </member>
-        <member name="M:OxyPlot.Series.LineSeries.RenderSmoothedLine(OxyPlot.IRenderContext,OxyPlot.OxyRect,System.Collections.Generic.IList{OxyPlot.ScreenPoint})">
+        <member name="M:OxyPlot.Series.LineSeries.RenderLine(OxyPlot.IRenderContext,OxyPlot.OxyRect,System.Collections.Generic.IList{OxyPlot.ScreenPoint})">
             <summary>
-            Renders the (smoothed) line.
+            Renders a continuous line.
             </summary>
             <param name="rc">The render context.</param>
             <param name="clippingRect">The clipping rectangle.</param>
@@ -16672,6 +16852,15 @@
             </summary>
             <value>The dash array.</value>
             <remarks>If this is not <c>null</c> it overrides the <see cref="P:OxyPlot.Series.LineSeries.LineStyle"/> property.</remarks>
+        </member>
+        <member name="P:OxyPlot.Series.LineSeries.Decimator">
+            <summary>
+            Gets or sets the decimator.
+            </summary>
+            <value>
+            The decimator action.
+            </value>
+            <remarks>The decimator can be used to improve the performance of the rendering. See the example.</remarks>
         </member>
         <member name="P:OxyPlot.Series.LineSeries.LabelFormatString">
             <summary>
@@ -16794,7 +16983,7 @@
             Represents a line segment.
             </summary>
         </member>
-        <member name="M:OxyPlot.Series.LineSeries.Segment.#ctor(OxyPlot.IDataPoint,OxyPlot.IDataPoint)">
+        <member name="M:OxyPlot.Series.LineSeries.Segment.#ctor(OxyPlot.DataPoint,OxyPlot.DataPoint)">
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Series.LineSeries.Segment"/> class.
             </summary>
@@ -16814,6 +17003,11 @@
         <member name="F:OxyPlot.Series.AreaSeries.points2">
             <summary>
             The second list of points.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.AreaSeries.itemsSourcePoints2">
+            <summary>
+            The secondary data points from the items source.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.AreaSeries.#ctor">
@@ -16851,7 +17045,7 @@
         </member>
         <member name="M:OxyPlot.Series.AreaSeries.UpdateMaxMin">
             <summary>
-            The update max min.
+            Updates the maximum and minimum values of the series.
             </summary>
         </member>
         <member name="P:OxyPlot.Series.AreaSeries.ConstantY2">
@@ -16897,7 +17091,7 @@
         </member>
         <member name="P:OxyPlot.Series.AreaSeries.Points2">
             <summary>
-            Gets or sets the second list of points.
+            Gets the second list of points.
             </summary>
             <value>The second list of points.</value>
         </member>
@@ -16909,6 +17103,12 @@
             the second dataset should be reversed to get a
             closed polygon.
             </summary>
+        </member>
+        <member name="P:OxyPlot.Series.AreaSeries.ActualPoints2">
+            <summary>
+            Gets the second list of points.
+            </summary>
+            <value>The second list of points.</value>
         </member>
         <member name="T:OxyPlot.Series.LabelPlacement">
             <summary>
@@ -17021,14 +17221,8 @@
         </member>
         <member name="M:OxyPlot.Series.HighLowSeries.UpdateMaxMin">
             <summary>
-            Updates the max/min values.
+            Updates the maximum and minimum values of the series.
             </summary>
-        </member>
-        <member name="M:OxyPlot.Series.HighLowSeries.InternalUpdateMaxMin(System.Collections.Generic.IList{OxyPlot.Series.HighLowItem})">
-            <summary>
-            Updates the Max/Min limits from the specified point list.
-            </summary>
-            <param name="pts">The PTS.</param>
         </member>
         <member name="P:OxyPlot.Series.HighLowSeries.Color">
             <summary>
@@ -17076,9 +17270,9 @@
         </member>
         <member name="P:OxyPlot.Series.HighLowSeries.Items">
             <summary>
-            Gets or sets the points.
+            Gets the items of the series.
             </summary>
-            <value>The points.</value>
+            <value>The items.</value>
         </member>
         <member name="P:OxyPlot.Series.HighLowSeries.LineJoin">
             <summary>
@@ -17230,7 +17424,7 @@
         </member>
         <member name="M:OxyPlot.Series.ContourSeries.UpdateMaxMin">
             <summary>
-            Updates the max/minimum values.
+            Updates the maximum and minimum values of the series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.ContourSeries.AreClose(System.Double,System.Double,System.Double)">
@@ -17402,7 +17596,7 @@
             </summary>
             <value>The points.</value>
         </member>
-        <member name="M:OxyPlot.Series.ContourSeries.Contour.#ctor(System.Collections.Generic.IList{OxyPlot.IDataPoint},System.Double)">
+        <member name="M:OxyPlot.Series.ContourSeries.Contour.#ctor(System.Collections.Generic.List{OxyPlot.DataPoint},System.Double)">
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Series.ContourSeries.Contour"/> class.
             </summary>
@@ -17678,7 +17872,7 @@
         </member>
         <member name="M:OxyPlot.Series.RectangleBarSeries.UpdateMaxMin">
             <summary>
-            Updates the maximum/minimum value on the value axis from the bar values.
+            Updates the maximum and minimum values of the series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.RectangleBarSeries.IsValid(System.Double)">
@@ -17816,7 +18010,7 @@
         </member>
         <member name="M:OxyPlot.Series.IntervalBarSeries.UpdateMaxMin">
             <summary>
-            Updates the maximum/minimum value on the value axis from the bar values.
+            Updates the maximum and minimum values of the series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.IntervalBarSeries.UpdateValidData">
@@ -18071,7 +18265,7 @@
         </member>
         <member name="M:OxyPlot.Series.TornadoBarSeries.UpdateMaxMin">
             <summary>
-            Updates the maximum/minimum value on the value axis from the bar values.
+            Updates the maximum and minimum values of the series.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.TornadoBarSeries.UpdateValidData">
@@ -18486,6 +18680,21 @@
             </summary>
             <remarks>See http://en.wikipedia.org/wiki/Scatter_plot</remarks>
         </member>
+        <member name="F:OxyPlot.Series.ScatterSeries.points">
+            <summary>
+            The list of data points.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.ScatterSeries.itemsSourcePoints">
+            <summary>
+            The data points from the items source.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.ScatterSeries.ownsItemsSourcePoints">
+            <summary>
+            Specifies if the itemsSourcePoints list can be modified.
+            </summary>
+        </member>
         <member name="F:OxyPlot.Series.ScatterSeries.defaultMarkerFillColor">
             <summary>
             The default fill color.
@@ -18545,14 +18754,20 @@
         </member>
         <member name="M:OxyPlot.Series.ScatterSeries.UpdateMaxMin">
             <summary>
-            Updates the max/min from the data points.
+            Updates the maximum and minimum values of the series.
             </summary>
+        </member>
+        <member name="M:OxyPlot.Series.ScatterSeries.InternalUpdateMaxMinValue(System.Collections.Generic.List{OxyPlot.Series.ScatterPoint})">
+            <summary>
+            Updates the Max/Min limits from the values in the specified point list.
+            </summary>
+            <param name="pts">The points.</param>
         </member>
         <member name="M:OxyPlot.Series.ScatterSeries.AddScatterPoints(System.Collections.Generic.IList{OxyPlot.Series.ScatterPoint},System.Collections.IEnumerable,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Adds scatter points specified by a items source and data fields.
             </summary>
-            <param name="dest">The destination collection.</param>
+            <param name="target">The destination collection.</param>
             <param name="itemsSource">The items source.</param>
             <param name="dataFieldX">The data field x.</param>
             <param name="dataFieldY">The data field y.</param>
@@ -18560,11 +18775,34 @@
             <param name="dataFieldValue">The data field value.</param>
             <param name="dataFieldTag">The data field tag.</param>
         </member>
-        <member name="M:OxyPlot.Series.ScatterSeries.InternalUpdateMaxMinValue(System.Collections.Generic.IList{OxyPlot.IDataPoint})">
+        <member name="M:OxyPlot.Series.ScatterSeries.InternalUpdateMaxMinValue(System.Collections.Generic.IList{OxyPlot.Series.ScatterPoint})">
             <summary>
             Updates the Max/Min limits from the values in the specified point list.
             </summary>
             <param name="pts">The points.</param>
+        </member>
+        <member name="M:OxyPlot.Series.ScatterSeries.ClearItemsSourcePoints">
+            <summary>
+            Clears or creates the <see cref="F:OxyPlot.Series.ScatterSeries.itemsSourcePoints"/> list.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Series.ScatterSeries.UpdateItemsSourcePoints">
+            <summary>
+            Updates the points from the <see cref="P:OxyPlot.Series.ItemsSeries.ItemsSource"/>.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Series.ScatterSeries.Points">
+            <summary>
+            Gets the list of points.
+            </summary>
+            <value>A list of <see cref="T:OxyPlot.Series.ScatterPoint"/>.</value>
+        </member>
+        <member name="P:OxyPlot.Series.ScatterSeries.Mapping">
+            <summary>
+            Gets or sets the mapping delegate.
+            Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
+            </summary>
+            <value>The mapping.</value>
         </member>
         <member name="P:OxyPlot.Series.ScatterSeries.BinSize">
             <summary>
@@ -18583,6 +18821,18 @@
             Gets or sets the color axis key.
             </summary>
             <value>The color axis key.</value>
+        </member>
+        <member name="P:OxyPlot.Series.ScatterSeries.DataFieldX">
+            <summary>
+            Gets or sets the data field X.
+            </summary>
+            <value>The data field X.</value>
+        </member>
+        <member name="P:OxyPlot.Series.ScatterSeries.DataFieldY">
+            <summary>
+            Gets or sets the data field Y.
+            </summary>
+            <value>The data field Y.</value>
         </member>
         <member name="P:OxyPlot.Series.ScatterSeries.DataFieldSize">
             <summary>
@@ -18655,6 +18905,12 @@
             Gets the min value of the points.
             </summary>
         </member>
+        <member name="P:OxyPlot.Series.ScatterSeries.ActualPoints">
+            <summary>
+            Gets the list of points that should be rendered.
+            </summary>
+            <value>A list of <see cref="T:OxyPlot.DataPoint"/>.</value>
+        </member>
         <member name="T:OxyPlot.Series.TwoColorLineSeries">
             <summary>
             Represents a two-color line series.
@@ -18676,7 +18932,7 @@
             </summary>
             <param name="model">The model.</param>
         </member>
-        <member name="M:OxyPlot.Series.TwoColorLineSeries.RenderSmoothedLine(OxyPlot.IRenderContext,OxyPlot.OxyRect,System.Collections.Generic.IList{OxyPlot.ScreenPoint})">
+        <member name="M:OxyPlot.Series.TwoColorLineSeries.RenderLine(OxyPlot.IRenderContext,OxyPlot.OxyRect,System.Collections.Generic.IList{OxyPlot.ScreenPoint})">
             <summary>
             Renders the smoothed line.
             </summary>
@@ -18800,7 +19056,7 @@
         </member>
         <member name="M:OxyPlot.Series.PieSeries.UpdateMaxMin">
             <summary>
-            The update max min.
+            Updates the maximum and minimum values of the series.
             </summary>
         </member>
         <member name="P:OxyPlot.Series.PieSeries.AngleIncrement">

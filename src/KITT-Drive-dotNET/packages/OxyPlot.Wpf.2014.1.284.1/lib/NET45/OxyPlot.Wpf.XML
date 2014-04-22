@@ -429,9 +429,9 @@
             Gets or sets the vertical alignment of text (above or below the line).
             </summary>
         </member>
-        <member name="F:OxyPlot.Wpf.FunctionAnnotation.EquationTypeProperty">
+        <member name="F:OxyPlot.Wpf.FunctionAnnotation.TypeProperty">
             <summary>
-            Identifies the <see cref="!:EquationType"/> dependency property.
+            Identifies the <see cref="P:OxyPlot.Wpf.FunctionAnnotation.Type"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.FunctionAnnotation.EquationProperty">
@@ -828,9 +828,9 @@
             This is a WPF wrapper of OxyPlot.LineAnnotation
             </summary>
         </member>
-        <member name="F:OxyPlot.Wpf.LineAnnotation.LineTypeProperty">
+        <member name="F:OxyPlot.Wpf.LineAnnotation.TypeProperty">
             <summary>
-            Identifies the <see cref="!:LineType"/> dependency property.
+            Identifies the <see cref="P:OxyPlot.Wpf.LineAnnotation.Type"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.LineAnnotation.InterceptProperty">
@@ -1652,6 +1652,16 @@
             Gets or sets FractionUnitSymbol.
             </summary>
         </member>
+        <member name="F:OxyPlot.Wpf.AngleAxis.StartAngleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.AngleAxis.StartAngle"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.AngleAxis.EndAngleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.AngleAxis.EndAngle"/> dependency property.
+            </summary>
+        </member>
         <member name="M:OxyPlot.Wpf.AngleAxis.#cctor">
             <summary>
             Initializes static members of the <see cref="T:OxyPlot.Wpf.AngleAxis"/> class.
@@ -1660,6 +1670,21 @@
         <member name="M:OxyPlot.Wpf.AngleAxis.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Wpf.AngleAxis"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.AngleAxis.SynchronizeProperties">
+            <summary>
+            Synchronizes the properties.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.AngleAxis.StartAngle">
+            <summary>
+            Gets or sets the start angle (degrees).
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.AngleAxis.EndAngle">
+            <summary>
+            Gets or sets the end angle (degrees).
             </summary>
         </member>
         <member name="T:OxyPlot.Wpf.CategoryAxis">
@@ -1965,6 +1990,480 @@
             Gets the value that represents the Reset all axes command.
             </summary>
         </member>
+        <member name="T:OxyPlot.Wpf.StairStepSeries">
+            <summary>
+            This is a WPF wrapper of OxyPlot.StairStepSeries
+            </summary>
+        </member>
+        <member name="T:OxyPlot.Wpf.LineSeries">
+            <summary>
+            This is a WPF wrapper of OxyPlot.LineSeries
+            </summary>
+        </member>
+        <member name="T:OxyPlot.Wpf.DataPointSeries">
+            <summary>
+            Base class for data series
+            </summary>
+        </member>
+        <member name="T:OxyPlot.Wpf.XYAxisSeries">
+            <summary>
+            Abstract base class for series that use X and Y axes.
+            </summary>
+        </member>
+        <member name="T:OxyPlot.Wpf.ItemsSeries">
+            <summary>
+            Abstract base class for series that use X and Y axes.
+            </summary>
+        </member>
+        <member name="T:OxyPlot.Wpf.Series">
+            <summary>
+            Abstract base class for series.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.Series.ColorProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.Series.Color"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.Series.TitleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.Series.Title"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.Series.TrackerFormatStringProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.Series.TrackerFormatString"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.Series.TrackerKeyProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.Series.TrackerKey"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.Series.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:OxyPlot.Wpf.Series"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.Series.CreateModel">
+            <summary>
+            Creates the model.
+            </summary>
+            <returns>A series.</returns>
+        </member>
+        <member name="M:OxyPlot.Wpf.Series.AppearanceChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            The appearance changed.
+            </summary>
+            <param name="d">The d.</param>
+            <param name="e">The e.</param>
+        </member>
+        <member name="M:OxyPlot.Wpf.Series.DataChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            The data changed.
+            </summary>
+            <param name="d">The d.</param>
+            <param name="e">The e.</param>
+        </member>
+        <member name="M:OxyPlot.Wpf.Series.OnDataChanged">
+            <summary>
+            The on data changed.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.Series.OnItemsSourceChanged(System.Collections.IEnumerable,System.Collections.IEnumerable)">
+            <summary>
+            The on items source changed.
+            </summary>
+            <param name="oldValue">The old value.</param>
+            <param name="newValue">The new value.</param>
+        </member>
+        <member name="M:OxyPlot.Wpf.Series.OnVisualChanged">
+            <summary>
+            The on visual changed.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.Series.SynchronizeProperties(OxyPlot.Series.Series)">
+            <summary>
+            Synchronizes the properties.
+            </summary>
+            <param name="s">The series.</param>
+        </member>
+        <member name="P:OxyPlot.Wpf.Series.Color">
+            <summary>
+            Gets or sets Color.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.Series.InternalSeries">
+            <summary>
+            Gets or sets the internal series.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.Series.Title">
+            <summary>
+            Gets or sets Title.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.Series.TrackerFormatString">
+            <summary>
+            Gets or sets TrackerFormatString.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.Series.TrackerKey">
+            <summary>
+            Gets or sets TrackerKey.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.ItemsSeries.SynchronizeProperties(OxyPlot.Series.Series)">
+            <summary>
+            Synchronizes the properties.
+            </summary>
+            <param name="series">The series.</param>
+        </member>
+        <member name="F:OxyPlot.Wpf.XYAxisSeries.XAxisKeyProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.XYAxisSeries.XAxisKey"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.XYAxisSeries.YAxisKeyProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.XYAxisSeries.YAxisKey"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.XYAxisSeries.SynchronizeProperties(OxyPlot.Series.Series)">
+            <summary>
+            Synchronizes the properties.
+            </summary>
+            <param name="series">The series.</param>
+        </member>
+        <member name="P:OxyPlot.Wpf.XYAxisSeries.XAxisKey">
+            <summary>
+            Gets or sets the x-axis key.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.XYAxisSeries.YAxisKey">
+            <summary>
+            Gets or sets the y axis key.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.DataPointSeries.CanTrackerInterpolatePointsProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.CanTrackerInterpolatePoints"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.DataPointSeries.DataFieldXProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.DataFieldX"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.DataPointSeries.DataFieldYProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.DataFieldY"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.DataPointSeries.MappingProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.Mapping"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.DataPointSeries.SmoothProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.Smooth"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.DataPointSeries.SynchronizeProperties(OxyPlot.Series.Series)">
+            <summary>
+            Synchronizes the properties.
+            </summary>
+            <param name="series">The series.</param>
+        </member>
+        <member name="P:OxyPlot.Wpf.DataPointSeries.CanTrackerInterpolatePoints">
+            <summary>
+            Gets or sets a value indicating whether the tracker can interpolate points.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.DataPointSeries.DataFieldX">
+            <summary>
+            Gets or sets DataFieldX.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.DataPointSeries.DataFieldY">
+            <summary>
+            Gets or sets DataFieldY.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.DataPointSeries.Mapping">
+            <summary>
+            Gets or sets the mapping.
+            </summary>
+            <value>The mapping.</value>
+        </member>
+        <member name="P:OxyPlot.Wpf.DataPointSeries.Smooth">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:OxyPlot.Wpf.DataPointSeries"/> is smooth.
+            </summary>
+            <value><c>true</c> if smooth; otherwise, <c>false</c> .</value>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.BrokenLineColorProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.BrokenLineColor"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.BrokenLineStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.BrokenLineStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.BrokenLineThicknessProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.BrokenLineThickness"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.DashesProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.Dashes"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.DecimatorProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.Decimator"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.LabelFormatStringProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LabelFormatString"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.LabelMarginProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LabelMargin"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.LineJoinProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LineJoin"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.LineLegendPositionProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LineLegendPosition"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.LineStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LineStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.MarkerFillProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerFill"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.MarkerOutlineProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerOutline"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.MarkerResolutionProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerResolution"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.MarkerSizeProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerSize"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.MarkerStrokeProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerStroke"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.MarkerStrokeThicknessProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerStrokeThickness"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.MarkerTypeProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerType"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.MinimumSegmentLengthProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MinimumSegmentLength"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.LineSeries.StrokeThicknessProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.StrokeThickness"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.LineSeries.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:OxyPlot.Wpf.LineSeries"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.LineSeries.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Wpf.LineSeries"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.LineSeries.CreateModel">
+            <summary>
+            Creates the internal series.
+            </summary>
+            <returns>The internal series.</returns>
+        </member>
+        <member name="M:OxyPlot.Wpf.LineSeries.SynchronizeProperties(OxyPlot.Series.Series)">
+            <summary>
+            Synchronizes the properties.
+            </summary>
+            <param name="series">The series.</param>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.BrokenLineColor">
+            <summary>
+            Gets or sets the broken line color.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.BrokenLineStyle">
+            <summary>
+            Gets or sets the broken line style.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.BrokenLineThickness">
+            <summary>
+            Gets or sets the broken line thickness.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.Dashes">
+            <summary>
+            Gets or sets Dashes.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.Decimator">
+            <summary>
+            Gets or sets the decimator.
+            </summary>
+            <value>
+            The decimator.
+            </value>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.LabelFormatString">
+            <summary>
+            Gets or sets the label format string.
+            </summary>
+            <value>The label format string.</value>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.LabelMargin">
+            <summary>
+            Gets or sets the label margin.
+            </summary>
+            <value>The label margin.</value>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.LineJoin">
+            <summary>
+            Gets or sets LineJoin.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.LineLegendPosition">
+            <summary>
+            Gets or sets LineLegendPosition.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.LineStyle">
+            <summary>
+            Gets or sets LineStyle.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.MarkerFill">
+            <summary>
+            Gets or sets MarkerFill.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.MarkerOutline">
+            <summary>
+            Gets or sets MarkerOutline.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.MarkerResolution">
+            <summary>
+            Gets or sets the marker resolution.
+            </summary>
+            <value>The marker resolution.</value>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.MarkerSize">
+            <summary>
+            Gets or sets the marker size.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.MarkerStroke">
+            <summary>
+            Gets or sets MarkerStroke.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.MarkerStrokeThickness">
+            <summary>
+            Gets or sets MarkerStrokeThickness.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.MarkerType">
+            <summary>
+            Gets or sets MarkerType.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.MinimumSegmentLength">
+            <summary>
+            Gets or sets MinimumSegmentLength.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Wpf.LineSeries.StrokeThickness">
+            <summary>
+            Gets or sets StrokeThickness.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.StairStepSeries.VerticalStrokeThicknessProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.StairStepSeries.VerticalStrokeThickness"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.StairStepSeries.VerticalLineStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.StairStepSeries.VerticalStrokeThickness"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.StairStepSeries.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Wpf.StairStepSeries"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Wpf.StairStepSeries.CreateModel">
+            <summary>
+            Creates the internal series.
+            </summary>
+            <returns>
+            The internal series.
+            </returns>
+        </member>
+        <member name="M:OxyPlot.Wpf.StairStepSeries.SynchronizeProperties(OxyPlot.Series.Series)">
+            <summary>
+            Synchronizes the properties.
+            </summary>
+            <param name="series">The series.</param>
+        </member>
+        <member name="P:OxyPlot.Wpf.StairStepSeries.VerticalStrokeThickness">
+            <summary>
+            Gets or sets the stroke thickness of the vertical line segments.
+            </summary>
+            <value>The vertical stroke thickness.</value>
+            <remarks>Set the value to NaN to use the StrokeThickness property for both horizontal and vertical segments.
+            Using the VerticalStrokeThickness property will have a small performance hit.</remarks>
+        </member>
+        <member name="P:OxyPlot.Wpf.StairStepSeries.VerticalLineStyle">
+            <summary>
+            Gets or sets the line style of the vertical line segments.
+            </summary>
+            <value>The vertical line style.</value>
+        </member>
         <member name="T:OxyPlot.Wpf.RenderingEventListener">
             <summary>
             Provides a weak event listener that pass the CompositionTarget.Rendering event to the specified handler.
@@ -2163,11 +2662,6 @@
             Identifies the <see cref="P:OxyPlot.Wpf.Plot.Controller"/> dependency property.
             </summary>
         </member>
-        <member name="F:OxyPlot.Wpf.Plot.AutoAdjustPlotMarginsProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.Plot.AutoAdjustPlotMargins"/> dependency property.
-            </summary>
-        </member>
         <member name="F:OxyPlot.Wpf.Plot.CultureProperty">
             <summary>
             Identifies the <see cref="P:OxyPlot.Wpf.Plot.Culture"/> dependency property.
@@ -2351,6 +2845,11 @@
         <member name="F:OxyPlot.Wpf.Plot.TextColorProperty">
             <summary>
             Identifies the <see cref="P:OxyPlot.Wpf.Plot.TextColor"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Wpf.Plot.TitleAlignmentProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlot.Wpf.Plot.TitleHorizontalAlignment"/> dependency property.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.Plot.TitleFontProperty">
@@ -2774,11 +3273,6 @@
             Updates the visuals.
             </summary>
         </member>
-        <member name="P:OxyPlot.Wpf.Plot.AutoAdjustPlotMargins">
-            <summary>
-            Gets or sets a value indicating whether AutoAdjustPlotMargins.
-            </summary>
-        </member>
         <member name="P:OxyPlot.Wpf.Plot.Axes">
             <summary>
             Gets the axes.
@@ -2980,17 +3474,17 @@
         </member>
         <member name="P:OxyPlot.Wpf.Plot.SubtitleFontSize">
             <summary>
-            Gets or sets SubtitleFontSize.
+            Gets or sets the font size of the subtitle.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.SubtitleFontWeight">
             <summary>
-            Gets or sets SubtitleFontWeight.
+            Gets or sets the font weight of the subtitle.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.TextColor">
             <summary>
-            Gets or sets TextColor.
+            Gets or sets text color.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.Title">
@@ -2999,24 +3493,32 @@
             </summary>
             <value>The title.</value>
         </member>
+        <member name="P:OxyPlot.Wpf.Plot.TitleHorizontalAlignment">
+            <summary>
+            Gets or sets the horizontal alignment of the title and subtitle.
+            </summary>
+            <value>
+            The alignment.
+            </value>
+        </member>
         <member name="P:OxyPlot.Wpf.Plot.TitleFont">
             <summary>
-            Gets or sets TitleFont.
+            Gets or sets font of the title.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.TitleFontSize">
             <summary>
-            Gets or sets TitleFontSize.
+            Gets or sets font size of the title.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.TitleFontWeight">
             <summary>
-            Gets or sets TitleFontWeight.
+            Gets or sets font weight of the title.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.TitlePadding">
             <summary>
-            Gets or sets TitlePadding.
+            Gets or sets padding around the title.
             </summary>
         </member>
         <member name="P:OxyPlot.Wpf.Plot.InvalidateFlag">
@@ -3104,146 +3606,6 @@
         <member name="T:OxyPlot.Wpf.CategorizedSeries">
             <summary>
             This is a WPF wrapper of OxyPlot.BarSeries
-            </summary>
-        </member>
-        <member name="T:OxyPlot.Wpf.XYAxisSeries">
-            <summary>
-            Abstract base class for series that use X and Y axes.
-            </summary>
-        </member>
-        <member name="T:OxyPlot.Wpf.ItemsSeries">
-            <summary>
-            Abstract base class for series that use X and Y axes.
-            </summary>
-        </member>
-        <member name="T:OxyPlot.Wpf.Series">
-            <summary>
-            Abstract base class for series.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.Series.ColorProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.Series.Color"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.Series.TitleProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.Series.Title"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.Series.TrackerFormatStringProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.Series.TrackerFormatString"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.Series.TrackerKeyProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.Series.TrackerKey"/> dependency property.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Wpf.Series.#cctor">
-            <summary>
-            Initializes static members of the <see cref="T:OxyPlot.Wpf.Series"/> class.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Wpf.Series.CreateModel">
-            <summary>
-            Creates the model.
-            </summary>
-            <returns>A series.</returns>
-        </member>
-        <member name="M:OxyPlot.Wpf.Series.AppearanceChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
-            <summary>
-            The appearance changed.
-            </summary>
-            <param name="d">The d.</param>
-            <param name="e">The e.</param>
-        </member>
-        <member name="M:OxyPlot.Wpf.Series.DataChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
-            <summary>
-            The data changed.
-            </summary>
-            <param name="d">The d.</param>
-            <param name="e">The e.</param>
-        </member>
-        <member name="M:OxyPlot.Wpf.Series.OnDataChanged">
-            <summary>
-            The on data changed.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Wpf.Series.OnItemsSourceChanged(System.Collections.IEnumerable,System.Collections.IEnumerable)">
-            <summary>
-            The on items source changed.
-            </summary>
-            <param name="oldValue">The old value.</param>
-            <param name="newValue">The new value.</param>
-        </member>
-        <member name="M:OxyPlot.Wpf.Series.OnVisualChanged">
-            <summary>
-            The on visual changed.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Wpf.Series.SynchronizeProperties(OxyPlot.Series.Series)">
-            <summary>
-            Synchronizes the properties.
-            </summary>
-            <param name="s">The series.</param>
-        </member>
-        <member name="P:OxyPlot.Wpf.Series.Color">
-            <summary>
-            Gets or sets Color.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.Series.InternalSeries">
-            <summary>
-            Gets or sets the internal series.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.Series.Title">
-            <summary>
-            Gets or sets Title.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.Series.TrackerFormatString">
-            <summary>
-            Gets or sets TrackerFormatString.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.Series.TrackerKey">
-            <summary>
-            Gets or sets TrackerKey.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Wpf.ItemsSeries.SynchronizeProperties(OxyPlot.Series.Series)">
-            <summary>
-            Synchronizes the properties.
-            </summary>
-            <param name="series">The series.</param>
-        </member>
-        <member name="F:OxyPlot.Wpf.XYAxisSeries.XAxisKeyProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.XYAxisSeries.XAxisKey"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.XYAxisSeries.YAxisKeyProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.XYAxisSeries.YAxisKey"/> dependency property.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Wpf.XYAxisSeries.SynchronizeProperties(OxyPlot.Series.Series)">
-            <summary>
-            Synchronizes the properties.
-            </summary>
-            <param name="series">The series.</param>
-        </member>
-        <member name="P:OxyPlot.Wpf.XYAxisSeries.XAxisKey">
-            <summary>
-            Gets or sets the x-axis key.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.XYAxisSeries.YAxisKey">
-            <summary>
-            Gets or sets the y axis key.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.BarSeriesBase.BaseValueProperty">
@@ -3579,279 +3941,6 @@
         <member name="T:OxyPlot.Wpf.TwoColorLineSeries">
             <summary>
             The WPF wrapper for OxyPlot.TwoColorLineSeries.
-            </summary>
-        </member>
-        <member name="T:OxyPlot.Wpf.LineSeries">
-            <summary>
-            This is a WPF wrapper of OxyPlot.LineSeries
-            </summary>
-        </member>
-        <member name="T:OxyPlot.Wpf.DataPointSeries">
-            <summary>
-            Base class for data series
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.DataPointSeries.CanTrackerInterpolatePointsProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.CanTrackerInterpolatePoints"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.DataPointSeries.DataFieldXProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.DataFieldX"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.DataPointSeries.DataFieldYProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.DataFieldY"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.DataPointSeries.MappingProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.Mapping"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.DataPointSeries.SmoothProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.DataPointSeries.Smooth"/> dependency property.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Wpf.DataPointSeries.SynchronizeProperties(OxyPlot.Series.Series)">
-            <summary>
-            Synchronizes the properties.
-            </summary>
-            <param name="series">The series.</param>
-        </member>
-        <member name="P:OxyPlot.Wpf.DataPointSeries.CanTrackerInterpolatePoints">
-            <summary>
-            Gets or sets a value indicating whether the tracker can interpolate points.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.DataPointSeries.DataFieldX">
-            <summary>
-            Gets or sets DataFieldX.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.DataPointSeries.DataFieldY">
-            <summary>
-            Gets or sets DataFieldY.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.DataPointSeries.Mapping">
-            <summary>
-            Gets or sets the mapping.
-            </summary>
-            <value>The mapping.</value>
-        </member>
-        <member name="P:OxyPlot.Wpf.DataPointSeries.Smooth">
-            <summary>
-            Gets or sets a value indicating whether this <see cref="T:OxyPlot.Wpf.DataPointSeries"/> is smooth.
-            </summary>
-            <value><c>true</c> if smooth; otherwise, <c>false</c> .</value>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.BrokenLineColorProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.BrokenLineColor"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.BrokenLineStyleProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.BrokenLineStyle"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.BrokenLineThicknessProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.BrokenLineThickness"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.DashesProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.Dashes"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.LabelFormatStringProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LabelFormatString"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.LabelMarginProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LabelMargin"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.LineJoinProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LineJoin"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.LineLegendPositionProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LineLegendPosition"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.LineStyleProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.LineStyle"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.MarkerFillProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerFill"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.MarkerOutlineProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerOutline"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.MarkerResolutionProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerResolution"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.MarkerSizeProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerSize"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.MarkerStrokeProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerStroke"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.MarkerStrokeThicknessProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerStrokeThickness"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.MarkerTypeProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MarkerType"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.MinimumSegmentLengthProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.MinimumSegmentLength"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Wpf.LineSeries.StrokeThicknessProperty">
-            <summary>
-            Identifies the <see cref="P:OxyPlot.Wpf.LineSeries.StrokeThickness"/> dependency property.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Wpf.LineSeries.#cctor">
-            <summary>
-            Initializes static members of the <see cref="T:OxyPlot.Wpf.LineSeries"/> class.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Wpf.LineSeries.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Wpf.LineSeries"/> class.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Wpf.LineSeries.CreateModel">
-            <summary>
-            Creates the internal series.
-            </summary>
-            <returns>The internal series.</returns>
-        </member>
-        <member name="M:OxyPlot.Wpf.LineSeries.SynchronizeProperties(OxyPlot.Series.Series)">
-            <summary>
-            Synchronizes the properties.
-            </summary>
-            <param name="series">The series.</param>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.BrokenLineColor">
-            <summary>
-            Gets or sets the broken line color.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.BrokenLineStyle">
-            <summary>
-            Gets or sets the broken line style.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.BrokenLineThickness">
-            <summary>
-            Gets or sets the broken line thickness.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.Dashes">
-            <summary>
-            Gets or sets Dashes.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.LabelFormatString">
-            <summary>
-            Gets or sets the label format string.
-            </summary>
-            <value>The label format string.</value>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.LabelMargin">
-            <summary>
-            Gets or sets the label margin.
-            </summary>
-            <value>The label margin.</value>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.LineJoin">
-            <summary>
-            Gets or sets LineJoin.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.LineLegendPosition">
-            <summary>
-            Gets or sets LineLegendPosition.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.LineStyle">
-            <summary>
-            Gets or sets LineStyle.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.MarkerFill">
-            <summary>
-            Gets or sets MarkerFill.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.MarkerOutline">
-            <summary>
-            Gets or sets MarkerOutline.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.MarkerResolution">
-            <summary>
-            Gets or sets the marker resolution.
-            </summary>
-            <value>The marker resolution.</value>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.MarkerSize">
-            <summary>
-            Gets or sets the marker size.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.MarkerStroke">
-            <summary>
-            Gets or sets MarkerStroke.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.MarkerStrokeThickness">
-            <summary>
-            Gets or sets MarkerStrokeThickness.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.MarkerType">
-            <summary>
-            Gets or sets MarkerType.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.MinimumSegmentLength">
-            <summary>
-            Gets or sets MinimumSegmentLength.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Wpf.LineSeries.StrokeThickness">
-            <summary>
-            Gets or sets StrokeThickness.
             </summary>
         </member>
         <member name="F:OxyPlot.Wpf.TwoColorLineSeries.Color2Property">
@@ -4691,73 +4780,76 @@
             Draws an ellipse.
             </summary>
             <param name="rect">The rectangle.</param>
-            <param name="fill">The fill color.</param>
-            <param name="stroke">The stroke color.</param>
-            <param name="thickness">The thickness.</param>
+            <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the ellipse will not be filled.</param>
+            <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipse will not be stroked.</param>
+            <param name="thickness">The thickness (in device independent units, 1/96 inch).</param>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawEllipses(System.Collections.Generic.IList{OxyPlot.OxyRect},OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double)">
             <summary>
-            The draw ellipses.
+            Draws a collection of ellipses, where all have the same stroke and fill.
+            This performs better than calling DrawEllipse multiple times.
             </summary>
             <param name="rectangles">The rectangles.</param>
-            <param name="fill">The fill.</param>
-            <param name="stroke">The stroke.</param>
-            <param name="thickness">The thickness.</param>
+            <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be filled.</param>
+            <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be stroked.</param>
+            <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawLine(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.OxyPenLineJoin,System.Boolean)">
             <summary>
-            Draws the polyline from the specified points.
+            Draws a polyline.
             </summary>
             <param name="points">The points.</param>
             <param name="stroke">The stroke color.</param>
-            <param name="thickness">The stroke thickness.</param>
-            <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
+            <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+            <param name="dashArray">The dash array (in device independent units, 1/96 inch). Use <c>null</c> to get a solid line.</param>
             <param name="lineJoin">The line join type.</param>
             <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawLineSegments(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.OxyPenLineJoin,System.Boolean)">
             <summary>
-            The draw line segments.
+            Draws line segments defined by points (0,1) (2,3) (4,5) etc.
+            This should have better performance than calling DrawLine for each segment.
             </summary>
             <param name="points">The points.</param>
-            <param name="stroke">The stroke.</param>
-            <param name="thickness">The thickness.</param>
-            <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
-            <param name="lineJoin">The line join.</param>
-            <param name="aliased">The aliased.</param>
-        </member>
-        <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawPolygon(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.OxyPenLineJoin,System.Boolean)">
-            <summary>
-            Draws the polygon from the specified points. The polygon can have stroke and/or fill.
-            </summary>
-            <param name="points">The points.</param>
-            <param name="fill">The fill color.</param>
             <param name="stroke">The stroke color.</param>
-            <param name="thickness">The stroke thickness.</param>
-            <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
+            <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+            <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
             <param name="lineJoin">The line join type.</param>
             <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         </member>
+        <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawPolygon(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.OxyPenLineJoin,System.Boolean)">
+            <summary>
+            Draws a polygon.
+            </summary>
+            <param name="points">The points.</param>
+            <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the polygon will not be filled.</param>
+            <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the polygon will not be stroked.</param>
+            <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+            <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
+            <param name="lineJoin">The line join type.</param>
+            <param name="aliased">If set to <c>true</c> the polygon will be aliased.</param>
+        </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawPolygons(System.Collections.Generic.IList{System.Collections.Generic.IList{OxyPlot.ScreenPoint}},OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.OxyPenLineJoin,System.Boolean)">
             <summary>
-            The draw polygons.
+            Draws a collection of polygons, where all polygons have the same stroke and fill.
+            This performs better than calling DrawPolygon multiple times.
             </summary>
             <param name="polygons">The polygons.</param>
-            <param name="fill">The fill.</param>
-            <param name="stroke">The stroke.</param>
-            <param name="thickness">The thickness.</param>
-            <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
-            <param name="lineJoin">The line join.</param>
-            <param name="aliased">The aliased.</param>
+            <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the polygons will not be filled.</param>
+            <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the polygons will not be stroked.</param>
+            <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+            <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
+            <param name="lineJoin">The line join type.</param>
+            <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawRectangle(OxyPlot.OxyRect,OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double)">
             <summary>
-            Draws the rectangle.
+            Draws a rectangle.
             </summary>
             <param name="rect">The rectangle.</param>
-            <param name="fill">The fill.</param>
-            <param name="stroke">The stroke.</param>
-            <param name="thickness">The thickness.</param>
+            <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be filled.</param>
+            <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be stroked.</param>
+            <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawRectangles(System.Collections.Generic.IList{OxyPlot.OxyRect},OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double)">
             <summary>
@@ -4765,34 +4857,36 @@
             This performs better than calling DrawRectangle multiple times.
             </summary>
             <param name="rectangles">The rectangles.</param>
-            <param name="fill">The fill color.</param>
-            <param name="stroke">The stroke color.</param>
-            <param name="thickness">The stroke thickness.</param>
+            <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be filled.</param>
+            <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be stroked.</param>
+            <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawText(OxyPlot.ScreenPoint,System.String,OxyPlot.OxyColor,System.String,System.Double,System.Double,System.Double,OxyPlot.HorizontalAlignment,OxyPlot.VerticalAlignment,System.Nullable{OxyPlot.OxySize})">
             <summary>
-            Draws the text.
+            Draws text.
             </summary>
             <param name="p">The position.</param>
             <param name="text">The text.</param>
-            <param name="fill">The fill color.</param>
+            <param name="fill">The text color.</param>
             <param name="fontFamily">The font family.</param>
-            <param name="fontSize">Size of the font.</param>
+            <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
             <param name="fontWeight">The font weight.</param>
             <param name="rotate">The rotation angle.</param>
             <param name="halign">The horizontal alignment.</param>
             <param name="valign">The vertical alignment.</param>
-            <param name="maxSize">The maximum size of the text.</param>
+            <param name="maxSize">The maximum size of the text (in device independent units, 1/96 inch).</param>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.MeasureText(System.String,System.String,System.Double,System.Double)">
             <summary>
-            Measures the text.
+            Measures the size of the specified text.
             </summary>
             <param name="text">The text.</param>
             <param name="fontFamily">The font family.</param>
-            <param name="fontSize">Size of the font.</param>
+            <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
             <param name="fontWeight">The font weight.</param>
-            <returns>The text size.</returns>
+            <returns>
+            The size of the text (in device independent units, 1/96 inch).
+            </returns>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.SetToolTip(System.String)">
             <summary>
@@ -4802,7 +4896,7 @@
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.DrawImage(OxyPlot.OxyImage,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Boolean)">
             <summary>
-            Draws the specified portion of the specified <see cref="T:OxyPlot.OxyImage"/> at the specified location and with the specified size.
+            Draws a portion of the specified <see cref="T:OxyPlot.OxyImage"/>.
             </summary>
             <param name="source">The source.</param>
             <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
@@ -4818,10 +4912,10 @@
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.SetClip(OxyPlot.OxyRect)">
             <summary>
-            Sets the clip rectangle.
+            Sets the clipping rectangle.
             </summary>
             <param name="clippingRect">The clipping rectangle.</param>
-            <returns>True if the clip rectangle was set.</returns>
+            <returns><c>true</c> if the clip rectangle was set.</returns>
         </member>
         <member name="M:OxyPlot.Wpf.ShapesRenderContext.ResetClip">
             <summary>
@@ -4880,7 +4974,7 @@
             Draws the line segments by stream geometry.
             </summary>
             <param name="points">The points.</param>
-            <param name="stroke">The stroke.</param>
+            <param name="stroke">The stroke color.</param>
             <param name="thickness">The thickness.</param>
             <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
             <param name="lineJoin">The line join.</param>
@@ -4905,7 +4999,7 @@
             Sets the stroke properties of the specified shape object.
             </summary>
             <param name="shape">The shape.</param>
-            <param name="stroke">The stroke.</param>
+            <param name="stroke">The stroke color.</param>
             <param name="thickness">The thickness.</param>
             <param name="lineJoin">The line join.</param>
             <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
@@ -4924,7 +5018,7 @@
             Draws the line using the MaxPolylinesPerLine and MinPointsPerPolyline properties.
             </summary>
             <param name="points">The points.</param>
-            <param name="stroke">The stroke.</param>
+            <param name="stroke">The stroke color.</param>
             <param name="thickness">The thickness.</param>
             <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
             <param name="lineJoin">The line join.</param>
