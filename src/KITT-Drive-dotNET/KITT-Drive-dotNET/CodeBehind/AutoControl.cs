@@ -214,6 +214,53 @@ namespace KITT_Drive_dotNET
 				L * y; //Ly
 		}
 
+		protected void placeCompensatorPoles(double value) {
+			// Check for dimensions
+			if (A.ColumnCount != A.RowCount || A.ColumnCount <= 0) {
+				// TODO: Throw exception
+			}
+
+			int n = A.ColumnCount;
+			
+			// Calculate controllability matrix
+			Matrix<double> controllabilityMatrix(n, n);
+			for (int i = 0; i < n; i++) {
+				Matrix<double> vec = B;
+
+				for (int j = 0; j < i; j++) {
+					vec = A * vec;
+				}
+
+				controllabilityMatrix.SetColumn(i, vec);
+			}
+
+			// Unity vector
+			Matrix<double> unityVector(1, n);
+			for (int i = 0; i < n; i++) {
+				// Set 1 at last index
+				unityVector.At(0, i,
+					(i == n-1 ? 1 : 0)
+					);
+			}
+
+			// Coefficients matrix
+			Matrix<double> preparedMatrix = A;
+			for (int i = 0; i < n; i++) {
+				// Substract value from diagonal
+				preparedMatrix.At(i, i,
+					preparedMatrix.At(i, i) - value
+					);
+			}
+			Matrix<double> coefficientsMatrix = preparedMatrix;
+			for (int i = 0; i < n-1; i++) {
+				// Multiply n-1 times
+				coefficientsMatrix = preparedMatrix * coefficientsMatrix;
+			}
+
+			// Calculate new K using Ackermann's formula
+			K = unityVector * controllabilityMatrix.inverse() * coefficientsMatrix;
+		}
+
 		protected double[] makeLowPass()
 		{
 			double c1, c2, c3;
