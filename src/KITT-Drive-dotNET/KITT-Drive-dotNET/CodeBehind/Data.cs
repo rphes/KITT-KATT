@@ -11,12 +11,12 @@ namespace KITT_Drive_dotNET
 	{
 		#region Global constants
 		//Physical parameters
-		public static double Mass { get { return 1.5; } }
+		public static double Mass { get { return 0.5; } }
 		public static double RollingResistance { get { return 0.15; } }
 		public static double MotorInductance { get { return 0.02; } }
 		public static double MotorConstant { get { return 0.5; } }
 		public static double MotorResistance { get { return 0.1; } }
-		public static double GearRatio { get { return 10; } }
+		public static double GearRatio { get { return 20; } }
 		public static double WheelRadius { get { return 0.15; } }
 
 		//Speed and heading

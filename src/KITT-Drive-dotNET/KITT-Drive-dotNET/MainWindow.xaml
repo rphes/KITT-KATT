@@ -58,7 +58,7 @@
 		</GroupBox>
 		<GroupBox Name="GroupBox_Auto" Header="Autonomous control" HorizontalAlignment="Stretch" Margin="490,10,10,10" VerticalAlignment="Stretch" DataContext="{Binding Path=AutoControlViewModel}">
 			<Grid>
-				<oxy:Plot Name="Plot1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="500" Margin="0,0,0,30" LegendPlacement="Inside" LegendPosition="RightTop" LegendMargin="-4">
+				<oxy:Plot Name="Plot1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="480" Margin="0,0,0,30" LegendPlacement="Inside" LegendPosition="RightTop" LegendMargin="-4">
 					<oxy:Plot.Axes>
 						<oxy:LinearAxis Title="Time" TitleColor="Black" Position="Bottom" Minimum="{Binding Path=PlotMinimum}" Maximum="{Binding Path=PlotMaximum}" MajorStep="1" MinorStep="0.5" />
 						<oxy:LinearAxis Key="v" Title="Speed" TitleColor="Black" Position="Left" Minimum="{Binding Source={x:Static local:Data.SpeedMin}}" Maximum="{Binding Source={x:Static local:Data.SpeedMax}}" MajorStep="5" MinorStep="1" />
@@ -68,6 +68,7 @@
 						<oxy:LineSeries Title="Sensor distance" ItemsSource="{Binding Path=YPoints}" Color="Blue" MarkerSize="3" CanTrackerInterpolatePoints="False" YAxisKey="d"/>
 						<oxy:LineSeries Title="Output PWM speed" ItemsSource="{Binding Path=VPoints}" Color="Red" MarkerSize="3" CanTrackerInterpolatePoints="False" YAxisKey="v"/>
 						<oxy:LineSeries Title="Reference distance" ItemsSource="{Binding Path=RPoints}" Color="Green" MarkerSize="3" CanTrackerInterpolatePoints="False" YAxisKey="d"/>
+						<oxy:LineSeries Title="Internal distance" ItemsSource="{Binding Path=XPoints}" Color="Purple" MarkerSize="3" CanTrackerInterpolatePoints="False" YAxisKey="d"/>
 					</oxy:Plot.Series>
 				</oxy:Plot>
 
@@ -78,12 +79,12 @@
 					<TextBox Name="TextBox_tRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="120" Height="22" Margin="240,0,10,15" Text="{Binding Path=tRefString, UpdateSourceTrigger=PropertyChanged}"/>
 					<Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="180,0,0,-7" Content="{Binding Path=StatusString}" Foreground="{Binding Path=StatusStringColor}"/>
 				</Grid>
-				
+
 				<Grid Visibility="{Binding Path=ControlModeSliderIsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
 					<Slider Name="Slider_xRef" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="80,0,0,17" Width="300" Minimum="{Binding Source={x:Static local:Data.SensorMinRange}}" Maximum="{Binding Source={x:Static local:Data.SensorMaxRange}}" Value="{Binding Path=xRefValue}"/>
 					<Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="150,0,0,-7" Content="{Binding Path=xRefValueString}"/>
 				</Grid>
-				
+
 				<Button Name="Button_StartStop" Content="{Binding Path=StartStopButtonString}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="70" Height="22" Margin="400,0,0,15" Command="{Binding Path=StartStop}"/>
 
 				<GroupBox Name="GroupBox_ControlMode" Header="Control mode" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" Width="196">
@@ -105,7 +106,19 @@
 				</GroupBox>
 
 				<GroupBox Name="GroupBox_Ping" Header="Ping" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,155,10,0" Width="196">
-					<Label Content="{Binding Path=PingString}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="25,0,0,0" FontSize="22"/>
+					<Label Content="{Binding Path=PingString}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="25,0,0,0" FontSize="22" Height="34"/>
+				</GroupBox>
+
+				<GroupBox Name="GroupBox_Parameters" Header="Parameters" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,220,10,0" Width="196" Height="78">
+					<Grid>
+						<TextBox Name="TextBox_Scale" Text="{Binding Path=ScaleString}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="24" Height="22" Margin="5,5,0,0"/>
+						<Label Target="{Binding ElementName=TextBox_Scale}" Content="Scale" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,5,0,0"/>
+						<TextBox Name="TextBox_Pole" Text="{Binding Path=PoleString}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="24" Height="22" Margin="5,0,0,2"/>
+						<Label Target="{Binding ElementName=TextBox_Pole}" Content="Pole" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,0"/>
+						<TextBox Name="TextBox_GearRatio" Text="{Binding Path=GearRatioString}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="24" Height="22" Margin="0,5,0,0"/>
+						<Label Target="{Binding ElementName=TextBox_GearRatio}" Content="Gear ratio" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="90,5,0,0"/>
+						<Button Name="Button_Reinitialize" Content="Reinitialize" Command="{Binding Path=Reinitialize}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="22" Margin="0,0,10,2"/>
+					</Grid>
 				</GroupBox>
 			</Grid>
 		</GroupBox>

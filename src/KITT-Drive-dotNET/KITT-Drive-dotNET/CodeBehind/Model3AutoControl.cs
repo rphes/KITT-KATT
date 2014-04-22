@@ -21,9 +21,10 @@ namespace KITT_Drive_dotNET
 			A = DenseMatrix.OfArray(new double[,] { { 0, 1, 0 }, { 0, -Data.RollingResistance / Data.Mass, c / Data.Mass }, { 0, -c / Data.MotorInductance, -Data.MotorResistance / Data.MotorInductance } });
 			B = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 }, { 1 / Data.MotorInductance } });
 			C = DenseMatrix.OfArray(new double[,] { { 1, 0, 0 } });
-			K = DenseMatrix.OfArray(new double[,] { { 23.7358, 17.1107, 0.1404 } });
+			placeCompensatorPoles(-3);
 			L = DenseMatrix.OfArray(new double[,] { { 7.02 }, { 12.4297 }, { -24.3143 } });
 			x = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 }, { 0 } });
+			scale = 0.2;
 		}
 		#endregion
 	}

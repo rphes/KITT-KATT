@@ -19,7 +19,7 @@ namespace KITT_Drive_dotNET
 			A = DenseMatrix.OfArray(new double[,] { { 0, 1 }, { 0, -0.5063 } });
 			B = DenseMatrix.OfArray(new double[,] { { 0 }, { 6.25 } });
 			C = DenseMatrix.OfArray(new double[,] { { 1, 0 } });
-			K = DenseMatrix.OfArray(new double[,] { { 0.2955, 0.3542 } });
+			placeCompensatorPoles(-1);
 			L = DenseMatrix.OfArray(new double[,] { { 7.7937 }, { 13.2544 } });
 			x = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } });
 		}
