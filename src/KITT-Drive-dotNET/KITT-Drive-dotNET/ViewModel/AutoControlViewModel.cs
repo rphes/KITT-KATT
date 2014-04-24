@@ -17,7 +17,7 @@ namespace KITT_Drive_dotNET.ViewModel
 	public class AutoControlViewModel : ObservableObject
 	{
 		#region Properties
-		private AutoControl _autoControl = new Model2AutoControl();
+		private AutoControl _autoControl = new Model3AutoControl();
 
 		public AutoControl AutoControl
 		{
@@ -76,8 +76,8 @@ namespace KITT_Drive_dotNET.ViewModel
 				{
 					xRefList = new List<int>();
 					xRefList.Add(value);
-					tRefList = new List<int>();
-					tRefList.Add(0);
+					//tRefList = new List<int>();
+					//tRefList.Add(0);
 					RaisePropertyChanged("xRefValueString");
 				}
 			}
@@ -174,7 +174,15 @@ namespace KITT_Drive_dotNET.ViewModel
 				return "Go!";
 			}
 		}
-		
+
+		public string ScaleString { get; set; }
+		public string PoleString { get; set; }
+		public string GearRatioString { get; set; }
+		public string WeightString { get; set; }
+
+		double scale, pole, weight;
+		int gear;
+
 		//Plot data
 		public double PlotMinimum { get { return PlotMaximum - AutoControl.MaxTimeSpan; } }
 		public double PlotMaximum {
@@ -190,6 +198,7 @@ namespace KITT_Drive_dotNET.ViewModel
 		public List<DataPoint> YPoints { get { return makeDatapoints(AutoControl.TBuffer, AutoControl.YBuffer); } }
 		public List<DataPoint> VPoints { get { return makeDatapoints(AutoControl.TBuffer, AutoControl.VBuffer); } }
 		public List<DataPoint> RPoints { get { return makeDatapoints(AutoControl.TBuffer, AutoControl.RBuffer); } }
+		public List<DataPoint> XPoints { get { return makeDatapoints(AutoControl.TBuffer, AutoControl.XBuffer); } }
 
 		public string PingString { get { return Math.Round(Data.MainViewModel.CommunicationViewModel.Communication.Ping.TotalMilliseconds) + " ms"; } }
 
@@ -289,6 +298,7 @@ namespace KITT_Drive_dotNET.ViewModel
 			RaisePropertyChanged("YPoints");
 			RaisePropertyChanged("VPoints");
 			RaisePropertyChanged("RPoints");
+			RaisePropertyChanged("XPoints");
 		}
 
 		List<DataPoint> makeDatapoints(List<double> xPoints, List<double> yPoints)
@@ -328,6 +338,30 @@ namespace KITT_Drive_dotNET.ViewModel
 		}
 
 		public ICommand StartStop { get { return new RelayCommand(StartStopExecute, CanStartStopExecute); } }
+
+		void ReinitializeExecute()
+		{
+			if (AutoControl.GetType().Name == "Model2AutoControl")
+				AutoControl = new Model2AutoControl();
+			else if (AutoControl.GetType().Name == "Model3AutoControl")
+				AutoControl = new Model3AutoControl(scale, weight, gear);
+
+			AutoControl.placeCompensatorPoles(pole);
+		}
+
+		bool CanReinitializeExecute()
+		{
+			if (Double.TryParse(ScaleString, out scale) &&
+				Double.TryParse(WeightString, out weight) &&
+				Double.TryParse(PoleString, out pole) &&
+				Int32.TryParse(GearRatioString, out gear) &&
+				Status != AutoControlStatus.Running)
+				return true;
+			else
+				return false;
+		}
+
+		public ICommand Reinitialize { get { return new RelayCommand(ReinitializeExecute, CanReinitializeExecute); } }
 		#endregion		
 	}
 }

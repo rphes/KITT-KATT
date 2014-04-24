@@ -28,19 +28,28 @@ namespace KITT_Drive_dotNET
 			get
 			{
 				double val = 0;
-				for (int i = 0; i < xRefList.Count; i++)
+				if (tRefList == null)
+					val = (double)xRefList[0];
+				else
 				{
-					if (tTotal.TotalSeconds >= tRefList[i])
-						val = (double)xRefList[i] / 100;
-					else
-						break;
+					for (int i = 0; i < xRefList.Count; i++)
+					{
+						if (tTotal.TotalSeconds >= tRefList[i])
+							val = (double)xRefList[i] / 100;
+						else
+							break;
+					}
 				}
-				return DenseMatrix.OfArray(new double[,] { { val }, { 0 } });
+				Matrix<double> m = new DenseMatrix(A.RowCount, 1);
+				m.At(0, 0, val);
+				return m;
 			}
 		}
 		protected double y = 0; //Vehicle output
 		protected double t = 0; //Current time
 		protected int v = 0; //Calculated vehicle reference speed
+		protected const int numsteps = 100;
+		public double scale = 1;
 
 		//Time properties
 		protected DateTime tPrevious;
@@ -54,8 +63,8 @@ namespace KITT_Drive_dotNET
 		public List<int> tRefList { get; set; }
 
 		//Throttle mapping
-		protected double[] forceMapper = { 10, 0, -0.025 };
-		protected double forceMin = 0.02;
+		protected double[] forceMapper = { 20, 0, 0 };//{ 10, 0, -0.025 };
+		protected double forceMin = 0.01;
 
 		//Filtering
 		public bool LowPassFilterIsEnabled { get; set; }
@@ -78,6 +87,7 @@ namespace KITT_Drive_dotNET
 		public List<double> YBuffer { get; set; } //Stores sensor distance points
 		public List<double> VBuffer { get; set; } //Stores output speed points
 		public List<double> RBuffer { get; set; } //Stores reference distance points
+		public List<double> XBuffer { get; set; } //Stores internal state points
 
 		//Misc
 		protected short controlling = 0; //Modifier for enabling vehicle control
@@ -139,7 +149,7 @@ namespace KITT_Drive_dotNET
 			Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
 
 			//Initialise some stuff
-			x = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } });
+			x = new DenseMatrix(A.RowCount, 1);
 			lowPass = makeLowPass();
 
 			//Empty or initialise plot buffers
@@ -147,6 +157,7 @@ namespace KITT_Drive_dotNET
 			YBuffer = new List<double>(MaxPlotDataPoints);
 			VBuffer = new List<double>(MaxPlotDataPoints);
 			RBuffer = new List<double>(MaxPlotDataPoints);
+			XBuffer = new List<double>(MaxPlotDataPoints);
 
 			//Enable everything
 			running = true;
@@ -176,24 +187,26 @@ namespace KITT_Drive_dotNET
 
 			//Obtain current filtered working distance
 			y = Math.Min(filter((double)Data.MainViewModel.VehicleViewModel.SensorDistanceLeft / 100, ref dLeft), filter((double)Data.MainViewModel.VehicleViewModel.SensorDistanceRight / 100, ref dRight));
-			//y = Math.Min(Data.MainViewModel.VehicleViewModel.SensorDistanceLeft / 100, Data.MainViewModel.VehicleViewModel.SensorDistanceRight / 100);
 
 			//Calculate new states and control
 			if (iteration > 0)
 			{
-				//Find next slope
-				Matrix<double> curSlope = getSlope(x);
-
-				//Find next predicted value via Euler's method
-				Matrix<double> predVal = x + curSlope * tDelta.TotalSeconds;
-
-				//Find next predicted slope
-				Matrix<double> predSlope = getSlope(predVal);
-
 				//Find next state
-				x += tDelta.TotalSeconds / 2 * (curSlope + predSlope);
+				for (int i = 0; i < numsteps; i++ )
+				{
+					//Find next slope
+					Matrix<double> curSlope = getSlope(x);
 
-				force = (controlling * K * (x - xRef)).At(0, 0);
+					//Find next predicted value via Euler's method
+					Matrix<double> predVal = x + curSlope * tDelta.TotalSeconds;
+
+					//Find next predicted slope
+					Matrix<double> predSlope = getSlope(predVal);
+
+					x += tDelta.TotalSeconds / numsteps / 2 * (curSlope + predSlope);
+				}					
+
+				force = (controlling * K * (x - xRef)).At(0, 0) * scale;
 			}
 
 			//Map force to PWM-value
@@ -209,7 +222,7 @@ namespace KITT_Drive_dotNET
 				L * y; //Ly
 		}
 
-		protected void placeCompensatorPoles(double value) {
+		public void placeCompensatorPoles(double value) {
 			// Check for dimensions
 			if (A.ColumnCount != A.RowCount || A.ColumnCount <= 0) {
 				// TODO: Throw exception
@@ -218,9 +231,9 @@ namespace KITT_Drive_dotNET
 			int n = A.ColumnCount;
 			
 			// Calculate controllability matrix
-			Matrix<double> controllabilityMatrix(n, n);
+			Matrix<double> controllabilityMatrix = new DenseMatrix(n, n);
 			for (int i = 0; i < n; i++) {
-				Matrix<double> vec = B;
+				Vector<double> vec = B.Column(0);
 
 				for (int j = 0; j < i; j++) {
 					vec = A * vec;
@@ -230,7 +243,7 @@ namespace KITT_Drive_dotNET
 			}
 
 			// Unity vector
-			Matrix<double> unityVector(1, n);
+			Matrix<double> unityVector = new DenseMatrix(1,n);
 			for (int i = 0; i < n; i++) {
 				// Set 1 at last index
 				unityVector.At(0, i,
@@ -239,21 +252,21 @@ namespace KITT_Drive_dotNET
 			}
 
 			// Coefficients matrix
-			Matrix<double> preparedMatrix = A;
+			Matrix<double> preparedMatrix = A.Clone();
 			for (int i = 0; i < n; i++) {
 				// Substract value from diagonal
 				preparedMatrix.At(i, i,
 					preparedMatrix.At(i, i) - value
 					);
 			}
-			Matrix<double> coefficientsMatrix = preparedMatrix;
+			Matrix<double> coefficientsMatrix = preparedMatrix.Clone();
 			for (int i = 0; i < n-1; i++) {
 				// Multiply n-1 times
 				coefficientsMatrix = preparedMatrix * coefficientsMatrix;
 			}
 
 			// Calculate new K using Ackermann's formula
-			K = unityVector * controllabilityMatrix.inverse() * coefficientsMatrix;
+			K = unityVector * controllabilityMatrix.Inverse() * coefficientsMatrix;
 		}
 
 		protected double[] makeLowPass()
@@ -333,12 +346,14 @@ namespace KITT_Drive_dotNET
 			YBuffer.Add(y * 100);
 			VBuffer.Add(v);
 			RBuffer.Add(xRef.At(0, 0) * 100);
+			XBuffer.Add(x.At(0,0) * 100);
 			if (TBuffer.Count == MaxPlotDataPoints)
 			{
 				TBuffer.RemoveAt(0);
 				YBuffer.RemoveAt(0);
 				VBuffer.RemoveAt(0);
 				RBuffer.RemoveAt(0);
+				XBuffer.RemoveAt(0);
 			}
 
 			Data.MainViewModel.AutoControlViewModel.UpdatePlot();

@@ -21,7 +21,24 @@ namespace KITT_Drive_dotNET
 			A = DenseMatrix.OfArray(new double[,] { { 0, 1, 0 }, { 0, -Data.RollingResistance / Data.Mass, c / Data.Mass }, { 0, -c / Data.MotorInductance, -Data.MotorResistance / Data.MotorInductance } });
 			B = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 }, { 1 / Data.MotorInductance } });
 			C = DenseMatrix.OfArray(new double[,] { { 1, 0, 0 } });
-			x = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 } });
+			placeCompensatorPoles(-3);
+			L = DenseMatrix.OfArray(new double[,] { { 7.02 }, { 12.4297 }, { -24.3143 } });
+			x = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 }, { 0 } });
+			scale = 0.2;
+		}
+
+		public Model3AutoControl(double scale, double weight, double gear)
+		{
+			double c = Data.MotorConstant / Data.WheelRadius / gear; //Gyration constant
+
+			//Build model specific matrices
+			A = DenseMatrix.OfArray(new double[,] { { 0, 1, 0 }, { 0, -Data.RollingResistance / weight, c / weight }, { 0, -c / Data.MotorInductance, -Data.MotorResistance / Data.MotorInductance } });
+			B = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 }, { 1 / Data.MotorInductance } });
+			C = DenseMatrix.OfArray(new double[,] { { 1, 0, 0 } });
+			placeCompensatorPoles(-3);
+			L = DenseMatrix.OfArray(new double[,] { { 7.02 }, { 12.4297 }, { -24.3143 } });
+			x = DenseMatrix.OfArray(new double[,] { { 0 }, { 0 }, { 0 } });
+			this.scale = scale;
 		}
 		#endregion
 	}

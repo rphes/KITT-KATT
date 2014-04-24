@@ -26,6 +26,8 @@ namespace KITT_Drive_dotNET
 			Data.MainViewModel.ControlViewModel.PropertyChanged += Drive_PropertyChanged;
 			this.Closing += MainWindow_Closing;
 
+			MathNet.Numerics.Control.LinearAlgebraProvider = new MathNet.Numerics.Algorithms.LinearAlgebra.Mkl.MklLinearAlgebraProvider();
+
 			throttleTimer = new DispatcherTimer();
 			throttleTimer.Tick += ThrottleTimer_Tick;
 			steerTimer = new DispatcherTimer();

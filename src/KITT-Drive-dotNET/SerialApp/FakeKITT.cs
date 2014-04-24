@@ -18,7 +18,7 @@ namespace SerialApp
 		public void CalculateNewState()
 		{
 			double distancedriven;
-			TimeSpan delta = DateTime.Now - timestamp;
+			TimeSpan delta = new TimeSpan(0, 0, 0, 0, 50);//DateTime.Now - timestamp;
 			timestamp = DateTime.Now;
 			distancedriven = -speed * delta.TotalSeconds * multiplier;
 			distance += distancedriven;
