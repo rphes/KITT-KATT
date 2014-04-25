@@ -1,0 +1,62 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+
+\chapter{Assignment 1}
+\section{Task 1}
+
+Following the definition for the characteristic impedance $Z_0$ and substituing $Z_s=\frac{1}{j\omega C}$ and $Z_p=j\omega L$ gives:
+\begin{eqnarray}
+Z_0=\frac{Z_s}{2} + \sqrt{\frac{Z_s^2}{4}+Z_sZ_p} \\
+Z_0 = \frac{1}{2j\omega C} + \sqrt{\frac{L}{C}-\frac{1}{4\omega^2C^2}} 
+\end{eqnarray}
+
+For the propagation co\"efficient we have $\gamma = 1-\frac{Z_s}{Z_0}$, in which $Z_s$ and $Z_0$ may be substituted and the result simplified:
+\begin{eqnarray}
+\gamma = 1 - \frac{1}{j\omega C}\cdot\frac{1}{\frac{1}{2\omega C}+\sqrt{\frac{L}{C}-\frac{1}{4\omega^2C^2}}} \\
+= 1 - \frac{1}{\frac{1}{2}+\sqrt{\frac{1}{4}-LC\omega^2}} = \frac{-\frac{1}{2}+\sqrt{\frac{1}{4}-LC\omega^2}}{\frac{1}{2}+\sqrt{\frac{1}{4}-LC\omega^2}}
+\end{eqnarray}
+
+From this last equality, the frequency behaviour of the ladder network may be obtained:
+if $\omega\geq\sqrt{\frac{1}{4LC}}$ the result of $\sqrt{\frac{1}{4}-LC\omega^2}$ is an imaginary number which we shall call $jX$.
+\begin{eqnarray}
+\lvert\gamma\rvert = \frac{\lvert -\frac{1}{2}+jX \rvert}{\lvert \frac{1}{2}+jX \rvert} = \frac{\sqrt{\frac{1}{4}+X^2}}{\sqrt{\frac{1}{4}+X^2}}=1
+\end{eqnarray}
+
+if $\omega < \sqrt{\frac{1}{4LC}}$ the result of $\sqrt{\frac{1}{4}-LC\omega^2}$ is a positive real number which we shall call $X$.
+\begin{eqnarray}
+\lvert\gamma\rvert = \frac{\lvert -\frac{1}{2}+X \rvert}{\lvert \frac{1}{2}+X \rvert}
+\end{eqnarray}
+Since $X$ is positive, $\lvert\gamma\rvert < 1$ for all $\omega < \sqrt{\frac{1}{4LC}}$. 
+
+Now it can be concluded that the ladder network is a high pass network because the transfer is unity for high frequencies and less than one for low frequencies. This was also expected because the ladder network described in section 5.1.2 of the reader is a low pass filter and in this scenario the inductor and capacitor have changed places, yielding the dual case: a high pass filter. The crossover frequency is the frequency on the border of unity gain and lower gain; $\omega_0=\sqrt{\frac{1}{4LC}}$.
+
+\section{Task 2}
+The general equation for the voltage across the channel is 
+\begin{equation}
+V(z,t)=U(t-\gamma z) + \Gamma U(t+\gamma(z-2l))-\Gamma U(t-\gamma(z+2l))-\Gamma^2U(t+\gamma(z-4l))\dots
+\end{equation}
+In which $\Gamma=\frac{Z_l-Z_0}{Z_l+Z_0}$.
+
+For the case when at $z=l$ the terminal is open, $Z_l \to \infty$ and in the equation for $\Gamma$ $Z_0$ becomes negligible. Therefore, $\Gamma=1$ and 
+\begin{equation}
+V(z,t)=U(t-\gamma z) + U(t+\gamma(z-2l))- U(t-\gamma(z+2l))- U(t+\gamma(z-4l))\dots
+\end{equation}
+
+For the case when at $z=l$ the terminal is shorted, $Z_l \to 0$ and $\Gamma=-1$. Thus 
+\begin{equation}
+V(z,t)=U(t-\gamma z) - U(t+\gamma(z-2l))+U(t-\gamma(z+2l))-U(t+\gamma(z-4l))\dots
+\end{equation}
+
+
+\section{Task 3}
+
+
+\section{Task 4}
+
+\end{document}
