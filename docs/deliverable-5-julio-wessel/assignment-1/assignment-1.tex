@@ -138,7 +138,13 @@ As both $Z_l$ and $Z_0$ are frequency-independent, $\Gamma$ is also frequency-in
 	&= \int_{-\infty}^{\infty} P(f) df.
 \end{align}
 
-We are dealing with a time limited signal. This means that $E[y(t)^2]=0$. Therefore it makes sense to discuss the signal's energy instead of power. The ESD of a signal is derived in a same manner as the PSD.
+We are dealing with a time limited signal. This means that $E[y(t)^2]=0$ and 
+
+\begin{equation}
+	\int_{-\infty}^{\infty} y(t)^2 dt < \infty.
+\end{equation}
+
+Therefore it makes sense to discuss the signal's energy instead of power. The ESD of a signal is derived in a same manner as the PSD.
 
 \begin{align}
 	E_l &= \lim_{T \to \infty} \int_{-T/2}^{T/2} |y(t)|^2 dt, \label{eq:ass-1-psd-lim} \\
@@ -167,5 +173,13 @@ Figure \ref{fig:ass-1-peaks} shows the peaks of Figure \ref{fig:ass-1-esd}. We i
 We can interpret these peaks in another way. The load at the end of the channel can be considered an anti-node in the case of standing waves. The amplitude swing of the signal is the largest at anti-nodes. We expect therefore that the frequencies which contain the most energy, correspond with standing waves.
 
 We can approximate the energy transferred by approximating the limit in Equation \ref{eq:ass-1-esd-lim}. Approximating yields an input energy of $4.99 \cdot 10^{-10} \text{ J}$. The actual energy of the input signal is given by $V_{\text{max}}^2 t_w =5 \cdot 10^{-10} \text{ J}$. This confirms our method of calculation. In a same manner is the output energy approximated by $1.35 \cdot 10^{-10} \text{ J}$. This yields an efficiency of $\eta\approx0.27$.
+
+There is another method to calculate the energy delivered to the load. The normalized instantaneous power delivered is given by
+
+\begin{align}
+	P(t)=V^2(t,z)|_{z=l}=\left((1+\Gamma)U(t- \gamma l) - \Gamma (1+ \Gamma) U(t - 3 \gamma  l) + \dots\right)^2.
+\end{align}
+
+This expression can be integrated to calculate the total delivered energy. However, this method is far less exciting.
 
 \end{document}
