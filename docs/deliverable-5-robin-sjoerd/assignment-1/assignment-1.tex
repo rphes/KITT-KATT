@@ -55,7 +55,20 @@ V(z,t)=U(t-\gamma z) - U(t+\gamma(z-2l))+U(t-\gamma(z+2l))-U(t+\gamma(z-4l))\dot
 
 
 \section{Task 3}
+The characteristic impedance may be found using the formula $Z_0=\sqrt{\frac{L_0}{C_0}}$. For this particular case it gives $Z_0=\sqrt{\frac{0.5\cdot10^-6}{2\cdot10^-9}}=15.8\Omega$. 
 
+The space-time plot of the voltage in the line is given in figure --insert data v.png--. This plot was obtained using the given \texttt{MATLAB} function \texttt{bscan\_plot.m} along with some computations: $\Gamma=\frac{Zl-Z0}{Zl+Z0}$, a \texttt{MATLAB} function for calculating the voltage at $x=0$ at a given time \texttt{U.m} and a \texttt{MATLAB} function for calculating $V(z,t)$ for a given $z,t$, \texttt{V.m}. Source code of these files may be found in --insert m files in appendix-- and they are referenced in the main program: \texttt{task3.m}.
+
+Interesting to note about the voltage is that it moves back and forth throughout the transmission line: positive in the way from $x=0$ to $x=1.2$m and negative on its way back. The voltage is $\pm1 $V throughout the line, except at the load, where it is lower. However, because power is dissipated, the voltage does fade over time.
+
+The space-time plot of the current in the transmission line is given in figure --inserv data I.png--. The code used to create this plot is also in \texttt{task3.m}. Interestingly, there are two ways of calculating the current from equations (5.13) and (5.14) in the EPO manual, either by spatially integrating the voltage (5.13) or by integrating the voltage with respect to time (5.14). We chose the former, in the following way:
+\begin{eqnarray}
+\frac{\partial I(z,t)}{\partial z}=-C_0\frac{\partial V(z,t)}{\partial t} = I(z,t)=-C_0\int \! \frac{\partial V(z,t)}{\partial t}\, \mathrm{d}z \\
+\approx -C_0\sum\frac{V(z,t+\Delta t)-V(z,t)}{\Delta t}\Delta z
+\end{eqnarray}
+In this way, $I(z,t)$ can be approximated by numerically integrating the voltage. 
+
+The current plot also has some interesting features: it also produces traveling waves back and forth through the line although the current is positive at all times. It can also be seen that the initial condition $I(0,0)$ holds: the current is zero at the beginning. Moreover the current does not instantaniously change after $t=0$ as expected. Just as the voltage, the current also fades over time.
 
 \section{Task 4}
 
