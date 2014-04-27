@@ -10,11 +10,11 @@
 
 % Single graph
 
-% x = [1 2 3 4 5];
-% y = [1 2 4 5 5];
-% LineStyle = '-';
+% x = {[1 2 3 4 5]};
+% y = {[1 2 4 5 5]};
+% LineStyle = {'-'};
 % LineColor = [1 0 0];
-% MarkerStyle = 'o';
+% MarkerStyle = {'o'};
 % MarkerColor = [.75 .75 .75];
 % legendText = {'line'};
 % makeLegend = 'yes';
@@ -23,11 +23,11 @@
 
 % Multiple graphs
 
-% x = [[1 2 3 4 5];[1 2 3 4 5]]
-% y = [[1 2 3 4 5];[1 4 6.2 4 2]]
-% LineStyle = ['-';'-']
+% x = {[1 2 3 4 5],[1 2 3 4 5]}
+% y = {[1 2 3 4 5],[1 4 6.2 4 2]}
+% LineStyle = {'-';'-'}
 % LineColor = [[1 0 0];[0 1 0]];
-% MarkerStyle = ['o';'o'];
+% MarkerStyle = {'o','o'};
 % MarkerColor = [[.75 .75 .75];[.75 .75 .75]];
 % legendText = {'line1', 'line2'};
 % makeLegend = 'yes';
@@ -60,20 +60,20 @@ figure('Units', 'pixels',...
     width*100 height*100]);
 hold on;
 
-hData = zeros(size(x,1));
+hData = zeros(length(x));
 
-for i = 1:size(x,1)
-    xData = x(i,:);
-    yData = y(i,:);
+for i = 1:length(x)
+    xData = x{i};
+    yData = y{i};
     
     hData(i) = line(xData, yData);
 
     % Esthetical line properties
     set(hData(i),...
-        'LineStyle', LineStyle(i),...
+        'LineStyle', LineStyle{i},...
         'Color', LineColor(i,:),...
         'LineWidth', 1.5,...
-        'Marker', MarkerStyle(i),...
+        'Marker', MarkerStyle{i},...
         'MarkerSize', 8,...
         'MarkerEdgeColor', [0 0 0],...
         'MarkerFaceColor', MarkerColor(i,:));

@@ -1,0 +1,20 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../library/bibliography.bib}
+
+\begin{document}
+\begin{appendices}
+\renewcommand{\chapternumber}{\appendixname\space\thechapter}
+
+\chapter{Matlab code}
+\label{app:matlab}
+This chapter contains the Matlab code used to calculate the cable length.
+
+\includecode[matlab]{algorithm.m}{resource/algorithm.m}{lst:algorithm.m}
+\includecode[matlab]{parms.m}{resource/parms.m}{lst:parms.m}
+
+\end{appendices}
+\end{document}

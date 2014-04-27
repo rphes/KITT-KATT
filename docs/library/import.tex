@@ -63,3 +63,7 @@
 \let\vec\vecold
 \newcommand{\vec}[1]{\mathbf{\underline{#1}}}
 \newcommand{\tr}[1]{#1^{\text T}} % Transposed
+
+% Bugfix for \pm in xelatex OS X -.-
+\let\pm\pmold
+\newcommand{\pm}{\mathbin{\tikz [x=1.4ex,y=1.4ex,line width=.1ex] \draw (0.0,0) -- (1.0,0) (0.5,0.08) -- (0.5,0.92) (0.0,0.5) -- (1.0,0.5);}}
