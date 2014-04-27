@@ -1,0 +1,61 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+
+\chapter{Assignment 2}
+\section{Task 1}
+For calculating the length of a transmission line $l$ using an input impedance $Z_{in}$ measured at only a single frequency, we can solve the given equation \cite[67]{epo4-manual}: 
+
+\begin{equation}
+\label{eq:ass2-Zin}
+	Z_{in}(l) = Z_0 \frac{Z_L+jZ_0\mathrm{tan}(\beta l)}{Z_0+jZ_L\mathrm{tan}(\beta l)},
+\end{equation}
+
+with $Z_0$ the characteristic impedance of the line, $Z_L$ the load impedance and $\beta$ the wavenumber; for $l$, to obtain:
+
+\begin{equation}
+\label{eq:ass2-l}
+	l = \frac{1}{\beta}\left[\mathrm{arctan}\left(\frac{Z_0 (Z_L - Z_{in})}{j(Z_L Z_{in} - Z_0^2)}\right) + k\pi\right], \quad k \in \mathbb{Z}.
+\end{equation}
+
+We see that, due to the periodic function, a given $Z_{in}$ will yield an infinite number of possible solutions for $l$. This means some prior knowledge about the possible line length is needed for it to be unambiguous. This yields an unambiguous range of exactly one period of the original tan-function, being $\frac{\pi}{\beta}$.
+\\
+\\
+When we know the input impedance of the line at two or more frequencies, we could ideally compare the different result sets for $l$ and determine their common value(s). If using frequencies that are integer multiples of each other, these results sets have more than one common value and thus are not unambiguous, since each of the tangent functions shares a common period divider $\beta$. The unambiguous range then becomes $\mathrm{max}\left(\frac{\pi}{\beta_1}, \frac{\pi}{\beta_2}, ... , \frac{\pi}{\beta_n}\right)$, where $n$ is the number of performed measurements. When this is not the case, the result sets will intersect at a unique value of $l$.
+
+\section{Task 2}
+In reality, measuring the input impedance with infinite accuracy is not possible, so the result sets of several measurements will probably not actually intersect.
+\\
+Still, we can use the results of several measurements to calculate the value of $l$ that is most likely. A way to do this is to write a program (e.g. in MATLAB) that calculates the total deviation for each possible combination of lengths from the different result sets and returns the mean of the values that were closest to each other. The most simple way to do this, is writing a brute-force algorithm, that just tries every single combination and outputs the best result. The scripts we wrote to do this can be found in Appendix~\ref{appsec:bruteforce} and have the following output for the given measurement data:
+
+\begin{verbatim}
+Calculating possible lengths...
+Starting brute-force...
+Will iterate 24803064 times
+Done in 27.315 seconds
+Transmission line length is 1.25 m
+\end{verbatim}
+
+We see this takes quite long because of the high number of iterations, given by the product of the lengths of each set of possible lengths, which will be something like $\operatorname{O}(n^3)$. We get a result nonetheless (which can be proved to be correct by substuting in \ref{eq:ass2-Zin}), but it is hardly elegant.
+\\
+\\
+There is a smarter way to do this. From Equation~\ref{eq:ass2-l} we can deduce that every value $x_k$ in an arbitrary solution set will always consist of a constant part and a part that increases linearly with $k$, which can be written as
+
+\begin{equation}
+	x_k = a_x + b_x k.
+\end{equation}
+
+Because of this, for a given solution $x_i$ from an arbitrary solution set $\mathcal{L_1}$, there will be only one solution $y_i$ from another solution set $\mathcal{L_2}$ that is close enough to $x_i$ ($|x_i-y_i|$ is minimal). Because of linearity, this $y_i$ can be easily calculated:
+
+\begin{equation}
+	y_i = a_y + b_y \mathrm{round}\left(\frac{x_i-a_x}{b_x}\right).
+\end{equation}
+
+We can write a program that utilizes this equation to calculate the correct length (\SI{1.25}{m}) in linear time ($\operatorname{O}(n)$), which is significantly faster than the previously discussed algorithm. The used program can be found in Appendix~\ref{appsec:smart}.
+	
+\end{document}
