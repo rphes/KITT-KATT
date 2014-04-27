@@ -41,6 +41,21 @@ Done in 27.315 seconds
 Transmission line length is 1.25 m
 \end{verbatim}
 
-We see this takes quite long because of the high number of iterations, given by the product of the lengths of each set of possible lengths. We get a result nonetheless (which can be proved to be correct by substuting in \ref{eq:ass2-Zin}), but it is hardly elegant.
+We see this takes quite long because of the high number of iterations, given by the product of the lengths of each set of possible lengths, which will be something like $\operatorname{O}(n^3)$. We get a result nonetheless (which can be proved to be correct by substuting in \ref{eq:ass2-Zin}), but it is hardly elegant.
+\\
+\\
+There is a smarter way to do this. From Equation~\ref{eq:ass2-l} we can deduce that every value $x_k$ in an arbitrary solution set will always consist of a constant part and a part that increases linearly with $k$, which can be written as
 
+\begin{equation}
+	x_k = a_x + b_x k.
+\end{equation}
+
+Because of this, for a given solution $x_i$ from an arbitrary solution set $\mathcal{L_1}$, there will be only one solution $y_i$ from another solution set $\mathcal{L_2}$ that is close enough to $x_i$ ($|x_i-y_i|$ is minimal). Because of linearity, this $y_i$ can be easily calculated:
+
+\begin{equation}
+	y_i = a_y + b_y \mathrm{round}\left(\frac{x_i-a_x}{b_x}\right).
+\end{equation}
+
+We can write a program that utilizes this equation to calculate the correct length (\SI{1.25}{m}) in linear time ($\operatorname{O}(n)$), which is significantly faster than the previously discussed algorithm. The used program can be found in Appendix~\ref{appsec:smart}.
+	
 \end{document}
