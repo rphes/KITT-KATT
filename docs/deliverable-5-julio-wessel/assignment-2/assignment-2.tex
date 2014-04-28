@@ -26,7 +26,9 @@ Solving for $l$ yields
 	l &= a_i + b_i k_i + c_i j \text{ where } k_i \in \mathbb{Z}.
 \end{align}
 
-If we consider a real-world sitation, then the length of the cable should be real. Therefore, $l=a_i+b_i k_i \in \mathcal{L}_i$. Obviously, this corresponds to infinitely many cable lengths, which is not what we wanted. Using two measurements $\mathcal{L}_1$ and $\mathcal{L}_2$ with different frequencies, one could determine $\mathcal{L}_1 \cap \mathcal{L}_2 = \mathcal{L}_3$ to reduce the number of solutions. However, if $\beta_{1} l \neq \beta_{2} l + k \pi$, $k \in \mathbb{Z}$, then one can show that $|\mathcal{L}_3|=1$ and determine the actual cable length.
+If we consider a real-world sitation, then the length of the cable should be real. Therefore, $l=a_i+b_i k_i \in \mathcal{L}_i$. Obviously, this corresponds to infinitely many cable lengths, which is not what we wanted. Using two measurements $\mathcal{L}_1$ and $\mathcal{L}_2$ with different frequencies, one could determine $\mathcal{L}_1 \cap \mathcal{L}_2 = \mathcal{L}_3$ to reduce the number of solutions. If $|\mathcal{L}_3|=1$, then we have uniquely determined the length. However, this will most certainly be not the case, as we are dealing with periodic functions. By using the common period of $\tan{(\beta_1)}$ and $\tan{(\beta_2)}$ in combination with the spacing between the solutions in that period, one can determine a unambiguous range.
+
+%However, if $\beta_{1} l \neq \beta_{2} l + k \pi$, $k \in \mathbb{Z}$, then one can show that $|\mathcal{L}_3|=1$ and determine the actual cable length.
 
 \section{Task 2}
 Let us consider the case in which we have three finite sets $\mathcal{L}_1$, $\mathcal{L}_2$ and $\mathcal{L}_3$ whose elements have insufficient accuracy, which means that $\mathcal{L}_1 \cap \mathcal{L}_2 \cap \mathcal{L}_3 = \emptyset$, and we want to guess the cable length. This means we want to find a $y \in \mathcal{L}_1 \cup \mathcal{L}_2 \cup \mathcal{L}_3$ for which $\epsilon(y)$ is minimal, where
