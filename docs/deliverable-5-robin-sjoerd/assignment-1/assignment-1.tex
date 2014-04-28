@@ -68,7 +68,7 @@ The space-time plot of the current in the transmission line is given in figure -
 \end{eqnarray}
 In this way, $I(z,t)$ can be approximated by numerically integrating the voltage. 
 
-The current plot also has some interesting features: it also produces traveling waves back and forth through the line although the current is positive at all times. It can also be seen that the initial condition $I(0,0)$ holds: the current is zero at the beginning. Moreover the current does not instantaniously change after $t=0$ as expected. Just as the voltage, the current also fades over time.
+The current plot also has some interesting features: it also produces traveling waves back and forth through the line although the current is positive at all times. It can also be seen that the initial condition $I(0,0)=0$ holds: the current is zero at the beginning. Moreover the current does not instantaniously change after $t=0$ as expected. Just as the voltage, the current also fades over time.
 
 \section{Task 4}
 The general reflection co\"efficient is given by 
@@ -80,5 +80,9 @@ which in this case reduces to
 \Gamma = \frac{Z_l-Z_0}{Z_l+Z_0}=\frac{50+j50-15.8}{50+j50+15.8}=0.70+j0.23
 \end{equation}
 because the latter is frequency independent.
+
+Assuming the same feeding voltage pulse as in the previous exercise, we can Fourier transform the expression and use it to calculate $V(z,j\omega)$ using equation (5.29) in the EPO manual along with the found $\Gamma$ and the fact that $\beta=\omega\gamma=\omega\sqrt{C_0L_0}$. Since $U(t)=\epsilon(t)-\epsilon(t-t_w)$, $U(j\omega)=(\pi\delta(\omega)+\frac{1}{j\omega})(1-e^{-j\omega t_w})$.
+
+Given the above, we can use \texttt{MATLAB} to create a Bode (magnitude) plot for $V(z,j\omega)\mid_{z=l=1.2}$. The code can be found in the appendix. (todo: insert matlab code, insert images). 
 
 \end{document}
