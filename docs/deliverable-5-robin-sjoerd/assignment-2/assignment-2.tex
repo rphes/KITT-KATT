@@ -20,10 +20,10 @@ with $Z_0$ the characteristic impedance of the line, $Z_L$ the load impedance an
 
 \begin{equation}
 \label{eq:ass2-l}
-	l = \frac{1}{\beta}\left[\mathrm{arctan}\left(\frac{Z_0 (Z_L - Z_{in})}{j(Z_L Z_{in} - Z_0^2)}\right) + k\pi\right], \quad k \in \mathbb{Z}.
+	l(Z_{in}) = \frac{1}{\beta}\left[\mathrm{arctan}\left(\frac{Z_0 (Z_L - Z_{in})}{j(Z_L Z_{in} - Z_0^2)}\right) + k\pi\right],
 \end{equation}
 
-We see that, due to the periodic function, a given $Z_{in}$ will yield an infinite number of possible solutions for $l$. This means some prior knowledge about the possible line length is needed for it to be unambiguous. This yields an unambiguous range of exactly one period of the original tan-function, being $\frac{\pi}{\beta}$.
+in which $k$ is an integer value limited by the condition that $0 \le l \le l_{max}$. We see that, due to the periodic function, a given $Z_{in}$ will yield an infinite number of possible solutions for $l$. This means some prior knowledge about the possible line length is needed for it to be unambiguous. This yields an unambiguous range of exactly one period of the original tangent-function, being $\frac{\pi}{\beta}$.
 \\
 \\
 When we know the input impedance of the line at two or more frequencies, we could ideally compare the different result sets for $l$ and determine their common value(s). If using frequencies that are integer multiples of each other, these results sets have more than one common value and thus are not unambiguous, since each of the tangent functions shares a common period divider $\beta$. The unambiguous range then becomes $\mathrm{max}\left(\frac{\pi}{\beta_1}, \frac{\pi}{\beta_2}, ... , \frac{\pi}{\beta_n}\right)$, where $n$ is the number of performed measurements. When this is not the case, the result sets will intersect at a unique value of $l$.
@@ -36,15 +36,15 @@ Still, we can use the results of several measurements to calculate the value of 
 \begin{verbatim}
 Calculating possible lengths...
 Starting brute-force...
-Will iterate 24803064 times
-Done in 27.315 seconds
+Will iterate 24467300 times
+Done in 24.8451 seconds
 Transmission line length is 1.25 m
 \end{verbatim}
 
-We see this takes quite long because of the high number of iterations, given by the product of the lengths of each set of possible lengths, which will be something like $\operatorname{O}(n^3)$. We get a result nonetheless (which can be proved to be correct by substuting in \ref{eq:ass2-Zin}), but it is hardly elegant.
+We see this takes quite long because of the high number of iterations, given by the product of the number of possible lengths (within the given range) in each result set, which will be something like $\operatorname{O}(n^3)$. We get a result nonetheless (which can be proved to be correct by substuting in \ref{eq:ass2-Zin}), but it is hardly elegant.
 \\
 \\
-There is a smarter way to do this. From Equation~\ref{eq:ass2-l} we can deduce that every value $x_k$ in an arbitrary solution set will always consist of a constant part and a part that increases linearly with $k$, which can be written as
+There is a smarter way to do this. From Equation~\ref{eq:ass2-l} we can deduce that every value $x_k$ in an arbitrary solution set will always consist of a constant part and a part that increases linearly with $k$, due to the tangent's periodicity. This can be written as
 
 \begin{equation}
 	x_k = a_x + b_x k.
