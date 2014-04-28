@@ -1,48 +1,85 @@
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
+%% XeLaTeX directive
+\usepackage{fontspec}
+
+%% Typesetting
+% Color
 \usepackage[svgnames]{xcolor} % Additional options: x11names, rgb
-\usepackage{fontspec} % XeLaTeX required!
-\usepackage{graphicx}
-\usepackage[american]{circuitikz}
-\usepackage{tikz}
-\usepackage{pifont}
+% Page backgrounds
 \usepackage[some]{background}
-\usepackage{xltxtra} 
+% Spacing between lines
 \usepackage{setspace}
+% Text placement
 \usepackage[absolute]{textpos}
+% Multilingual support
 \usepackage[english]{babel}
-\usepackage{graphicx}
-\usepackage{wrapfig}
+% Full page lay-out
 \usepackage{fullpage}
+% Flexible page lay-out
 \usepackage[margin=1in]{geometry}
-\usepackage{float}
+% URL support
 \usepackage{url}
-\usepackage{multicol}
+% Clickable hyperlinks
 \usepackage{hyperref}
+% Picture on title page
 \usepackage{titlepic}
-\usepackage{standalone}
+% SI Unit typesetting
 \usepackage{siunitx}
-\usepackage{booktabs}
+% Import individually compilable LaTeX (must come begore mathematics)
+\usepackage{standalone}
+\usepackage{import}
+% Mathematics
 \usepackage{mathtools}
 \usepackage{unicode-math}
+% Typewriter text
 \usepackage{verbatim}
+% List improvements
 \usepackage{enumitem}
-\usepackage{listings}
-\usepackage{multirow}
-\usepackage{pgfplots}
-\pgfplotsset{compat=newest}
-\usepackage{caption} 
+% No paragraph indent
 \usepackage[parfill]{parskip}
-\usepackage{import}
+
+% Bibliography
 \usepackage[backend=bibtexu,texencoding=utf8,bibencoding=utf8,style=ieee,sortlocale=en_GB,language=auto]{biblatex}
 \usepackage[strict,autostyle]{csquotes}
+
+% Include multiple PDF pages
 \usepackage[final]{pdfpages}
-\usepackage{subcaption}
+
+% Operating system checking
 \usepackage{ifplatform}
+
+% Appendix improvements
 \usepackage[toc,title,titletoc]{appendix}
+
+%% Graphics (figures, tables, schematics, diagrams, etc)
+% Includegraphics
+\usepackage{graphicx}
+% Figure wrapping
+\usepackage{wrapfig}
+% Improve floating objects
+\usepackage{float}
+% Caption improvents
+\usepackage{caption}
+% Allow for subcaptions in subfigures
+\usepackage{subcaption}
+
+% TikZ
+\usepackage{tikz}
+% TikZ plots
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+% TikZ circuit schematics
+\usepackage[american]{circuitikz}
+% TikZ Bondgraph drawing 
 \usepackage{bondgraph}
 
-%Source code inclusion
+% Table rows that span multiple columns and vice versa
+\usepackage{multicol}
+\usepackage{multirow}
+% Table improvents
+\usepackage{booktabs}
+
+% Source code inclusion
+\usepackage{listings}
 \newcommand{\includecode}[4][c]{\lstinputlisting[caption=#2, escapechar=, style=#1,label=#4]{#3}}
 \newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
 \newcommand{\subscript}[1]{\ensuremath{_{\textrm{#1}}}}
