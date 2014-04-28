@@ -10,7 +10,6 @@
 \usepackage{xltxtra} 
 \usepackage{setspace}
 \usepackage[absolute]{textpos}
-\usepackage[latin1]{inputenc}
 \usepackage[english]{babel}
 \usepackage{graphicx}
 \usepackage{wrapfig}
@@ -24,7 +23,7 @@
 \usepackage{standalone}
 \usepackage{siunitx}
 \usepackage{booktabs}
-\usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage{unicode-math}
 \usepackage{verbatim}
 \usepackage{enumitem}
@@ -42,7 +41,6 @@
 \usepackage{ifplatform}
 \usepackage[toc,title,titletoc]{appendix}
 \usepackage{bondgraph}
-
 
 %Source code inclusion
 \newcommand{\includecode}[4][c]{\lstinputlisting[caption=#2, escapechar=, style=#1,label=#4]{#3}}
@@ -63,7 +61,3 @@
 \let\vec\vecold
 \newcommand{\vec}[1]{\mathbf{\underline{#1}}}
 \newcommand{\tr}[1]{#1^{\text T}} % Transposed
-
-% Bugfix for \pm in xelatex OS X -.-
-\let\pm\pmold
-\newcommand{\pm}{\mathbin{\tikz [x=1.4ex,y=1.4ex,line width=.1ex] \draw (0.0,0) -- (1.0,0) (0.5,0.08) -- (0.5,0.92) (0.0,0.5) -- (1.0,0.5);}}
