@@ -41,7 +41,7 @@ Done in 24.8451 seconds
 Transmission line length is 1.25 m
 \end{verbatim}
 
-We see this takes quite long because of the high number of iterations, given by the product of the number of possible lengths (within the given range) in each result set, which will be something like $\operatorname{O}(n^3)$. We get a result nonetheless (which can be proved to be correct by substuting in \ref{eq:ass2-Zin}), but it is hardly elegant.
+We see this takes quite long, because of the high number of iterations, given by the product of the number of possible lengths (within the given range) in each result set, which will be something like $\operatorname{O}(n^3)$. We get a result nonetheless (which can be proved to be correct by substuting in \ref{eq:ass2-Zin}), but it is hardly elegant.
 \\
 \\
 There is a smarter way to do this. From Equation~\ref{eq:ass2-l} we can deduce that every value $x_k$ in an arbitrary solution set will always consist of a constant part and a part that increases linearly with $k$, due to the tangent's periodicity. This can be written as
