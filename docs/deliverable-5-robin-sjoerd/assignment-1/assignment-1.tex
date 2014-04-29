@@ -16,13 +16,13 @@ Z_0 &=\frac{Z_s}{2} + \sqrt{\frac{Z_s^2}{4}+Z_sZ_p} \nonumber \\
 &= \frac{1}{2j\omega C} + \sqrt{\frac{L}{C}-\frac{1}{4\omega^2C^2}} 
 \end{align}
 
-For the propagation co\"efficient we have $\gamma = 1-\frac{Z_s}{Z_0}$, in which $Z_s$ and $Z_0$ may be substituted and the result simplified:
+For the propagation coefficient we have $\gamma = 1-\frac{Z_s}{Z_0}$, in which $Z_s$ and $Z_0$ may be substituted and the result simplified:
 \begin{align}
 \gamma &= 1 - \frac{1}{j\omega C}\cdot\frac{1}{\frac{1}{2\omega C}+\sqrt{\frac{L}{C}-\frac{1}{4\omega^2C^2}}} \nonumber \\
 &= 1 - \frac{1}{\frac{1}{2}+\sqrt{\frac{1}{4}-LC\omega^2}} = \frac{-\frac{1}{2}+\sqrt{\frac{1}{4}-LC\omega^2}}{\frac{1}{2}+\sqrt{\frac{1}{4}-LC\omega^2}}
 \end{align}
 
-From this last equality, the frequency behaviour of the ladder network may be obtained:
+From this last equality, the frequency behavior of the ladder network may be obtained:
 if $\omega\geq\sqrt{\frac{1}{4LC}}$ the result of $\sqrt{\frac{1}{4}-LC\omega^2}$ is an imaginary number which we shall call $jX$.
 \begin{align}
 \lvert\gamma\rvert &= \frac{\lvert -\frac{1}{2}+jX \rvert}{\lvert \frac{1}{2}+jX \rvert} = \frac{\sqrt{\frac{1}{4}+X^2}}{\sqrt{\frac{1}{4}+X^2}}=1
@@ -43,7 +43,7 @@ V(z,t)=U(t-\gamma z) + \Gamma U(t+\gamma(z-2l))-\Gamma U(t-\gamma(z+2l))-\Gamma^
 \end{equation}
 in which $\Gamma=\frac{Z_l-Z_0}{Z_l+Z_0}$ from \cite[64]{epo4-manual}.
 
-For the case when at $z=l$ the terminal is open, $Z_l \to \infty$ and in the equation for $\Gamma$ $Z_0$ becomes negligible. Therefore, $\Gamma=1$ and 
+For the case when at $z=l$ the terminal is open, $Z_l \to \infty$ and $Z_0$ becomes negligible in the equation for~$\Gamma$. Therefore, $\Gamma=1$ and 
 \begin{equation}
 V(z,t)=U(t-\gamma z) + U(t+\gamma(z-2l))- U(t-\gamma(z+2l))- U(t+\gamma(z-4l))\dots
 \end{equation}
@@ -71,7 +71,7 @@ In this way, $I(z,t)$ can be approximated by numerically integrating the voltage
 The current plot also has some interesting features: it also produces traveling waves back and forth through the line although the current is positive at all times. It can also be seen that the initial condition $I(0,0)=0$ holds: the current is zero at the beginning. Moreover the current does not instantaneously change after $t=0$ as expected. Just as the voltage, the current also fades over time.
 
 \section{Task 4}
-The general reflection co\"efficient is given by 
+The general reflection coefficient is given by 
 \begin{equation}
 \hat{\Gamma}(s)=\frac{Z_l-Z_0}{Z_l+Z_0}
 \end{equation}
