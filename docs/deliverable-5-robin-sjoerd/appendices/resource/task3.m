@@ -16,7 +16,7 @@ for i=aantal_punten_z:-1:0
     for j=aantal_punten_t:-1:0
         for k=i:-1:0
             if j~=aantal_punten_t
-                Data_I(i+1,j+1)=Data_I(i+1,j+1)-C0*(1/aantal_punten_z)*((Data_V(k+1,j+2)-Data_V(k+1,j+1))/(tmax/aantal_punten_t));
+                Data_I(i+1,j+1) = Data_I(i+1,j+1) - C0*(1/aantal_punten_z)*((Data_V(k+1,j+2) - Data_V(k+1,j+1)) / (tmax/aantal_punten_t));
             end
         end
     end

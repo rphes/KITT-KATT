@@ -26,7 +26,7 @@ P.PhaseVisible='off';
 
 %% BEGIN full bode overview
 resp_bode=abs((pi*dirac(omega)+1./(1i*omega)).*(1-exp(1i*omega*tw)).*... %U_hat
-    (exp(-1i*gamma.*omega*l)+Gamma*exp(1i*gamma.*omega*(l-2*l)))./(1+Gamma*exp(-2*1i*gamma.*omega*l))).^2;
+    (exp(-1i*gamma.*omega*l) + Gamma*exp(1i*gamma.*omega*(l-2*l))) ./ (1+Gamma*exp(-2*1i*gamma.*omega*l))).^2;
 sys = frd(resp_bode,omega);
 figure(1)
 bode(sys,A)
@@ -60,8 +60,8 @@ uber_graph;
 
 
 %% BEGIN interesting part
-resp_interesting=abs((pi*dirac(omega_interesting)+1./(1i*omega_interesting)).*(1-exp(1i*omega_interesting*tw)).*... %U_hat
-    (exp(-1i*gamma.*omega_interesting*l)+Gamma*exp(1i*gamma.*omega_interesting*(l-2*l)))./(1+Gamma*exp(-2*1i*gamma.*omega_interesting*l))).^2;
+resp_interesting=abs((pi*dirac(omega_interesting) + 1./(1i*omega_interesting)) .* (1-exp(1i*omega_interesting*tw)).*... %U_hat
+    (exp(-1i*gamma.*omega_interesting*l) + Gamma*exp(1i*gamma.*omega_interesting*(l-2*l))) ./ (1+Gamma*exp(-2*1i*gamma.*omega_interesting*l))).^2;
 
 sys_int = frd(resp_interesting,omega_interesting);
 
@@ -70,7 +70,7 @@ bodeplot(sys_int,P)
 
 %% POWER transferred to load
 resp=@(omega) abs((pi*dirac(omega)+1./(1i*omega)).*(1-exp(1i*omega*tw)).*... %U_hat
-    (exp(-1i*gamma.*omega*l)+Gamma*exp(1i*gamma.*omega*(l-2*l)))./(1+Gamma*exp(-2*1i*gamma.*omega*l))).^2;
+    (exp(-1i*gamma.*omega*l) + Gamma*exp(1i*gamma.*omega*(l-2*l))) ./ (1+Gamma*exp(-2*1i*gamma.*omega*l))).^2;
 Eout=integral(resp,1e-11,1e13)
 
 Ein=Vmax^2*tw

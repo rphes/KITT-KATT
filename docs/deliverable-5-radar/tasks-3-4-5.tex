@@ -27,7 +27,7 @@ To determine the resolution of the radar demonstration, we placed two objects in
 	\end{tabular}
 \end{table}
 
-Table \ref{tab:ass-2-dist-obj} shows the results. The theoretical resolution was given by \SI{15}{cm}. We see that for \SI{1.0}{GHz} sweep rate the resolution is approximately constant, but a lot worse than the theoretical resolution. This is according to our expectations. We expected the practical resolution to be a lot lower than the theoretical resolution because of practical limitations.
+Table \ref{tab:ass-2-dist-obj} shows the results. The theoretical resolution was given by \SI{15}{cm}. We see that for \SI{1.0}{GHz} sweep rate the resolution is approximately constant, but a lot worse than the theoretical resolution. This is according to our expectations: we expected the practical resolution to be a lot lower than the theoretical resolution because of practical limitations.
 
 \begin{table}[H]
 	\centering
@@ -48,7 +48,7 @@ Table \ref{tab:ass-2-dist-obj} shows the results. The theoretical resolution was
 For \SI{0.5}{GHz} sweep rate we see that the resolution steadily decreases as the distance increases. This can be explained due to interference. Our radar was located in a hallway which was not ideal for radar experiments. Some details about the used measurement arrangement are shown in Table~\ref{tab:ass-2-arr}. Especially the doors and walls caused a lot of interference. Using the terminology of a pulse-delay ranging system, we conclude that the pulse width for \SI{0.5}{GHz} sweep rate was too large for the objects to be distinguised, influenced by all the noise due to the environment. As the distance increases, the received signal power decreases. However, the environment does not change, which means that the noise power stays approximately the same. Consequently, the signal-to-noise ratio decreases and therefore the resolution decreases.
 
 \section{Task 4}
-After we acquired the resolution of the radar at different distances, we tried to determine the azimuth half power beamwidth. We placed an object at a certain distance in the boresight of the radar. Then, by trial and error, we moved the object to the left or right, until the signal power dropped by a factor \SI{3}{dB}. If we denote the distance we moved the object at distance $R$ by $L_{\text{\SI{-3}{dB}}}$, then, by using trigonometric relations, the azimuth half power beamwidth $\beta$ is given by
+After we acquired the resolution of the radar at different distances, we tried to determine the azimuth half power beamwidth. We placed an object at a certain distance in the boresight of the radar. Then, by trial and error, we moved the object to the left or right, until the signal power dropped by a factor \SI{3}{dB}. If we denote the distance we moved the object at distance $R$ by $L_{\text{\SI{-3}{dB}}}$, then, by using trigonometric relations, the azimuth half power beam-width $\beta$ is given by
 
 \begin{equation}
 	\beta = 2 \arctan{\left(\frac{L_{\text{\SI{-3}{dB}}}}{R}\right)}.
@@ -58,7 +58,7 @@ After we acquired the resolution of the radar at different distances, we tried t
 
 \begin{table}[H]
 	\centering
-	\caption{Azimuth half power beamwidth at different distances}
+	\caption{Azimuth half power beam-width at different distances}
 	\label{tab:ass-2-az}
 	\begin{tabular}{c c c c}
 		\hline\hline
@@ -75,7 +75,7 @@ After we acquired the resolution of the radar at different distances, we tried t
 	\end{tabular}
 \end{table}
 
-Table~\ref{tab:ass-2-az} shows the results of the azimuth half power beamwidth measurements. Up to approximately \SI{3.00}{m} the angle increases. After this distance, the measured beamwidth stays approximately $1.6^\circ$. The odd behaviour of the half power beamwidth for small distances is due propagation effects and equipment non-idealities \cite{epo4-manual}. Evaluating the results of distances above \SI{3.00}{m} yields a $68\%$ confidence interval of the half power beamwidth given by $1.6^{\circ} \pm 0.5^{\circ}$.
+Table~\ref{tab:ass-2-az} shows the results of the azimuth half power beam-width measurements. Up to approximately \SI{3.00}{m} the angle increases. After this distance, the measured beam-width stays approximately $1.6^\circ$. The odd behaviour of the half power beam-width for small distances is due propagation effects and equipment non-idealities \cite{epo4-manual}. Evaluating the results of distances above \SI{3.00}{m} yields a $68\%$ confidence interval of the half power beam-width given by $1.6^{\circ} \pm 0.5^{\circ}$.
 
 \section{Task 5}
 If we consider an antenna which transmits a power $P_{TX}$, then, if the antenna gain is denoted by $G_{TX}$, the transmitted power to a surface $S_{RX}$ at a distance $x$ is given by	
@@ -99,7 +99,7 @@ This equation is of exponential form, which makes the coefficients $a$ and $b$ h
 	\log{(P(x))} &= \log{(a)} + b \log{(x)}.
 \end{align}
 
-Rewriting yields
+Rewriting for multiple measurements $x_1, x_2, ... x_n$ yields
 \begin{align}
 	\begin{bmatrix}
 		\log{(P(x_1))} \\
@@ -135,7 +135,7 @@ Using the data from Table~\ref{tab:ass-2-az}, we find that
 	\label{fig:ass-2-power}
 \end{figure}
 
-Figure~\ref{fig:ass-2-power} shows the results. Theory states that the exponent of Equation~\ref{eq:ass-2-exp} should be $-4$. The deviation from this theoretical value can be explained using the geometry of the measurement arrangement. Waves reflect on the walls and doors of the narrow hallway. These reflections are a source of noise, which adds up to the power measured. Therefore, the total power measured is higher than the power caused by reflections on the measurement object. As the measurment object is placed further away from the radar, the noise increases. As a consequence, the power caused by reflections on the measurement object seems higher than its actual value.
+Figure~\ref{fig:ass-2-power} shows the results. Theory states that the exponent of Equation~\ref{eq:ass-2-exp} should be $-4$. The deviation from this theoretical value can be explained using the geometry of the measurement arrangement. Waves reflect on the walls, doors and other entities (like heaters and pipes) present in the narrow hallway. These reflections are a source of noise, which adds up to the power measured. Therefore, the total power measured is higher than the power caused by reflections on the measurement object. As the measurement object is placed further away from the radar, the noise increases. As a consequence, the power caused by reflections on the measurement object seems higher than its actual value.
 
 Let us denote the power received at a distance $D$ by $P$. If we assume that $\operatorname{E}[P|D=x]=P(x)$, then, using a maximum-likelihood estimation, the standard deviation $\sigma$ is given by \num{15.8}, which is, considering the scale of the y-axis of Figure~\ref{fig:ass-2-power}, pretty bad.
 
