@@ -1,0 +1,31 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../library/import}
+\input{../library/style}
+\addbibresource{../library/bibliography.bib}
+
+\begin{document}
+\pagenumbering{roman}
+\inputfrom{title/}{title}
+
+\clearpage
+\tableofcontents
+
+\clearpage
+\pagenumbering{arabic}
+\inputfrom{assignment-1/}{assignment-1}
+
+\inputfrom{assignment-2/}{assignment-2}
+%tasks 3, 4 and 5
+\inputfrom{../deliverable-5-radar/}{tasks-3-4-5}
+
+\clearpage
+\pagenumbering{Roman}
+\printbibliography[heading=bibintoc]
+
+\clearpage
+\insertpdfpath{appendices}
+\inputfrom{appendices/}{appendices}
+
+\end{document}
