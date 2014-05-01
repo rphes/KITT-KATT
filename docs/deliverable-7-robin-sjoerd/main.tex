@@ -1,0 +1,34 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../library/import}
+\input{../library/style}
+\addbibresource{../library/bibliography.bib}
+
+\begin{document}
+\pagenumbering{roman}
+\inputfrom{title/}{title}
+
+\clearpage
+\tableofcontents
+
+\clearpage
+\pagenumbering{arabic}
+%INCLUDE ASSIGNMENT 1
+\inputfrom{assignment-1/}{labday-1}
+\inputfrom{assignment-1/}{labday-2}
+\inputfrom{assignment-1/}{labday-3}
+
+%INCLUDE ASSIGNMENT 2
+\inputfrom{assignment-2/}{labday-4}
+\inputfrom{assignment-2/}{labday-5}
+
+\clearpage
+\pagenumbering{Roman}
+\printbibliography[heading=bibintoc]
+
+\clearpage
+\insertpdfpath{appendices}
+\inputfrom{appendices/}{appendices}
+
+\end{document}
