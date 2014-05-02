@@ -7,7 +7,7 @@
 
 \begin{document}
 \pagenumbering{roman}
-\inputfrom{title/}{title}
+\subimport{title/}{title}
 
 \clearpage
 \tableofcontents
@@ -15,13 +15,13 @@
 \clearpage
 \pagenumbering{arabic}
 %INCLUDE ASSIGNMENT 1
-\inputfrom{assignment-1/}{labday-1}
-\inputfrom{assignment-1/}{labday-2}
-\inputfrom{assignment-1/}{labday-3}
+\subimport{assignment-1/}{labday-1}
+\subimport{assignment-1/}{labday-2}
+\subimport{assignment-1/}{labday-3}
 
 %INCLUDE ASSIGNMENT 2
-\inputfrom{assignment-2/}{labday-4}
-\inputfrom{assignment-2/}{labday-5}
+\subimport{assignment-2/}{labday-4}
+\subimport{assignment-2/}{labday-5}
 
 \clearpage
 \pagenumbering{Roman}
@@ -29,6 +29,6 @@
 
 \clearpage
 \insertpdfpath{appendices}
-\inputfrom{appendices/}{appendices}
+\subimport{appendices/}{appendices}
 
 \end{document}

@@ -247,3 +247,4 @@ pip-log.txt
 *.synctex.gz
 *.bib$
 *.gz(busy)
+*.sublime-workspace
