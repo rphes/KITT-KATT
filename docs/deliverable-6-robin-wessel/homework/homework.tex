@@ -8,7 +8,7 @@
 \begin{document}
 
 \chapter{Homework}
-Bandwidth is the range of frequencies which is used to describe a signal, often corresponding to the signal's highest frequency. The capacity of a channel is the  theoretical maximum reliable rate of information which can be achieved, in contrary to the data rate, which is the actual rate of information. If the average power of the signal is denoted by $S$, and the average power of the noise by $N$, then the bandwidth $B$ and capacity $C$ are related by the Shannon-Hartley theorem
+Bandwidth is the range of frequencies which is used to describe a signal, in baseband signals this is the signal's highest frequency. The capacity of a channel is the  theoretical maximum reliable rate of information which can be achieved, in contrary to the data rate, which is the actual rate of information. If the average power of the signal is denoted by $S$, and the average power of the noise by $N$, then the bandwidth $B$ and capacity $C$ are related by the Shannon-Hartley theorem
 
 \begin{equation}
 	C=B \log_2{\left(1+\frac{S}{N}\right)}.
@@ -35,6 +35,9 @@ Table \ref{tab:pros-cons} shows the pros and cons of digital modulation compared
 	\end{tabular}
 \end{table}
 
-A signal can be assigned to a carrier wave by modulation. This allows for efficient use of the spectrum as each signal is assigned its own range of frequencies. The quality of a signal is often described using its signal-to-noise ratio. The bit error rate is the ratio of the faulty received bits to the total received bits, which can be a good estimate for the bit error probability.
+A signal can be assigned to a carrier wave by modulation. This allows for efficient use of the spectrum as each signal is assigned its own range of frequencies. The quality of a signal is often described using its signal-to-noise ratio. The bit error rate is the ratio of received bits with errors to total bits received and is an indicator of transmission reliability. Causes of bit errors include transmission channel noise, distortion, interference and bit synchronization problems.
+-- answer to question 8 still required
+The modulated signal around $f_{\text{max}}$ can be characterized by a sine wave $s(t)=A\sin(2\pi f_{\text{max}}t)$ when the signal sent is ``$0$'' and $s(t)=0$ when the signal sent is ``$1$''.
+
 
 \end{document}
