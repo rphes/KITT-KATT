@@ -1,0 +1,34 @@
+\usetikzlibrary{shapes,arrows}
+\tikzstyle{block} = [
+	rectangle,
+	draw,
+	fill=blue!20, 
+    text width=7em, 
+    text centered,
+    rounded corners,
+    minimum height=4em
+]
+\tikzstyle{every edge} = [
+	draw,
+	>=triangle 90
+]
+
+\begin{tikzpicture}[node distance = 5cm, auto]
+	% Nodes
+	\node [block] (source) {Information source};
+	\node [block, right of=source] (encoding) {Encoding};
+	\node [block, right of=encoding] (modulation) {Modulation};
+	\coordinate [below of=encoding, node distance = 1.75cm, xshift=-0.7cm] (channel1);	
+	\node [block, below of=encoding, node distance = 4cm] (decoding) {Decoding};
+	\coordinate [above of=decoding, node distance = 1.75cm, xshift=0.7cm] (channel2);
+	\node [block, left of=decoding] (demodulation) {Demodulation};
+	\node [block, right of=decoding] (destination) {Destination};
+	% Edges
+	\path (source) edge [->] node {} (encoding);
+	\path (encoding) edge [->] node {} (modulation);
+	\path (modulation) edge [-] node {} (channel1);
+	\path (channel1) edge [-] node {Channel} (channel2);
+	\path (channel2) edge [->] node {} (demodulation);
+	\path (demodulation) edge [->] node {} (decoding);
+	\path (decoding) edge [->] node {} (destination);
+\end{tikzpicture}
