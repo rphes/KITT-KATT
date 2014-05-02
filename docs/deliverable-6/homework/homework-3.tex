@@ -1,0 +1,18 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+
+\chapter{Homework}
+\section{5}
+When a signal with some form of redundancy is received, the receiver can check if the original data matches with the added redundant data. If this is not the case, we \emph{detect} an error in the received signal. Then, if we have added enough redundant data to the original signal, it might be possible to reconstruct the original signal, so that it matches with the redundant data again. We have then \emph{corrected} the error.
+
+\section{6}
+For binary encoding a signal, we can use unipolar, polar and bipolar signaling. Unipolar and bipolar line code alternate between two levels: $0$ and $A$ for unipolar and $-A$ and $A$ for polar. Bipolar line code alternates between three levels: whenever we send a binary $0$, this will be mapped to $0$ too, but whenever a binary $1$ is sent, the mapped value will be either $A$ or $-A$ in an alternating manner, thus depending on the value it was previously mapped to.
+\\
+Apart from signal polarity, we can also differentiate between signal encoding using the return-to-zero and non-return-to-zero.
+\end{document}
