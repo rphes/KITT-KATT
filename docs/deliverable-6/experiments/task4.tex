@@ -8,8 +8,17 @@
 \begin{document}
 The \texttt{digmod\_gui.m} program was run several times without coding with a distance of \SI{10}{\centi \meter} such that the BER was 0.1. The decision threshold was discovered to be 0.2 for this result. The program was then run with Hamming coding and BCH coding and the BER noted. For each measurement, the time duration was also noted. The results are summarized in table \ref{tab:task4-diff-coding}.
 
-Hier komt een verklaring van de resultaten.
+From the results we can observe that for each type of coding without making use of the error correcting capabilities (e.g. the first column of table \ref{tab:task4-diff-coding}) the BER is around 0.1. This is to be expected because if no error correcting mechanism is enabled, the BER should be similar regardless of the message sent. When error correction is used, the BER without coding does not change because no error correction mechanism is employed. The Hamming coding improves (lowers) the BER by a factor 2. This means that about half of the errors, the errors still appearing after Hamming coding, are not due to single bit errors but must be caused by a block of errors at least two bits long because Hamming coding can all single bit errors.
+For the BCH coding the mutual distance is at least 7. This means that bit errors up and including length 2 can be corrected. This coding yields an improvement of more than a factor three, meaning more than two thirds of the original errors were due to bit errors not exceeding 2 bits in a 15 bit block.
 
+The error correction does come with a price: time. Using no coding method, the signal is 5 seconds long. Using Hamming coding the signal is 1.75 times longer because for each block of four bits another three bits are added. For BCH the time cost is higher yet, a factor three because every five bit block is appended with ten bits of extra information.
+
+Concluding, we can say that both Hamming code and BCH do work to improve the BER at the cost of adding redundancy. Both Hamming coding and BCH coding are more efficient than using no coding in the sense that the increase in time is less than the factor improvement in BER, which we can quantify as follows:
+\begin{align*}
+\eta_{\text{no coding}}&=1\\
+\eta_{\text{Hamming}}=\frac{\text{BER decrease factor}}{\text{time increase factor}}=\frac{2}{1.75}&=1.14\\
+\eta_{\text{BCH}}=\frac{\text{BER decrease factor}}{\text{time increase factor}}=\frac{\frac{10}{3}}{3}&=1.11
+\end{align*}
 \begin{table}[H]
 	\centering
 	\caption{BER for different codings with default \texttt{digmod\_gui} settings and decision threshold of 0.2.}
