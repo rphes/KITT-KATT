@@ -22,12 +22,12 @@ where we assume that $m_1(t)$ is a polar NRZ line code. The autocorrelation func
 	&=R_c(\tau) + \mu^2 R_c(\tau) R_m(\tau).
 \end{align*}
 Fourier transforming $R_s(\tau)$ yields
-\begin{align*}
-	\PSD{s(t)}(f) &= \F{R_s(\tau)} \\
-	&= \mu^2 \PSD{c(t)}(f) \ast \PSD{m_1(t)}(f) + \PSD{c(t)}(f) \\
-	&= \frac{A_c^2}{2} \delta(f-f_c) \ast \mu^2 \PSD{m_1(t)}(f) + \frac{A_c^2}{2} \delta(f-f_0) \\
-	&= \frac{A_c^2}{2} \left( \mu^2 \PSD{m_1(t)}(f-f_c) + \delta(f-f_c) \right).
-\end{align*}
+\begin{align}
+	\PSD{s(t)}(f) &= \F{R_s(\tau)} \nonumber \\
+	&= \mu^2 \PSD{c(t)}(f) \ast \PSD{m_1(t)}(f) + \PSD{c(t)}(f) \nonumber \\
+	&= \frac{A_c^2}{2} \delta(f-f_c) \ast \mu^2 \PSD{m_1(t)}(f) + \frac{A_c^2}{2} \delta(f-f_0) \nonumber \\
+	&= \frac{A_c^2}{2} \left( \mu^2 \PSD{m_1(t)}(f-f_c) + \delta(f-f_c) \right). \label{eq:psd-ask}
+\end{align}
 Let us now consider an FSK signal $s(t)=s_1(t)+s_2(t)$ where
 \begin{align*}
 	s_1(t) &= A_c m_2(t) \cos{(\omega_{c_1} t)} \text{ and } \\
@@ -53,27 +53,52 @@ Note that $s_1(t)$ and $s_2(t)$ are orthogonal.
 We can then calculate the autocorrelation function of $s(t)$.
 \begin{align*}
 	R_s(\tau)&=\E{(s_1(t)+s_2(t))(s_1(t+\tau)+s_2(t+\tau))} \\
-	&=R_{s_1}(\tau)+R_{s_1}(\tau)
+	&=R_{s_1}(\tau)+R_{s_2}(\tau)
 \end{align*}
 Fourier transforming yields
-\begin{align*}
-	\PSD{s_1(t)+s_2(t)} &= \F{R_{s_1}(\tau)}(f) + \F{R_{s_2}(\tau)}(f) \\
-	&= \PSD{s_1(t)}(f) + \PSD{s_2(t)}(f) \\
-	&= \frac{A_c^2}{2} \delta(f-f_{c_1}) \ast \PSD{m_2(t)}(f) + \frac{A_c^2}{2} \delta(f-f_{c_2}) \ast \PSD{m_2(t)}(f) + \frac{A_c^2}{2} \delta(f-f_{c_2}) \\
-	&= \frac{A_c^2}{2}\left( \PSD{m_2(t)}(f-f_{c_1}) + \PSD{m_2(t)}(f-f_{c_2}) + \delta(f-f_{c_2}) \right).
-\end{align*}
+\begin{align}
+	\PSD{s_1(t)+s_2(t)} &= \F{R_{s_1}(\tau)}(f) + \F{R_{s_2}(\tau)}(f) \nonumber \\
+	&= \PSD{s_1(t)}(f) + \PSD{s_2(t)}(f) \nonumber \\
+	&= \frac{A_c^2}{2} \delta(f-f_{c_1}) \ast \PSD{m_2(t)}(f) + \frac{A_c^2}{2} \delta(f-f_{c_2}) \ast \PSD{m_2(t)}(f) + \frac{A_c^2}{2} \delta(f-f_{c_2}) \nonumber \\
+	&= \frac{A_c^2}{2}\left( \PSD{m_2(t)}(f-f_{c_1}) + \PSD{m_2(t)}(f-f_{c_2}) + \delta(f-f_{c_2}) \right). \label{eq:psd-fsk}
+\end{align}
 We can now calculate the signal power of the evaluated ASK signal and FSK signal.
 \begin{align*}
 	\E{s_{\text{ASK}}^2(t)} &= \int_{-\infty}^{\infty} \PSD{s_{\text{ASK}}^2(t)}(f) df \\
 	&= \frac{A_c^2}{2} \int_{-\infty}^{\infty}\left( \mu^2 \PSD{m_1(t)}(f-f_c) + \delta(f-f_c) \right) df \\
-	&= \mu^2 \frac{A_c^2}{2}\E{m^2(t)} + \frac{A_c^2}{2}.
+	&= \mu^2 \frac{A_c^2}{2}\E{m_1^2(t)} + \frac{A_c^2}{2}.
 \end{align*}
 \begin{align*}
 	\E{s_{\text{FSK}}^2(t)} &= \int_{-\infty}^{\infty} s_{\text{FSK}}^2(t) df \\
 	&= \frac{A_c^2}{2} \int_{-\infty}^{\infty} \left( \PSD{m_2(t)}(f-f_{c_1}) + \PSD{m_2(t)}(f-f_{c_2}) + \delta(f-f_{c_2}) \right) df \\
 	&= A_c^2 \E{m_2^2(t)} + \frac{A_c^2}{2}
 \end{align*}
-We see that $\E{s_{\text{FSK}}^2(t)} > \E{s_{\text{ASK}}^2(t)}$ and therefore expect that $\left(\frac{S}{N}\right)_{\text{FSK}}>\left(\frac{S}{N}\right)_{\text{ASK}}$. Also blabla locatie delta pulses. Bespreek invloeden ook op spectrum van line codes. No worries, dit komt bijlage.
+Using Equation \ref{eq:psd-ask} and \ref{eq:psd-fsk} and the fact that the bandwidth of both line codes $m_1(t)$ and $m_2(t)$ is equal to the data rate $R$, we can conclude that the transmission bandwidths of $s_{\text{ASK}}(t)$ and $s_{\text{FSK}}(t)$ are given by
+\begin{align*}
+	B_{\text{ASK}} &= 2R \text{ and } \\
+	B_{\text{FSK}} &= 2(R + |f_{c_1} - f_{c_2}|) = 2(R + \Delta f).
+\end{align*}
+If we assume AWGN with a one-sided PSD of $N_0$, then the signal-to-noise ratio's are given by
+\begin{align*}
+	\left(\frac{S}{N}\right)_{\text{ASK}} &= \frac{\mu^2 \frac{A_c^2}{2}\E{m_1^2(t)} + \frac{A_c^2}{2}}{2RN_0}, \\
+	\left(\frac{S}{N}\right)_{\text{FSK}} &= \frac{A_c^2 \E{m_2^2(t)} + \frac{A_c^2}{2}}{2(R+\Delta f)N_0}.
+\end{align*}
+If we assume equal probability of the transmitted bits, then the signal powers are easy to calculate.
+\begin{align*}
+	\E{m_1^2(t)} &= \frac{1}{2} 1^2 + \frac{1}{2} (-1)^2=1, \\
+	\E{m_2^2(t)} &= \frac{1}{2} 1^2 + \frac{1}{2} 0^2=1/2.
+\end{align*}
+Substituting these results in the expressions for the signal-to-noise ratio's yields
+\begin{align*}
+	\left(\frac{S}{N}\right)_{\text{ASK}} &= \frac{A_c^2 (\mu^2+1)}{4RN_0}, \\
+	\left(\frac{S}{N}\right)_{\text{FSK}} &= \frac{A_c^2}{2(R+\Delta f)N_0}.
+\end{align*}
+We can now compare the obtained signal-to-noise ratio's.
+\begin{align*}
+	\frac{(S/N)_{\text{FSK}}}{(S/N)_{\text{ASK}}}=\frac{A_c^2}{2(R+\Delta f)N_0} \frac{4RN_0}{A_c^2 (\mu^2+1)}=\frac{R}{R+\Delta f}\frac{2}{\mu^2 + 1}
+\end{align*}
+We conclude that for very high bit rates ($R \gg \Delta f$) or low ASK modulation indices ($\mu < 1$) using FSK is most certainly advantageous.
+% Verhoudingen signaal vermogens en vergelijking SNRs. Also blabla locatie delta pulses. Bespreek invloeden ook op spectrum van line codes. No worries, dit komt bijlage.
 
 
 \end{document}
