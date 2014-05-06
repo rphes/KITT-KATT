@@ -1,0 +1,79 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\newcommand{\E}[1]{\operatorname{E}\left[#1\right]}
+\newcommand{\PSD}[1]{\operatorname{PSD}\left\{#1\right\}}
+\newcommand{\F}[1]{\mathcal{F}\left\{#1\right\}}
+
+\begin{document}
+\section{Task 2}
+Let us investigate the PSD of an ASK signal $s(t)$ given by
+\begin{equation*}
+	s(t) = A_c (1+\mu m_1(t)) \cos{(\omega_c t)}
+\end{equation*}
+where we assume that $m_1(t)$ is a polar NRZ line code. The autocorrelation function is given by
+\begin{align*}
+	R_s(\tau) &=\E{A_c (1+\mu m_1(t)) \cos{(\omega_c t)} A_c (1+\mu m_1(t+\tau)) \cos{(\omega_c (t+\tau))}} \\
+	&=\E{A_c \cos{(\omega_c t)} A_c \cos{(\omega_c (t+\tau))} }\left( 1 + \mu^2 \E{m_1(t)} \E{m_1(t+\tau)}+ \mu^2 \E{m_1(t) m_1(t+\tau)}\right) \\
+	&=R_c(\tau) + \mu^2 R_c(\tau) R_m(\tau).
+\end{align*}
+Fourier transforming $R_s(\tau)$ yields
+\begin{align*}
+	\PSD{s(t)}(f) &= \F{R_s(\tau)} \\
+	&= \mu^2 \PSD{c(t)}(f) \ast \PSD{m_1(t)}(f) + \PSD{c(t)}(f) \\
+	&= \frac{A_c^2}{2} \delta(f-f_c) \ast \mu^2 \PSD{m_1(t)}(f) + \frac{A_c^2}{2} \delta(f-f_0) \\
+	&= \frac{A_c^2}{2} \left( \mu^2 \PSD{m_1(t)}(f-f_c) + \delta(f-f_c) \right).
+\end{align*}
+Let us now consider an FSK signal $s(t)=s_1(t)+s_2(t)$ where
+\begin{align*}
+	s_1(t) &= A_c m_2(t) \cos{(\omega_{c_1} t)} \text{ and } \\
+	s_2(t) &= A_c (1-m_2(t)) \cos{(\omega_{c_2} t)}
+\end{align*}
+and we assume that $m_2(t)$ is a unipolar NRZ line code. Calculating the autocorrelation function of $s_1(t)$ yields
+\begin{align*}
+	R_{s_1}(\tau) &= \E{A_c m_2(t) \cos{(\omega_{c_1} t)} A_c m_2(t+\tau) \cos{(\omega_{c_1} (t+\tau))}} \\
+	&= R_{c_1}(\tau) R_{m}(\tau).
+\end{align*}
+Calculating the autocorrelation function of $s_2(t)$ yields
+\begin{align*}
+	R_{s_2}(\tau) &= \E{A_c (1-m_2(t)) \cos{(\omega_{c_2} t)} A_c (1-m_2(t+\tau)) \cos{(\omega_{c_2} (t+\tau))}} \\
+	&= \E{A_c\cos{(\omega_{c_2} t)} A_c \cos{(\omega_{c_2} (t+\tau))}}\left( 1 - \E{m_2(t)} - \E{m_2(t+\tau)} + \E{m_2(t)m_2(t+\tau)} \right) \\
+	&= \E{A_c\cos{(\omega_{c_2} t)} A_c \cos{(\omega_{c_2} (t+\tau))}}\left( 1 + \E{m_2(t)m_2(t+\tau)} \right) \\
+	&= R_{c_2}(\tau) + R_{c_2}(\tau) R_{m}(\tau).
+\end{align*}
+Note that $s_1(t)$ and $s_2(t)$ are orthogonal.
+\begin{align*}
+	R_{s_1,s_2}(\tau)&=\E{A_c m_2(t) \cos{(\omega_{c_1} t)} A_c (1-m_2(t)) \cos{(\omega_{c_2} (t+\tau))}} \\
+	&= \E{\cos{(\omega_{c_1} t)}\cos{(\omega_{c_2} (t+\tau))}} \E{A_c^2 m_2(t) (1-m_2(t))} = 0
+\end{align*}
+We can then calculate the autocorrelation function of $s(t)$.
+\begin{align*}
+	R_s(\tau)&=\E{(s_1(t)+s_2(t))(s_1(t+\tau)+s_2(t+\tau))} \\
+	&=R_{s_1}(\tau)+R_{s_1}(\tau)
+\end{align*}
+Fourier transforming yields
+\begin{align*}
+	\PSD{s_1(t)+s_2(t)} &= \F{R_{s_1}(\tau)}(f) + \F{R_{s_2}(\tau)}(f) \\
+	&= \PSD{s_1(t)}(f) + \PSD{s_2(t)}(f) \\
+	&= \frac{A_c^2}{2} \delta(f-f_{c_1}) \ast \PSD{m_2(t)}(f) + \frac{A_c^2}{2} \delta(f-f_{c_2}) \ast \PSD{m_2(t)}(f) + \frac{A_c^2}{2} \delta(f-f_{c_2}) \\
+	&= \frac{A_c^2}{2}\left( \PSD{m_2(t)}(f-f_{c_1}) + \PSD{m_2(t)}(f-f_{c_2}) + \delta(f-f_{c_2}) \right).
+\end{align*}
+We can now calculate the signal power of the evaluated ASK signal and FSK signal.
+\begin{align*}
+	\E{s_{\text{ASK}}^2(t)} &= \int_{-\infty}^{\infty} \PSD{s_{\text{ASK}}^2(t)}(f) df \\
+	&= \frac{A_c^2}{2} \int_{-\infty}^{\infty}\left( \mu^2 \PSD{m_1(t)}(f-f_c) + \delta(f-f_c) \right) df \\
+	&= \mu^2 \frac{A_c^2}{2}\E{m^2(t)} + \frac{A_c^2}{2}.
+\end{align*}
+\begin{align*}
+	\E{s_{\text{FSK}}^2(t)} &= \int_{-\infty}^{\infty} s_{\text{FSK}}^2(t) df \\
+	&= \frac{A_c^2}{2} \int_{-\infty}^{\infty} \left( \PSD{m_2(t)}(f-f_{c_1}) + \PSD{m_2(t)}(f-f_{c_2}) + \delta(f-f_{c_2}) \right) df \\
+	&= A_c^2 \E{m_2^2(t)} + \frac{A_c^2}{2}
+\end{align*}
+We see that $\E{s_{\text{FSK}}^2(t)} > \E{s_{\text{ASK}}^2(t)}$ and therefore expect that $\left(\frac{S}{N}\right)_{\text{FSK}}>\left(\frac{S}{N}\right)_{\text{ASK}}$. Also blabla locatie delta pulses. Bespreek invloeden ook op spectrum van line codes.
+
+
+\end{document}
