@@ -1,0 +1,48 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+In this task the influence of noise on the bit error rate will be analyzed. First the optimal decision threshold was determined. This was done by keeping the noise standard deviation on 0.05 and measuring the bit error rate for different threshold values. The results are displayed in the following table: \\ \\ 
+
+\begin{center}
+\label{table:optimalthreshold}
+    \begin{tabular}{  c | c | c  }
+    
+    Noise standard deviation & Decision threshold & Bit error rate  \\ \hline
+    0,05 & 0 & 0,55 \\ \hline
+    0,05 & 0,1 & 0,11 \\ \hline
+    0,05 & 0,2 & 0,00 \\ \hline
+    0,05 & 0,3 & 0,02 \\ \hline
+    0,05 & 0,4 & 0,05 \\ \hline
+    0,05 & 0,5 & 0,17 \\ \hline
+    0,05 & 0,6 & 0,29 \\ \hline
+    0,05 & 0,7 & 0,23 \\ 
+    \end{tabular}
+\end{center}
+
+
+
+From the table it becomes clear that the optimal decision threshold is 0,2. The influence of the noise on the bit error rate will now be investigated. This is done by keeping the decision threshold constant and increasing the noise standard deviation by 0,1. The results are shown in the following table: \\ \\
+\begin{center}
+\label{table:influenceofnoise}
+    \begin{tabular}{  c | c | c  }
+    
+    Noise standard deviation & Decision threshold & Bit error rate  \\ \hline
+    0,1 & 0,2 & 0,11 \\ \hline
+    0,2 & 0,2 & 0,29 \\ \hline
+    0,3 & 0,2 & 0,26 \\ \hline
+    0,4 & 0,2 & 0,38 \\ \hline
+    0,5 & 0,2 & 0,32 \\ \hline
+    0,6 & 0,2 & 0,37 \\ \hline
+    0,7 & 0,2 & 0,38 \\ \hline
+    0,8 & 0,2 & 0,45 \\ 
+    \end{tabular}
+\end{center}
+
+
+From the previous table it becomes clear that noise increases the bit error rate. 
+\end{document}
