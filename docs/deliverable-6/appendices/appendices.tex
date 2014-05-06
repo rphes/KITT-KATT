@@ -3,19 +3,69 @@
 \documentclass[11pt,titlepage]{report}
 \input{../../library/import}
 \input{../../library/style}
-\addbibresource{../library/bibliography.bib}
+\addbibresource{../../library/bibliography.bib}
 
 \begin{document}
 \begin{appendices}
 \renewcommand{\chapternumber}{\appendixname\space\thechapter} 
 
-\subimport{}{speed_of_sound}
+\chapter{Speed of sound}
+\label{app:speed-of-sound}
+Let us derive an expression for the speed of sound with herein the dependency on environment temperature and humidity. From the Newton-Laplace equation for the speed of sound in a medium
 
-\chapter{Source code}
-\label{app:sourcecode}
-%\section{Assignment 1 - Task 3}
-%\label{appsec:task3}
-%\includecode[matlab]{task3.m}{resource/task3.m}{lst:task3.m}
+\begin{equation}
+	c = \sqrt{\frac{K}{\rho}},
+\end{equation}
+
+where $K$ is a coefficient of stiffness (the bulk modulus) and $\rho$ the density of the medium in conjunction with the fact that for a gas holds that
+
+\begin{equation}
+	K = \gamma p,
+\end{equation}
+
+where $\gamma$ denotes the \emph{adiabatic index} of the gas and $p$ its pressure, yields the following expression:
+
+\begin{equation} \label{eq:c1}
+	c = \sqrt{\gamma \frac{p}{\rho}}.
+\end{equation}
+
+Assuming $\gamma$ and $p$ (being the \emph{total air pressure}) are known, we now need to find an expression for the density of the water-air mixture, $\rho$.
+To accomplish this, we utilize the ideal gas law
+
+\begin{equation}
+	p V = n R T,
+\end{equation}
+
+with $V$ the gas volume, $n$ the number of molecules, $R$ the specific gas constant and $T$ the absolute temperature in Kelvin, together with the definition of density $\rho = n / V$ to obtain:
+
+\begin{equation}
+	\rho = \frac{p}{R T}.
+\end{equation}
+
+Now, since the density of a mixture can be written as the sum of the densities of the individual gases, we can write:
+
+\begin{equation} \label{eq:rho1}
+	\rho_{air} = \frac{p_a}{R_a T} + \frac{p_w}{R_w T},
+\end{equation}
+
+where $p_a$, $R_a$, $p_w$ and $R_w$ are the pressures and specific gas constants for dry air and water vapor respectively. However, since we like to express air humidity as a ratio between the current partial water pressure $e_w$ and the saturation water pressure $e^*_w$ at a given temperature:
+
+\begin{equation}
+	\phi = \frac{e_w}{e^*_w} \times 100\%,
+\end{equation}
+
+we can use the fact that $p_a = p_{tot} - p_w$ and $p_w = e_w$ to rewrite \ref{eq:rho1}:
+
+\begin{equation} \label{eq:rho2}
+	\rho_{air} = \frac{R_w(100 p_{tot} - \phi e^*_w) + 100 R_a \phi e^*_w}{10^4 R_a R_w T},
+\end{equation}
+
+which we can then substitute back into \ref{eq:c1} to obtain the required expression:
+
+\begin{equation} \label{eq:c2}
+	c = \sqrt{\gamma \frac{10^4 p_{tot} R_a R_w T}{100 R_w(100 p_{tot} - \phi e^*_w) + 100 R_a \phi e^*_w}}.
+\end{equation}
+\cite{sengpiel-sound-speed,uiuc-rel-humid,wikipedia-speed-of-sound}
 
 \end{appendices}
 \end{document}
