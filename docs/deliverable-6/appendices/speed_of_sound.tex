@@ -1,0 +1,61 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+
+\chapter{Speed of sound}
+Let us derive an expression for the speed of sound with herein the dependency on environment temperature and humidity. From the Newton-Laplace equation for the speed of sound in a medium
+
+\begin{equation}
+	c = \sqrt{\frac{K}{\rho}},
+\end{equation}
+
+where $K$ is a coefficient of stiffness (the bulk modulus) and $\rho$ the density of the medium in conjunction with the fact that for a gas holds that
+
+\begin{equation}
+	K = \gamma p,
+\end{equation}
+
+where $\gamma$ denotes the \emph{adiabatic index} of the gas and $p$ its pressure, yields the following expression:
+
+\begin{equation}
+	c = \sqrt{\gamma \frac{p}{\rho}}.
+\end{equation}
+
+Assuming $\gamma$ and $p$ are known, we now need to find an expression for the density of the water-air mixture, $\rho$.
+To accomplish this, we utilize the ideal gas law
+
+\begin{equation}
+	p V = n R T,
+\end{equation}
+
+with $V$ the gas volume, $n$ the number of molecules, $R$ the specific gas constant and $T$ the absolute temperature in Kelvin, together with the definition of density $\rho = n / V$ to obtain:
+
+\begin{equation}
+	\rho = \frac{p}{R T}.
+\end{equation}
+
+Now, since the density of a mixture can be written as the sum of the densities of the individual gases, we can write:
+
+\begin{equation}
+	\rho_{air} = \frac{p_a}{R_a T} + \frac{p_w}{R_w T},
+\end{equation}
+
+where $p_a$, $R_a$, $p_w$ and $R_w$ are the pressures and specific gas constants for dry air and water vapor respectively.
+
+% TODO
+% Express air density in terms of total air pressure and relative humidity level in %
+% Give an expression / derive a value for gamma (see wikipedia - relative humidity or ww2010....)
+% Perform calculation for typical environment
+
+
+\end{document}
+
+% http://www.engineeringtoolbox.com/air-composition-d_212.html
+% http://www.sengpielaudio.com/calculator-airpressure.htm
+% http://ww2010.atmos.uiuc.edu/(Gh)/guides/mtr/cld/dvlp/rh.rxml
+% http://en.wikipedia.org/wiki/Relative_humidity
