@@ -8,7 +8,7 @@
 \begin{document}
 
 \chapter{Homework}
-Bandwidth is the range of frequencies which is used to describe a signal, in baseband signals this is the signal's highest frequency. The capacity of a channel is the  theoretical maximum reliable rate of information which can be achieved, in contrary to the data rate, which is the actual rate of information. If the average power of the signal is denoted by $S$, and the average power of the noise by $N$, then the bandwidth $B$ and capacity $C$ are related by the Shannon-Hartley theorem
+Bandwidth is the range of frequencies which is used to describe a signal. For baseband signals this is the signal's highest frequency. The capacity of a channel is the  theoretical maximum reliable rate of information which can be achieved, in contrary to the data rate, which is the actual rate of information. If the average power of the signal is denoted by $S$, and the average power of the noise by $N$, then the bandwidth $B$ and capacity $C$ are related by the Shannon-Hartley theorem
 
 \begin{equation}
 	C=B \log_2{\left(1+\frac{S}{N}\right)}.
@@ -35,21 +35,20 @@ Table \ref{tab:pros-cons} shows the pros and cons of digital modulation compared
 	\end{tabular}
 \end{table}
 
-A signal can be assigned to a carrier wave by modulation. This allows for efficient use of the spectrum as each signal is assigned its own range of frequencies. The quality of a signal is often described using its signal-to-noise ratio. The bit error rate is the ratio of received faulty bits to the total bits received, which can be a good estimate of the bit error probability. Causes of bit errors include transmission channel noise, distortion, interference and bit synchronization problems. If we assume that for a FSK signal the frequencies $f_{\text{min}}$ and $f_{\text{max}}$ are sufficiently far apart, then this signal is characterized by a sine with time-varying frequency. Note that $s_{\text{ASK}}(t) = \mu s_{\text{BPSK}}(t) + A \sin{(2 \pi f t)}$. The second term essentially represents the carrier wave.
+A signal can be assigned to a carrier wave by modulation. This allows for efficient use of the spectrum as each signal is assigned its own range of frequencies. The quality of a signal is often described using its signal-to-noise ratio. The bit error rate is the ratio of received faulty bits to the total bits received, which can be a good estimate of the bit error probability. Causes of bit errors include transmission channel noise, distortion, interference and bit synchronization problems. If we assume that for a FSK signal the frequencies $f_{\text{min}}$ and $f_{\text{max}}$ are sufficiently far apart, then this signal is characterized by a sine with time-varying frequency. The relationship between an ASK signal and BPSK signal is given by $s_{\text{ASK}}(t) = \mu s_{\text{BPSK}}(t) + A \sin{(2 \pi f t)}$. The second term represents the carrier wave.
 
 Transmission of a signal is a tedious and complicated process. The main cause of trouble is noise (e.g. quantization noise, thermal noise), which is introduced in almost every stage. This eventually may result in bit errors, for which error detection and correction may be possible. The general solution to this problem is to use techniques which increase the signal-to-noise ratio. Another important aspect is the sampling process. If the sampling frequency is not at least twice as high as the signal's highest frequency, then aliasing occurs, which introduces even more noise.
 
 %sauce:http://cseweb.ucsd.edu/users/varghese/TEACH/cs123/dl2.pdf
 The connection between modulation and coding is that they are both methods to increase the accuracy of transmission over a noisy channel. Coding could also refer to line coding, a method of representing information into different line levels.
 
+\paragraph{Errors and error correction}
 Errors can be divided into two general classes; intersymbol interference (e.g. single errors) and noise. Important causes of errors are thermal noise and incorrect synchronization at the physical layer, leading to burst errors (e.g. multiple errors after each other).
 
 When a signal with some form of redundancy is received, the receiver can check if the original data matches with the added redundant data. If this is not the case, we \emph{detect} an error in the received signal. Then, if we have added enough redundant data to the original signal, it might be possible to reconstruct the original signal, so that it matches with the redundant data again. We have then \emph{corrected} the error.
-
 % There are two main categories of lines codes; return-to-zero (RZ) and non-return-to-zero (NRZ). RZ signals return to zero halfway during the transmission of a single bit and attain their new value at the end. NRZ signals do not exhibit this behaviour, they retain their value. The other important aspect of line codes is the polarity. Signals can be unipolar ($s(t) \in \{0,A\}$), polar ($s(t) \in \{-A,A\}$) and bipolar ($s(t) \in \{-A,0,A\}$). The most used line codes are punch tape code, unipolar NRZ, polar NRZ, unipolar RZ, bipolar RZ and Manchester coding, which is neither RZ or NRZ.
-Overzicht van coding methods hier!
 
-There are some important considerations when choosing a coding method; spectrum of coding method must match available baseband channel, available bandwidth is sufficient, availability of self-synchronization, required bit error probability.
+There are two main categories of error-correcting codes; block codes and convolutional codes. The central difference between these two is that block codes are processed block-by-block, and convolutional codes bit-by-bit. Famous examples of block codes are Hamming codes and Reed-Solomon codes. There are some important considerations when choosing a coding method; spectrum of coding method must match available baseband channel, available bandwidth is sufficient, availability of self-synchronization, required bit error probability. 
 
 Interleaving means you send the information in a `shuffled' order over the line. After transmission the signal is deinterleaved, or placed back in order. The main purpose of this method is burst error correction, since errors occuring adjacent to each other in transmission are unlikely to be adjacent after deinterleaving.
 \end{document}
