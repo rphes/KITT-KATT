@@ -1,0 +1,44 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+The \texttt{digmod\_gui.m} program was run several times without coding with a distance of \SI{10}{\centi \meter} such that the BER was 0.1. The decision threshold was discovered to be 0.2 for this result. The program was then run with Hamming coding and BCH coding and the BER noted. For each measurement, the time duration was also noted. The results are summarized in table \ref{tab:task4-diff-coding}.
+
+Hier komt een verklaring van de resultaten.
+
+\begin{table}[H]
+	\centering
+	\caption{BER for different codings with default \texttt{digmod\_gui} settings and decision threshold of 0.2.}
+	\label{tab:task4-diff-coding}
+	\begin{tabular}{c c c c}
+		\hline\hline
+		Coding & BER (no correction) & BER (correction) & Time [s] \\
+		\hline
+		None & 0.1 & 0.1 & 5\\
+		Hamming & 0.08 & 0.05 & 8.75 \\
+		BCH & 0.117 & 0.03 & 15\\
+		\hline
+	\end{tabular}
+\end{table}
+
+The \texttt{digmod\_gui.m} program was run again and $\mu=...$ and $\sigma_n=...$ were set so that the BER with default settings and no coding was 0.29.
+
+\begin{table}[H]
+	\centering
+	\caption{BER for different codings with default \texttt{digmod\_gui} settings and decision threshold of 0.2.}
+	\label{tab:task4-diff-coding-mu-sigma}
+	\begin{tabular}{c c c}
+		\hline\hline
+		Coding & BER (no correction) & BER (correction)\\
+		\hline
+		None & 0.29 & 0.29\\
+		Hamming & 0.28 & 0.25 \\
+		BCH & 0.263 & 0.18\\
+		\hline
+	\end{tabular}
+\end{table}
+\end{document}
