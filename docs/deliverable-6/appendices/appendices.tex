@@ -221,6 +221,51 @@ We have shown that an FSK signal is a superposition of two signals with differen
 
 \chapter{Relevant measurement results}
 \label{app:res}
+
+Table~\ref{tab:app-th} shows the measurement results in determining the optimal decision threshold for an ASK signal with carrier frequency \SI{1000}{Hz}, bit rate of \num{20} bits/s and modulation index of \num{1}.
+
+\begin{table}[H]
+	\centering
+	\caption{Measurement results in determining the optimal decision threshold}
+	\label{tab:app-th}
+	\begin{tabular}{c c c}
+		\hline\hline
+		Noise STD & Decision threshold & BER \\
+		\hline
+		\num{0.05} & \num{0} & \num{0.55} \\ \hline
+		\num{0.05} & \num{0.1} & \num{0.11} \\ \hline
+		\num{0.05} & \num{0.2} & \num{0.00} \\ \hline
+		\num{0.05} & \num{0.3} & \num{0.02} \\ \hline
+		\num{0.05} & \num{0.4} & \num{0.05} \\ \hline
+		\num{0.05} & \num{0.5} & \num{0.17} \\ \hline
+		\num{0.05} & \num{0.6} & \num{0.29} \\ \hline
+		\num{0.05} & \num{0.7} & \num{0.23} \\ \hline
+		\hline
+	\end{tabular}
+\end{table}
+
+Table~\ref{tab:app-noise} shows the measurement results of the BER for different noise standard deviations for an ASK signal with carrier frequency \SI{1000}{Hz}, bit rate of \num{20} bits/s, modulation index of \num{1} and decision threshold on \num{0.2}.
+
+\begin{table}[H]
+	\centering
+	\caption{Measurement results in determining the optimal decision threshold}
+	\label{tab:app-noise}
+	\begin{tabular}{c c c}
+		\hline\hline
+		Noise STD & Decision threshold & BER \\
+		\hline
+		\num{0.1} & \num{0.2} & \num{0.11} \\ \hline
+		\num{0.2} & \num{0.2} & \num{0.29} \\ \hline
+		\num{0.3} & \num{0.2} & \num{0.26} \\ \hline
+		\num{0.4} & \num{0.2} & \num{0.38} \\ \hline
+		\num{0.5} & \num{0.2} & \num{0.32} \\ \hline
+		\num{0.6} & \num{0.2} & \num{0.37} \\ \hline
+		\num{0.7} & \num{0.2} & \num{0.38} \\ \hline
+		\num{0.8} & \num{0.2} & \num{0.48} \\ \hline
+		\hline
+	\end{tabular}
+\end{table}
+
 Figure~\ref{fig:app-ask-br} shows the effect of altering the bit rate on the PSD of an ASK signal. The settings shown in Table \ref{tab:app-ask-br-settings} were used.
 
 \begin{figure}[H]
