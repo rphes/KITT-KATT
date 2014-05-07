@@ -187,9 +187,9 @@ The spectrum of an FSK signal contains delta pulses at the two used frequencies.
 
 \section{Noise analysis}
 \subsection{Demodulation of ASK}
-To demodulate an ASK signal, the stochastic variable $X=(s(t)+n(t)) A_c \cos{(\omega_c t + \phi)}$ is evaluated. The expectation value is given by
+To demodulate an ASK signal, the stochastic variable $X=\widetilde{s}(t) A_c \cos{(\omega_c t + \phi)}$ is evaluated. Here $\widetilde{s}(t)=s(t)+n(t)$ denotes the received signal $s(t)$ with AWGN $n(t)$. The expectation value of $X$ is given by
 \begin{align*}
-	&\E{(s(t)+n(t)) A_c \cos{(\omega_c t + \phi)}} \\
+	\E{X}&=\E{(s(t)+n(t)) A_c \cos{(\omega_c t + \phi)}} \\
 	&=\E{\left(A_c (1+\mu m_1(t)) \cos{(\omega_c t)} + n(t)\right) A_c \cos{(\omega_c t + \phi)}} \\
 	&= \E{(1+\mu m_1(t)) A_c^2 \frac{\cos{(\phi)} + \cos{(2 \omega_c t + \phi)}}{2}} + \E{n(t) A_c \cos{(\omega_c t + \phi)}} \\
 	&= \frac{\cos{(\phi)} A_c^2}{2} \E{1+\mu m_1(t)} \\
@@ -208,20 +208,20 @@ To explore the effect of AWGN, we evaluate $\Var{X}=\E{X^2}-\E{X}^2$.
 	&=\frac{A_c^2}{2}\E{s^2(t) + n^2(t)} \\
 	&=\alpha + \frac{A_c^2}{2} \E{n^2(t)}
 \end{align*}
-Now the variation is given by
+Now, the variation is given by
 \begin{align*}
 	\Var{X} &= \E{X^2} - \E{X}^2 \\
 	&= \alpha + \frac{A_c^2}{2} \E{n^2(t)} - \beta \\
 	&= \alpha + \frac{A_c^2}{2} \Var{n(t)} - \beta
 \end{align*}
-We see that when the variation of the noise increases, the variation of $X$ increases and we consequently expect the bit error probability to increase.
+We see that when the variation of the noise increases, the variation of $X$ increases and we consequently expect the bit error probability to increase. This result could also easily be explained by the fact that the signal-to-noise ratio decreases when $\Var{n^2(t)}$ increases.
 
 \subsection{Demodulation of FSK}
 We have shown that an FSK signal is a superposition of two signals with different frequencies. These signals are separated and evaluated in a same manner as an ASK signal. However, the information is now stored in the existence of a certain frequency instead of the amplitude of the received signal. As only the existence of a certain frequency has to be determined, the decision threshold can be set in a way which is less sensitive for noise than for an ASK signal.
 
 \chapter{Relevant measurement results}
 \label{app:res}
-Figure~\ref{fig:app-ask-br} shows the effect of altering the bit rate on the PSD of an ASK signal.
+Figure~\ref{fig:app-ask-br} shows the effect of altering the bit rate on the PSD of an ASK signal. The settings shown in Table \ref{tab:app-ask-br-settings} were used.
 
 \begin{figure}[H]
 	\begin{center}
@@ -230,6 +230,26 @@ Figure~\ref{fig:app-ask-br} shows the effect of altering the bit rate on the PSD
 	\caption{Effect of bit rate on the PSD of ASK}
 	\label{fig:app-ask-br}
 \end{figure}
+
+\begin{table}[H]
+	\centering
+	\caption{Settings used when measuring the effect of altering the bit rate on the PSD of an ASK signal}
+	\label{tab:app-ask-br-settings}
+	\begin{tabular}{c c}
+		\hline\hline
+		Setting & Value \\
+		\hline
+		Modulation & ASK \\
+		Modulation index & \num{1} \\
+		Distance between source and receiver & \SI{10}{cm} \\
+		Carrier frequency & \SI{1}{kHz} \\
+		Decision threshold & \num{1} \\
+		\hline
+	\end{tabular}
+\end{table}
+
+
+pieken + settings
 
 \end{appendices}
 \end{document}
