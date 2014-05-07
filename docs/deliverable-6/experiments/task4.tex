@@ -13,7 +13,7 @@ For the BCH coding the mutual distance is at least \num{7}. This means that bit 
 
 The error correction does come with a price: time. Using no coding method, the signal is \num{5} seconds long. Using Hamming coding the signal is \num{1.75} times longer because for each block of four bits another three bits are added. For BCH the time cost is even higher, a factor three because every five bit block is appended with ten bits of extra information.
 
-Concluding, we can say that both Hamming code and BCH do work to improve the BER at the cost of adding redundancy. Both Hamming coding and BCH coding are more efficient than using no coding in the sense that the increase in time is less than the factor improvement in BER, which we can quantify as follows. Let the efficiency be given by the ratio between the factor between the BER before and after correction, and the factor with which the transmission time increases for a given ECC. Then,
+Concluding, we can say that both Hamming code and BCH do work to improve the BER at the cost of adding redundancy. Both Hamming coding and BCH coding are more efficient than using no coding in the sense that the increase in time is less than the factor improvement in BER, which we can quantify as follows. Let the efficiency be given by the ratio between the BER before and after correction, and the factor with which the transmission time increases for a given ECC. Then,
 \begin{align*}
 \eta_{\text{no coding}}&=1,\\
 \eta_{\text{Hamming}}&=\frac{2}{1.75}\approx1.14,\\
