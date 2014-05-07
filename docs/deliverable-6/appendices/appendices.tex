@@ -248,8 +248,57 @@ Figure~\ref{fig:app-ask-br} shows the effect of altering the bit rate on the PSD
 	\end{tabular}
 \end{table}
 
+Figure \ref{fig:app-fsk-peaks} shows the peaks we observed. The settings used are shown in Table \ref{tab:app-fsk-peaks-settings}.
 
-pieken + settings
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{resource/fsk-mod-1st.pdf}
+	\end{center}
+	\caption{Peaks we observed}
+	\label{fig:app-fsk-peaks}
+\end{figure}
+
+\begin{table}[H]
+	\centering
+	\caption{Settings used when we encountered the peaks}
+	\label{tab:app-fsk-peaks-settings}
+	\begin{tabular}{c c}
+		\hline\hline
+		Setting & Value \\
+		\hline
+		Modulation & FSK \\
+		Bit rate & \num{200} bits/s \\
+		Distance between source and receiver & \SI{20}{cm} \\
+		Carrier frequency & \SI{1}{kHz} \\
+		Decision threshold & \num{1} \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Figure~\ref{fig:app-ber} shows the best achieved bit error rates for a maximal bit rate with no ECC. The settings used are shown in Table~\ref{tab:app-ber}.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{resource/task-5.pdf}
+	\end{center}
+	\caption{Achieved bit error rates}
+	\label{fig:app-ber}
+\end{figure}
+
+\begin{table}[H]
+	\centering
+	\caption{Settings used when we encountered the peaks}
+	\label{tab:app-ber}
+	\begin{tabular}{c c}
+		\hline\hline
+		Setting & Value \\
+		\hline
+		Modulation & FSK \\
+		$\Delta F$ & \SI{1}{kHz} \\
+		Decision threshold & \num{0.6} \\
+		\hline
+	\end{tabular}
+\end{table}
 
 \end{appendices}
 \end{document}
