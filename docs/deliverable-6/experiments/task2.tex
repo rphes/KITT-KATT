@@ -5,155 +5,16 @@
 \input{../../library/style}
 \addbibresource{../../library/bibliography.bib}
 
-\newcommand{\E}[1]{\operatorname{E}\left[#1\right]}
-\newcommand{\Prob}[1]{\operatorname{P}\left[#1\right]}
-\newcommand{\PSD}[1]{\operatorname{PSD}\left\{#1\right\}}
-\newcommand{\F}[1]{\mathcal{F}\left\{#1\right\}}
-\newcommand{\Var}[1]{\operatorname{Var}\left[#1\right]}
-
 \begin{document}
-\section{Task 2: signaling analysis}
-\subsection{Power analysis}
-\paragraph{PSD of an ASK signal}
-Let us investigate the PSD of an ASK signal $s(t)$ given by
-\begin{equation*}
-	s(t) = A_c (1+\mu m_1(t)) \cos{(\omega_c t)}
-\end{equation*}
-where we assume that $m_1(t)$ is a polar NRZ line code. The autocorrelation function is given by
-\begin{align*}
-	R_s(\tau) &=\E{A_c (1+\mu m_1(t)) \cos{(\omega_c t)} A_c (1+\mu m_1(t+\tau)) \cos{(\omega_c (t+\tau))}} \\
-	&=\E{A_c \cos{(\omega_c t)} A_c \cos{(\omega_c (t+\tau))} }\left( 1 + \mu^2 \E{m_1(t)} \E{m_1(t+\tau)}+ \mu^2 \E{m_1(t) m_1(t+\tau)}\right) \\
-	&=R_c(\tau) + \mu^2 R_c(\tau) R_m(\tau).
-\end{align*}
-Fourier transforming $R_s(\tau)$ yields
-\begin{align}
-	\PSD{s(t)}(f) &= \F{R_s(\tau)} \nonumber \\
-	&= \mu^2 \PSD{c(t)}(f) \ast \PSD{m_1(t)}(f) + \PSD{c(t)}(f) \nonumber \\
-	&= \frac{A_c^2}{2} \delta(f-f_c) \ast \mu^2 \PSD{m_1(t)}(f) + \frac{A_c^2}{2} \delta(f-f_0) \nonumber \\
-	&= \frac{A_c^2}{2} \left( \mu^2 \PSD{m_1(t)}(f-f_c) + \delta(f-f_c) \right). \label{eq:psd-ask}
-\end{align}
-\paragraph{PSD of an FSK signal}
-Let us now consider an FSK signal $s(t)=s_1(t)+s_2(t)$ where
-\begin{align*}
-	s_1(t) &= A_c m_2(t) \cos{(\omega_{c_1} t)} \text{ and } \\
-	s_2(t) &= A_c (1-m_2(t)) \cos{(\omega_{c_2} t)}
-\end{align*}
-and we assume that $m_2(t)$ is a unipolar NRZ line code. Calculating the autocorrelation function of $s_1(t)$ yields
-\begin{align*}
-	R_{s_1}(\tau) &= \E{A_c m_2(t) \cos{(\omega_{c_1} t)} A_c m_2(t+\tau) \cos{(\omega_{c_1} (t+\tau))}} \\
-	&= R_{c_1}(\tau) R_{m}(\tau).
-\end{align*}
-When we assume both bits have equal probability then
-\begin{align*}
-	\E{m_2(t)} = \frac{1}{2} \cdot 1 + \frac{1}{2} \cdot 0 = \frac{1}{2}.
-\end{align*}
-Calculating the autocorrelation function of $s_2(t)$ yields
-\begin{align*}
-	R_{s_2}(\tau) &= \E{A_c (1-m_2(t)) \cos{(\omega_{c_2} t)} A_c (1-m_2(t+\tau)) \cos{(\omega_{c_2} (t+\tau))}} \\
-	&= \E{A_c\cos{(\omega_{c_2} t)} A_c \cos{(\omega_{c_2} (t+\tau))}}\left( 1 - \E{m_2(t)} - \E{m_2(t+\tau)} + \E{m_2(t)m_2(t+\tau)} \right) \\
-	&= \E{A_c\cos{(\omega_{c_2} t)} A_c \cos{(\omega_{c_2} (t+\tau))}} \E{m_2(t)m_2(t+\tau)} \\
-	&= R_{c_2}(\tau) R_{m}(\tau).
-\end{align*}
-Note that $s_1(t)$ and $s_2(t)$ are orthogonal.
-\begin{align*}
-	R_{s_1,s_2}(\tau)&=\E{A_c m_2(t) \cos{(\omega_{c_1} t)} A_c (1-m_2(t)) \cos{(\omega_{c_2} (t+\tau))}} \\
-	&= \E{\cos{(\omega_{c_1} t)}\cos{(\omega_{c_2} (t+\tau))}} \E{A_c^2 m_2(t) (1-m_2(t))} = 0
-\end{align*}
-We can then calculate the autocorrelation function of $s(t)$.
-\begin{align*}
-	R_s(\tau)&=\E{(s_1(t)+s_2(t))(s_1(t+\tau)+s_2(t+\tau))} \\
-	&=R_{s_1}(\tau)+R_{s_2}(\tau)
-\end{align*}
-Fourier transforming yields
-\begin{align}
-	\PSD{s_1(t)+s_2(t)} &= \F{R_{s_1}(\tau)}(f) + \F{R_{s_2}(\tau)}(f) \nonumber \\
-	&= \PSD{s_1(t)}(f) + \PSD{s_2(t)}(f) \nonumber \\
-	&= \frac{A_c^2}{2} \delta(f-f_{c_1}) \ast \PSD{m_2(t)}(f) + \frac{A_c^2}{2} \delta(f-f_{c_2}) \ast \PSD{m_2(t)}(f) \nonumber \\
-	&= \frac{A_c^2}{2}\left( \PSD{m_2(t)}(f-f_{c_1}) + \PSD{m_2(t)}(f-f_{c_2}) \right). \label{eq:psd-fsk}
-\end{align}
-\paragraph{Signal power}
-We can now calculate the signal power of the evaluated ASK signal and FSK signal.
-\begin{align*}
-	\E{s_{\text{ASK}}^2(t)} &= \int_{-\infty}^{\infty} \PSD{s_{\text{ASK}}^2(t)}(f) df \\
-	&= \frac{A_c^2}{2} \int_{-\infty}^{\infty}\left( \mu^2 \PSD{m_1(t)}(f-f_c) + \delta(f-f_c) \right) df \\
-	&= \mu^2 \frac{A_c^2}{2}\E{m_1^2(t)} + \frac{A_c^2}{2}.
-\end{align*}
-\begin{align*}
-	\E{s_{\text{FSK}}^2(t)} &= \int_{-\infty}^{\infty} s_{\text{FSK}}^2(t) df \\
-	&= \frac{A_c^2}{2} \int_{-\infty}^{\infty} \left( \PSD{m_2(t)}(f-f_{c_1}) + \PSD{m_2(t)}(f-f_{c_2})\right) df \\
-	&= A_c^2 \E{m_2^2(t)}
-\end{align*}
-\paragraph{Spectral efficiency}
-The spectral efficiencies of both signals are given by
-\begin{align*}
-	\eta_{\text{ASK}} &= \frac{\mu^2 \frac{A_c^2}{2}\E{m_1^2(t)}}{\mu^2 \frac{A_c^2}{2}\E{m_1^2(t)} + \frac{A_c^2}{2}} = \frac{\mu^2\E{m_1^2(t)}}{\mu^2\E{m_1^2(t)} + 1} \text{ and } \\
-	\eta_{\text{FSK}} &= \frac{A_c^2 \E{m_2^2(t)}}{A_c^2 \E{m_2^2(t)}} = 1.
-\end{align*}
-\paragraph{Signal quality comparison}
-Using Equation \ref{eq:psd-ask} and \ref{eq:psd-fsk} and the fact that the bandwidth of both line codes $m_1(t)$ and $m_2(t)$ is equal to the data rate $R$, we can conclude that the transmission bandwidths of $s_{\text{ASK}}(t)$ and $s_{\text{FSK}}(t)$ are given by
-\begin{align*}
-	B_{\text{ASK}} &= 2R \text{ and } \\
-	B_{\text{FSK}} &= 2(R + |f_{c_1} - f_{c_2}|) = 2(R + \Delta f).
-\end{align*}
-If we assume AWGN with a one-sided PSD of $N_0$, then the signal-to-noise ratio's are given by
-\begin{align*}
-	\left(\frac{S}{N}\right)_{\text{ASK}} &= \eta_{\text{ASK}} \frac{\mu^2 \frac{A_c^2}{2}\E{m_1^2(t)} + \frac{A_c^2}{2}}{2RN_0}, \\
-	\left(\frac{S}{N}\right)_{\text{FSK}} &= \eta_{\text{FSK}} \frac{A_c^2 \E{m_2^2(t)} + \frac{A_c^2}{2}}{2(R+\Delta f)N_0}.
-\end{align*}
-If we assume equal probability of the transmitted bits, then the signal powers are easy to calculate.
-\begin{align*}
-	\E{m_1^2(t)} &= \frac{1}{2} \cdot 1^2 + \frac{1}{2} \cdot (-1)^2=1, \\
-	\E{m_2^2(t)} &= \frac{1}{2} \cdot 1^2 + \frac{1}{2} \cdot 0^2=\frac{1}{2}.
-\end{align*}
-Substituting these results in the expressions for the signal-to-noise ratio's yields
-\begin{align*}
-	\left(\frac{S}{N}\right)_{\text{ASK}} &= \frac{\mu^2}{\mu^2+1} \frac{A_c^2 (\mu^2+1)}{4RN_0} = \frac{\mu^2 A_c^2}{4RN_0}, \\
-	\left(\frac{S}{N}\right)_{\text{FSK}} &= \frac{A_c^2}{2(R+\Delta f)N_0}.
-\end{align*}
-We can now compare the obtained signal-to-noise ratio's.
-\begin{align*}
-	\frac{(S/N)_{\text{FSK}}}{(S/N)_{\text{ASK}}}=\frac{A_c^2}{2(R+\Delta f)N_0} \frac{4RN_0}{\mu^2 A_c^2}=\frac{R}{R+\Delta f}\frac{2}{\mu^2}
-\end{align*}
-We conclude that from a signal's power perspective for high bit rates ($R \gg \Delta f$) using FSK is advantageous.
-\paragraph{Spectral behaviour analysis}
-We can determine a lot of properties of the PSD's of an ASK and FSK signal by inspecting Equation \ref{eq:psd-ask} and \ref{eq:psd-fsk}.
 
-The spectrum of an ASK signal contains a delta pulse at the carrier frequency. The spectrum of the modulation signal is centered around this carrier frequency. The height of the PSD is proportional to $\mu^2$. If we increase the bit rate, then the transmission bandwidth increases as the bandwidth of the modulation signal increases. Also, the height of the spectrum will decrease by increasing the bit rate.
+Appendix~\ref{app:sig-an} contains an in-depth analysis of ASK and FSK signaling whose results will assumed to be known and expected here. Also, we obtained a lot of measurement results. We only appended the relevant results.
 
-The spectrum of an FSK signal contains delta pulses at the two used frequencies. These delta pulses originate from the modulation signal, as they contain DC components. The PSD is in a same manner related to the bit rate as the PSD of an ASK signal.
+\paragraph{ASK} According to our expectations, the amplitude of the PSD decreased as we decreased the modulation index. When we changed the carrier frequency, the PSD shifted accordingly, which means we observed a delta pulse at the carrier frequency with the PSD of the modulation signal centered around it. However, when we changed the bit rate, we only observed the decrease in amplitude of the PSD. This could be due to the relatively low transmission bandwidth and resolution as only a signal of short duration is evaluated. The measurement results of altering the bit rate on an ASK signal are shown in Appendix~\ref{app:res}.
 
-\subsection{Noise analysis}
-\paragraph{Demodulation of ASK}
-To demodulate an ASK signal, the stochastic variable $X=(s(t)+n(t)) A_c \cos{(\omega_c t + \phi)}$ is evaluated. The expectation value is given by
-\begin{align*}
-	&\E{(s(t)+n(t)) A_c \cos{(\omega_c t + \phi)}} \\
-	&=\E{\left(A_c (1+\mu m_1(t)) \cos{(\omega_c t)} + n(t)\right) A_c \cos{(\omega_c t + \phi)}} \\
-	&= \E{(1+\mu m_1(t)) A_c^2 \frac{\cos{(\phi)} + \cos{(2 \omega_c t + \phi)}}{2}} + \E{n(t) A_c \cos{(\omega_c t + \phi)}} \\
-	&= \frac{\cos{(\phi)} A_c^2}{2} \E{1+\mu m_1(t)} \\
-	&= \frac{\cos{(\phi)} A_c^2}{2} \left( 1 + \mu \E{m_1(t)} \right)
-\end{align*}
-To decide the bit value of the received signal at time $t$, we compare $X$ to the so-called decision threshold $T$. If $X>T$, then a `1' is received, and if $X<T$, then a `0' is received. If we want this decision to be unbiased, then $X-T$ should be proportional to the expectation value of $m_1(t)$, which represents the actual bit sent.
-\begin{align*}
-	X - T &\sim \E{m_1(t)} \\
-    \frac{\cos{(\phi)} A_c^2}{2} - T+ \frac{\cos{(\phi)} A_c^2}{2}  \mu \E{m_1(t)} &\sim \E{m_1(t)} \\
-    T &= \frac{\cos{(\phi)} A_c^2}{2}
-\end{align*}
-To explore the effect of AWGN, we evaluate $\Var{X}=\E{X^2}-\E{X}^2$. 
-\begin{align*}
-	\E{X^2}&=\E{(s(t)+n(t))^2 A_c^2 \cos^2{(\omega_c t + \phi)}} \\
-	&=\E{\left(s^2(t)+2n(t)s(t)+n^2(t)\right) A_c^2 \frac{1}{2} \left( 1+ \cos{(2\omega_c t + 2\phi)}\right)} \\
-	&=\frac{A_c^2}{2}\E{s^2(t) + n^2(t)} \\
-	&=\alpha + \frac{A_c^2}{2} \E{n^2(t)}
-\end{align*}
-Now the variation is given by
-\begin{align*}
-	\Var{X} &= \E{X^2} - \E{X}^2 \\
-	&= \alpha + \frac{A_c^2}{2} \E{n^2(t)} - \beta \\
-	&= \alpha + \frac{A_c^2}{2} \Var{n(t)} - \beta
-\end{align*}
-We see that when the variation of the noise increases, the variation of $X$ increases and we consequently expect the bit error probability to increase.
+\paragraph{FSK} As we changed the frequency deviation $\Delta F$, the delta pulses and PSD changed according to our calculations. This means that we among other things observed delta pulses at $f_c\pm \Delta F$, where $f_c$ denoted the carrier frequency. Also, we observed the expected shift of the PSD when we changed the carrier frequency. Furthermore, we observed the same behaviour for changes to the bit rate as for ASK.
 
-\paragraph{Demodulation of FSK}
-We have shown that an FSK signal is a superposition of two signals with different frequencies. These signals are separated and evaluated in a same manner as an ASK signal. However, the information is now stored in the existence of a certain frequency instead of the amplitude of the received signal. As only the existence of a certain frequency has to be shown, the decision threshold can be set in a way which is less sensitive for noise than an ASK signal.
+The only abnormality we observed, was the presence of delta pulses in the PSD at multiples of the signal frequencies. As half the wavelength of the used signals is in the range of $\lambda/2=v/2f\approx 343/2000\approx\text{\SI{17}{cm}}$, these delta pulses could very well correspond with standing waves.
+
+The significant differences we noticed in our calculations and observations were that the PSD of an ASK contains a delta pulse and a copy of the spectrum of the modulation signal centered around the carrier frequency, while the PSD an FSK contains both centered around $f_c\pm \Delta F$.
 
 \end{document}
