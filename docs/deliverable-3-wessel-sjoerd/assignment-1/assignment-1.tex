@@ -51,6 +51,14 @@ The second-order state-space model\footnote{For the notation of speed, accelerat
 	\end{bmatrix}.
 \end{align}
 
+The characteristic equation is given by $x(\lambda)=\det{(\lambda \mat{I} - \mat{A})} = c_2 \lambda^2 + c_1 \lambda + c_0$ where
+
+\begin{align}
+	c_2 &= 1, \\
+	c_1 &= \frac{\rho}{m}, \\
+	c_0 &= 0.
+\end{align}
+
 The eigenvalues with corresponding eigenvectors of our state-space model are
 
 \begin{equation}
@@ -115,7 +123,13 @@ Now we can also conclude observability.
 Let us define
 
 \begin{equation}
-	r = \frac{k_t k_g}{r_w}.
+	r = \frac{k_t k_g}{r_w}
+\end{equation}
+
+where
+
+\begin{equation}
+	r_w = \frac{1}{k_w} \Leftrightarrow k_w = \frac{1}{r_w}.
 \end{equation}
 
 The third-order state-space model fitting the bond graph drawn in Figure~\ref{fig:ass-1-bond} is then given by
@@ -204,6 +218,14 @@ The state-space model of the simplified bond graph is given by
 		q_m \\
 		f_m
 	\end{bmatrix}.
+\end{align}
+
+The characteristic equation is given by $x(\lambda)=\det{(\lambda \mat{I} - \mat{A})} = c_2 \lambda^2 + c_1 \lambda + c_0$ where
+
+\begin{align}
+	c_2 &= 1, \\
+	c_1 &= \frac{r^2}{mR} + \frac{\rho}{m}, \\
+	c_0 &= 0.
 \end{align}
 
 The eigenvalues and eigenvectors of $\mat{A}$ are
