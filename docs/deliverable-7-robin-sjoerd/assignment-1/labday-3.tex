@@ -17,6 +17,19 @@ Minimum sample rate \@ microphone
 \subsection{Report 13}
 No line of sight!
 
+\subsection{Task before report 14}
+The parameters of \texttt{refsignal.m} are as follows:
+Ncodebits: 
+Timer0: All 3 timers are indexes to a vector of frequencies. Timer0 determines the modulation frequency f0
+Timer1: used to compute Np = Fs/f1. Np is number of samples in one Timer1 period
+Timer3: Nx=round(Fs/f3) = number of samples in template vector (integer)
+code: hex string which is converted to binary and sent over the line
+Fs: sample frequency
+
+Maximum modulation frequency f0 = 30e3Hz. Dat kun je zien in refsignal.m op regel 25.
+
+
+
 \subsection{Report 14}
 Apply channel estimation algorithm of labday 2
 
