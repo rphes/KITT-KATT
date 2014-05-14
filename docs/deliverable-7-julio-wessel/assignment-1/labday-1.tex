@@ -28,6 +28,14 @@ Now we want to demonstrate the following convolution property: \newline
 \begin{center}
  $y[n] = x[n]*h[n] \leftrightarrow Y(\omega) = X(\omega)H(\omega)$ 
 \end{center}
-In order to do this the convolution in the time domain $y[n]$ is calculated. 
+Herein we assigned a 'train' sound to  $x[n]$.  And  $h[n]$ = [1  zeros(1,5)  0.9 zeros(1,5)  0.8].
+First of all $y[n]$ was calculated by calculating the convolution of $x[n]$ and $h[n]$. Then the sequences $y[n]$, $x[n]$ and $h[n]$ where fourier transformed. After doing this to steps we want to show :
+\begin{equation}
+\centering
+ \mathcal{F}(y[n]) = X(\omega)H(\omega)
+\end{equation}
+This is done by plotting $Y(\omega)$ and $X(\omega)H(\omega)$. 
+
+
 
 \end{document}
