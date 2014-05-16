@@ -16,11 +16,21 @@
 	\caption{Some possible reflections}
 	\label{fig:reflections}
 \end{figure}
+Given a square room confined by the blue lines in figure \ref{fig:reflections} with a sound source depicted by the green dot and a microphone depicted by the yellow dot, it is easy to calculate the number of reflections heard at the yellow dot by reflecting the room about each wall. If the number of reflections is one, the result is that each wall must be mirrored once and the result is figure \ref{fig:reflections} excluding the four corner rooms, for a total of five reflections (no reflection + 4 reflections). The red dots in the reflected rooms represent the yellow dot as projected through the wall. After 2 reflections, figure \ref{fig:reflections} should be extended by four more rooms, yielding 13 reflections.
 
+To see the impulse response of the room with two reflections we made use of the \texttt{MATLAB} script provided in appendix ... The impulse response is shown in figure ...
+We extended the \texttt{MATLAB} model to incorporate an arbitrary amount of reflections. The resulting room diagram is shown in figure ... and the resulting impulse response is shown in figure ...
 \subsection{Report 2}
-p.92
+%corresponding matlab file: resource/labday1/report2.m
+The impulse response for $a=0.95$ and $a=-0.95$ is shown in figure .. For $a=0.95$ the filter causes a damped oscillation, for $a=-0.95$ it causes an exponentially decaying signal.
+
+The frequency domain plots are shown in figure ... It can be seen that for $a=0.95$ the filter behaves as a band pass filter and for $a=-0.95$ it behaves as a band stop filter.
+
+There is no \texttt{MATLAB} function for the FT or DTFT because these produce continuous results and \texttt{MATLAB} is a numerical package which can't handle that.
 \subsection{Report 3}
-p.93
+
+
+
 \subsection{Report 4}
 time-frequency plot
 \subsection{Report 5}
