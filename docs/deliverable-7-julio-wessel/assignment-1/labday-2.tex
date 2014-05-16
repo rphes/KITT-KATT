@@ -4,10 +4,17 @@
 \input{../../library/import}
 \input{../../library/style}
 \addbibresource{../../library/bibliography.bib}
+\usepackage[OT2,T1]{fontenc}
+\newcommand{\sha}{\text{\fontencoding{OT2}\selectfont\char88}}
+\newcommand{\F}[1]{\operatorname{\mathcal{F}}\left\{#1\right\}}
 
 \begin{document}
 
 \section{Labday 2}
+
+\begin{equation}
+	\F{\operatorname{rect}(F_s t) \ast 2F_s \sha(2F_s t)}
+\end{equation}
 \subsection{Report 8}
 autocorrelation
 

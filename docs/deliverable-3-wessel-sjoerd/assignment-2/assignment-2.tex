@@ -142,51 +142,51 @@ Even though we encountered all these non-linearities, we were actually able to c
 
 Figure \ref{fig:ass-2-kitt-controlled} shows the results of KITT being controlled by the designed controller. One can see that the controller effectively drives KITT to the referenced distance. We have limited KITT's speed to prevent unwanted accidents.
 
-\section{Controller revisited}
-If we introduce the feedback law
+% \section{Controller revisited}
+% If we introduce the feedback law
 
-\begin{equation}
-	\vec{u} = -\mat{K}(\vec{x} - \vec{x}_{ref})
-\end{equation}
+% \begin{equation}
+% 	\vec{u} = -\mat{K}(\vec{x} - \vec{x}_{ref})
+% \end{equation}
 
-and argue that $\dot{\vec{x}} \to 0$ when $t \to \infty$ then we obtain
+% and argue that $\dot{\vec{x}} \to 0$ when $t \to \infty$ then we obtain
 
-\begin{equation} \label{eq:ass-2-rev}
-	(\mat{B} \mat{K} - \mat{A}) \vec{x} = \mat{B} \mat{K} \vec{x}_{ref}.
-\end{equation}
+% \begin{equation} \label{eq:ass-2-rev}
+% 	(\mat{B} \mat{K} - \mat{A}) \vec{x} = \mat{B} \mat{K} \vec{x}_{ref}.
+% \end{equation}
 
-Let $\vec{x}$ and $\vec{x}_{ref}$ be of the form (snelheid is 2e item, die gaat naar 0 als t naar infty!)
+% Let $\vec{x}$ and $\vec{x}_{ref}$ be of the form (snelheid is 2e item, die gaat naar 0 als t naar infty!)
 
-\begin{equation}
-	\vec{x} = \begin{bmatrix}
-		d \\
-		0
-	\end{bmatrix},
-	\vec{x}_{ref} 
-		d_{ref} \\
-		0
-	\end{bmatrix}
-\end{equation}
+% \begin{equation}
+% 	\vec{x} = \begin{bmatrix}
+% 		d \\
+% 		0
+% 	\end{bmatrix},
+% 	\vec{x}_{ref} 
+% 		d_{ref} \\
+% 		0
+% 	\end{bmatrix}
+% \end{equation}
 
-and $\mat{A}$ be of the form (specifiek ons model)
+% and $\mat{A}$ be of the form (specifiek ons model)
 
-\begin{equation}
-	\mat{A} = \begin{bmatrix}
-		0 & a \\
-		0 & b
-	\end{bmatrix},
-\end{equation}
+% \begin{equation}
+% 	\mat{A} = \begin{bmatrix}
+% 		0 & a \\
+% 		0 & b
+% 	\end{bmatrix},
+% \end{equation}
 
-then solving Equation \ref{eq:ass-2-rev} for $\vec{x}$ yields
+% then solving Equation \ref{eq:ass-2-rev} for $\vec{x}$ yields
 
-\begin{equation}
-	\vec{x} = \vec{x}_{ref}.
-\end{equation}
+% \begin{equation}
+% 	\vec{x} = \vec{x}_{ref}.
+% \end{equation}
 
-\begin{align}
-	\dot{\vec{x}} &= (\mat{A} - \mat{B} \mat{K}) \vec{x} + \mat{B} \mat{K} \vec{x}_{ref}, \\
-	\vec{y} &= \mat{C} \vec{x}
-\end{align}
+% \begin{align}
+% 	\dot{\vec{x}} &= (\mat{A} - \mat{B} \mat{K}) \vec{x} + \mat{B} \mat{K} \vec{x}_{ref}, \\
+% 	\vec{y} &= \mat{C} \vec{x}
+% \end{align}
 
 
 \end{document}
