@@ -1,9 +1,11 @@
+line='line';
+LinePlotStyle=['''r''',',','''LineWidth''',',','2'];
 N=100;
 a=0.95;
 h=filter(1, [1 a], [1 zeros(1,N-1)]);
 figure(1)
 subplot(2,1,1)
-plot(h)
+plot(h,LinePlotStyle)
 title('First order IIR filter with a=0.95');
 ylabel('h[n]');
 xlabel('n');
