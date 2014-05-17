@@ -6,39 +6,61 @@
 \addbibresource{../../library/bibliography.bib}
 
 \begin{document}
+Relevant source code for each task/assignment in this can be found in a clearly ordered way in Appendix~\ref{app:sourcecode}. An overview of the included files is given in the table of contents at the start of this document.
 
 \chapter{Assignment 1}
 \section{Labday 1}
 \subsection{Report 1}
+
 \begin{figure}[H]
 	\centering
 	\input{resource/reflections.tikz}
 	\caption{Some possible reflections}
 	\label{fig:reflections}
 \end{figure}
-Given a square room confined by the blue lines in figure \ref{fig:reflections} with a sound source depicted by the green dot and a microphone depicted by the yellow dot, it is easy to calculate the number of reflections heard at the yellow dot by reflecting the room about each wall. If the number of reflections is one, the result is that each wall must be mirrored once and the result is figure \ref{fig:reflections} excluding the four corner rooms, for a total of five reflections (no reflection + 4 reflections). The red dots in the reflected rooms represent the yellow dot as projected through the wall. After 2 reflections, figure \ref{fig:reflections} should be extended by four more rooms, yielding 13 reflections.
 
-To see the impulse response of the room with two reflections we made use of the \texttt{MATLAB} script provided in appendix ... The impulse response is shown in figure ...
-We extended the \texttt{MATLAB} model to incorporate an arbitrary amount of reflections. The resulting room diagram is shown in figure ... and the resulting impulse response is shown in figure ...
+Given a square room, confined by the blue lines in Figure~\ref{fig:rep1-reflections-ill}, with a sound source depicted by the green dot and a microphone depicted by the yellow dot, it is easy to calculate the number of reflections heard at the yellow dot by mirroring the room about each wall. If the number of reflections is one, the result is that each wall must be mirrored once and the result is figure \ref{fig:rep1-reflections} excluding the four corner rooms, for a total of five reflections (no reflection + 4 reflections). The red dots in the reflected rooms represent the yellow dot as projected through the wall (mirrored). After 2 reflections, Figure~\ref{fig:rep1-reflections-ill} should be extended by four more rooms (on the left and right and above and under the current square), yielding a total of 13 possible reflections.
+
+% To see the impulse response of the room with two reflections we made use of the \texttt{MATLAB} script provided in Appendix~\ref{appsec:sourcecode-reflections} The impulse response is shown in Figure~\ref{fig:reflections-impulse}.
+
+We created a \texttt{MATLAB} model for the above situation with the amount of reflections (rooms) as parameter. This script makes use of the previously discussed mirroring-principle, along with the given equation for sound dampening in the medium $\alpha(r) = \frac{\beta}{r^2}$ \cite[91]{epo4-manual}. A resulting room diagram, along with its impulse response and behavior for a rectangular pulse are shown in Figure~\ref{fig:rep1-reflections-matlab}.
+
+%% FIGURE fig:reflections-matlab HERE %%
+
 \subsection{Report 2}
 %corresponding matlab file: resource/labday1/report2.m
-The impulse response for $a=0.95$ and $a=-0.95$ is shown in figure .. For $a=0.95$ the filter causes a damped oscillation, for $a=-0.95$ it causes an exponentially decaying signal.
+The impulse response for $a=0.95$ and $a=-0.95$ is shown in Figure~\ref{fig:rep2-time-resp}. For $a=0.95$ the filter causes a damped oscillation, for $a=-0.95$ it causes an exponentially decaying signal. Being a low-pass filter, the response for more general signals, will be a `smoothed' version of the original signal, since low-pass filters counteract rapid change in their input signals.
 
-The frequency domain plots are shown in figure ... It can be seen that for $a=0.95$ the filter behaves as a band pass filter and for $a=-0.95$ it behaves as a band stop filter.
+%% FIGURE fig:rep2-time-resp HERE %%
 
-There is no \texttt{MATLAB} function for the FT or DTFT because these produce continuous results and \texttt{MATLAB} is a numerical package which can't handle that.
+The frequency domain plots are shown in Figure~\ref{fig:rep2-freq-resp}. It can be seen that for $a=0.95$ the filter behaves as a band pass filter and for $a=-0.95$ it behaves as a band stop filter. % O RLY?
+
+%% FIGURE fig:rep2-freq-resp HERE %%
+There is no \texttt{MATLAB} function for the FT or DTFT, because a digital computer system and its software (like \texttt{MATLAB}) by definition cannot handle non-discrete signals, both amplitude and time need to be discrete. Since the FT and DTFT both have (partially) non-discrete in- and outputs, it is not possible to perform such calculations on a computer.
+
 \subsection{Report 3}
 
+%% FIGURE fig:rep3-train-time HERE %%
 
+A plot of the time-domain signal is given in Figure~\ref{fig:rep3-train-time}, we can distinguish the two whistle blows (`woo-wooooo'), but otherwise there is not much more that can be said about it.
+
+%% FIGURE fig:rep3-train-freq HERE %%
+
+When we observe Figure~\ref{fig:rep3-train-freq}, which depicts the frequency-domain signal of the train, we see that frequencies around \SI{3}{kHz} are most dominantly present, but also that the signal contains some lower frequency components.
+Since we mostly handle time-signals without any complex part (complex time signals do not exist in nature), any Fourier transform to the frequency-domain would yield a symmetric response, hence the given plot is symmetric in $\omega = 0$. Were we to add a complex part to our time-signal, this would no longer have to be the case.
 
 \subsection{Report 4}
 %Corresponding matlab file: resources/labday1/report4.m
-Figure ? shows a heatmap of the occurrence of frequencies in \SI{20}{\milli \second} intervals of the standard \texttt{MATLAB} train soundbyte. It is apparent that most of the sound is centered around \SI{10}{\kilo\hertz}. The two whistle blows are also clearly distinguishable. 
+Figure~\ref{fig:rep4-train-heatmap} shows a heatmap of the occurrence of frequencies in \SI{20}{\milli\second} intervals of \texttt{MATLAB}'s train audio signal. This plot should give a more detailed view of the frequency contents of the train signal than Figure~\ref{fig:rep3-train-freq}, since it also includes a time component. It is apparent that most of the sound is centered around \SI{3}{\kilo\hertz}. The two whistle blows are also clearly distinguishable.
 
-\subsection{Report 5}
-Zero padding
-\subsection{Report 6}
-extended zero padding
+%% FIGURE fig:rep4-train-heatmap HERE %%
+
+\subsection{Report 5 and 6}
+
+%% FIGURE fig:rep5-6-spectrum HERE %%
+
+Figure~\ref{fig:rep5-6-spectrum} shows the frequency spectrum of the original given $h$, as well as a padded $h$ which is five times longer than the original. Comparing the plots, we see that interpolation is indeed accomplished, just be adding zeros to the end of our original signal. Since our padded $h$ is five times larger than the original, we notice that every 5th sample in the padded response indeed coincides with a sample of the original one.
+
 \subsection{Report 7}
 Convolution property p.95
 
