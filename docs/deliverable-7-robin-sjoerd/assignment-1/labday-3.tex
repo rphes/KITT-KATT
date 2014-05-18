@@ -9,13 +9,30 @@
 
 \section{Labday 3}
 \subsection{Report 11}
-Impulse response of audio channel
+For testing audio transmission, we tried to transmit some signals to see what the frequency spectrum of the received signal would be. Plots of the resulting spectra are given in Figure~\ref{fig:rep11-test-spectra}.
 
-\subsection{Report 12}
-Minimum sample rate \@ microphone
+%% FIGURE fig:rep11-test-spectra HERE %%
 
-\subsection{Report 13}
-No line of sight!
+We obtained mostly expected results: a sine wave sent and received with sufficient sampling rates yields delta-pulses on its positive and negative frequency and a sine wave sampled with $F_s < 2B$ results in an aliased spectrum. It is worth noting the fact that there is not much of a difference in the spectrum of the pulsed signal, compared to that of a sine. This could be explained by speaker characteristics (a square wave requires infinite acceleration of the speaker's conus, which is not possible), as well as numerical effects due to the use of a computer system.
+
+%% FIGURE fig:rep11-impulse-spectra HERE %%
+
+The spectra of the required impulse responses are shown in Figure~\ref{fig:rep11-impulse-spectra}. For equal $F_s$ of \SI{22050}{Hz}, we of course do not expect aliasing to occur. However, for $F_{s,TX} = \SI{22050}{Hz}$ and $F_{s,TX} = \SI{8000}{Hz}$, we are clearly undersampling the received analog signal, so aliasing is to be expected. Lastly, for $F_{s,TX} = \SI{4000}{Hz}$ and $F_{s,TX} = \SI{22050}{Hz}$, we are oversampling, so aliasing is not to be expected, but the highest frequency should be $\pm \frac{F_{s,TX}}{2} = \pm \SI{2}{kHz}$, which corresponds nicely to our measured spectrum, considering the effects of noise.
+
+%% TODO: Answer last question and check the above
+
+\subsection{Report 12 and 13}
+Assuming the speed of sound to be \SI{340}{m/s}, it will take $0.01/340 = \SI{29.4}{\micro s}$ to travel a distance of \SI{1}{cm}. Were we to capture this difference in time, we would need a receiver capable of a sampling rate $F_s > (29.4 \times 10^{-6})^{-1} = \SI{34}{kHz}$.
+
+%% FIGURE subfig:rep12-time + subfig:rep12-delays IN fig:rep12-los HERE %%
+
+Figure~\ref{fig:rep12-los} shows time plots of the received signal after transmitting a single impulse over various distances, as well as a diagram that shows the measured delays per distance, along with an least-squares approximation and expected value line. Looking at the measured delays, we see that they are not all consistent with our expectations. This is most likely due to delays introduced in the processing of the received signal. When we compare the amplitudes of the various signals, we see that they indeed drop over distance, which is according to our expectations.
+
+%% FIGURE fig:rep13-nlos HERE %%
+
+Repeating the previous experiment with an obstacle (a \SI{15}{"} Macbook) between the transmitter and receiver, we obtained the results as depicted in Figure~\ref{fig:rep13-nlos}. The measurements at \SI{50}{cm} show results that are to be expected, the NLOS signal was received later and with a lesser amplitude than the LOS signal. For \SI{100}{cm}, our results were less than ideal, since it looks like the NLOS signal was actually received after less time than the LOS signal, which is not conform our expectations. Once again this is probably because of processiong delays in the receiver. The amplitude of the NLOS signal was indeed lower than that of the LOS signal, though.
+
+%% TODO check the above
 
 \subsection{Task before report 14}
 The parameters of \texttt{refsignal.m} are as follows:
