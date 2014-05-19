@@ -5,7 +5,7 @@ tx = [1.2 0.3]; % 1.2 0.3
 rx = [3.1 3.3]; % 3.1 3.3
 beta = 1; % Train: 200
 v = 343; % Train: /10
-copies = 2;
+copies = 5;
 
 pulse_width = 5e-2;
 pulse_amplitude = 1;
