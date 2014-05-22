@@ -62,6 +62,15 @@ Figure~\ref{fig:rep4-train-heatmap} shows a heatmap of the occurrence of frequen
 Figure~\ref{fig:rep5-6-spectrum} shows the frequency spectrum of the original given $h$, as well as a padded $h$ which is five times longer than the original. Comparing the plots, we see that interpolation is indeed accomplished, just be adding zeros to the end of our original signal. Since our padded $h$ is five times larger than the original, we notice that every 5th sample in the padded response indeed coincides with a sample of the original one.
 
 \subsection{Report 7}
-Convolution property p.95
 
+%% FIGURE fig:rep7 HERE %%
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{resource/rep7.png}
+	\caption{Amplitude spectra for convolving first then FFT, FFT first then multiplying and the absolute difference between the methods.}
+	\label{fig:rep7}
+\end{figure}
+
+To test whether the convolution property holds, the `train' signal was convolved with the same, extended $h[n]$ as before. The result was then FFT'd and the amplitude spectrum was drawn. Then, for the same `train' signal and $h[n]$ these signals were first FFT'd and then multiplied. Again, an amplitude spectrum was plotted. The results of both these plots can be found in Figure~\ref{fig:rep7}, along with a third plot, the absolute difference between the two results. We may conclude that first convolving and then applying an FFT yields almost the same results as first applying an FFT and then multiplying. The differences are in the order of $10^{-13}$ to $10^{-12}$, which we can attribute to numerical and round-off errors in the FFT implementation and convolution algorithms.
 \end{document}

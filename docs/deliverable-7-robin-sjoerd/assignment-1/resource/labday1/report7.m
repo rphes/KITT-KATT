@@ -5,20 +5,26 @@ h=[1 zeros(1,5) 0.9 zeros(1,5) 0.8];
 
 Y_conv = fft(conv(x,h));
 
-new_length = length(x)+length(h)-1;
-x = [x zeros(1,new_length-length(x))];
-h = [h zeros(1,new_length-length(h))];
-N=length(x);
+N = length(x)+length(h)-1;
+x = [x zeros(1,N-length(x))];
+h = [h zeros(1,N-length(h))];
 Y_fft = fft(x).*fft(h);
 
-F = [0: 2*pi/N:(N-1)*2*pi/N];
+F = [-pi: 2*pi/N:(N-1)*pi/N];
 
-% subplot(3,1,1);
-% plot(abs(Y_fft),'r','LineWidth',1);
-% subplot(3,1,2);
-% plot(abs(Y_conv),'r','LineWidth',1);
-% subplot(3,1,3);
-plot(fftshift(F)-pi,fftshift(abs(Y_conv-Y_fft)),'b','LineWidth',1);
-title('Absolute difference between fft(conv(x,h)) and fft(x)*fft(h)');
+subplot(3,1,1);
+plot(F,abs(Y_conv),'r','LineWidth',2);
 xlabel('Frequency');
-ylabel('|Y(j\omega)|');
+ylabel('|F(x*h)|')
+xlim([-pi pi]);
+subplot(3,1,2);
+plot(F,abs(Y_fft),'r','LineWidth',2);
+xlabel('Frequency');
+ylabel('|F(x)F(h)|')
+xlim([-pi pi]);
+subplot(3,1,3);
+plot(F,abs(Y_conv-Y_fft),'b','LineWidth',2)
+xlabel('Frequency');
+ylabel('|F(x*h)-F(x)F(h)|');
+xlim([-pi pi]);
+%NOTE: the algorithm works fine, but the plots are not beautiful yet..
