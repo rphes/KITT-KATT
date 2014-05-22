@@ -1,4 +1,4 @@
-function [channel_estimate] = ch2(x, y,L_hat)
+function [h_est] = ch2(x, y,L_hat)
 %USAGE
 %creates channel estimate by Matched Filter
 %input x and y vector 
@@ -14,21 +14,13 @@ else
 end
 %THIS METHOD DOES NOT WORK
 xr = flipud(x);
-channel_estimate = filter(xr,1,y);
-channel_estimate=channel_estimate(length(x)+1:end);
+h_est = filter(xr,1,y);
+h_est=h_est(length(x)+1:end);
 alpha =x'*x;
-channel_estimate=channel_estimate/alpha;
+channel_estimate=h_est/alpha;
 
 
 %% plot the channel estimate
 figure
-plot(channel_estimate,'ro','MarkerSize',15,'MarkerFaceColor','r')
-ylim([min(channel_estimate-1) max(channel_estimate+1)])
-xlim([0 length(channel_estimate)+1])
-%draw lines to x axis
-for i=1:length(channel_estimate)
-    line([i i],[0 channel_estimate(i)],'LineStyle','-','LineWidth',2,'Color','r')
-end
-%draw x axis
-line([0 length(channel_estimate)+1],[0 0],'LineStyle','-','LineWidth',2)
+plot_channel_estimate(channel_estimate,'n','$$\hat{h}$$[n]','Recovered channel estimate using matched filter');
 end
