@@ -9,11 +9,26 @@
 
 \section{Labday 2}
 \subsection{Report 8}
-autocorrelation
+For our training sequence, an autocorrelation sequence with an impulse-like characteristic is desirable. This enables us to specifically detect our own sequence, whilst filtering out any interference, like random noise or the signals of any of the other vehicles. 
+
+%% FIGURE fig:rep8-autocor HERE %%
+
+Figure~\ref{fig:rep8-autocor} shows the autocorrelation sequences of the used signals. We see that both minimum- and maximum-phase sequences exhibit impulse-like behavior, although the maximum-phase sequence's magnitude is about three times as high overall. While this is desirable for the peak at the origin, it also means that the side lobes are larger than the ones of the minimum-phase signal. It is therefore hard to say which signal will perform best, just by looking at this diagram. Looking at the sine and random-BPSK autocorrelation sequences, we observe that they hardly make good candidates for being a training sequence, due to their relatively widespread (non-impulse-like) characteristics.
 
 \subsection{Report 9}
-modify datagen.m
+%% FIGURE fig:rep9-error-no-noise HERE %%
+
+Figure~\ref{fig:rep9-error} depicts the channel estimation error for each of the four test signals with increasing estimated channel length $\hat{L}$ and without any noise added. We see that for $\hat{L} \ge L = 4$, the inversion/projection estimation method outperforms the matched filter in every case. This is expected behavior since the projection method is supposed to give perfect results in situations without noise and sufficient estimated channel length, where the matched filter sacrifices estimation accuracy for faster performance due to less complex calculations.
+However, were we to choose $\hat{L} < L$, we see that it could actually be good to pick the matched-filter approach, since it results in slightly less error in certain situations. Of course, looking at the difference in error between $\hat{L} < L$ and $\hat{L} \ge L = 4$, it would be best to avoid choosing $\hat{L}$ to be too small all together.
+Observing the difference between the various signals themselves, we note that the sine and BPSK signals tend to exhibit a slightly smaller error than the minimum- and maximum-phase signals.
+
+%% FIGURE fig:rep9-error-noise HERE %%
+
+Repeating the previous simulation with added noise with variance $\sigma = 0.1$, as shown in Figure~\ref{fig:rep9-error-noise}, we see nothing spectacular. Both estimation methods now show increased error for all $\hat{L}$, which is to be expected. 
 
 \subsection{Report 10}
-Training sequence design
+The main goal in the design of our training sequence is to be able to perfectly identify it as being ours under every circumstance. This includes noise and other sounds (signals) in the medium. To accomplish this, we want the signal itself to have a high, impulse-like autocorrelation sequence and very low cross-correlation with any arbitrary other signal to avoid interference.
+When determining the signal length $N_x$, we take into account that a larger length results in a more unique signal, with better correlation properties, while at the same time it will reduce the maximum tracking speed, since a longer signal takes more time to transmit.
+We also noted that it is absolutely crucial to pick a channel length $\hat{L}$ which is at least equal to $L$ itself. Moreover, we would prefer to pick $\hat{L}$ so that $\hat{L} = L$. This way, we may achieve optimal channel estimation, without introducing any calculation overhead due to matrices that are larger than necessary.
+
 \end{document}
