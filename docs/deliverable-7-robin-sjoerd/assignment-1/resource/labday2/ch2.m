@@ -12,7 +12,7 @@ if L_hat == 0
 else
     L = L_hat;
 end
-%THIS METHOD DOES NOT WORK
+%THIS METHOD DOES NOT WORK FOR SHORT SEQUENCES
 xr = flipud(x);
 h_est = filter(xr,1,y);
 h_est=h_est(length(x)+1:end);

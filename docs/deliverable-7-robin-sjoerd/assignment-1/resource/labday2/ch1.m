@@ -13,7 +13,7 @@ else
     L = L_hat;
 end
 
-X=toep(x,length(y),L)
+X=toep(x,length(y),L);
 channel_estimate = inv(X'*X)*X'*y;
 
 %% plot the channel estimate
