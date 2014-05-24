@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace KITT_Drive_dotNET
+namespace Overwatch
 {
 	public abstract class ObservableObject : INotifyPropertyChanged
 	{

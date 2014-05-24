@@ -9,8 +9,8 @@ namespace Overwatch
 	{
 		public MainWindow()
 		{
-			InitializeComponent();
 			this.DataContext = Data.MainViewModel;
+			InitializeComponent();		
 		}
 	}
 

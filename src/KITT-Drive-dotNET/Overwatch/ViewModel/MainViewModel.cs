@@ -10,10 +10,17 @@ namespace Overwatch.ViewModel
 {
 	public class MainViewModel
 	{
-		public int WindowHorizontalSize { get { return 1024; } }
-		public int WindowVerticalSize { get { return WindowHorizontalSize / 4 * 3; } }
+		public int WindowWidth { get { return 900; } }
+		public int WindowHeight { get { return WindowWidth / 3 * 2; } }
 		public int DefaultMargin { get { return 5; } }
-		public int VisualisationGroupBoxHorizontalSize { get { return (int)(WindowHorizontalSize * 0.75); } }
-		public int ObservationControlGroupBoxHorizontalSize { get { return (int)(WindowHorizontalSize * 0.25); } }
+		public int VisualisationGroupBoxWidth { get { return (int)(WindowWidth / 3 * 2 - 3 * DefaultMargin); } }
+		public int ObservationControlGroupBoxWidth { get { return (int)(WindowWidth / 3 - 3 * DefaultMargin); } }
+
+		private VehicleViewModel _vehicleViewModel = new VehicleViewModel();
+		public VehicleViewModel VehicleViewModel
+		{
+			get { return _vehicleViewModel; }
+			set { _vehicleViewModel = value; }
+		}
 	}
 }
