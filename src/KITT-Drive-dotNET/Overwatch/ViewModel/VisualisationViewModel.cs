@@ -7,9 +7,6 @@ namespace Overwatch.ViewModel
 {
 	public class VisualisationViewModel : ObservableObject
 	{
-		public bool IsMouseOver
-		{
-			
-		}
+
 	}
 }
