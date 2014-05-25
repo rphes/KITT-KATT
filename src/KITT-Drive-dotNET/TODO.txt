@@ -1,0 +1,3 @@
+- Pick model (2nd/3rd order)
+- Really robust serial handling
+- 

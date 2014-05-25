@@ -1,0 +1,44 @@
+\usetikzlibrary{shapes,arrows}
+\tikzstyle{block} = [
+	rectangle,
+	draw,
+	fill=blue!20, 
+    text width=7em, 
+    text centered,
+    rounded corners,
+    minimum height=4em
+]
+\tikzstyle{every edge} = [
+	draw,
+	>=triangle 90
+]
+
+\begin{tikzpicture}[node distance = 5cm, auto]
+	% grid
+	\draw[step=3cm,gray,thin] (0,0) grid (9,9);
+	\draw[draw=blue,ultra thick] (3,3) rectangle (6,6);
+
+	% transmitter
+	\filldraw[fill=green] (3.8,3.8) circle (1mm);
+	% receiver replicas
+	\foreach \x in {0.8,5.2,6.8}
+		\foreach \y in {0.8,5.2,6.8}
+			\filldraw[fill=red] (\x,\y) circle (1mm);
+	% receiver
+	\filldraw[fill=yellow] (5.2,5.2) circle (1mm);
+
+	% lines
+	% straight
+	\draw[thick,->,draw=black] (3.9,3.9) -- (5.1,5.1); 
+	% one reflection
+	% \draw[thick,->,draw=black,dotted] (3.6,3.9) -- (0.9,5.1);
+	% \draw[thick,->,draw=black,dotted] (3.1,4.2) -- (5.1,5.1);
+	% one reflection
+	\draw[thick,->,draw=black,dotted] (3.8,3.9) -- (5.1,6.7);
+	\draw[thick,->,draw=black,dotted] (4.8,5.9) -- (5.1,5.3);
+	% two reflections
+	\draw[thick,->,draw=black,dashed] (3.9,3.7) -- (6.7,0.9);
+	\draw[thick,->,draw=black,dashed] (4.6,3.1) -- (5.9,4.4);
+	\draw[thick,->,draw=black,dashed] (5.9,4.5) -- (5.3,5.1);
+
+\end{tikzpicture}

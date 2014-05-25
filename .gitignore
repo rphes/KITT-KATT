@@ -248,3 +248,6 @@ pip-log.txt
 *.bib$
 *.gz(busy)
 *.sublime-workspace
+
+#Matlab shit
+*.asv
