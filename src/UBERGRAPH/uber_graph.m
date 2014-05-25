@@ -8,27 +8,18 @@
 
 %% Example
 
-% Single graph
-
-% x = {[1 2 3 4 5]};
-% y = {[1 2 4 5 5]};
-% LineStyle = {'-'};
-% LineColor = [1 0 0];
-% MarkerStyle = {'o'};
-% MarkerColor = [.75 .75 .75];
-% legendText = {'line'};
-% makeLegend = 'yes';
-% legendLocation = 'northEast';
-% logX = 0;
-
-% Multiple graphs
+% Graph
 
 % x = {[1 2 3 4 5],[1 2 3 4 5]}
 % y = {[1 2 3 4 5],[1 4 6.2 4 2]}
 % LineStyle = {'-';'-'}
+% LineWidth = [1.5;1.5];
 % LineColor = [[1 0 0];[0 1 0]];
+% LineMode = {'stem','line'};
 % MarkerStyle = {'o','o'};
-% MarkerColor = [[.75 .75 .75];[.75 .75 .75]];
+% MarkerFaceColor = [[.75 .75 .75];[.75 .75 .75]];
+% MarkerEdgeColor = [[0 0 0];[0 0 0]];
+% MarkerSize = [8;8];
 % legendText = {'line1', 'line2'};
 % makeLegend = 'yes';
 % legendLocation = 'northEast';
@@ -66,17 +57,23 @@ for i = 1:length(x)
     xData = x{i};
     yData = y{i};
     
-    hData(i) = line(xData, yData);
+    if strcmp(LineMode{i}, 'stem')
+        hData(i) = stem(xData, yData);
+    elseif strcmp(LineMode{i}, 'line')
+        hData(i) = line(xData, yData);
+    else
+        error(['Unknown line mode ' LineMode{i} '.']);
+    end
 
     % Esthetical line properties
     set(hData(i),...
         'LineStyle', LineStyle{i},...
         'Color', LineColor(i,:),...
-        'LineWidth', 1.5,...
+        'LineWidth', LineWidth(i),...
         'Marker', MarkerStyle{i},...
         'MarkerSize', 8,...
-        'MarkerEdgeColor', [0 0 0],...
-        'MarkerFaceColor', MarkerColor(i,:));
+        'MarkerEdgeColor', MarkerEdgeColor(i,:),...
+        'MarkerFaceColor', MarkerFaceColor(i,:));
 end
 
 % Logaritmic view
