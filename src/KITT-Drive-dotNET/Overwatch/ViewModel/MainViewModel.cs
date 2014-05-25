@@ -16,5 +16,19 @@ namespace Overwatch.ViewModel
 			get { return _vehicleViewModel; }
 			set { _vehicleViewModel = value; }
 		}
+
+		private CommunicationViewModel _communicationViewModel = new CommunicationViewModel();
+		public CommunicationViewModel CommunicationViewModel
+		{
+			get { return _communicationViewModel; }
+			set { _communicationViewModel = value; }
+		}
+
+		private VisualisationViewModel _visualisationViewModel = new VisualisationViewModel();
+		public VisualisationViewModel VisualisationViewModel
+		{
+			get { return _visualisationViewModel; }
+			set { _visualisationViewModel = value; }
+		}
 	}
 }
