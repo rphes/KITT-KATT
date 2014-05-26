@@ -3,8 +3,8 @@
 % - Nice looking graph
 % - Multiple graphs
 % - Export to PDF
-% TODO:
-% - Grid lines width and color
+% To do:
+% - Settings in struct
 
 %% Example
 
