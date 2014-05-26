@@ -11,18 +11,67 @@
 \subsection{Report 8}
 For our training sequence, an autocorrelation sequence with an impulse-like characteristic is desirable. This enables us to specifically detect our own sequence, whilst filtering out any interference, like random noise or the signals of any of the other vehicles. 
 
-%% FIGURE fig:rep8-autocor HERE %%
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{resource/ass-1-report-8-minimum-phase-minimum-phase.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{resource/ass-1-report-8-maximum-phase-maximum-phase.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{resource/ass-1-report-8-sinusoidal-sinusoidal.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{resource/ass-1-report-8-BPSK-BPSK.pdf}
+	\end{subfigure}
+	\caption{Autocorrelation sequences for each of the tested signals}
+	\label{fig:rep8-autocor}
+\end{figure}
 
 Figure~\ref{fig:rep8-autocor} shows the autocorrelation sequences of the used signals. We see that both minimum- and maximum-phase sequences exhibit impulse-like behavior, although the maximum-phase sequence's magnitude is about three times as high overall. While this is desirable for the peak at the origin, it also means that the side lobes are larger than the ones of the minimum-phase signal. It is therefore hard to say which signal will perform best, just by looking at this diagram. Looking at the sine and random-BPSK autocorrelation sequences, we observe that they hardly make good candidates for being a training sequence, due to their relatively widespread (non-impulse-like) characteristics.
 
 \subsection{Report 9}
-%% FIGURE fig:rep9-error-no-noise HERE %%
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{resource/ass-1-report-9-minimum-phase.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{resource/ass-1-report-9-maximum-phase.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{resource/ass-1-report-9-sinusoidal.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{resource/ass-1-report-9-BPSK.pdf}
+	\end{subfigure}
+	\caption{The channel estimation error for increasing $\hat{L}$, without noise}
+	\label{fig:rep9-error}
+\end{figure}
 
 Figure~\ref{fig:rep9-error} depicts the channel estimation error for each of the four test signals with increasing estimated channel length $\hat{L}$ and without any noise added. We see that for $\hat{L} \ge L = 4$, the inversion/projection estimation method outperforms the matched filter in every case. This is expected behavior since the projection method is supposed to give perfect results in situations without noise and sufficient estimated channel length, where the matched filter sacrifices estimation accuracy for faster performance due to less complex calculations.
 However, were we to choose $\hat{L} < L$, we see that it could actually be good to pick the matched-filter approach, since it results in slightly less error in certain situations. Of course, looking at the difference in error between $\hat{L} < L$ and $\hat{L} \ge L = 4$, it would be best to avoid choosing $\hat{L}$ to be too small all together.
 Observing the difference between the various signals themselves, we note that the sine and BPSK signals tend to exhibit a slightly smaller error than the minimum- and maximum-phase signals.
 
-%% FIGURE fig:rep9-error-noise HERE %%
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{resource/ass-1-report-9-minimum-phase-noise.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{resource/ass-1-report-9-maximum-phase-noise.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{resource/ass-1-report-9-sinusoidal-noise.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{resource/ass-1-report-9-BPSK-noise.pdf}
+	\end{subfigure}
+	\caption{The channel estimation error for increasing $\hat{L}$, without noise}
+	\label{fig:rep9-error-noise}
+\end{figure}
 
 Repeating the previous simulation with added noise with variance $\sigma = 0.1$, as shown in Figure~\ref{fig:rep9-error-noise}, we see nothing spectacular. Both estimation methods now show increased error for all $\hat{L}$, which is to be expected. 
 
