@@ -11,14 +11,12 @@
 \section{Labday 4}
 
 \subsection{Report 1}
-1cm resolution \@ 340 m/s = 0.01/340 = 2.9e-5 sec --> 34kHz
-Sample rate: 34kHz (1 sample) or 17kHz (2 samples)
-If sample rate = 44.1kHz --> 5m corresponds to (5/340)*44.1k = 648.5 samples
-2 opties voor typical channel impulse response length: read from impulse response OR assume a maximum traveled distance of X meter and calculate X/340.
+In order to obtain a spatial resolution of \SI{1}{\centi\meter} the frequency of the audio signal should have a wavelength of at most \SI{1}{\centi\meter}. This means that $f=\frac{v_\text{sound,air}}{\lambda_{signal}}\geq\frac{340}{0.01}=\SI{34}{\kilo\hertz}$, assuming the speed of sound in air can be approximated by \SI{340}{\meter\per\second}. To satisfy the Nyquist criterion, the microphones must sample at twice this frequency to avoid aliasing. This seems a bit high and might lead to problems both in storage of samples (5 channels) and processing power. Therefore, sampling at \SI{44.1}{\kilo\hertz} seems more realistic. The highes frequency that can be detected accurately is then \SI{22.05}{\kilo\hertz}, corresponding to \SI{1.54}{\centi\meter}; this seems reasonable. The maximal propagation delay corresponding to \SI{5}{\meter} is $t_{\text{5m}}=\frac{5}{340}=\SI{147}{\milli\second}$. This corresponds to \num{649} samples at \SI{44.1}{\kilo\hertz}.
 
+%%typical_impulse_response.png included HERE.
+%%fig:ass2_typical
 
-
-
+A typical channel impulse response is shown in figure \ref{fig:ass2_typical} from which we can see that a typical impulse response takes about \SI{10}{\milli\second} before it is no longer distinguishable from noise. Therefore, we chose \texttt{timer3} to be \SI{8}{\hertz} so that the repetition period is \SI{0.125}{\milli\second}.
 
 \subsection{Report 2}
 Apply channel estimation and peak detection algorithms
