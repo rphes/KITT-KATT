@@ -17,6 +17,6 @@ X=toep(x,length(y),L);
 channel_estimate = inv(X'*X)*X'*y;
 
 %% plot the channel estimate
-figure
-plot_channel_estimate(channel_estimate,'n','$$\hat{h}$$[n]','Recovered channel estimate using time domain inversion');
+% figure
+% plot_channel_estimate(channel_estimate,'n','$$\hat{h}$$[n]','Recovered channel estimate using time domain inversion');
 end

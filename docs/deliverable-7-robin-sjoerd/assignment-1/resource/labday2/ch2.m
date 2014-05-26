@@ -15,12 +15,12 @@ end
 %THIS METHOD DOES NOT WORK FOR SHORT SEQUENCES
 xr = flipud(x);
 h_est = filter(xr,1,y);
-h_est=h_est(length(x)+1:end);
+h_est=h_est(end-L:end);
 alpha =x'*x;
-channel_estimate=h_est/alpha;
+h_est=h_est/alpha;
 
 
-%% plot the channel estimate
-figure
-plot_channel_estimate(channel_estimate,'n','$$\hat{h}$$[n]','Recovered channel estimate using matched filter');
+% %% plot the channel estimate
+% figure
+% plot_channel_estimate(h_est,'n','$$\hat{h}$$[n]','Recovered channel estimate using matched filter');
 end
