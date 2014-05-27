@@ -130,6 +130,8 @@ namespace Overwatch
 			try
 			{
 				SerialPort.WriteLine(data);
+				if (data != "S")
+					System.Diagnostics.Debug.WriteLine(data);
 			}
 			catch (Exception e)
 			{
@@ -154,15 +156,17 @@ namespace Overwatch
 			SendString(stringbuffer);
 		}
 
-		public void ToggleAudio(int enable)
+		public void ToggleAudio()
 		{
-			SendString('A' + enable.ToString());
+			bool b = !Data.MainViewModel.VehicleViewModel.BeaconIsEnabled;
+			SendString("A" + (b ? "0" : "1"));
 		}
 		#endregion
 
 		#region Reception
 		private void parseResponse(string response)
 		{
+			response = response.Trim();
 			char responseType = response[0];
 			string responseTypeAlt = response.Split(' ')[0];
 
@@ -192,6 +196,12 @@ namespace Overwatch
 						//current drive commands
 						Data.MainViewModel.VehicleViewModel.ActualPWMHeading = value1;
 						Data.MainViewModel.VehicleViewModel.ActualPWMSpeed = value2;
+
+						lastStatusResponse = DateTime.Now;
+						Ping = lastStatusResponse - lastStatusRequest;
+
+						if (StatusReceived != null)
+							StatusReceived(this, new EventArgs());
 					}
 					else if (responseType == 'U')
 					{
@@ -203,19 +213,29 @@ namespace Overwatch
 			}
 			else if (responseType == 'A')
 			{
-				//battery voltage readout
-				int voltage;
-				string data = response.Substring(1);
+				if (response.Length > 5 && response.Substring(0, 5) == "Audio")
+				{
+					//audio status readout
+					if (response.Length == 7)
+					{
+						char c = response[response.Length - 1];
+						if (c == '0')
+							Data.MainViewModel.VehicleViewModel.BeaconIsEnabled = true;
+						else
+							Data.MainViewModel.VehicleViewModel.BeaconIsEnabled = false;
+					}				
+				}
+				else
+				{
+					//battery voltage readout
+					int voltage;
+					string data = response.Substring(1);
 
-				if (int.TryParse(data, out voltage))
-					Data.MainViewModel.VehicleViewModel.BatteryVoltage = voltage;
+					if (int.TryParse(data, out voltage))
+						Data.MainViewModel.VehicleViewModel.BatteryVoltage = voltage;
+				}
 			}
-			else if (response.Length > 5 && response.Substring(0, 5) == "Audio")
-			{
-				//audio status readout
-				bool audiostatus = response[-1] != 0;
-				Data.MainViewModel.VehicleViewModel.AudioStatus = audiostatus;
-			}
+			
 			else
 			{
 				System.Diagnostics.Debug.WriteLine("Received unknown response: " + response + "could not parse...");
@@ -247,16 +267,7 @@ namespace Overwatch
 					parseResponse(LastLine);
 				}
 				else if (rx == 4)
-				{
-					//End of status transmission received (EOT), calculate ping and fire event
-					lastStatusResponse = DateTime.Now;
-					Ping = lastStatusResponse - lastStatusRequest;
-
-					if (StatusReceived != null)
-						StatusReceived(this, e);
-
-					continue; 
-				}
+					continue; //EOT received, discard and continue
 				else
 					lineBuffer += (char)rx;
 			}

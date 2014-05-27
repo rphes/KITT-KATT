@@ -17,6 +17,16 @@ namespace Overwatch.ViewModel
 		}
 
 		public string[] SerialPorts { get { return SerialPort.GetPortNames(); } }
+		public bool CanSelectSerialPort
+		{
+			get
+			{
+				if (Communication.SerialPort.IsOpen)
+					return false;
+				else
+					return true;
+			}
+		}
 
 		public object SelectedSerialPort { get; set; }
 		public string ConnectButtonString
@@ -30,27 +40,28 @@ namespace Overwatch.ViewModel
 			}
 		}
 
-		public bool CanSelectSerialPort
-		{
-			get
-			{
-				if (Communication.SerialPort.IsOpen)
-					return false;
-				else
-					return true;
-			}
-		}
-
 		public string PingString {
 			get 
 			{
 				if (Communication.SerialPort.IsOpen)
-					return "Last ping: " + Communication.Ping.TotalMilliseconds + " ms";
+					return "Last ping: " + Math.Round(Communication.Ping.TotalMilliseconds) + " ms";
 				else
 					return "Not connected";
 			} 
 		}
+
+		public string BeaconButtonString
+		{
+			get
+			{
+				if (Data.MainViewModel.VehicleViewModel.Vehicle.BeaconIsEnabled)
+					return "Disable beacon";
+				else
+					return "Enable beacon";
+			}
+		}
 		#endregion
+
 
 		#region Construction
 		public CommunicationViewModel()
@@ -61,10 +72,12 @@ namespace Overwatch.ViewModel
 		private void Communication_StatusReceived(object sender, EventArgs e)
 		{
 			RaisePropertyChanged("PingString");
+			RaisePropertyChanged("BeaconButtonString");
 		}
 		#endregion
 
 		#region Commands
+		#region Connect
 		void ConnectExecute()
 		{
 			if (!Communication.SerialPort.IsOpen)
@@ -74,6 +87,8 @@ namespace Overwatch.ViewModel
 
 				if (Communication.OpenPort() != 0)
 					MessageBox.Show(Communication.LastError, "Could not open port", MessageBoxButton.OK, MessageBoxImage.Error);
+				else
+					Communication.RequestStatus(); //Request initial status
 			}
 			else
 			{
@@ -97,6 +112,23 @@ namespace Overwatch.ViewModel
 		}
 
 		public ICommand Connect { get { return new RelayCommand(ConnectExecute, CanConnectExecute); } }
-		#endregion	
+		#endregion
+		#region Toggle beacon
+		void ToggleBeaconExecute()
+		{
+			Communication.ToggleAudio();
+		}
+
+		bool CanToggleBeaconExecute()
+		{
+			if (Communication.SerialPort.IsOpen)
+				return true;
+
+			return false;
+		}
+
+		public ICommand ToggleBeacon { get { return new RelayCommand(ToggleBeaconExecute, CanToggleBeaconExecute); } }
+		#endregion
+		#endregion
 	}
 }
