@@ -248,7 +248,7 @@ pip-log.txt
 *.bib$
 *.gz(busy)
 *.sublime-workspace
-!deliverable-7-resources/**
+!docs/deliverable-7-resources/**
 
 #Matlab shit
 *.asv
