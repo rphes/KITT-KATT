@@ -9,18 +9,41 @@
 
 \section{Labday 5}
 \subsection{Report 6}
-Test location estimate with TDOA data
-
-\textbf{NOTE: It seems as if the assignments below are optional, but we should ask about this because it is not quite clear from the manual (page 108).}
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=.6\linewidth]{../../deliverable-7-resources/figures/ass-2/report-6/ass-2-report-6.pdf}
+	\end{center}
+	\caption{Localization using the TDOA data}
+	\label{fig:ass-2-rep-6}
+\end{figure}
+Figure \ref{fig:ass-2-rep-6} shows the result of our localization algorithm on the TDOA data. Red dots indicate the actual positions of the beacon, while the green dots are the locations determined with our algorithm. By inspection the approximation seems quite alright, and the raw data confirms it is not too shabby with a mean error of \SI{4.92}{\centi\meter} and an error standard deviation of \SI{4.16}{\centi\meter}. However, we believe these results may be improved in the coming weeks. A few issues play a role here but mainly the performance of a two-dimensional localization algorithm was better than the three-dimensional version as described in the manual \cite{epo4-manual}. Reducing the problem to the two dimensional case makes the problem over-determined and allows us to -- in the coming weeks -- optimize the use of the additional information for example by iterative methods. 
 
 \subsection{Report 7}
-Accuracy estimation
-
+\begin{figure}[H]
+	\begin{subfigure}{.49\textwidth}
+		\includegraphics[width=\linewidth]{../../deliverable-7-resources/figures/ass-2/report-7-8/ass-2-report-7-mean.pdf}
+		\caption{\centering Mean of the microphone localization error by the MDS algorithm}
+	\end{subfigure}
+	\begin{subfigure}{.49\textwidth}
+		\includegraphics[width=\linewidth]{../../deliverable-7-resources/figures/ass-2/report-7-8/ass-2-report-7-std.pdf}
+		\caption{\centering Standard deviation of the microphone localization error by the MDS algorithm}
+	\end{subfigure}
+	\caption{Mean and standard deviation of MDS microphone localization algorithm as a function of the standard deviation of noise, $\sigma$}
+	\label{fig:ass-2-rep-7}
+\end{figure}
 \subsection{Report 8}
-Answer a number of questions
+Four microphones are indeed sufficient to determine their locations in the room in three dimensions. However, since the height of the car is constant and known and assuming the microphones are at the same, fixed height, the third dimension really plays no role and the fourth measurement can be used to improve the two dimensional model.
 
 \subsection{Report 9}
-Test extended MDS algorithm
+\label{subsec:ass-2-rep-9}
+Figure~\ref{fig:ass-2-rep-9} shows the results of our microphone localization using the TDOA data.
 
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=.6\linewidth]{../../deliverable-7-resources/figures/ass-2/report-9/ass-2-report-9.pdf}
+	\end{center}
+	\caption{Microphone localization using the MDS algorithm}
+	\label{fig:ass-2-rep-9}
+\end{figure}
 	
 \end{document}
