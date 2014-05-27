@@ -11,8 +11,8 @@
 \section{Labday 4}
 
 \subsection{Report 1}
-\label{ass2-report-1}
-As calculated in paragraph \ref{ass1-rep-12-13} the sampling frequency should be $f=\SI{34}{\kilo\hertz}$ in order to obtain a \SI{1}{\centi\meter} spatial resolution. To satisfy the Nyquist criterion, the microphones must sample at twice this frequency (e.g. $f=\SI{68}{\kilo\hertz}$) to avoid aliasing. This seems a bit high and might lead to problems both in storage of samples (5 channels) and processing power. Therefore, sampling at \SI{44.1}{\kilo\hertz} seems more realistic and this sampling rate is commonly supported by audio interfaces. The (theoretical) highest frequency that can be detected accurately is then \SI{22.05}{\kilo\hertz}, although due to the need of a low pass filter and corresponding transition band, \SI{20}{\kilo\hertz} is accomplished in practice \footnote{See \url{http://www.cs.columbia.edu/~hgs/audio/44.1.html} for details on why \SI{44.1}{\kilo\hertz} is dominant.}, corresponding to \SI{1.7}{\centi\meter}; this seems reasonable. The maximum propagation delay corresponding to \SI{5}{\meter} is $t_{\text{5m}}=\frac{5}{340}=\SI{147}{\milli\second}$. This corresponds to \num{649} samples at \SI{44.1}{\kilo\hertz}, thus defining the peak search interval.
+\label{subsec:ass2-report-1}
+As calculated in Section~\ref{subsec:ass1-rep-12-13} the sampling frequency should be $F_s=\SI{34}{\kilo\hertz}$ in order to obtain a \SI{1}{\centi\meter} spatial resolution. For our measurements we will use a commonly supported sampling rate of \SI{44.1}{\kilo\hertz}. This sampling rate would then allow for a resolution of $34 / 44.1 = \SI{0.78}{\centi\meter}$. The maximum propagation delay corresponding to \SI{5}{\meter} is $t_{\text{5m}}=5/340=\SI{147}{\milli\second}$. This corresponds with \num{649} samples at \SI{44.1}{\kilo\hertz}, thus defining the peak search interval.
 
 \begin{figure}[H]
 	\centering
@@ -21,9 +21,9 @@ As calculated in paragraph \ref{ass1-rep-12-13} the sampling frequency should be
 	\label{fig:ass-2-rep-1-typical}
 \end{figure}
 
-A typical channel impulse response is shown in figure \ref{fig:ass-2-rep-1-typical} from which we can see that a typical impulse response takes about \SI{10}{\milli\second} before it is no longer distinguishable from noise. Therefore, we chose \texttt{timer3} to be \SI{8}{\hertz} so that the repetition period is \SI{0.125}{\milli\second}.
+A typical channel impulse response is shown in Figure~\ref{fig:ass-2-rep-1-typical}. We can see that a its duration is about \SI{10}{\milli\second}, before it is no longer distinguishable from noise. Therefore, we chose \texttt{timer3} to be \SI{8}{\hertz} so that the repetition period is \SI{0.125}{\milli\second}, which will fit a single impulse response whilst allowing for some margin. Lastly, we chose \texttt{timer0} to be \SI{15}{kHz} and \texttt{timer1} to be \SI{3}{kHz}, since this frequency range (between \num{12} and \SI{18}{kHz}) is less prone to interference (e.g.from human speech) than lower ranges; and higher ranges were likely not to be transmitted correctly by our beacon, or to be received correctly by the microphones.
 
-Explanation of peak detection algorithm here.
+%TODO Explanation of peak detection algorithm here. <--NOT NECESSARY??
 
 \subsection{Report 2 and 3}
 The TDOA algorithm that we implemented has the following basic procedure: 
@@ -42,7 +42,7 @@ Note that for step three multiple methods are suitable. Three are described in t
 	\label{fig:ass-2-rep-2-data-segment}
 \end{figure}
 
-An example of a received data segment is shown in figure \ref{fig:ass-2-rep-2-data-segment}. For details on the peak detection algorithm, refer to section \ref{ass2-report-1}. For an example of the location of the peak as detected by our software see section \ref{ass2-report-4}.
+An example of a received data segment is shown in figure \ref{fig:ass-2-rep-2-data-segment}. For details on the peak detection algorithm, refer to Section~\ref{subsec:ass2-report-1}. For an example of the location of the peak as detected by our software see section \ref{subsec:ass2-report-1}.
 
 \begin{figure}[H]
 	\centering
@@ -69,10 +69,10 @@ Figure \ref{fig:ass-2-rep-2-result} shows an overview of the TDOA distance estim
 	\label{fig:ass-2-rep-3}
 \end{figure}
 
-An overview of multiple TDOA estimations for the same microphone placement (\SI{10}{\centi\meter} between the microphones) is shown in figure \ref{fig:ass-2-rep-3}. We calculated the average estimation to be \SI{9.38}{\centi\meter} with a standard deviation of \SI{0.35}{\centi\meter}. Because the true distance was \SI{10}{\centi\meter} we see that the measurements have a slight negative bias averaging an error of \SI{-0.62}{\centi\meter}.
+An overview of multiple TDOA estimations for the same microphone placement (\SI{10}{\centi\meter} between the microphones) is shown in figure \ref{fig:ass-2-rep-3}. We calculated the average estimation to be \SI{9.38}{\centi\meter} with a standard deviation of \SI{0.35}{\centi\meter}. Because the true distance was \SI{10}{\centi\meter} we see that the measurements have a slight negative bias averaging an error of \SI{-0.62}{\centi\meter}. Also, it is interesting to note that the difference between the minimum and maximum values of the measured distance is equal to \SI{0.78}{cm}, which corresponds perfectly to the value calculated in Section~\ref{subsec:ass2-report-1}.
 
 \subsection{Report 4}
-\label{ass2-report-4}
+\label{subsec:ass2-report-4}
 Plot of typical estimated channel impulse response
 
 \subsection{Report 5}
