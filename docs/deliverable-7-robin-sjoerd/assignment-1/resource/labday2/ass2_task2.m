@@ -5,32 +5,32 @@ close all;
 Fs=44100;
 samples = 5/340*Fs;
 TDOA=[];
-disp('Calculating 1st channel estimate (time)');
-tstart=tic;
-channel1_estimate = ch1(x,y(:,1),500);
-elapsed=toc(tstart);
-disp(strcat('took ',num2str(elapsed),'seconds'));
-disp('Calculating 2nd channel estimate (time)');
-tstart=tic;
-channel2_estimate = ch1(x,y(:,2),500);
-elapsed=toc(tstart);
-disp(strcat('took ',num2str(elapsed),'seconds'));
-
-disp('Finding maxima')
-[peaks1 locs1] = findpeaks(abs(channel1_estimate),'SORTSTR','descend','MINPEAKDISTANCE',50,'NPEAKS',1);
-[peaks2 locs2] = findpeaks(abs(channel2_estimate),'SORTSTR','descend','MINPEAKDISTANCE',50,'NPEAKS',1)
-
-figure(1)
-subplot(4,1,1)
-hold on;
-plot(channel1_estimate);
-plot(locs1,channel1_estimate(locs1),'rx','MarkerSize',10);
-subplot(4,1,2)
-hold on;
-plot(channel2_estimate);
-plot(locs2,channel2_estimate(locs2),'rx','MarkerSize',10);
-
-TDOA = [TDOA abs(locs2-locs1)/22050];
+% disp('Calculating 1st channel estimate (time)');
+% tstart=tic;
+% channel1_estimate = ch1(x,y(:,1),500);
+% elapsed=toc(tstart);
+% disp(strcat('took ',num2str(elapsed),'seconds'));
+% disp('Calculating 2nd channel estimate (time)');
+% tstart=tic;
+% channel2_estimate = ch1(x,y(:,2),500);
+% elapsed=toc(tstart);
+% disp(strcat('took ',num2str(elapsed),'seconds'));
+% 
+% disp('Finding maxima')
+% [peaks1 locs1] = findpeaks(abs(channel1_estimate),'SORTSTR','descend','MINPEAKDISTANCE',50,'NPEAKS',1);
+% [peaks2 locs2] = findpeaks(abs(channel2_estimate),'SORTSTR','descend','MINPEAKDISTANCE',50,'NPEAKS',1)
+% 
+% figure(1)
+% subplot(4,1,1)
+% hold on;
+% plot(channel1_estimate);
+% plot(locs1,channel1_estimate(locs1),'rx','MarkerSize',10);
+% subplot(4,1,2)
+% hold on;
+% plot(channel2_estimate);
+% plot(locs2,channel2_estimate(locs2),'rx','MarkerSize',10);
+% 
+% TDOA = [TDOA abs(locs2-locs1)/22050];
 
 %% USING MATCHED FILTER
 disp('Calculating 1st channel estimate (matched filter)');
@@ -64,14 +64,20 @@ search_interval = int64(begin_interval):int64(end_interval);
 [peaks2 locs2] = findpeaks(abs(channel2_estimate(search_interval)),'SORTSTR','descend');
 locs2 = int64(locs2+locs1-samples-1);
 figure(1)
-subplot(4,1,3)
+subplot(2,1,1)
+title('First channel','FontName','Helvetica','FontSize',17,'Interpreter','Latex')
+xlabel('$$n$$','FontName','Helvetica','FontSize',17,'Interpreter','Latex')
+ylabel('$$h_1[n]$$','FontName','Helvetica','FontSize',17,'Interpreter','Latex')
 hold on;
 plot(channel1_estimate);
-plot(locs1,channel1_estimate(locs1),'rx','MarkerSize',10);
-subplot(4,1,4)
+plot(locs1,channel1_estimate(locs1),'rx','MarkerSize',15);
+subplot(2,1,2)
+title('Second channel','FontName','Helvetica','FontSize',17,'Interpreter','Latex')
+xlabel('$$n$$','FontName','Helvetica','FontSize',17,'Interpreter','Latex')
+ylabel('$$h_2[n]$$','FontName','Helvetica','FontSize',17,'Interpreter','Latex')
 hold on;
 plot(channel2_estimate);
-plot(locs2(1),channel2_estimate(locs2(1)),'rx','MarkerSize',10);
+plot(locs2(1),channel2_estimate(locs2(1)),'rx','MarkerSize',15);
 
 TDOA = [TDOA double(abs(locs2(1)-locs1(1)))/Fs];
 distance_between_mics = TDOA*340

@@ -19,7 +19,41 @@ In order to obtain a spatial resolution of \SI{1}{\centi\meter} the frequency of
 A typical channel impulse response is shown in figure \ref{fig:ass2_typical} from which we can see that a typical impulse response takes about \SI{10}{\milli\second} before it is no longer distinguishable from noise. Therefore, we chose \texttt{timer3} to be \SI{8}{\hertz} so that the repetition period is \SI{0.125}{\milli\second}.
 
 \subsection{Report 2}
-Apply channel estimation and peak detection algorithms
+The TDOA algorithm that we implemented has the following basic procedure: 
+\begin{enumerate}
+\item Send a signal $x[n]$ through a speaker to two microphones
+\item The microphones pick up signals $y_1[n]$ and $y_2[n]$
+\item Calculate $h_i[n]$ from $y_i[n]=x[n]*h_i[n]$ 
+\item Search for peaks in $h_i[n]$ and determine the number of samples between the peaks in $h_1[n]$ and $h_2[n]$.
+\item From the number of samples in between peaks the time delay can be computed (the TDOA) and using the speed of sound the distance between the microphones.
+\end{enumerate}
+Note that for step three multiple methods are suitable. Three are described in the manual: deconvolution using matrix inversion, a matched filter approach and frequency domain deconvolution. For this report we decided to use the matched filter approach for which the source code may be found in the appendix. %%INSERT SOURCE CODE!
+
+A response of one of our measurements is shown in figure \ref{fig:ass2_task2_meting7}. This plot is a good example of two microphones placed some distance apart because it is clear the amplitudes of the two responses are about a factor two different. Indicated with the red cross is the point where our peak detection algorithm (step 4) found the peak. This was implemented using the \texttt{findpeaks} function of \texttt{MATLAB}. 
+
+The results for various microphone placements are presented in table \ref{tab:ass2_task2_results}. Columns d1 and d2 represent the distance of the speaker to the microphones as measured. The column difference is the calculated difference (e.g. $\text{abs}(d1-d2)$), the \texttt{MATLAB} column is the difference measured by \texttt{MATLAB} using the algorithm described above and the last column is the error between the measurement and the actual distance.
+
+The average error is \SI{4.4}{\centi\meter} if we disregard measurement number nine. 
+\begin{table}[H]
+	\centering
+\begin{tabular}{c c c c c c}
+\hline\hline
+\# & d1 [m] & d2 [m] & difference [m]& \texttt{MATLAB} [m] & error [m] \\
+\hline
+1	&	0.01	&	0.01&	0	&	0.0308	&	0.0308	\\
+2	&	0.1		&	0.1	&	0	&	0.0308	&	0.0308	\\
+3	&	0.2		&	0.2	&	0	&	0.0308	&	0.0308	\\
+4	&	0.5		&	0.5	&	0	&	0.0385	&	0.0385	\\
+5	&	1		&	1	&	0	&	0.1002	&	0.1002	\\
+6	&	0.01	&	0.1	&	0.09&	0.0617	&	0.0283	\\
+7	&	0.01	&	0.2	&	0.19&	0.2082	&	0.0182	\\
+8	&	0.01	&	0.5	&	0.49&	0.4163	&	0.0737	\\
+9	&	0.01	&	1	&	0.99&	0.5937	&	0.3963	\\
+\hline
+\end{tabular} 
+	\caption{Results for two channel TDOA estimations and various microphone placements}
+	\label{tab:ass2_task2_results}
+\end{table}
 
 \subsection{Report 3}
 Mean and variance of TDOA estimates

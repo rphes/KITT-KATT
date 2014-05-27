@@ -1,0 +1,8 @@
+Noise variance: 0
+ 
+Note: autocorrelation not included
+Total correlation for minimum phase: 7.28
+Total correlation for maximum phase: 11.68
+Total correlation for sinusoidal: 13.04
+Total correlation for BPSK: 18.32
+[Done]

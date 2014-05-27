@@ -1,0 +1,1 @@
+Noise is 0 means that sigma is 0, not sigma squared!

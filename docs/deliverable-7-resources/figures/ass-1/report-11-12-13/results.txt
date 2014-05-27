@@ -1,0 +1,7 @@
+REPORT 13
+
+Set 1:
+Afstand/delay = 38.67 m/s
+
+Set 2:
+Afstand/delay = 438.58 m/s
