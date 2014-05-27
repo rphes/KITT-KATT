@@ -10,13 +10,14 @@
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
-		<GroupBox Name="GroupBox_Visualisation" Header="Visualisation" Grid.Column="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" Margin="5,5,0,5" Padding="5" VerticalAlignment="Stretch" DataContext="{Binding Path=VisualisationViewModel}">
+		<GroupBox Name="GroupBox_Visualisation" Header="Visualisation" Grid.Column="0" Grid.RowSpan="999" HorizontalAlignment="Stretch" Margin="5,5,0,5" Padding="5" VerticalAlignment="Stretch" DataContext="{Binding Path=VisualisationViewModel}">
 			<Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Stretch="Uniform" StretchDirection="Both">
 				<Border BorderBrush="Gray" BorderThickness="1">
-					<Canvas Width="600" Height="600">
+					<Canvas Width="{Binding Path=CanvasSize}" Height="{Binding Path=CanvasSize}">
 						<Image Name="Image_KITT" Source="{Binding Path=ImageSourceKITT}" Canvas.Left="{Binding Path=X}" Canvas.Top="{Binding Path=Y}"/>
 					</Canvas>
 				</Border>
@@ -61,12 +62,21 @@
 				<Grid.RowDefinitions>
 					<RowDefinition />
 					<RowDefinition />
+					<RowDefinition />
 				</Grid.RowDefinitions>
 				
 				<ComboBox Name="ComboBox_COM" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" ItemsSource="{Binding SerialPorts}" SelectedItem="{Binding SelectedSerialPort}" IsEnabled="{Binding Path=CanSelectSerialPort}"/>
 				<Button Name="Button_Connect" Grid.Row="0" Content="{Binding Path=ConnectButtonString}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="70" Height="22" Command="{Binding Connect}"/>
 			
-				<Label Content="{Binding Path=PingString}" Grid.Row="1" HorizontalAlignment="Center"/>
+				<Button Name="Button_Beacon" Grid.Row="1" Content="{Binding Path=BeaconButtonString}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Height="22" Margin="10" Command="{Binding Path=ToggleBeacon}"/>
+				
+				<Label Content="{Binding Path=PingString}" Grid.Row="2" HorizontalAlignment="Center"/>
+			</Grid>
+		</GroupBox>
+
+		<GroupBox Name="GroupBox_AutoControl" Header="Autonomous Control" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="5" Padding="5" DataContext="{Binding Path=AutoControlViewModel}">
+			<Grid>
+				<Button Name="Button_AutoControl" Grid.Row="1" Content="{Binding Path=AutoControlButtonString}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Height="22" Margin="10" Command="{Binding Path=ToggleAutoControl}"/>
 			</Grid>
 		</GroupBox>
 	</Grid>

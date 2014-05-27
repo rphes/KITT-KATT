@@ -17,11 +17,9 @@
 	\label{fig:rep1-reflections-ill}
 \end{figure}
 
-Given a square room, confined by the blue lines in Figure~\ref{fig:rep1-reflections-ill}, with a sound source depicted by the green dot and a microphone depicted by the yellow dot, it is easy to calculate the number of reflections heard at the yellow dot by mirroring the room about each wall. If the number of reflections is one, the result is that each wall must be mirrored once and the result is figure \ref{fig:rep1-reflections-ill} excluding the four corner rooms, for a total of five reflections (no reflection + 4 reflections). The red dots in the reflected rooms represent the yellow dot as projected through the wall (mirrored). After 2 reflections, Figure~\ref{fig:rep1-reflections-ill} should be extended by four more rooms (on the left and right and above and under the current square), yielding a total of 13 possible reflections.
+Given a square room, confined by the blue lines in Figure~\ref{fig:rep1-reflections-ill}, with a sound source depicted by the green dot and a microphone depicted by the yellow dot, it is easy to calculate the number of reflections heard at the yellow dot by mirroring the room about each wall. If the number of reflections is one, the result is that each wall must be mirrored once and the result is figure \ref{fig:rep1-reflections-ill} excluding the four corner rooms, for a total of five reflections (line of sight + 4 reflections). The red dots in the reflected rooms represent the yellow dot as projected through the wall (mirrored). After 2 reflections, Figure~\ref{fig:rep1-reflections-ill} should be extended by four more rooms (on the left and right and above and under the current square), yielding a total of 13 possible reflections.
 
-% To see the impulse response of the room with two reflections we made use of the \texttt{MATLAB} script provided in Appendix~\ref{appsec:sourcecode-reflections} The impulse response is shown in Figure~\ref{fig:reflections-impulse}.
-
-We created a \texttt{MATLAB} model for the above situation with the amount of reflections (rooms) as parameter. This script makes use of the previously discussed mirroring-principle, along with the given equation for sound dampening in the medium $\alpha(r) = \frac{\beta}{r^2}$ \cite[91]{epo4-manual}. A resulting impulse response as well as the behavior for a rectangular pulse, for $\beta = 1$ and 2 reflections, are shown in Figure~\ref{fig:rep1-reflections-matlab}.
+We created a \texttt{MATLAB} model for the above situation with the amount of reflections (rooms) as parameter. This script makes use of the previously discussed mirroring-principle, along with the given equation for sound dampening in the medium $\alpha(r) = \frac{\beta}{r^2}$ \cite[91]{epo4-manual}. A resulting impulse response as well as the behavior for a rectangular pulse, for $\beta = 1$ and 2 reflections are shown in Figure~\ref{fig:rep1-reflections-matlab} along with a simulation including 25 reflections. The latter clearly shows the downside of having walls: a short sound signal sent is reverberated in the room for a long period of time before it slowly starts to decay.
 
 \begin{figure}[H]
 	\centering
@@ -31,7 +29,14 @@ We created a \texttt{MATLAB} model for the above situation with the amount of re
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-1/ass-1-report-1-system-response-2-copies-beta-1.pdf}
 	\end{subfigure}
-	\caption{Some possible reflections}
+	\\	%25 reflections
+	\begin{subfigure}{0.49\textwidth}
+	\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-1/ass-1-report-1-impulse-response-25-copies-beta-1.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-1/ass-1-report-1-system-response-25-copies-beta-1.pdf}
+	\end{subfigure}
+	\caption{Low resolution (2 reflections) and high resolution (25 reflections) plots and corresponding received signal at the microphone}
 	\label{fig:rep1-reflections-matlab}
 \end{figure}
 
@@ -51,7 +56,7 @@ The impulse responses for a first order IIR filter $H(z) = \frac{1}{1+az^{-1}}$,
 	\label{fig:rep2-time-resp}
 \end{figure}
 
-The frequency impulse spectra are shown in Figure~\ref{fig:rep2-freq-resp}. It can be seen that for $a=0.95$ the filter behaves as a band pass filter and for $a=-0.95$ it behaves as a band stop filter. %INCORRECT, TODO: FIX THIS
+The frequency impulse spectra are shown in Figure~\ref{fig:rep2-freq-resp}. It can be seen that for $a=0.95$ the filter behaves as a high pass filter and for $a=-0.95$ as a low pass filter. \textbf{we need to extend this analysis a bit..}
 
 \begin{figure}[H]
 	\centering
@@ -65,7 +70,7 @@ The frequency impulse spectra are shown in Figure~\ref{fig:rep2-freq-resp}. It c
 	\label{fig:rep2-freq-resp}
 \end{figure}
 
-There is no \texttt{MATLAB} function for the FT or DTFT, because a digital computer system and its software (like \texttt{MATLAB}) by definition cannot handle non-discrete signals, both amplitude and time need to be discrete. Since the FT and DTFT both have (partially) non-discrete in- and outputs, it is not possible to perform such calculations on a computer.
+There is no \texttt{MATLAB} function for the FT or DTFT, because a digital computer system and its software (like \texttt{MATLAB}) by definition cannot handle non-discrete signals, both amplitude and time need to be discrete. Since the FT and DTFT both have (partially) non-discrete in- and outputs, it is not possible to perform such calculations on a computer. 
 
 \subsection{Report 3}
 
@@ -80,12 +85,12 @@ A plot of the time-domain signal is given in Figure~\ref{fig:rep3-train-time}, w
 
 \subsection{Report 4}
 %Corresponding matlab file: resources/labday1/report4.m
-Figure~\ref{fig:rep4-train-heatmap} shows a heatmap of the occurrence of frequencies in \SI{20}{\milli\second} intervals of \texttt{MATLAB}'s train audio signal. This plot should give a more detailed view of the frequency contents of the train signal than a normal signal spectrum would, since it also includes a time component. It is apparent that most of the sound is centered around \SI{3}{\kilo\hertz}. The two whistle blows are also clearly distinguishable.
+Figure~\ref{fig:rep4-train-heatmap} shows a heatmap of the occurrence of frequencies in \SI{20}{\milli\second} intervals of \texttt{MATLAB}'s `train' audio signal. This plot should give a more detailed view of the frequency contents of the train signal than a normal signal spectrum would, since it also includes a time component. It is apparent that most of the sound is centered around \SI{3}{\kilo\hertz}. The two whistle blows are also clearly distinguishable.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{../../deliverable-7-resources/figures/ass-1/report-4/ass-1-report-4.png}
-	\caption{The frequency-time heatmap of \texttt{MATLAB}'s train}
+	\caption{The frequency-time heatmap of \texttt{MATLAB}'s `train'}
 	\label{fig:rep4-train-heatmap}
 \end{figure}
 
@@ -97,17 +102,22 @@ Figure~\ref{fig:rep4-train-heatmap} shows a heatmap of the occurrence of frequen
 	\caption{The frequency spectrum of the given signal $a$, with and without zero padding, obtained using FFT}
 	\label{fig:rep5-6-spectrum}
 \end{figure}
-
-Figure~\ref{fig:rep5-6-spectrum} shows the frequency spectrum of the original given $h$ after FFT, as well as a padded $h$ which is five times longer than the original. Comparing the plots, we see that interpolation is indeed accomplished, just be adding zeros to the end of our original signal. Since our padded $h$ is five times larger than the original, we notice that every 5th sample in the padded response indeed coincides with a sample of the original one.
+%footnote is not a pretty solution for h[n] displaying ... :(
+Figure~\ref{fig:rep5-6-spectrum} shows the frequency spectrum of the original given $h[n]$\footnote{$h[n]$ was given as $h[n]=[1,0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0.8]$} after FFT, as well as a padded $h[n]$ which is five times longer than the original. Comparing the plots, we see that interpolation is indeed accomplished, just be adding zeros to the end of our original signal. Since our padded $h[n]$ is five times larger than the original, we notice that every 5th sample in the padded response indeed coincides with a sample of the original one.
 
 \subsection{Report 7}
-
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\linewidth]{../../deliverable-7-resources/figures/ass-1/report-7/ass-1-report-7-temp.png}
-	\caption{Amplitude spectra for convolving first then FFT, FFT first then multiplying and the absolute difference between the methods.}
-	\label{fig:rep7}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-7/ass-1-report-7-convolution.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-7/ass-1-report-7-multiplication.pdf}
+	\end{subfigure}
+	\caption{Comparison of spectra for testing the convolution property.}
+	\label{fig:rep7-convolution}
 \end{figure}
 
-To test whether the convolution property holds, the `train' signal was convolved with the same, extended $h[n]$ as before. The result was then FFT'd and the amplitude spectrum was drawn. Then, for the same `train' signal and $h[n]$ these signals were first FFT'd and then multiplied. Again, an amplitude spectrum was plotted. The results of both these plots can be found in Figure~\ref{fig:rep7}, along with a third plot, the absolute difference between the two results. We may conclude that first convolving and then applying an FFT yields almost the same results as first applying an FFT and then multiplying. The differences are in the order of $10^{-13}$ to $10^{-12}$, which we can attribute to numerical and round-off errors in the FFT implementation and convolution algorithms.
+\textbf{Check this paragraph! the figure no longer matches the text.}
+To test whether the convolution property holds, the `train' signal was convolved with the same, extended $h[n]$ as before. The result was then FFT'd and the amplitude spectrum was drawn. Then, for the same `train' signal and $h[n]$ these signals were first FFT'd and then multiplied. Again, an amplitude spectrum was plotted. The results of both these plots can be found in Figure~\ref{fig:rep7-convolution}. We may conclude that first convolving and then applying an FFT yields almost the same results as first applying an FFT and then multiplying. The differences are in the order of $10^{-13}$ to $10^{-12}$, which we can attribute to numerical and round-off errors in the FFT implementation and convolution algorithms. Thus (at least in this setting), the convolution property holds.
 \end{document}

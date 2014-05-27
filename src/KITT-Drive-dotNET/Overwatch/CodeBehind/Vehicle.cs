@@ -31,7 +31,7 @@ namespace Overwatch
 			set { _sensorDistanceRight = (int)Math.Round(Data.Clamp(value, Data.SensorMinRange, Data.SensorMaxRange)); }
 		}
 		public int BatteryVoltage { get; set; }
-		public bool AudioStatus { get; set; }
+		public bool BeaconIsEnabled { get; set; }
 		#endregion
 	}
 }

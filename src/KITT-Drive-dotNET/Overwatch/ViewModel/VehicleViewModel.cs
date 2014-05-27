@@ -75,10 +75,10 @@ namespace Overwatch.ViewModel
 			}
 		}
 
-		public bool AudioStatus
+		public bool BeaconIsEnabled
 		{
-			get { return Vehicle.AudioStatus; }
-			set { Vehicle.AudioStatus = value; }
+			get { return Vehicle.BeaconIsEnabled; }
+			set { Vehicle.BeaconIsEnabled = value; }
 		}
 
 		public string ActualPWMSpeedString { get { return "Actual PWM Speed: " + Vehicle.ActualPWMSpeed; } }

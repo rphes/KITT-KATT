@@ -10,25 +10,20 @@ namespace Overwatch.ViewModel
 {
 	public class MainViewModel
 	{
-		private VehicleViewModel _vehicleViewModel = new VehicleViewModel();
-		public VehicleViewModel VehicleViewModel
-		{
-			get { return _vehicleViewModel; }
-			set { _vehicleViewModel = value; }
-		}
+		public VehicleViewModel VehicleViewModel { get; set; }
 
-		private CommunicationViewModel _communicationViewModel = new CommunicationViewModel();
-		public CommunicationViewModel CommunicationViewModel
-		{
-			get { return _communicationViewModel; }
-			set { _communicationViewModel = value; }
-		}
+		public CommunicationViewModel CommunicationViewModel { get; set; }
 
-		private VisualisationViewModel _visualisationViewModel = new VisualisationViewModel();
-		public VisualisationViewModel VisualisationViewModel
+		public VisualisationViewModel VisualisationViewModel { get; set; }
+
+		public AutoControlViewModel AutoControlViewModel { get; set; }
+
+		public void Init()
 		{
-			get { return _visualisationViewModel; }
-			set { _visualisationViewModel = value; }
+			VehicleViewModel = new VehicleViewModel();
+			CommunicationViewModel = new CommunicationViewModel();
+			VisualisationViewModel = new VisualisationViewModel();
+			AutoControlViewModel = new AutoControlViewModel();
 		}
 	}
 }

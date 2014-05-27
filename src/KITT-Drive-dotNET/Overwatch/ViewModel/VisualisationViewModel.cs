@@ -10,6 +10,7 @@ namespace Overwatch.ViewModel
 {
 	public class VisualisationViewModel : ObservableObject
 	{
+		public int CanvasSize { get; protected set; }
 		BitmapImage BitmapKITT = new BitmapImage();
 		public ImageSource ImageSourceKITT { get; set; }
 
@@ -17,8 +18,10 @@ namespace Overwatch.ViewModel
 		public double X { get { return KITTLocation.X; } }
 		public double Y { get { return KITTLocation.Y; } }
 
+
 		public VisualisationViewModel()
 		{
+			CanvasSize = 600;
 			BitmapKITT.BeginInit();
 			BitmapKITT.UriSource = new Uri(@"D:\Users\Robin\Documents\GitHub\KITT-KATT\src\KITT-Drive-dotNET\Overwatch\bin\Debug\resource\KITT.png");
 			BitmapKITT.EndInit();

@@ -60,10 +60,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CodeBehind\AutoControl.cs" />
     <Compile Include="CodeBehind\Communication.cs" />
     <Compile Include="CodeBehind\Vehicle.cs" />
     <Compile Include="Tools\ObservableObject.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
+    <Compile Include="ViewModel\AutoControlViewModel.cs" />
     <Compile Include="ViewModel\CommunicationViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\VehicleViewModel.cs" />
