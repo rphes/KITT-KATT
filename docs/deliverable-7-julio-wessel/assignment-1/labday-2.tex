@@ -17,7 +17,7 @@
 \end{equation}
 
 \subsection{Report 8}
-The autocorrelatio of the following four sequences was calculated:
+The suitabily of four sequences had to be investigated. The four sequences given where:
 
 \begin{equation}
 x_1 = [1,-\frac{1}{2},0,0,....]^T \\ 
@@ -40,11 +40,71 @@ x_3[n] = \left\{
 x_4 = sign(randn(N,1))
 \end{equation}
 
-The autocorrelation of each sequence are shown in ????????????
+For each of this sequences the autocorrelation was calculated and is displayed in Figure~\ref{fig:rep8-autocor}. From this plots we can see that minimum-phase and maximum-phase behave the most like impulses. Impulse behaviour within the autocorrelation means that the signal can better be detected. Thus we can conclude that minimum-phase and maximum-phase are most suited for our purpose. 
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-8/ass-1-report-8-minimum-phase-minimum-phase.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-8/ass-1-report-8-maximum-phase-maximum-phase.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-8/ass-1-report-8-sinusoidal-sinusoidal.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-8/ass-1-report-8-BPSK-BPSK.pdf}
+	\end{subfigure}
+	\caption{Autocorrelation sequences for each of the tested signals}
+	\label{fig:rep8-autocor}
+\end{figure}
  
 
 \subsection{Report 9}
-modify datagen.m
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.5/ass-1-report-9-minimum-phase.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.5/ass-1-report-9-maximum-phase.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.5/ass-1-report-9-sinusoidal.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.5/ass-1-report-9-BPSK.pdf}
+	\end{subfigure}
+	\caption{The channel estimation error for increasing $\hat{L}$,  with $\sigma = 0.5$ noise}
+	\label{fig:rep9-0.5}
+\end{figure}
+
+The latter Figure~\ref{fig:rep9-0.5} shows the channel estimation with $\sigma = 0.5$. $\hat{L} \ge L = 4$
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.1/ass-1-report-9-minimum-phase.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.1/ass-1-report-9-maximum-phase.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.1/ass-1-report-9-sinusoidal.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.1/ass-1-report-9-BPSK.pdf}
+	\end{subfigure}
+	\caption{The channel estimation error for increasing $\hat{L}$, with $\sigma = 0.1$ noise}
+	\label{fig:rep9-0.1}
+\end{figure}
+
+
+
+
 
 \subsection{Report 10}
 Training sequence design
