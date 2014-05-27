@@ -3,3 +3,6 @@ Mean: 9.38 cm
 STD: 0.35 cm
 
 Average error: -0.62 cm
+
+Min-max difference: 0.078 m
+343.9 m/s / 0.078 m = 44.1 kHz
