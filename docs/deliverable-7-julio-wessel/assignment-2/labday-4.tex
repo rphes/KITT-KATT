@@ -5,7 +5,7 @@
 \input{../../library/style}
 \addbibresource{../../library/bibliography.bib}
 
-\newcommand{\path}{../../deliverable-7-resources/figures}
+\newcommand{\figpath}{../../deliverable-7-resources/figures}
 
 \begin{document}
 
@@ -13,20 +13,152 @@
 \section{Labday 4}
 
 \subsection{Report 1}
-Determine suitable values for the beacon parameters
+\label{subsec:ass-2-rep-1}
+Detection of the smallest phase difference possible between two sound waves occurs in the situation where the waves peak in two successive samples. This means that the time difference between their peaks, which is the time that one wave lags, or leads, the other, is at least the sample period. Therefore, the spatial resolution $\Delta \lambda$ is given by $\Delta \lambda = v T_s$, where $v \approx$ \SI{343.9}{m/s} denotes the speed of sound and $T_s$ the sample period. Consequently, for a spatial resolution of \SI{1}{cm}, a sample frequency $F_s = 1/T_s$ of \SI{34.4}{kHz} is required. With a sample frequency of \SI{44.1}{kHz}, one obtains a spatial resolution of \SI{0.78}{cm}, which seems fine. The amount of samples corresponding to a maximal propagation delay of \SI{5}{m} will then be \num{642}.
+
+The length of a typical impulse response is approximately \SI{10}{ms}, which follows from a maximal propagation delay of roughly \SI{5}{m} and the graphs shown in Subsection \ref{subsec:ass-1-rep-13}. Therefore, we chose \texttt{timer3} to be \SI{8}{Hz} so that the repetition period easily contains the impulse response. We then chose \texttt{timer0} to be \SI{15}{kHz} in combination with \texttt{timer1} \SI{3}{kHz} so that \textbf{(1)}, the resulting spectrum will not be disturbed by human speech too much, \textbf{(2)}, the resulting spectrum will not be filtered by audio filters and \textbf{(3)}, the sent signal's length is still around \SI{10}{ms}.
 
 \subsection{Report 2}
-Apply channel estimation and peak detection algorithms
+We implemented a localization method which makes use of deconvolution by inversion and a peak detection algorithm to determine the LOS time difference of arrivals of the received signals. Figure~\ref{fig:ass-2-rep-2-typical} shows a typical data segment.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=.6\linewidth]{\figpath/ass-2/report-2-3/ass-2-report-2-typical-data-segment.pdf}
+	\end{center}
+	\caption{A typical data segment}
+	\label{fig:ass-2-rep-2-typical}
+\end{figure}
+
+By means of the described localization method, we tried to determine the spacing between two microphones. The recovered impulse responses are shown in Figure \ref{fig:ass-2-rep-2-imps}. Note that the amplitudes are shown logarithmic to increase readability of the graphs.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.49\textwidth}
+		\includegraphics[width=\linewidth]{\figpath/ass-2/report-2-3/ass-2-report-2-impulse-responses-1.pdf}
+		\caption{\centering Recovered channel impulse responses through two microphones at the same distance}
+	\end{subfigure}
+	\begin{subfigure}{.49\textwidth}
+		\includegraphics[width=\linewidth]{\figpath/ass-2/report-2-3/ass-2-report-2-impulse-responses-2.pdf}
+		\caption{\centering Recovered channel impulse responses through two microphones spaced \SI{9}{cm}}
+	\end{subfigure}
+	\begin{subfigure}{.49\textwidth}
+		\includegraphics[width=\linewidth]{\figpath/ass-2/report-2-3/ass-2-report-2-impulse-responses-3.pdf}
+		\caption{\centering Recovered channel impulse responses through two microphones spaced \SI{19}{cm}}
+	\end{subfigure}
+	\begin{subfigure}{.49\textwidth}
+		\includegraphics[width=\linewidth]{\figpath/ass-2/report-2-3/ass-2-report-2-impulse-responses-4.pdf}
+		\caption{\centering Recovered channel impulse responses through two microphones spaced \SI{49}{cm}}
+	\end{subfigure}
+	\caption{Recovered channel impulse responses through two microphones spaced various distances}
+	\label{fig:ass-2-rep-2-imps}
+\end{figure}
+
+The final results are shown in Figure~\ref{fig:ass-2-rep-2-res}. The average error of the determined distances is given by \SI{-7.80}{cm}, and the standard deviation (STD) of the error is given by \SI{2.16}{cm}. The measurements could probabily be improved by a better estimation of the speed of sound.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.6\linewidth]{\figpath/ass-2/report-2-3/ass-2-report-2-results.pdf}
+	\caption{Determined distances between the microphones}
+	\label{fig:ass-2-rep-2-res}
+\end{figure}
 
 \subsection{Report 3}
-Mean and variance of TDOA estimates
+To investigate the stability of the localization algorithm, we recorded several seconds of data to obtain a sequence of microphone spacing estimations. The results are shown in Figure~\ref{fig:ass-2-rep-3}.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=.6\linewidth]{\figpath/ass-2/report-2-3/ass-2-report-3.pdf}
+	\end{center}
+	\caption{A typical data segment}
+	\label{fig:ass-2-rep-3}
+\end{figure}
+
+The actual distance between the microphones is \SI{10}{cm}. The mean of estimations of this distance is given by \SI{9.38}{cm} and the STD by \SI{0.35}{cm}. The average error is given by \SI{-0.62}{cm}, which indicates that the estimation is biased. There are no outliers.
+
+We see that all measurements are close to \SI{10}{cm}, but all differ from this value. This is due to fact that the estimation is proportional to the speed of sound. Therefore, uncertainties in the speed of sound directly propagate to the estimated distance. Also, the sampling frequency determines the spatial resolution, which is made obvious by the fact that the measured distances consist of only two different values. The difference between the maximum and minimum measured distance is given by \SI{0.78}{cm}, which perfectly resembles the in Subsection \ref{subsec:ass-2-rep-1} discussed spation resolution.
 
 \subsection{Report 4}
-Plot of typical estimated channel impulse response
+A typical channel impulse response is shown in Figure~\ref{fig:ass-2-rep-4}. Note that the moment of peak detection is indicated by the shown step function.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=.6\linewidth]{\figpath/ass-2/report-4-5/ass-2-report-4.pdf}
+	\end{center}
+	\caption{A typical channel impulse response}
+	\label{fig:ass-2-rep-4}
+\end{figure}
 
 \subsection{Report 5}
-Interference with neighbours?
+Let us consider channel impulse response retrieval through deconvolution by inversion. Let $\mat{X}$ denote the Toeplitz matrix built form the sent signal $x(t)$ and $\vec{y}$ the received signal $y(t)$. Then the channel impulse response esimation $\hat{\vec{h}}$ is given by a least squares solution
+\[
+	\hat{\vec{h}} = (\tr{\mat{X}} \mat{X})^{-1} \tr{\mat{X}} \vec{y}.
+\]
+Note that this estimation begins with evaluation of the product $\tr{\mat{X}} \vec{y}$, which can be interpreted as the crosscorrelation $x(-t) \ast y(t)$. If two signals $y_1(t)$ and $y_2(t)$ are received at the same time, then this correlation yields
+\[
+	x(-t) \ast y(t) = x(-t) \ast y_1(t) + x(-t) \ast y_2(t).
+\]
+We can conclude that all received signals uncorrelated to the sent signal are removed by the product $\tr{\mat{X}} \vec{y}$. Therefore, received signals uncorrelated to the sent signal do not affect $\hat{\vec{h}}$. This is the reason that all codes ideally need to have a crosscorrelation of zero.
 
-\subsection{5-channel TCOA measurements}
-Read page 106 for more info
+\subsection{Report 6}
+Figure~\ref{fig:ass-2-rep-6} shows the results of our localization algorithm using the TDOA data. Note that the blue dots indicate the estimated locations using the microphone locations determined by the MDS algorithm. This algorithm is discussed in Subsection~\ref{subsec:ass-2-rep-9}. Also, the microphones are located as shown in Figure~\ref{fig:ass-2-rep-9}.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=.6\linewidth]{\figpath/ass-2/report-6/ass-2-report-6.pdf}
+	\end{center}
+	\caption{Localization using the TDOA data}
+	\label{fig:ass-2-rep-6}
+\end{figure}
+
+The mean of the localization error is given \SI{4.92}{cm} and the STD by \SI{4.16}{cm}. If an estimated location is denoted by $\hat{\vec{x}}_i$ and the actual location by $\vec{x}$, then the error is given by $||\hat{\vec{x}}_i - \vec{x}||$. Note that the error cannot be negative. Therefore, a non-zero error average does not indicate a biased estimation.
+
+The distance between localizations of the two points most centered is estimated \SI{0.99}{m}. The actual distance is given by \SI{1.00}{m}. This indicates good performance in de middle region.
+
+The algorithm used is an extension of the algorithm described in the manual \cite{epo4-manual}. Thorough simulations showed that estimation is three dimensions performed worse than estimation in two dimensions. In two dimensions, the problem is overdetermined. We make use of this fact to increase the stability of our algorithm. Also, we are planning to optimize the solution by assuming that our solution is good enough to use it as a starting point for numerical optimization. Then, by fixing the third dimension -- the car does not change height -- and assuming local convexity, we should be able to improve our solution.
+
+\subsection{Report 7}
+Figure~\ref{fig:ass-2-rep-7} shows the performance of the MDS microphone localization algorithm.
+
+\begin{figure}[H]
+	\begin{subfigure}{.49\textwidth}
+		\includegraphics[width=\linewidth]{\figpath/ass-2/report-7-8/ass-2-report-7-mean.pdf}
+		\caption{\centering Mean of the microphone localization error by the MDS algorithm}
+	\end{subfigure}
+	\begin{subfigure}{.49\textwidth}
+		\includegraphics[width=\linewidth]{\figpath/ass-2/report-7-8/ass-2-report-7-std.pdf}
+		\caption{\centering STD of the microphone localization error by the MDS algorithm}
+	\end{subfigure}
+	\caption{Recovered channel impulse responses through two microphones spaced various distances}
+	\label{fig:ass-2-rep-7}
+\end{figure}
+
+The linear least squares approximations indicate a linear relationship between the noise standard devation and the error mean and STD. These relationships are given by
+\begin{align*}
+	\text{MDS localization error mean}&=1.11 \cdot \sigma_{\text{noise}}, \\
+	\text{MDS localization error STD}&=0.98 \cdot \sigma_{\text{noise}}.
+\end{align*}
+
+If we eventually were to achieve a resulting $\sigma_{\text{noise}}$ of approximately \SI{3}{cm}, then this would result in an average MDS localization error and STD of also approximately \SI{3}{cm}. This is reasonable, but measuring the distances by hand would probably yield better results. We therefore expect to not rely on this algorithm.
+
+\subsection{Report 8}
+With four microphones, one is able to estimate by four measurements the distance between each pair of microphones. Their coordinates can consequently be estimated in three dimensions \cite{shang-wheeler-mds}. However, the third dimension of the car is already known. The fourth microphone could be used to improve the two dimensional estimation, which is most certainly useful.
+
+The problem with the MDS algorithm is correcting the frame of reference. However, this problem is solved by \textbf{(1)}, defining a microphone to be at $(0,0)$ and thus introducting a point of reference, \textbf{(2)}, defining a microphone to be at $(0,+x)$ and thus introducting an angle of reference and \textbf{(3)}, defining a microphone to have a positive $y$-coordinate to create a reflectional perspective of reference. These three aspects can easily be implemented by means of elegant linear algebra.
+
+MDS requires to have a set $\mathcal{S}$ of locations $\vec{s}_i$, $i \in \{0,1,2,\dots,n\}$ for which for each pair $\vec{s}_i$, $\vec{s}_j$, $i \neq j$, $i, j \in \{0,1,2,\dots,n\}$ the distance $||\vec{s}_i-\vec{s}_j||$ is known. If one is able to compose such a set by means of TDOA, then the relative position of each object can be found.
+
+\subsection{Report 9}
+\label{subsec:ass-2-rep-9}
+Figure~\ref{fig:ass-2-rep-9} shows the results of our microphone localization using the TDOA data.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=.6\linewidth]{\figpath/ass-2/report-9/ass-2-report-9.pdf}
+	\end{center}
+	\caption{Microphone localization using the MDS algorithm}
+	\label{fig:ass-2-rep-9}
+\end{figure}
+
+The microphone localization error average is given by \SI{6.03}{cm} and the STD by \SI{4.08}{cm}. The mentioned figure shows that the estimated microphone locations match the estimation locations pretty good. These results could probabily be used for driving KITT. However, this is by no means optimal. Further simulations showed that this method of localization is reliable if the TDOA estimation performs correctly.
+
 \end{document}
