@@ -12,9 +12,7 @@
 
 \subsection{Report 1}
 \label{ass2-report-1}
-As calculated in paragraph \ref{ass1-rep-12-13} the sampling frequency should be $f=\SI{34}{\kilo\hertz}$ in order to obtain a \SI{1}{\centi\meter} spatial resolution. To satisfy the Nyquist criterion, the microphones must sample at twice this frequency to avoid aliasing. This seems a bit high and might lead to problems both in storage of samples (5 channels) and processing power. Therefore, sampling at \SI{44.1}{\kilo\hertz} seems more realistic. The highest frequency that can be detected accurately is then \SI{22.05}{\kilo\hertz}, corresponding to \SI{1.54}{\centi\meter}; this seems reasonable. The maximal propagation delay corresponding to \SI{5}{\meter} is $t_{\text{5m}}=\frac{5}{340}=\SI{147}{\milli\second}$. This corresponds to \num{649} samples at \SI{44.1}{\kilo\hertz}, defining the peak search interval.
-
-
+As calculated in paragraph \ref{ass1-rep-12-13} the sampling frequency should be $f=\SI{34}{\kilo\hertz}$ in order to obtain a \SI{1}{\centi\meter} spatial resolution. To satisfy the Nyquist criterion, the microphones must sample at twice this frequency (e.g. $f=\SI{68}{\kilo\hertz}$) to avoid aliasing. This seems a bit high and might lead to problems both in storage of samples (5 channels) and processing power. Therefore, sampling at \SI{44.1}{\kilo\hertz} seems more realistic and this sampling rate is commonly supported by audio interfaces. The (theoretical) highest frequency that can be detected accurately is then \SI{22.05}{\kilo\hertz}, although due to the need of a low pass filter and corresponding transition band, \SI{20}{\kilo\hertz} is accomplished in practice \footnote{See \url{http://www.cs.columbia.edu/~hgs/audio/44.1.html} for details on why \SI{44.1}{\kilo\hertz} is dominant.}, corresponding to \SI{1.7}{\centi\meter}; this seems reasonable. The maximum propagation delay corresponding to \SI{5}{\meter} is $t_{\text{5m}}=\frac{5}{340}=\SI{147}{\milli\second}$. This corresponds to \num{649} samples at \SI{44.1}{\kilo\hertz}, thus defining the peak search interval.
 
 \begin{figure}[H]
 	\centering
@@ -80,7 +78,7 @@ Plot of typical estimated channel impulse response
 \subsection{Report 5}
 The general idea of the deconvolution approach is that a signal $y[n]=x[n]*h[n]$ is received, where $h[n]$ is the channel response. The deconvolution method using matrix inversion tells us the channel can be approximated by $\vec{\hat{h}}=(\mat{X}^T\mat{X})^{-1}\mat{X}^T\vec{y}$. Because the sent signal $x[n]$ is known, the matrix $\mat{X}^\dagger=\mat{X}^T\mat{X})^{-1}\mat{X}^T$ can be pre-computed, leaving only a matrix multiplication every time $\vec{\hat{h}}$ must be computed. 
 
-In the method outlined above it is immediately clear that for the same (or similar) $\mat{X}^\dagger$ matrices (and thus $x[n]$ codes) the channel estimation will produce incorrect result. While mathematically not correct, it can be intuitively thought of as follows: the algorithm looks for $x_1[n]$ occurring in $y[n]$. Now if we have a second $x$, $x_2[n]$ and this $x_2[n]$ is similar to $x_1[n]$ then it can be expected that the algorithm mistakes an occurrence of $x_1[n]$ for an occurrence of $x_2[n]$. More mathematically, bladiebla
+In the method outlined above it is immediately clear that for the same (or similar) $\mat{X}^\dagger$ matrices (and thus $x[n]$ codes) the channel estimation will produce incorrect results. While mathematically not correct, it can be intuitively thought of as follows: the algorithm looks for $x_1[n]$ occurring in $y[n]$. Now if we have a second $x$, $x_2[n]$ and this $x_2[n]$ is similar to $x_1[n]$ then it can be expected that the algorithm mistakes an occurrence of $x_1[n]$ for an occurrence of $x_2[n]$. More mathematically, bladiebla
 
 \subsection{5-channel TCOA measurements}
 Read page 106 for more info
