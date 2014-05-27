@@ -1,0 +1,2 @@
+Estimation error mean: 6.03 cm
+Estimation error STD: 4.08 cm

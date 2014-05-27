@@ -1,2 +1,0 @@
-Average error: 7.80 cm
-STD error: 2.16 cm

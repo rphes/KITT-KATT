@@ -1,0 +1,2 @@
+Mean error/noise standard deviation = 1.114 cm
+STD error/noise standard deviation = 0.98 cm

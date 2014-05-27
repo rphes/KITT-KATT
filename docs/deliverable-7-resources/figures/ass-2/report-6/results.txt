@@ -1,0 +1,4 @@
+Localization error mean: 4.92 cm
+Localization error STD: 4.16 cm
+
+Distance between 6 and 7: 0.99 m
