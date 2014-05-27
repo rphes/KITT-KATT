@@ -56,7 +56,8 @@ The impulse responses for a first order IIR filter $H(z) = \frac{1}{1+az^{-1}}$,
 	\label{fig:rep2-time-resp}
 \end{figure}
 
-The frequency impulse spectra are shown in Figure~\ref{fig:rep2-freq-resp}. It can be seen that for $a=0.95$ the filter behaves as a high pass filter and for $a=-0.95$ as a low pass filter. \textbf{we need to extend this analysis a bit..}
+The frequency impulse spectra are shown in Figure~\ref{fig:rep2-freq-resp}. It can be seen that for $a=0.95$ the filter behaves as a high pass filter and for $a=-0.95$ as a low pass filter.
+% TODO: EXTEND THIS
 
 \begin{figure}[H]
 	\centering
@@ -77,7 +78,7 @@ There is no \texttt{MATLAB} function for the FT or DTFT, because a digital compu
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{../../deliverable-7-resources/figures/ass-1/report-3/ass-1-report-3.pdf}
-	\caption{The time-domain signal of \texttt{MATLAB}'s train}
+	\caption{The time-domain signal of \texttt{MATLAB}'s \texttt{train}}
 	\label{fig:rep3-train-time}
 \end{figure}
 
@@ -85,7 +86,7 @@ A plot of the time-domain signal is given in Figure~\ref{fig:rep3-train-time}, w
 
 \subsection{Report 4}
 %Corresponding matlab file: resources/labday1/report4.m
-Figure~\ref{fig:rep4-train-heatmap} shows a heatmap of the occurrence of frequencies in \SI{20}{\milli\second} intervals of \texttt{MATLAB}'s `train' audio signal. This plot should give a more detailed view of the frequency contents of the train signal than a normal signal spectrum would, since it also includes a time component. It is apparent that most of the sound is centered around \SI{3}{\kilo\hertz}. The two whistle blows are also clearly distinguishable.
+Figure~\ref{fig:rep4-train-heatmap} shows a heatmap of the occurrence of frequencies in \SI{20}{\milli\second} intervals of \texttt{MATLAB}'s \texttt{train} audio signal. This plot should give a more detailed view of the frequency contents of the \texttt{train} signal than a normal signal spectrum would, since it also includes a time component. It is apparent that most of the sound is centered around \SI{3}{\kilo\hertz}. The two whistle blows are also clearly distinguishable.
 
 \begin{figure}[H]
 	\centering
@@ -103,7 +104,7 @@ Figure~\ref{fig:rep4-train-heatmap} shows a heatmap of the occurrence of frequen
 	\label{fig:rep5-6-spectrum}
 \end{figure}
 %footnote is not a pretty solution for h[n] displaying ... :(
-Figure~\ref{fig:rep5-6-spectrum} shows the frequency spectrum of the original given $h[n]$\footnote{$h[n]$ was given as $h[n]=[1,0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0.8]$} after FFT, as well as a padded $h[n]$ which is five times longer than the original. Comparing the plots, we see that interpolation is indeed accomplished, just be adding zeros to the end of our original signal. Since our padded $h[n]$ is five times larger than the original, we notice that every 5th sample in the padded response indeed coincides with a sample of the original one.
+Figure~\ref{fig:rep5-6-spectrum} shows the frequency spectrum of the original given $h[n]$ (see \cite[94]{epo4-manual}) after FFT, as well as a padded $h[n]$ which is five times longer than the original. Comparing the plots, we see that interpolation is indeed accomplished, just be adding zeros to the end of our original signal. Since our padded $h[n]$ is five times larger than the original, we notice that every 5th sample in the padded response indeed coincides with a sample of the original one.
 
 \subsection{Report 7}
 \begin{figure}[H]
