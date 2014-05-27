@@ -9,13 +9,54 @@
 
 \section{Labday 3}
 \subsection{Report 11}
-Impulse response of audio channel
+We wanted to investigate the audio channel. For this purpose we used three different signals of which the frequency domain plot is shown in Figure~\ref{fig:rep11-test-spectra}. From the first glance the symilarities between periodic pulses and sines can be seen. Pulses on the frequencies of the signals and mirrored on the negative frequencies. The simmilarities can be explained by the inability of the speakers to give perfect pulses. This was done by sampling higher than the Nyquist frequency though. As expected there is aliasing when sampling under this frequency.  
 
-\subsection{Report 12}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-11-random-signals.pdf}
+	\caption{Some arbitrary signal spectra, measured in the testing environment}
+	\label{fig:rep11-test-spectra}
+\end{figure}
+
+The impulse responses and amplitude spectra for which asked in the report are depicted in Figure~\ref{fig:rep11-impulse-spectra}. For $F_s = \SI{22050}{Hz}$ we did not expect any aliasing.  But for $F_{s,TX} = \SI{22050}{Hz}$ and $F_{s,TX} = \SI{8000}{Hz}$ we are sampling under the nyquist frequency, thus some aliasing has to be expected. Finally for $F_{s,TX} = \SI{4000}{Hz}$ and $F_{s,TX} = \SI{22050}{Hz}$ we are sampling above the nyquist frequency. In this case no aliasing is expected and the highest frequency should be $\pm \frac{F_{s,TX}}{2} = \pm \SI{2}{kHz}$. This corresponds considering some noise close enough to our measured spectrum.
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-11-time.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-11.pdf}
+	\end{subfigure}
+	\caption{The required impulse responses and spectra}
+	\label{fig:rep11-impulse-spectra}
+\end{figure}
+
+
+
+\subsection{Report 12 and 13}
 Minimum sample rate \@ microphone
 
-\subsection{Report 13}
-No line of sight!
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-13-time.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-13-delays.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-13-time-set-2.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-13-delays-set-2.pdf}
+	\end{subfigure}
+	\caption{Time plots and calculated delays of the received signal, for two different measurements (top and bottom)}
+	\label{fig:rep12-los}
+\end{figure}
+
 
 \subsection{Report 14}
 Apply channel estimation algorithm of labday 2
