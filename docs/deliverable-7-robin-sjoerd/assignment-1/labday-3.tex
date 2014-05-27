@@ -37,7 +37,7 @@ The required impulse responses and spectra are shown in Figure~\ref{fig:rep11-im
 %% TODO: Answer last question and check the above
 
 \subsection{Report 12 and 13}
-Assuming the speed of sound to be \SI{340}{m/s}, it will take $0.01/340 = \SI{29.4}{\micro s}$ to travel a distance of \SI{1}{cm}. Were we to capture this difference in time, we would need a receiver capable of a sampling rate $F_s > (29.4 \times 10^{-6})^{-1} = \SI{34}{kHz}$.
+Assuming the speed of sound to be \SI{340}{m/s}, it will take $0.01/340 = \SI{29.4}{\micro s}$ to travel a distance of \SI{1}{cm}. If we would want to measure with a resolution of \SI{1}{cm}, we would need to be able to measure a time difference of arrival of half this timespan, which means a receiver capable of a sampling rate $F_s > (29.4 \times 10^{-6} / 2)^{-1} = \SI{68}{kHz}$.
 
 %% FIGURE subfig:rep12-time + subfig:rep12-delays IN fig:rep12-los HERE %%
 \begin{figure}[H]
