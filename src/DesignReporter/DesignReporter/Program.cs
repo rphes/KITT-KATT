@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace DesignReporter
 {
+	// TODO: FIX RELATIVE PATH HANDLING
     class Program
     {
 		static Dictionary<string, string> extensions = new Dictionary<string,string>();
@@ -12,7 +13,7 @@ namespace DesignReporter
 		static DirectoryInfo src;
 		static string docsPath;
 		static DirectoryInfo docs;
-        static FileInfo outputPath = new FileInfo("sourcecode.tex");
+        static FileInfo outputPath;
 		static String start =
 @"%!TEX program = xelatex
 \documentclass{report}
@@ -45,19 +46,24 @@ namespace DesignReporter
 			Console.WriteLine("Paths are absolute or relative to current directory:");
 			Console.WriteLine(Directory.GetCurrentDirectory());
 
-			Console.WriteLine("Enter path to source code directory (defaults to \"/src\")");
+			Console.WriteLine("Enter path to source code directory (defaults to \"src\")");
 			srcPath = Console.ReadLine();
 			if (String.IsNullOrWhiteSpace(srcPath))
 				src = new DirectoryInfo("src");
 			else
 				src = new DirectoryInfo(srcPath);
 
-			Console.WriteLine("Enter path to documents directory (defaults to \"/docs\")");
+			Console.WriteLine("Enter path to output directory (defaults to \"docs\")");
 			docsPath = Console.ReadLine();
 			if (String.IsNullOrWhiteSpace(docsPath))
 				docs = new DirectoryInfo("docs");
 			else
 				docs = new DirectoryInfo(docsPath);
+
+			if (!docs.Exists)
+				docs.Create();
+
+			outputPath = new FileInfo(docs + "/sourcecode.tex");
 
 			//Open file
 			file = outputPath.CreateText();
