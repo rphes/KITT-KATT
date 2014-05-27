@@ -79,7 +79,9 @@ Plot of typical estimated channel impulse response
 The general idea of the deconvolution approach is that a signal $y[n]=x[n]*h[n]$ is received, where $h[n]$ is the channel response. The deconvolution method using matrix inversion tells us the channel can be approximated by $\vec{\hat{h}}=(\mat{X}^T\mat{X})^{-1}\mat{X}^T\vec{y}$. Because the sent signal $x[n]$ is known, the matrix $\mat{X}^\dagger=\mat{X}^T\mat{X})^{-1}\mat{X}^T$ can be pre-computed, leaving only a matrix multiplication every time $\vec{\hat{h}}$ must be computed. 
 
 In the method outlined above it is immediately clear that for the same (or similar) $\mat{X}^\dagger$ matrices (and thus $x[n]$ codes) the channel estimation will produce incorrect results. While mathematically not correct, it can be intuitively thought of as follows: the algorithm looks for $x_1[n]$ occurring in $y[n]$. Now if we have a second $x$, $x_2[n]$ and this $x_2[n]$ is similar to $x_1[n]$ then it can be expected that the algorithm mistakes an occurrence of $x_1[n]$ for an occurrence of $x_2[n]$. More mathematically, bladiebla
+% TODO
 
-\subsection{5-channel TCOA measurements}
+\subsection{5-channel TDOA measurements}
+% TODO
 Read page 106 for more info
 \end{document}
