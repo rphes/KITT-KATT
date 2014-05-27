@@ -18,7 +18,10 @@
 			<Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Stretch="Uniform" StretchDirection="Both">
 				<Border BorderBrush="Gray" BorderThickness="1">
 					<Canvas Width="{Binding Path=CanvasSize}" Height="{Binding Path=CanvasSize}">
-						<Image Name="Image_KITT" Source="{Binding Path=ImageSourceKITT}" Canvas.Left="{Binding Path=X}" Canvas.Top="{Binding Path=Y}"/>
+						<Canvas.LayoutTransform>
+							<ScaleTransform ScaleX="1" ScaleY="-1"/>
+						</Canvas.LayoutTransform>
+						<Image Name="Image_KITT" Source="{Binding Path=KITT.Bitmap}" Canvas.Left="{Binding Path=KITT.X}" Canvas.Top="{Binding Path=KITT.Y}"/>
 					</Canvas>
 				</Border>
 			</Viewbox>
