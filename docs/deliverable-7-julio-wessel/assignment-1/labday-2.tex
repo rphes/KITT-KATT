@@ -79,10 +79,11 @@ For each of this sequences the autocorrelation was calculated and is displayed i
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.5/ass-1-report-9-BPSK.pdf}
 	\end{subfigure}
 	\caption{The channel estimation error for increasing $\hat{L}$,  with $\sigma = 0.5$ noise}
-	\label{fig:rep9-0.5}
+	\label{fig:rep905}
 \end{figure}
 
-The latter Figure~\ref{fig:rep9-0.5} shows the channel estimation with $\sigma = 0.5$. $\hat{L} \ge L = 4$
+The latter Figure~\ref{fig:rep905} shows the channel estimation with $\sigma = 0.5$. We see that the projection estimation method gives better results for $\hat{L} \ge L = 4$. This is to be espected since the projection method is supposed to give perfect results in situations without noise and sufficient estimated channel length, where the matched filter sacrifices estimation accuracy for faster performance due to less complex calculations. \\
+Now we see the results for $\sigma = 0.1$ in  Figure~\ref{fig:rep901}. We see that both methods give less errors. This the result we espected since less noise was introduced.
 
 \begin{figure}[H]
 	\centering
@@ -99,13 +100,12 @@ The latter Figure~\ref{fig:rep9-0.5} shows the channel estimation with $\sigma =
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.1/ass-1-report-9-BPSK.pdf}
 	\end{subfigure}
 	\caption{The channel estimation error for increasing $\hat{L}$, with $\sigma = 0.1$ noise}
-	\label{fig:rep9-0.1}
+	\label{fig:rep901}
 \end{figure}
 
 
-
-
-
 \subsection{Report 10}
-Training sequence design
+The main idea is to use a training sequence which can always be identified even within surrounding sounds. One of the things that have to be done is giving the training sequence impulse-like autocorrelation behaviour. By doing this the sequence will be well recognizable. Also the crosscorrelation with the surrounding sounds has to be small enough in order to differentiate our signal from surrounding sounds. \\
+When choosing a signal length $N_x$ there are pros and cons to be considered. This is the case since a large $N_x$ give a more recognizable sequence, but at the same time increases the time to calculated the position of our car. \\
+From the tests we saw that $\hat{L}$ gave sufficiently good results for $\hat{L} = L$. Moreover we want to keep $\hat{L}$ as small as possible since this reduces the complexity of the calculations. Thus we want to keep $\hat{L}$ at $L$.
 \end{document}
