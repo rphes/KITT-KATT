@@ -101,13 +101,18 @@ Figure~\ref{fig:rep4-train-heatmap} shows a heatmap of the occurrence of frequen
 Figure~\ref{fig:rep5-6-spectrum} shows the frequency spectrum of the original given $h$ after FFT, as well as a padded $h$ which is five times longer than the original. Comparing the plots, we see that interpolation is indeed accomplished, just be adding zeros to the end of our original signal. Since our padded $h$ is five times larger than the original, we notice that every 5th sample in the padded response indeed coincides with a sample of the original one.
 
 \subsection{Report 7}
-
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\linewidth]{../../deliverable-7-resources/figures/ass-1/report-7/ass-1-report-7-temp.png}
-	\caption{Amplitude spectra for convolving first then FFT, FFT first then multiplying and the absolute difference between the methods.}
-	\label{fig:rep7}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-7/ass-1-report-7-convolution.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-7/ass-1-report-7-multiplication.pdf}
+	\end{subfigure}
+	\caption{Comparison of spectra for testing the convolution property.}
+	\label{fig:rep7-convolution}
 \end{figure}
 
-To test whether the convolution property holds, the `train' signal was convolved with the same, extended $h[n]$ as before. The result was then FFT'd and the amplitude spectrum was drawn. Then, for the same `train' signal and $h[n]$ these signals were first FFT'd and then multiplied. Again, an amplitude spectrum was plotted. The results of both these plots can be found in Figure~\ref{fig:rep7}, along with a third plot, the absolute difference between the two results. We may conclude that first convolving and then applying an FFT yields almost the same results as first applying an FFT and then multiplying. The differences are in the order of $10^{-13}$ to $10^{-12}$, which we can attribute to numerical and round-off errors in the FFT implementation and convolution algorithms.
+\textbf{Check this paragraph! the figure no longer matches the text.}
+To test whether the convolution property holds, the `train' signal was convolved with the same, extended $h[n]$ as before. The result was then FFT'd and the amplitude spectrum was drawn. Then, for the same `train' signal and $h[n]$ these signals were first FFT'd and then multiplied. Again, an amplitude spectrum was plotted. The results of both these plots can be found in Figure~\ref{fig:rep7-convolution}, along with a third plot, the absolute difference between the two results. We may conclude that first convolving and then applying an FFT yields almost the same results as first applying an FFT and then multiplying. The differences are in the order of $10^{-13}$ to $10^{-12}$, which we can attribute to numerical and round-off errors in the FFT implementation and convolution algorithms.
 \end{document}
