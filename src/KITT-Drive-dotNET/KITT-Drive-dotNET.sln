@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KITT-Drive-dotNET", "KITT-Drive-dotNET\KITT-Drive-dotNET.csproj", "{62040398-C896-45A7-B3E9-FC9EC9A845A1}"
 EndProject
@@ -58,6 +58,7 @@ Global
 		{0A7FD2AB-1FB1-4187-8C29-59917142D0F7}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{0A7FD2AB-1FB1-4187-8C29-59917142D0F7}.Debug|x64.Build.0 = Debug|Any CPU
 		{0A7FD2AB-1FB1-4187-8C29-59917142D0F7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0A7FD2AB-1FB1-4187-8C29-59917142D0F7}.Debug|x86.Build.0 = Debug|Any CPU
 		{0A7FD2AB-1FB1-4187-8C29-59917142D0F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A7FD2AB-1FB1-4187-8C29-59917142D0F7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A7FD2AB-1FB1-4187-8C29-59917142D0F7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU

@@ -39,6 +39,10 @@ namespace Overwatch
 		//Battery
 		public static int BatteryVoltageMin { get { return 0; } }
 		public static int BatteryVoltageMax { get { return 20000; } }
+
+		//Field
+		public static int CanvasSize { get { return 600; } } //600 px default
+		public static int FieldSize { get { return 10; } } //10 meter
 		#endregion
 
 		#region Modules

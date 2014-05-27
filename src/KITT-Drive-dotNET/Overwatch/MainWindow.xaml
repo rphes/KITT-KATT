@@ -21,7 +21,7 @@
 						<Canvas.LayoutTransform>
 							<ScaleTransform ScaleX="1" ScaleY="-1"/>
 						</Canvas.LayoutTransform>
-						<Image Name="Image_KITT" Source="{Binding Path=KITT.Bitmap}" Canvas.Left="{Binding Path=KITT.X}" Canvas.Top="{Binding Path=KITT.Y}"/>
+						<Image Name="Image_KITT" Source="{Binding Path=KITT.Bitmap}" Canvas.Left="{Binding Path=KITT.X}" Canvas.Top="{Binding Path=KITT.Y}" Width="{Binding Path=KITT.W}" Height="{Binding Path=KITT.H}"/>
 					</Canvas>
 				</Border>
 			</Viewbox>
