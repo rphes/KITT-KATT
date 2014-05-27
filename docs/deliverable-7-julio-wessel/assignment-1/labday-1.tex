@@ -13,28 +13,49 @@
 (In)fitite reflections
 
 \subsection{Report 2}
-p.92
+Here we consider the more general filter $H(z) = \frac{1}{1+az^-1}$.  This is a first order IIR filter. The plots of this filter for $a=0.95$ and $a=-0.95$ are shown in figure?????? From this it becomes clear that for $a=0.95$ the filter causes a damped oscillation and a exponentially decaying signal for $a=-0.95$. \\
+
+The effect of this filer on more general signal can be described and explained as follows. ?????? \\
+
+To analyze the effect of this filter on signals frequency domain plots where plotted. The plots are displayed in figure ????? for $a=0.95$ and $a=-0.95$. Inspecting this impulse responces one can conclude that the filter behaves as a band-stop filter for $a=0.95$ and as a band-pass for $a=-0.95$. How this filter channges an impulse is ?????. For a more general signal it would mean ????. \\
+
+Computers can't perform calculation on continious signals. And "FT" has a continious time input and continious frequency output. Also "DTFT" has a discrete time input and a continious frequency output. This is the reason why matlab has no build-in functions like "FT" and "DTFT". 
+
 \subsection{Report 3}
-p.93
+In this report a signal called "train" will be analyzed. The time frequency plot is shown in figure ?????. For this signal the frequency domain signal is also plotted in figure ??????.
+It can be seen that the frequency domain plot is symmetric around frequency$= 0Hz$. This symmetry exists because sine signals have the same form for negative and positive frequencies of the same value. In this case it makes sence to only take the positive frequencies since no extra information is added by the negative frequencies. This is done by deleting all information for frequencies under zero. 
+
 \subsection{Report 4}
-time-frequency plot
+The time-frequency plot: \\
+
 \subsection{Report 5}
-Zero padding
+Zero padding. (plot of h[n])
 \subsection{Report 6}
-extended zero padding
+Zero padding. (plot of h\_padded[n])
 
 \subsection{Report 7}
 Now we want to demonstrate the following convolution property: \newline
+
 \begin{center}
  $y[n] = x[n]*h[n] \leftrightarrow Y(\omega) = X(\omega)H(\omega)$ 
 \end{center}
+
+
 Herein we assigned a 'train' sound to  $x[n]$.  And  $h[n]$ = [1  zeros(1,5)  0.9 zeros(1,5)  0.8].
-First of all $y[n]$ was calculated by calculating the convolution of $x[n]$ and $h[n]$. Then the sequences $y[n]$, $x[n]$ and $h[n]$ where fourier transformed. After doing this to steps we want to show :
+In order to prove this property we want to show that the following equation is correct: \newline
+
 \begin{equation}
 \centering
  \mathcal{F}(y[n]) = X(\omega)H(\omega)
 \end{equation}
-This is done by plotting $Y(\omega)$ and $X(\omega)H(\omega)$. 
+
+First of all $y[n]$ was calculated by calculating the convolution of $x[n]$ and $h[n]$. From this convolution it follows that the length of sequence $y[n]$ is equal to $N = L + M - 1$, where $L$ is the length of $x[n]$ and $M$ the length of $h[n]$. This is why the length of $X(\omega)H(\omega)$ also has to be of legnth $N$. In order to achieve this $x_{0}[n]$ and $h_{0}[n]$ where created. $x_{0}[n]$ and $h_{0}$ are $x[n]$ and $h[n]$ respectively but with extra zeros until being both of length $N$. \\
+After doing this the fourier transforms of $y[n]$, $x_{0}[n]$ and $h_{0}[n]$ where calculated. Finally the convolution property was demonstrated by plotting $Y(\omega)$ and $X(\omega)H(\omega)$. From the plots, shown in figure ??????, it 
+
+
+
+
+
 
 
 
