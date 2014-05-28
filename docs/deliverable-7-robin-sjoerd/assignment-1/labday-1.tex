@@ -44,7 +44,7 @@ We created a \texttt{MATLAB} model for the above situation with the amount of re
 %corresponding matlab file: resource/labday1/report2.m
 The impulse responses for a first order IIR filter $H(z) = \frac{1}{1+az^{-1}}$, with $a=0.95$ and $a=-0.95$ are shown in Figure~\ref{fig:rep2-time-resp}. For $a=0.95$ the filter causes a damped oscillation, for $a=-0.95$ it causes an exponentially decaying signal. This is in line with the time-domain impulse response of $h[n]$ which is given by $h[n]=a^nu[n]$ with $u[n]$ the unit step function.
 
-A more general discrete function can be expressed as a sum of $k$ discrete impulses with a time delay, thus yielding as a response the sum of multiple delayed step functions ($u[n-\tau]$) with amplitudes of $a^{n-\tau}$.
+A more general discrete function can be expressed as a sum of $k$ scaled, discrete impulses with a time delay, thus yielding as a response the sum of $k$ delayed step functions $u[n-\tau]$ with amplitudes of $a^{n-\tau}$.
 
 \begin{figure}[H]
 	\centering
