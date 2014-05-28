@@ -11,7 +11,7 @@
 \subsection{Report 6}
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[width=.6\linewidth]{../../deliverable-7-resources/figures/ass-2/report-6/ass-2-report-6.pdf}
+		\includegraphics[width=.8\linewidth]{../../deliverable-7-resources/figures/ass-2/report-6/ass-2-report-6.pdf}
 	\end{center}
 	\caption{Localization using the TDOA data}
 	\label{fig:ass-2-rep-6}
@@ -28,22 +28,29 @@ Figure \ref{fig:ass-2-rep-6} shows the result of our localization algorithm on t
 		\includegraphics[width=\linewidth]{../../deliverable-7-resources/figures/ass-2/report-7-8/ass-2-report-7-std.pdf}
 		\caption{\centering Standard deviation of the microphone localization error by the MDS algorithm}
 	\end{subfigure}
-	\caption{Mean and standard deviation of MDS microphone localization algorithm as a function of the standard deviation of noise, $\sigma$}
+	\caption{Mean and standard deviation of MDS microphone localization algorithm errors as a function of the standard deviation of noise, $\sigma$}
 	\label{fig:ass-2-rep-7}
 \end{figure}
+
+Figure \ref{fig:ass-2-rep-7} shows the mean and standard deviation of the error of the MDS estimates for varying standard deviations of added noise. It is quite clear that a ordinary least squares approximation is quite a good fit. The resulting equations are:
+\begin{align*}
+\text{MDS localization error mean} = 1.11\cdot\sigma_{\text{noise}} \\
+\text{MDS localization error standard deviation} = 0.98\cdot\sigma_{\text{noise}}
+\end{align*}
+
+Since we don't know what the noise levels during the final challenge will be and the performance of the MDS algorithm is not too good given noise, we expect that measuring the distances between the microphones by hand will produce a more accurate microphone map.
 \subsection{Report 8}
 Four microphones are indeed sufficient to determine their locations in the room in three dimensions. However, since the height of the car is constant and known and assuming the microphones are at the same, fixed height, the third dimension really plays no role and the fourth measurement can be used to improve the two dimensional model.
 
 \subsection{Report 9}
 \label{subsec:ass-2-rep-9}
-Figure~\ref{fig:ass-2-rep-9} shows the results of our microphone localization using the TDOA data.
-
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[width=.6\linewidth]{../../deliverable-7-resources/figures/ass-2/report-9/ass-2-report-9.pdf}
+		\includegraphics[width=.8\linewidth]{../../deliverable-7-resources/figures/ass-2/report-9/ass-2-report-9.pdf}
 	\end{center}
 	\caption{Microphone localization using the MDS algorithm}
 	\label{fig:ass-2-rep-9}
 \end{figure}
-	
+Figure~\ref{fig:ass-2-rep-9} shows the results of our microphone localization using the TDOA data, in which the mean positioning error is \SI{6.03}{\centi\meter} and the standard deviation of this error is \SI{4.08}{\centi\meter}. Of course, this estimate can be improved when the TDOA algorithm works better, i.e. making the trade-off between high required processing power and high sampling frequency tend more to the sampling frequency side. In its current state, the MDS algorithm could be used as a part of the KITT control system, but it might be better to tweak the algorithm and attempt to improve TDOA estimations before doing that.
+
 \end{document}
