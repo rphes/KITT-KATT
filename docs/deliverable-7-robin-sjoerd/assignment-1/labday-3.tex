@@ -18,7 +18,7 @@ For testing audio transmission, we tried to transmit some signals to see what th
 	\label{fig:rep11-test-spectra}
 \end{figure}
 
-We obtained mostly expected results: a sine wave sent and received with sufficient sampling rates yields delta-pulses on its positive and negative frequency and a sine wave sampled with $F_s < 2B$ results in an aliased spectrum. It is worth noting that there is not much of a difference in the spectrum of the pulsed signal, compared to that of a sine. This could be explained by speaker characteristics (a square wave requires infinite acceleration of the speaker's cone, which is not possible), as well as numerical effects due to the use of a computer system.
+We obtained mostly expected results: a sine wave sent and received with sufficient sampling rates yields delta-pulses on its positive and negative frequency and a sine wave sampled with $F_s < 2B$ results in an aliased spectrum. It is worth noting that there is not much of a difference in the spectrum of the pulsed signal, compared to that of a sine. This could be explained by speaker characteristics (a square wave requires infinite acceleration of the speaker's cone, which is not possible), as well as numerical effects due to the use of a computer system. Also, note that the \SI{2.5}{kHz} sine with transmission and reception sampling rates of \SI{2}{kHz} is aliased, as is to be excepted. In stead of peaks at \SI{\pm 2.5}{kHz}, we observe them at \SI{\pm 0.5}{kHz}, which corresponds to $B - F_s$.
 
 \begin{figure}[H]
 	\centering
@@ -58,7 +58,14 @@ Assuming the speed of sound to be \SI{340}{m/s}, an object that moves \SI{1}{cm}
 	\label{fig:rep12-los}
 \end{figure}
 
-Figure~\ref{fig:rep12-los} shows time plots of the received signal after transmitting a single impulse over various distances, as well as a diagram that shows the measured delays per distance, along with an least-squares approximation and expected value line, in two measurements. Looking at the measured delays, we see that they are not all consistent with our expectations. This is most likely due to delays introduced in the processing of the received signal. When we compare the amplitudes of the various signals, we see that they indeed drop over distance, which is according to our expectations.
+Figure~\ref{fig:rep12-los} shows time plots of the received signal after transmitting a single impulse over various distances, as well as a diagram that shows the measured delays per distance, along with an least-squares approximation and expected value line, in two measurements. Looking at the measured delays, we see that they are not all consistent with our expectations. This is most likely due to delays introduced in the processing of the received signal. When we compare the amplitudes of the various signals, we see that they indeed drop over distance, which is according to our expectations. From the least-squares approximation, we can obtain a value for the speed of sound in the environment during our measurements:
+
+\begin{align*}
+	(\text{delay/unit distance added})_{\text{Figure~\ref{fig:rep12-los} - top}} &= (\text{\SI{38.67}{m/s}})^{-1}, \\
+	(\text{delay/unit distance added})_{\text{Figure~\ref{fig:rep12-los} - bottom}} &= (\text{\SI{438.58}{m/s}})^{-1}.
+\end{align*}
+
+These values (compared to the typical speed of sound of \SI{340}{m/s}) once more prove our measurements not to be very accurate.
 
 \begin{figure}[H]
 	\centering

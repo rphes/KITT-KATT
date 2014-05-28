@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Overwatch.Tools;
+using System;
 using System.IO.Ports;
 using System.Windows;
 using System.Windows.Input;

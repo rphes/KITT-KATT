@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace Overwatch
+namespace Overwatch.Tools
 {
 	public abstract class ObservableObject : INotifyPropertyChanged
 	{

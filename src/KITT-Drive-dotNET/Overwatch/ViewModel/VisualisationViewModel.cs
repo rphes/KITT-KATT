@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Overwatch.Tools;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Overwatch.ViewModel
 {
-	public class VirtualKITT
+	public class VirtualKITT : ObservableObject
 	{
 		public static double RealWidth { get { return 0.4; } }
 		public static double RealHeight { get { return 0.3; } }
@@ -29,6 +31,8 @@ namespace Overwatch.ViewModel
 		{
 			X = x * Scale - W / 2;
 			Y = y * Scale - H / 2;
+			RaisePropertyChanged("X");
+			RaisePropertyChanged("Y");
 		}
 	}
 
@@ -48,5 +52,19 @@ namespace Overwatch.ViewModel
 			KITT.Bitmap.EndInit();
 			KITT.SetLocation(0.5, 0.5);
 		}
+
+		void MouseUpExecute()
+		{
+			Random r = new Random();
+
+			KITT.SetLocation(r.NextDouble(), r.NextDouble());
+		}
+
+		bool CanMouseUpExecute()
+		{
+			return true;
+		}
+
+		public ICommand MouseUp { get { return new RelayCommand(MouseUpExecute, CanMouseUpExecute); } }
 	}
 }

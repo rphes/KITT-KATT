@@ -19,7 +19,9 @@ namespace Overwatch
 			//Subscribe to status updates
 			Data.MainViewModel.CommunicationViewModel.Communication.StatusReceived += Communication_StatusReceived;
 		}
+		#endregion
 
+		#region Event handling
 		void Communication_StatusReceived(object sender, EventArgs e)
 		{
 			if (!Enabled) return;
@@ -29,10 +31,6 @@ namespace Overwatch
 			//Request new status
 			Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
 		}
-		#endregion
-
-		#region Event handling
-		
 		#endregion
 	}
 }

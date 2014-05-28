@@ -63,6 +63,7 @@
     <Compile Include="CodeBehind\AutoControl.cs" />
     <Compile Include="CodeBehind\Communication.cs" />
     <Compile Include="CodeBehind\Vehicle.cs" />
+    <Compile Include="Tools\MouseBehaviour.cs" />
     <Compile Include="Tools\ObservableObject.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
     <Compile Include="ViewModel\AutoControlViewModel.cs" />
