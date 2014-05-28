@@ -18,7 +18,7 @@ For testing audio transmission, we tried to transmit some signals to see what th
 	\label{fig:rep11-test-spectra}
 \end{figure}
 
-We obtained mostly expected results: a sine wave sent and received with sufficient sampling rates yields delta-pulses on its positive and negative frequency and a sine wave sampled with $F_s < 2B$ results in an aliased spectrum. It is worth noting the fact that there is not much of a difference in the spectrum of the pulsed signal, compared to that of a sine. This could be explained by speaker characteristics (a square wave requires infinite acceleration of the speaker's cone, which is not possible), as well as numerical effects due to the use of a computer system.
+We obtained mostly expected results: a sine wave sent and received with sufficient sampling rates yields delta-pulses on its positive and negative frequency and a sine wave sampled with $F_s < 2B$ results in an aliased spectrum. It is worth noting that there is not much of a difference in the spectrum of the pulsed signal, compared to that of a sine. This could be explained by speaker characteristics (a square wave requires infinite acceleration of the speaker's cone, which is not possible), as well as numerical effects due to the use of a computer system.
 
 \begin{figure}[H]
 	\centering
@@ -32,7 +32,7 @@ We obtained mostly expected results: a sine wave sent and received with sufficie
 	\label{fig:rep11-impulse-spectra}
 \end{figure}
 
-The required impulse responses and spectra are shown in Figure~\ref{fig:rep11-impulse-spectra}. For equal $F_s$ of \SI{22050}{Hz}, we of course do not expect aliasing to occur. However, for $F_{s,TX} = \SI{22050}{Hz}$ and $F_{s,TX} = \SI{8000}{Hz}$, we are clearly undersampling the received analog signal, so aliasing is to be expected. Lastly, for $F_{s,TX} = \SI{4000}{Hz}$ and $F_{s,TX} = \SI{22050}{Hz}$, we are oversampling, so aliasing is not to be expected, but the highest frequency should be $\pm \frac{F_{s,TX}}{2} = \pm \SI{2}{kHz}$, which corresponds nicely to our measured spectrum, considering the effects of noise.
+The required impulse responses and spectra are shown in Figure~\ref{fig:rep11-impulse-spectra}. For equal $F_s$ of \SI{22,050}{\hertz}, we of course do not expect aliasing to occur. However, for $F_{s,TX} = \SI{22050}{Hz}$ and $F_{s,TX} = \SI{8000}{\hertz}$, we are clearly undersampling the received analog signal, so aliasing is to be expected. Lastly, for $F_{s,TX} = \SI{4000}{Hz}$ and $F_{s,TX} = \SI{22050}{Hz}$, we are oversampling, so aliasing is not to be expected, but the highest frequency should be $\pm \frac{F_{s,TX}}{2} = \pm \SI{2}{kHz}$, which corresponds nicely to our measured spectrum, considering the effects of noise.
 
 %% TODO: Answer last question and check the above
 
@@ -68,7 +68,7 @@ Figure~\ref{fig:rep12-los} shows time plots of the received signal after transmi
 	\label{fig:rep13-nlos}
 \end{figure}
 
-Repeating the previous experiment with an obstacle (a \SI{15}{"} Macbook) between the transmitter and receiver, we obtained the results as depicted in Figure~\ref{fig:rep13-nlos}. The measurements at \SI{50}{cm} show results that are to be expected, the NLOS signal was received later and with a lesser amplitude than the LOS signal. For \SI{100}{cm}, our results were less than ideal, since it looks like the NLOS signal was actually received after less time than the LOS signal, which is not conform our expectations. Once again this is probably because of processiong delays in the receiver. The amplitude of the NLOS signal was indeed lower than that of the LOS signal, though.
+Repeating the previous experiment with an obstacle (a \SI{15}{"} Macbook) between the transmitter and receiver, we obtained the results as depicted in Figure~\ref{fig:rep13-nlos}. The measurements at \SI{50}{cm} show results that are to be expected, the NLOS signal was received later and with a lesser amplitude than the LOS signal. For \SI{100}{cm}, our results were less than ideal, since it looks like the NLOS signal was actually received after less time than the LOS signal, which is not conform our expectations. Once again this is probably because of processing delays in the receiver. The amplitude of the NLOS signal was indeed lower than that of the LOS signal, though.
 
 %% TODO check the above
 
@@ -108,6 +108,5 @@ To check the usability of these results, we used the obtained impulse responses 
 We see that the reconstructed sequence mimics the original relatively well, phase and amplitude information in the peaks is mostly preserved, while at the same time noise between peaks is filtered. From these observations we may conclude that our channel estimation algorithm should be usable in TDOA localization.
 
 \subsection{Report 15}
-Design optimal parameters of audio beacon
-
+See section \ref{subsec:ass2-report-1} for the beacon parameters and section \ref{subsec:ass2-report5} for a motivation and background for the choice of a randomly generated $x[n]$.
 \end{document}

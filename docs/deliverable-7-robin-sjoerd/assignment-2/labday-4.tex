@@ -23,7 +23,7 @@ As calculated in Section~\ref{subsec:ass1-rep-12-13} the sampling frequency shou
 
 A typical channel impulse response is shown in figure \ref{fig:ass-2-rep-1-typical} from which we can see that a typical impulse response takes about \SI{10}{\milli\second} before it is no longer distinguishable from noise. Therefore, we chose \texttt{timer3} to be \SI{8}{\hertz} so that the repetition period is \SI{0.125}{\milli\second}.
 
-The peak detection algorithm we designed initially used \texttt{MATLAB}'s \texttt{findpeaks} function, but it was decided to swap it for an algorithm measuring the standard deviation of small, moving intervals of the signal. The rationale is that when no peak is detected (e.g. the signal consists of only noise) the signal has a variance of $\sigma_n^2$. Then, when a peak is detected the standard deviation changes because the amplitude of the deconvolved signal changes quite suddenly. This detection algorithm seems flexible and works, as demonstrated by the green line in figure \ref{fig:ass-2-rep-1-typical}
+The peak detection algorithm we designed initially used \texttt{MATLAB}'s \texttt{findpeaks} function, but it was decided to swap it for an algorithm measuring the standard deviation of small, moving intervals of the signal. The rationale is that when no peak is detected (e.g. the signal consists of only noise) the signal has a variance of $\sigma_n^2$. Then, when a peak is detected the standard deviation changes because the amplitude of the deconvolved signal changes quite suddenly. This detection algorithm seems flexible and works, as demonstrated by the green line in figure \ref{fig:ass-2-rep-1-typical}. The \texttt{MATLAB} code for the \texttt{findpeaks} and standard deviation based peak detection algorithms may be foundin appendix \ref{appsec:5-channel-tdoa}.
 
 \subsection{Report 2,3 and 4}
 The TDOA algorithm that we implemented has the following basic procedure: 
@@ -34,7 +34,8 @@ The TDOA algorithm that we implemented has the following basic procedure:
 \item Search for peaks in $h_i[n]$ and determine the number of samples between the peaks in $h_1[n]$ and $h_2[n]$.
 \item From the number of samples in between peaks the time difference can be computed (the TDOA) and using the speed of sound the distance between the microphones.
 \end{enumerate}
-Note that for step three multiple methods are suitable. Three are described in the manual: deconvolution using matrix inversion, a matched filter approach and frequency domain deconvolution. For this report we decided to use the method of deconvolution using matrix inversion because initial testing yielded the best results with this method and are within arms reach because powerful computer hardware is available. %%INSERT SOURCE CODE!
+Note that for step three multiple methods are suitable. Three are described in the manual: deconvolution using matrix inversion, a matched filter approach and frequency domain deconvolution. For this report we decided to use the method of deconvolution using matrix inversion because initial testing yielded the best results with this method. The \texttt{MATLAB} code may be found in appendix \ref{appsec:2-channel-tdoa}.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{../../deliverable-7-resources/figures/ass-2/report-2-3/ass-2-report-2-typical-data-segment.pdf}
@@ -42,7 +43,7 @@ Note that for step three multiple methods are suitable. Three are described in t
 	\label{fig:ass-2-rep-2-data-segment}
 \end{figure}
 
-An example of a received data segment is shown in figure \ref{fig:ass-2-rep-2-data-segment}. For details on the peak detection algorithm, refer to section \ref{ass2-report-1}. For an example of the location of the peak as detected by our software see figure \ref{fig:ass-2-rep-1-typical}.
+An example of a received data segment is shown in figure \ref{fig:ass-2-rep-2-data-segment}. For details on the peak detection algorithm, refer to section \ref{subsec:ass2-report-1}. For an example of the location of the peak as detected by our software see figure \ref{fig:ass-2-rep-1-typical}.
 
 \begin{figure}[H]
 	\centering
@@ -60,7 +61,7 @@ A response of one of our measurements is shown in figure \ref{fig:ass-2-rep-2-im
 	\label{fig:ass-2-rep-2-result}
 \end{figure}
 
-Figure \ref{fig:ass-2-rep-2-result} shows an overview of the TDOA distance estimations for microphones placed \num{0}, \num{10}, \num{20}, \num{50} and \SI{100}{\centi\meter}. Shown in green are the TDOA estimations and shown in red the actual distances between microphones. We can see that for larger spacing between the microphones, the estimation becomes worse. This is to be expected; when the microphones are placed further apart the signal to noise ratio at the microphone farthest away will be significantly lower than for closer placed microphones, thus making it more difficult for the peak detection algorithm to pinpoint the exact sample in which the peak occurs.
+Figure \ref{fig:ass-2-rep-2-result} shows an overview of the TDOA distance estimations for microphones placed \num{0}, \num{10}, \num{20}, \num{50} and \SI{100}{\centi\meter} apart from each other. Shown in green are the TDOA estimations and shown in red the actual distances between microphones. We can see that for larger spacing between the microphones, the estimation becomes worse. This is to be expected; when the microphones are placed further apart the signal to noise ratio at the microphone farthest away will be significantly lower than for closer placed microphones, thus making it more difficult for the peak detection algorithm to pinpoint the exact sample in which the peak occurs.
 
 \begin{figure}[H]
 	\centering
@@ -72,9 +73,10 @@ Figure \ref{fig:ass-2-rep-2-result} shows an overview of the TDOA distance estim
 An overview of multiple TDOA estimations for the same microphone placement (\SI{10}{\centi\meter} between the microphones) is shown in figure \ref{fig:ass-2-rep-3}. We calculated the average estimation to be \SI{9.38}{\centi\meter} with a standard deviation of \SI{0.35}{\centi\meter}. Because the true distance was \SI{10}{\centi\meter} we see that the measurements have a slight negative bias averaging an error of \SI{-0.62}{\centi\meter}. The measured distances are not distributed continuously, but rather discrete. This is of course due to the nature of a sampled signal; either the peak occurs at one sample or the next, there is no middle ground. From this plot we can also note the spatial resolution of the TDOA algorithm assuming the difference between the peaks at \SI{8.8}{\centi\meter} and \SI{9.6}{\centi\meter} is one  sample, the resolution is around \SI{0.8}{\centi\meter}, which corresponds perfectly to the value calculated in Section~\ref{subsec:ass2-report-1}.
 
 \subsection{Report 5}
+\label{subsec:ass2-report5}
 The general idea of the deconvolution approach is that a signal $y[n]=x[n]*h[n]$ is received, where $h[n]$ is the channel response. The deconvolution method using matrix inversion tells us the channel can be approximated by $\hat{h}=(\mat{X}^T\mat{X})^{-1}\mat{X}^T\vec{y}$. Because the sent signal $x[n]$ is known, the matrix $\mat{X}^\dagger=(\mat{X}^T\mat{X})^{-1}\mat{X}^T$ can be pre-computed, leaving only a matrix multiplication every time $\hat{h}$ must be computed. 
 
-In the method outlined above it is immediately clear that for the same (or similar) $\mat{X}^\dagger$ matrices (and thus $x[n]$ codes) the channel estimation will produce incorrect results. While mathematically not correct, it can be intuitively thought of as follows: the algorithm looks for $x_1[n]$ occurring in $y[n]$. Now if we have a second $x$, $x_2[n]$ and this $x_2[n]$ is similar to $x_1[n]$ then it can be expected that the algorithm mistakes an occurrence of $x_1[n]$ for an occurrence of $x_2[n]$. More mathematically, we want the detected channel impuse $\hat{h}$ to have a strong cross-correlation with the sent signal $x_1[n]$ and little cross-correlation with any other signal. This last requirement can be achieved by choosing a signal that covers a broad spectrum (i.e. is generated pseudo-randomly) and is of sufficient length.
+In the method outlined above it is immediately clear that for the same (or similar) $\mat{X}^\dagger$ matrices (and thus $x[n]$ codes) the channel estimation will produce incorrect results. While mathematically not correct, it can be intuitively thought of as follows: the algorithm looks for $x_1[n]$ occurring in $y[n]$. Now if we have a second $x$, $x_2[n]$ and this $x_2[n]$ is similar to $x_1[n]$ then it can be expected that the algorithm mistakes an occurrence of $x_1[n]$ for an occurrence of $x_2[n]$. More mathematically, we want the detected channel impulse $\hat{h}$ to have a strong cross-correlation with the sent signal $x_1[n]$ and little cross-correlation with any other signal. This last requirement can be achieved by choosing a signal that covers a broad spectrum (i.e. is generated pseudo-randomly) and is of sufficient length.
 %VOLGENS MIJ IS HET VOLGENDE NIET VERSLAGWAARDIG!
 %\subsection{5-channel TCOA measurements}
 %Read page 106 for more info
