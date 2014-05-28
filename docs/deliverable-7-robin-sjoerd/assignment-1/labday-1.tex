@@ -19,7 +19,7 @@
 
 Given a square room, confined by the blue lines in Figure~\ref{fig:rep1-reflections-ill}, with a sound source depicted by the green dot and a microphone depicted by the yellow dot, it is easy to calculate the number of reflections heard at the yellow dot by mirroring the room about each wall. If the number of reflections is one, the result is that each wall must be mirrored once and the result is figure \ref{fig:rep1-reflections-ill} excluding the four corner rooms, for a total of five reflections (line of sight + 4 reflections). The red dots in the reflected rooms represent the yellow dot as projected through the wall (mirrored). After 2 reflections, Figure~\ref{fig:rep1-reflections-ill} should be extended by four more rooms (on the left and right and above and under the current square), yielding a total of 13 possible reflections.
 
-We created a \texttt{MATLAB} model for the above situation with the amount of reflections (rooms) as parameter, listed in appendix \ref{appsec:reflections}. This script makes use of the previously discussed mirroring-principle, along with the given equation for sound dampening in the medium $\alpha(r) = \frac{\beta}{r^2}$ \cite[91]{epo4-manual}. A resulting impulse response as well as the behavior for a rectangular pulse, for $\beta = 1$ and 2 reflections are shown in Figure~\ref{fig:rep1-reflections-matlab} along with a simulation including 25 reflections. The latter clearly shows the downside of having walls: a short sound signal sent is reverberated in the room for a long period of time before it slowly starts to decay.
+We created a \texttt{MATLAB} model for the above situation with the amount of reflections (rooms) as parameter, listed in appendix \ref{appsec:reflections}. This script makes use of the previously discussed mirroring-principle, along with the given equation for sound dampening in the medium $\alpha(r) = \frac{\beta}{r^2}$ \cite[91]{epo4-manual}. A resulting impulse response as well as the behavior for a rectangular pulse, for $\beta = 1$ and 24 reflections are shown in Figure~\ref{fig:rep1-reflections-matlab} along with a simulation including 2600 reflections. The latter clearly shows the downside of having walls: a short sound signal sent is reverberated in the room for a long period of time before it slowly starts to decay.
 
 \begin{figure}[H]
 	\centering
@@ -36,13 +36,15 @@ We created a \texttt{MATLAB} model for the above situation with the amount of re
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-1/ass-1-report-1-system-response-25-copies-beta-1.pdf}
 	\end{subfigure}
-	\caption{Low resolution (2 reflections) and high resolution (25 reflections) plots and corresponding received signal at the microphone}
+	\caption{Low resolution (24 reflections) and high resolution (2600 reflections) plots and corresponding received signal at the microphone}
 	\label{fig:rep1-reflections-matlab}
 \end{figure}
 
 \subsection{Report 2}
 %corresponding matlab file: resource/labday1/report2.m
-The impulse responses for a first order IIR filter $H(z) = \frac{1}{1+az^{-1}}$, with $a=0.95$ and $a=-0.95$ are shown in Figure~\ref{fig:rep2-time-resp}. For $a=0.95$ the filter causes a damped oscillation, for $a=-0.95$ it causes an exponentially decaying signal. Being a low-pass filter, the response for more general signals, will be a `smoothed' version of the original signal, since low-pass filters counteract rapid change in their input signals. % TODO, CHECK THIS, EXTEND THIS
+The impulse responses for a first order IIR filter $H(z) = \frac{1}{1+az^{-1}}$, with $a=0.95$ and $a=-0.95$ are shown in Figure~\ref{fig:rep2-time-resp}. For $a=0.95$ the filter causes a damped oscillation, for $a=-0.95$ it causes an exponentially decaying signal. This is in line with the time-domain impulse response of $h[n]$ which is given by $h[n]=a^nu[n]$ with $u[n]$ the unit step function.
+
+A more general discrete function can be expressed as a sum of $k$ discrete impulses with a time delay, thus yielding as a response the sum of multiple delayed step functions ($u[n-\tau]$) with amplitudes of $a^{n-\tau}$.
 
 \begin{figure}[H]
 	\centering
@@ -56,8 +58,7 @@ The impulse responses for a first order IIR filter $H(z) = \frac{1}{1+az^{-1}}$,
 	\label{fig:rep2-time-resp}
 \end{figure}
 
-The frequency impulse spectra are shown in Figure~\ref{fig:rep2-freq-resp}. It can be seen that for $a=0.95$ the filter behaves as a high pass filter and for $a=-0.95$ as a low pass filter.
-% TODO: EXTEND THIS
+The frequency impulse spectra are shown in Figure~\ref{fig:rep2-freq-resp}. It can be seen that for $a=0.95$ the filter behaves as a high pass filter and for $a=-0.95$ as a low pass filter. More general functions will thus have either their low ($a=0.95$) respectively high ($a=-0.95$) frequency components scaled down.
 
 \begin{figure}[H]
 	\centering
