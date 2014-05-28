@@ -18,7 +18,7 @@ For testing purposes, we decided to transmit different signals and analyze their
 	\label{fig:ass-1-rep-11}
 \end{figure}
 
-Figure~\ref{fig:ass-1-rep-11-imp} shows impulse responses and their spectra samples at different frequencies. Note that there is a lot of noise in the frequencies around \SI{0}{Hz}. Let $F_{TX}$ denote the transmitting sample frequency and $F_{RX}$ the receiving sample frequency. For $F_{TX}$ \SI{22.05}{kHz} and $F_{RX}$ \SI{22.05}{kHz} we did not expect any aliasing. For $F_{TX}$ \SI{22.05}{kHz} and $F_{RX}$ \SI{8}{kHz} we did expect aliasing, as the sampling frequency is below the Nyquist frequency. For $F_{TX}$ \SI{4}{kHz} and $F_{RX}$ \SI{22.05}{kHz} we did not expect any aliasing and expect to see a highest frequency of \SI{2}{kHz}, which Figure~\ref{fig:ass-1-rep-11-imp} also shows. With $F_{RX}$ \SI{22.05}{kHz}, the highest sampling rate that can be achieved without aliasing is $F_{TX}$ \SI{22.05}{kHz}.
+Figure~\ref{fig:ass-1-rep-11-imp} shows impulse responses and their spectra samples at different frequencies. Note that there is a lot of noise in the frequencies around \SI{0}{Hz}. Let $F_{TX}$ denote the transmitting sample frequency and $F_{RX}$ the receiving sample frequency. For $F_{TX} =$ \SI{22.05}{kHz} and $F_{RX} =$ \SI{22.05}{kHz} we did not expect any aliasing. For $F_{TX} =$ \SI{22.05}{kHz} and $F_{RX} =$ \SI{8}{kHz} we did expect aliasing, as the sampling frequency is below the Nyquist frequency. For $F_{TX} =$ \SI{4}{kHz} and $F_{RX} =$ \SI{22.05}{kHz} we did not expect any aliasing and expect to see a highest frequency of \SI{2}{kHz}, which Figure~\ref{fig:ass-1-rep-11-imp} also shows. With $F_{RX} =$ \SI{22.05}{kHz}, the highest sampling rate that can be achieved without aliasing is $F_{TX} =$ \SI{22.05}{kHz}.
 
 \begin{figure}[H]
 	\centering
@@ -123,9 +123,9 @@ We then tried to verify the obtained impulse responses by convolving the sent si
 We see that these comparisons are a very good demonstration of the filtering property (removal of uncorrelated signals) of the deconvolution as will be explained in Subsection \ref{subsec:ass-2-rep-5}.
 
 \subsection{Report 15}
-In this report we will design the optimal parameters of the audio beacon for a maximal distance of five to six meters. For a discussion of the actual parameters chosen, see Subsection~\ref{subsec:ass-2-rep-1}. For a discussing of the properties of the sent signal of impulse response estimation, see Subsection~\ref{subsec:ass-1-rep-10}.
+In this report we will design the optimal parameters of the audio beacon for a maximal distance of five to six meters. For a discussion of the actual parameters chosen, see Subsection~\ref{subsec:ass-2-rep-1}. For a discussion of the properties of the sent signal or impulse response estimation, see Subsection~\ref{subsec:ass-1-rep-10}.
 
-In the previous reports, we have seen that there is a lot noise on the lower frequencies. Therefore, we expect to use a signal at higher frequencies to increase the signal-to-noise ratio. However, due to signal processing, the signal will go most likely through audio filters. We therefore expect to use a highest frequency around \SI{20}{kHz}. To satify the Nyquist criterion, we should use the conventional \SI{44.1}{kHz} sampling frequency. This also allows for a reasonable spatial resolution $\Delta \lambda$ of \SI{0.78}{cm}.
+In the previous reports, we have seen that there is a lot noise in the lower frequencies. Therefore, we expect to use a signal at higher frequencies to increase the signal-to-noise ratio. However, due to signal processing, the signal will go most likely through audio filters. We therefore expect to use a highest frequency around \SI{20}{kHz}. To satify the Nyquist criterion, we should use the conventional \SI{44.1}{kHz} sampling frequency. This also allows for a reasonable spatial resolution $\Delta \lambda$ of \SI{0.78}{cm}.
 
 To achieve good deconvolution properties, we will not use the theoretical sent signal, but a \SI{0}{cm} measurement. This will include filtering effects caused by signal processing and improve the performance of our algorithms.
 
