@@ -34,7 +34,7 @@ We obtained mostly expected results: a sine wave sent and received with sufficie
 
 The required impulse responses and spectra are shown in Figure~\ref{fig:rep11-impulse-spectra}. For equal $F_s$ of \SI{22,050}{\hertz}, we of course do not expect aliasing to occur. However, for $F_{s,TX} = \SI{22050}{Hz}$ and $F_{s,TX} = \SI{8000}{\hertz}$, we are clearly undersampling the received analog signal, so aliasing is to be expected. Lastly, for $F_{s,TX} = \SI{4000}{Hz}$ and $F_{s,TX} = \SI{22050}{Hz}$, we are oversampling, so aliasing is not to be expected, but the highest frequency should be $\pm \frac{F_{s,TX}}{2} = \pm \SI{2}{kHz}$, which corresponds nicely to our measured spectrum, considering the effects of noise.
 
-%% TODO: Answer last question and check the above
+If $F_{\text{RX}=\SI{22.05}{\kilo\hertz}$ the maximum attainable transmitter frequency is also $F_\text{TX}=\SI{22.05}{\kilo\hertz}$.
 
 \subsection{Report 12 and 13}
 \label{subsec:ass1-rep-12-13}
