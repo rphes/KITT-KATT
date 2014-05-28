@@ -21,7 +21,7 @@ As calculated in Section~\ref{subsec:ass1-rep-12-13} the sampling frequency shou
 	\label{fig:ass-2-rep-1-typical}
 \end{figure}
 
-A typical channel impulse response is shown in figure \ref{fig:ass-2-rep-1-typical} from which we can see that a typical impulse response takes about \SI{10}{\milli\second} before it is no longer distinguishable from noise. Therefore, we chose \texttt{timer3} to be \SI{8}{\hertz} so that the repetition period is \SI{0.125}{\milli\second}.
+A typical channel impulse response is shown in Figure~\ref{fig:ass-2-rep-1-typical}. We can see that a its duration is about \SI{10}{\milli\second}, before it is no longer distinguishable from noise. Therefore, we chose \texttt{timer3} to be \SI{8}{\hertz} so that the repetition period is \SI{0.125}{\milli\second}, which will fit a single impulse response whilst allowing for some margin. Lastly, we chose \texttt{timer0} to be \SI{15}{kHz} and \texttt{timer1} to be \SI{3}{kHz}, since this frequency range (between \num{12} and \SI{18}{kHz}) is less prone to interference (e.g.from human speech) than lower ranges; and higher ranges were likely not to be transmitted correctly by our beacon, or to be received correctly by the microphones.
 
 The peak detection algorithm we designed initially used \texttt{MATLAB}'s \texttt{findpeaks} function, but it was decided to swap it for an algorithm measuring the standard deviation of small, moving intervals of the signal. The rationale is that when no peak is detected (e.g. the signal consists of only noise) the signal has a variance of $\sigma_n^2$. Then, when a peak is detected the standard deviation changes because the amplitude of the deconvolved signal changes quite suddenly. This detection algorithm seems flexible and works, as demonstrated by the green line in figure \ref{fig:ass-2-rep-1-typical}. The \texttt{MATLAB} code for the \texttt{findpeaks} and standard deviation based peak detection algorithms may be foundin appendix \ref{appsec:5-channel-tdoa}.
 
@@ -52,7 +52,7 @@ An example of a received data segment is shown in figure \ref{fig:ass-2-rep-2-da
 	\label{fig:ass-2-rep-2-impulse-1-20}
 \end{figure}
 
-A response of one of our measurements is shown in figure \ref{fig:ass-2-rep-2-impulse-1-20}. This plot is a good example of two microphones placed some distance apart because it is clear the amplitudes of the two responses are about a factor two different. 
+A response of one of our measurements is shown in figure \ref{fig:ass-2-rep-2-impulse-1-20}. This plot is a good example of two microphones placed some distance apart, because it is clear that the amplitude of the response at \SI{1}{cm} is higher than the one at \SI{50}{cm}. 
 
 \begin{figure}[H]
 	\centering
@@ -76,7 +76,7 @@ An overview of multiple TDOA estimations for the same microphone placement (\SI{
 \label{subsec:ass2-report5}
 The general idea of the deconvolution approach is that a signal $y[n]=x[n]*h[n]$ is received, where $h[n]$ is the channel response. The deconvolution method using matrix inversion tells us the channel can be approximated by $\hat{h}=(\mat{X}^T\mat{X})^{-1}\mat{X}^T\vec{y}$. Because the sent signal $x[n]$ is known, the matrix $\mat{X}^\dagger=(\mat{X}^T\mat{X})^{-1}\mat{X}^T$ can be pre-computed, leaving only a matrix multiplication every time $\hat{h}$ must be computed. 
 
-In the method outlined above it is immediately clear that for the same (or similar) $\mat{X}^\dagger$ matrices (and thus $x[n]$ codes) the channel estimation will produce incorrect results. While mathematically not correct, it can be intuitively thought of as follows: the algorithm looks for $x_1[n]$ occurring in $y[n]$. Now if we have a second $x$, $x_2[n]$ and this $x_2[n]$ is similar to $x_1[n]$ then it can be expected that the algorithm mistakes an occurrence of $x_1[n]$ for an occurrence of $x_2[n]$. More mathematically, we want the detected channel impulse $\hat{h}$ to have a strong cross-correlation with the sent signal $x_1[n]$ and little cross-correlation with any other signal. This last requirement can be achieved by choosing a signal that covers a broad spectrum (i.e. is generated pseudo-randomly) and is of sufficient length.
+In the method outlined above it is immediately clear that for the same (or similar) $\mat{X}^\dagger$ matrices (and thus $x[n]$ codes) the channel estimation will produce incorrect results. While mathematically not correct, it can be intuitively thought of as follows: the algorithm looks for $x_1[n]$ occurring in $y[n]$. Now, if we have a second $x$, $x_2[n]$ and this $x_2[n]$ is similar to $x_1[n]$, then it can be expected that the algorithm mistakes an occurrence of $x_1[n]$ for an occurrence of $x_2[n]$. More mathematically, we want the detected channel impulse $\hat{h}$ to have a strong cross-correlation with the sent signal $x_1[n]$ and little cross-correlation with any other signal. This last requirement can be achieved by choosing a signal that covers a broad spectrum (i.e. is generated pseudo-randomly) and is of sufficient length.
 %VOLGENS MIJ IS HET VOLGENDE NIET VERSLAGWAARDIG!
 %\subsection{5-channel TCOA measurements}
 %Read page 106 for more info

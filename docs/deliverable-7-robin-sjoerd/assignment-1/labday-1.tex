@@ -42,7 +42,7 @@ We created a \texttt{MATLAB} model for the above situation with the amount of re
 
 \subsection{Report 2}
 %corresponding matlab file: resource/labday1/report2.m
-The impulse responses for a first order IIR filter $H(z) = \frac{1}{1+az^{-1}}$, with $a=0.95$ and $a=-0.95$ are shown in Figure~\ref{fig:rep2-time-resp}. For $a=0.95$ the filter causes a damped oscillation, for $a=-0.95$ it causes an exponentially decaying signal. Being a low-pass filter, the response for more general signals, will be a `smoothed' version of the original signal, since low-pass filters counteract rapid change in their input signals. % TODO, CHECK THIS
+The impulse responses for a first order IIR filter $H(z) = \frac{1}{1+az^{-1}}$, with $a=0.95$ and $a=-0.95$ are shown in Figure~\ref{fig:rep2-time-resp}. For $a=0.95$ the filter causes a damped oscillation, for $a=-0.95$ it causes an exponentially decaying signal. Being a low-pass filter, the response for more general signals, will be a `smoothed' version of the original signal, since low-pass filters counteract rapid change in their input signals. % TODO, CHECK THIS, EXTEND THIS
 
 \begin{figure}[H]
 	\centering
@@ -103,7 +103,7 @@ Figure~\ref{fig:rep4-train-heatmap} shows a heatmap of the occurrence of frequen
 	\caption{The frequency spectrum of the given signal $a$, with and without zero padding, obtained using FFT}
 	\label{fig:rep5-6-spectrum}
 \end{figure}
-%footnote is not a pretty solution for h[n] displaying ... :(
+
 Figure~\ref{fig:rep5-6-spectrum} shows the frequency spectrum of the original given $h[n]$ (see \cite[94]{epo4-manual}) after FFT, as well as a padded $h[n]$ which is five times longer than the original. Comparing the plots, we see that interpolation is indeed accomplished, just be adding zeros to the end of our original signal. Since our padded $h[n]$ is five times larger than the original, we notice that every 5th sample in the padded response indeed coincides with a sample of the original one.
 
 \subsection{Report 7}
