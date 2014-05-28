@@ -10,10 +10,36 @@
 \chapter{Assignment 1}
 \section{Labday 1}
 \subsection{Report 1}
-(In)fitite reflections
+Let us consider the case where we want to calculate the channel impulse response when both the transmitter and receiver are placed into a closed room. The sound waves will theoretically infinitely reflect on the walls and cause an infinite impulse response (IIR). By making use of high school physics and MATLAB, we are able to approximate this channel impulse response. The room is defined by $\left\{(x,y) : 0 \le x \le 4, 0 \le y \le 4 \right\}$. The transmitter is located at $(1.2, 0.3)$ and the receiver at $(3.1, 3.3)$. If $r$ denotes the travelled distance, then the attenuation of the sound waves is given by
+\[
+	\alpha(r) = \beta / r^2.
+\]
+Figure~\ref{fig:ass-1-rep-1-refl} shows approximations of the impulse response and system response to a square wave for \num{24} and \num{2600} reflections for $\beta = 1$.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-1/ass-1-report-1-impulse-response-2-copies-beta-1.pdf}
+		\caption{\centering Low resolution impulse response approximation for $\beta=1$}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-1/ass-1-report-1-system-response-2-copies-beta-1.pdf}
+		\caption{\centering Low resolution system response approximation for $\beta=1$}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-1/ass-1-report-1-impulse-response-25-copies-beta-1.pdf}
+		\caption{\centering High resolution impulse response approximation for $\beta=1$}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-1/ass-1-report-1-system-response-25-copies-beta-1.pdf}
+		\caption{\centering High resolution impulse response approximation for $\beta=1$}
+	\end{subfigure}
+	\caption{Low resolution (\num{24} reflections) and high resolution (\num{2600} reflections) impulse response and system response approximations}
+	\label{fig:ass-1-rep-1-refl}
+\end{figure}
 
 \subsection{Report 2}
-Here we consider the more general filter $H(z) = \frac{1}{1+az^-1}$.  This is a first order IIR filter. The plots of this filter for $a=0.95$ and $a=-0.95$ are shown in Figure~\ref{fig:rep2-time-resp}. From this it becomes clear that for $a=0.95$ the filter causes a damped oscillation and a exponentially decaying signal for $a=-0.95$. \\
+Here we consider a more general first-order IIR filter $\operatorname{\mathcal{Z}}\left\{h(t)\right\}=H(z) = (1+az^{-1})^{-1}$. Figure~\ref{fig:ass-1-rep-2-time} shows $h(t)$ for two different values of $a$. Figure~\ref{fig:ass-1-rep-2-z} shows $|H(\omega)|$ for two different values of $a$.
 
 \begin{figure}[H]
 	\centering
@@ -23,13 +49,9 @@ Here we consider the more general filter $H(z) = \frac{1}{1+az^-1}$.  This is a 
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-2/ass-1-report-2-a-negative.pdf}
 	\end{subfigure}
-	\caption{Impulse response of the given filter for two values of $a$}
-	\label{fig:rep2-time-resp}
+	\caption{Impulse response of the first-order IIR filter for two values of $a$}
+	\label{fig:ass-1-rep-2-time}
 \end{figure}
-
-The effect of this filer on more general signal can be described and explained as follows. ?????? 
-
-To analyze the effect of this filter on signals frequency domain plots where plotted. The plots are displayed in figure Figure~\ref{fig:rep2-freq-resp} for $a=0.95$ and $a=-0.95$. Inspecting this impulse responces one can conclude that the filter behaves as a band-stop filter for $a=0.95$ and as a band-pass for $a=-0.95$. How this filter channges an impulse is ?????. For a more general signal it would mean ????. \\
 
 \begin{figure}[H]
 	\centering
@@ -39,71 +61,53 @@ To analyze the effect of this filter on signals frequency domain plots where plo
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-2/ass-1-report-2-a-negative-spectrum.pdf}
 	\end{subfigure}
-	\caption{The frequency response of the given filter for two values of $a$}
-	\label{fig:rep2-freq-resp}
+	\caption{Frequency response of the first-order IIR filter for two values of $a$}
+	\label{fig:ass-1-rep-2-z}
 \end{figure}
 
-Computers can't perform calculation on continious signals. And "FT" has a continious time input and continious frequency output. Also "DTFT" has a discrete time input and a continious frequency output. This is the reason why matlab has no build-in functions like "FT" and "DTFT". 
+We see that for $a=0.95$ high frequencies are amplified. This corresponds to a form of a high-pass filter. For $a=-0.95$ low frequencies, particularly DC, are amplified and high frequencies are attenuated, which obviously corresponds to a low-pass filter.
+
+In general, this filter is able to amplify or attenuate certain frequencies of an input signal. The value of $a$ determines exactly how an input signal is affected.
+
+The reason that there is no MATLAB function FT or DTFT is the fact these functions require a evalution of an infinitely sized domain ($\mathbb{R}$ or $\mathbb{Z}$). A computer is obviously not able to do this, so approximations are required.
 
 \subsection{Report 3}
-In this report a signal called "train" will be analyzed. The time frequency plot is shown in figure Figure~\ref{fig:rep3-train-time}. 
-
-%For this signal the frequency domain signal is also plotted in figure ?????.
-%It can be seen that the frequency domain plot is symmetric around frequency$= 0Hz$. This symmetry exists because sine signals have the same form for negative and positive frequencies of the same value. In this case it makes sence to only take the positive frequencies since no extra information is added by the negative frequencies. This is done by deleting all information for frequencies under zero. 
+Figure~\ref{fig:ass-1-rep-3} shows a time-domain representation of MATLAB's train signal (found by using the command \texttt{load train}).
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{../../deliverable-7-resources/figures/ass-1/report-3/ass-1-report-3.pdf}
-	\caption{The time-domain signal of \texttt{MATLAB}'s train}
-	\label{fig:rep3-train-time}
+	\caption{Time-domain representation of MATLAB's train signal}
+	\label{fig:ass-1-rep-3}
 \end{figure}
 
-
-
 \subsection{Report 4}
-In Figure~\ref{fig:rep4-train-heatmap} a time-frequency plot of the train signal is displayed.
+Figure~\ref{fig:ass-1-rep-4} shows a time-frequency plot of MATLAB's train signals with intervals of \SI{20}{ms}. Note that the whistle-blows can easily be distinguished. The figure shows strong similarities with Figure~\ref{fig:ass-1-rep-3}. 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{../../deliverable-7-resources/figures/ass-1/report-4/ass-1-report-4.png}
-	\caption{The frequency-time heatmap of \texttt{MATLAB}'s `train'}
-	\label{fig:rep4-train-heatmap}
+	\caption{Time-frequency plot of MATLAB's train signal with intervals of \SI{20}{mc}}
+	\label{fig:ass-1-rep-4}
 \end{figure}
 
-
-
 \subsection{Report 5 and 6}
-
-The purpose of this reports was to investigate what the influence is of zero padding. To do this we used the impulse response: $h[n]$ = [1  zeros(1,5)  0.9 zeros(1,5)  0.8]. 
-The difference between the padded version and the original version can be seen when calculating the DFT of both signals. The frequency domain plot of both signals are therefore shown in Figure~\ref{fig:rep5-6-spectrum}. 
-From this plot we see that every 5th sample in the padded response coincides with a sample of the original one. Thus we see that interpolation is achieved. Also we see that just by adding zeros one can enhance the DFT of a sequence. 
+\label{subsec:5-6}
+The purpose of these reports is to show that zero padding interpolates a signal's spectrum. Let $h[n]$ be generated by the MATLAB command \texttt{[1  zeros(1,5)  0.9 zeros(1,5)  0.8]}. Figure~\ref{fig:ass-1-rep-5-6} shows the FFT of $h[n]$ for \num{13} samples, which is just $h[n]$, and for $5 \cdot 13$ samples, which is $h[n]$ extended by $4 \cdot 13$ zeros. One can easily see that the signal's spectrum is interpolated by addition of the zeros.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{../../deliverable-7-resources/figures/ass-1/report-5-6/ass-1-report-5-6.pdf}
-	\caption{The frequency spectrum of the given signal $h$, with and without zero padding, obtained using FFT}
-	\label{fig:rep5-6-spectrum}
+	\caption{Frequency domain representation of the given impulse response with and without zero padding}
+	\label{fig:ass-1-rep-5-6}
 \end{figure}
 
-
 \subsection{Report 7}
-Now we want to demonstrate the following convolution property: \newline
-
-\begin{center}
- $y[n] = x[n]*h[n] \leftrightarrow Y(\omega) = X(\omega)H(\omega)$ 
-\end{center}
-
-
-Herein we assigned a 'train' sound to  $x[n]$.  And  $h[n]$ = [1  zeros(1,5)  0.9 zeros(1,5)  0.8].
-In order to prove this property we want to show that the following equation is correct: \newline
-
-\begin{equation}
-\centering
- \mathcal{F}(y[n]) = X(\omega)H(\omega)
-\end{equation}
-
-First of all $y[n]$ was calculated by calculating the convolution of $x[n]$ and $h[n]$. From this convolution it follows that the length of sequence $y[n]$ is equal to $N = L + M - 1$, where $L$ is the length of $x[n]$ and $M$ the length of $h[n]$. This is why the length of $X(\omega)H(\omega)$ also has to be of legnth $N$. In order to achieve this $x_{0}[n]$ and $h_{0}[n]$ where created. $x_{0}[n]$ and $h_{0}$ are $x[n]$ and $h[n]$ respectively but with extra zeros until being both of length $N$. \\
-After doing this the fourier transforms of $y[n]$, $x_{0}[n]$ and $h_{0}[n]$ where calculated. Finally the convolution property was demonstrated by plotting $Y(\omega)$ and $X(\omega)H(\omega)$. From the plots, shown in Figure~\ref{fig:rep7-convolution}, it  can be seen that the results are the same.
+The purpose of this report is to show that
+\[
+	y[n] = x[n]*h[n] \Leftrightarrow Y(\omega) = X(\omega)H(\omega).
+\]
+We assigned MATLAB's train signal to $x[n]$ and the impulse response from Subsection \ref{subsec:5-6} to $h[n]$. Figure \ref{fig:ass-1-rep-7-conv} shows $|Y(\omega)|$ calculated by first convolving and then transforming and by first transforming and then multiplying. Inspection by eye shows that both methods result in the same spectrum. Therefore, we have verified the convolution property.
 
 \begin{figure}[H]
 	\centering
@@ -114,8 +118,10 @@ After doing this the fourier transforms of $y[n]$, $x_{0}[n]$ and $h_{0}[n]$ whe
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-7/ass-1-report-7-multiplication.pdf}
 	\end{subfigure}
 	\caption{Comparison of spectra for testing the convolution property.}
-	\label{fig:rep7-convolution}
+	\label{fig:ass-1-rep-7-conv}
 \end{figure}
+
+
 
 
 

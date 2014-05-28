@@ -9,18 +9,16 @@
 
 \section{Labday 3}
 \subsection{Report 11}
-We wanted to investigate the audio channel. For this purpose we used three different signals of which the frequency domain plot is shown in Figure~\ref{fig:rep11-test-spectra}. From the first glance the symilarities between periodic pulses and sines can be seen. Pulses on the frequencies of the signals and mirrored on the negative frequencies. The simmilarities can be explained by the inability of the speakers to give perfect pulses. This was done by sampling higher than the Nyquist frequency though. As expected there is aliasing when sampling under this frequency.  
-
+For testing purposes, we decided to transmit different signals and analyze their resulting spectra. The results are shown in Figure~\ref{fig:ass-1-rep-11}. As expected, the spectum of the \SI{2.5}{kHz} sine sampled at \SI{2}{kHz} is aliased as there are delta peaks at \SI{-2.5}{kHz} + \SI{2}{kHz} = \SI{-0.5}{kHz} and \SI{2.5}{kHz} - \SI{2}{kHz} = \SI{0.5}{kHz}. The other spectra seem just fine.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-11-random-signals.pdf}
 	\caption{Some arbitrary signal spectra, measured in the testing environment}
-	\label{fig:rep11-test-spectra}
+	\label{fig:ass-1-rep-11}
 \end{figure}
 
-The impulse responses and amplitude spectra for which asked in the report are depicted in Figure~\ref{fig:rep11-impulse-spectra}. For $F_s = \SI{22050}{Hz}$ we did not expect any aliasing.  But for $F_{s,TX} = \SI{22050}{Hz}$ and $F_{s,TX} = \SI{8000}{Hz}$ we are sampling under the nyquist frequency, thus some aliasing has to be expected. Finally for $F_{s,TX} = \SI{4000}{Hz}$ and $F_{s,TX} = \SI{22050}{Hz}$ we are sampling above the nyquist frequency. In this case no aliasing is expected and the highest frequency should be $\pm \frac{F_{s,TX}}{2} = \pm \SI{2}{kHz}$. This corresponds considering some noise close enough to our measured spectrum.
-
+Figure~\ref{fig:ass-1-rep-11-imp} shows impulse responses and their spectra samples at different frequencies. Note that there is a lot of noise in the frequencies around \SI{0}{Hz}. Let $F_{TX}$ denote the transmitting sample frequency and $F_{RX}$ the receiving sample frequency. For $F_{TX}$ \SI{22.05}{kHz} and $F_{RX}$ \SI{22.05}{kHz} we did not expect any aliasing. For $F_{TX}$ \SI{22.05}{kHz} and $F_{RX}$ \SI{8}{kHz} we did expect aliasing, as the sampling frequency is below the Nyquist frequency. For $F_{TX}$ \SI{4}{kHz} and $F_{RX}$ \SI{22.05}{kHz} we did not expect any aliasing and expect to see a highest frequency of \SI{2}{kHz}, which Figure~\ref{fig:ass-1-rep-11-imp} also shows. With $F_{RX}$ \SI{22.05}{kHz}, the highest sampling rate that can be achieved without aliasing is $F_{TX}$ \SI{22.05}{kHz}.
 
 \begin{figure}[H]
 	\centering
@@ -30,87 +28,107 @@ The impulse responses and amplitude spectra for which asked in the report are de
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-11.pdf}
 	\end{subfigure}
-	\caption{The required impulse responses and spectra}
-	\label{fig:rep11-impulse-spectra}
+	\caption{Impulse responses and their spectra}
+	\label{fig:ass-1-rep-11-imp}
 \end{figure}
 
-
-
 \subsection{Report 12}
-In order to determine the minimum sample rate which is at least needed to have a resolution of \SI{1}{cm} one have to know the delay. The delay can be calculated with the speed of sound, \SI{340}{m/s}. The delay then becomes $0.01/340 = \SI{29.4}{\micro s}$. From this it follows that $F_s > (29.4 \times 10^{-6})^{-1} = \SI{34}{kHz}$. 
+\label{subsec:ass-1-rep-12}
+As will be explained in Subsection \ref{subsec:ass-2-rep-1}, a sampling rate of \SI{34.4}{kHz} is required to obtain a spatial resolution $\Delta \lambda$ of \SI{1}{cm}.
+
+Figure~\ref{fig:ass-1-rep-12} shows two sets of impulse responses for various distances and their delays.
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-13-time.pdf}
+		\caption{\centering Time-domain representation of impulse responses at various distances}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-13-delays.pdf}
+		\caption{Delays of the impulse responses}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-13-time-set-2.pdf}
+		\caption{\centering Time-domain representation of impulse responses at various distances}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-13-delays-set-2.pdf}
+		\caption{Delays of the impulse responses}
 	\end{subfigure}
-	\caption{Time plots and calculated delays of the received signal, for two different measurements (top and bottom)}
-	\label{fig:rep12-los}
+	\caption{Time plots and calculated delays of the received signal for two different measurements (set one at the top and set two at the bottom)}
+	\label{fig:ass-1-rep-12}
 \end{figure}
 
-	The received signals after transmitting have been plotted in Figure~\ref{fig:rep12-los}. In this same figure one can see the measured delays with the corresponding distance. Within the latter plot there are also graphs of the least-square approximation and the expecte value. Firstly from the received signals it can be clearly seen that the signals repeat themselves with a demping until becoming zero. Secondly it can be seen form the graphs that the measured delays can differ quit a bit from the expected delay. This is probably a result from signal processing.
-
-
-
-
-
+In general, we can conclude that the impulse responses are delayed and attenuated if the distance increases. This is as expected. However, their delays seem very irregular. This is due to the delays added by the signal processing software. The least squares approximations delay per unit added distance yield
+\begin{align*}
+	(\text{delay/unit distance added})_{\text{set one}} &= (\text{\SI{38.67}{m/s}})^{-1}, \\
+	(\text{delay/unit distance added})_{\text{set two}} &= (\text{\SI{438.58}{m/s}})^{-1}.
+\end{align*}
+We see that these values are somewhat in the range of the speed of sound.
 
 \subsection{Report 13}
-The measurements of report 12 will now be repeated with an obstacle. The obstacle is a a \SI{15}{"} Macbook. The measurement for \SI{50}{cm} gave logical results. The NLOS signal was delayed and decayed in comparison with the LON signal. For \SI{100}{cm} the results came unexpected. This is because it seems that the NLOS signal arrived earlier, though it was decayed. This unexpected result might be caused once again by processing delays in the receiver. 
+\label{subsec:ass-1-rep-13}
+The measurements of Subsection \ref{subsec:ass-1-rep-12} will now be repeated with an obstacle. Figure~\ref{fig:ass-1-rep-13-los-nlos} shows the results of these NLOS measurements.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-13-los-nlos.pdf}
-	\caption{Time plots of received signals with and without line-of-sight}
-	\label{fig:rep13-nlos}
+	\includegraphics[width=0.6\textwidth]{../../deliverable-7-resources/figures/ass-1/report-11-12-13/ass-1-report-13-los-nlos.pdf}
+	\caption{Time-domain representations of LOS and NLOS impulse responses}
+	\label{fig:ass-1-rep-13-los-nlos}
 \end{figure}
 
+We see that for \SI{50}{cm} the NLOS impulse response is delayed, as expected. However, for \SI{100}{cm}, the LOS impulse response is delayed. This is probably due to measurement errors; the signal processing software introduces delays.
 
+Because of the measurement errors, we need a reference signal to correctly measure the propagation distance. The propagation distance can still be determined in the NLOS case. However, this propagation distance will then simply correspond to a NLOS path and not be very useful.
 
 
 
 \subsection{Report 14}
-In order to test our channel estimation we used \texttt{refsignal.m} to generate signals. The signals where send at different distances, the received signals are shown in Figure~\ref{fig:rep14-tx-rx}. From the received signals we retrieved the impulse responses which are shown in Figure~\ref{fig:rep14-impulse}. With this impulse reponses the signals send where reconstructed. The final results are shown in Figure~\ref{fig:rep14-comparison}. From this plots we can conclude the the our channel estimation works sufficiently well to be used for our TDOA localization. 
+% In order to test our channel estimation we used \texttt{refsignal.m} to generate signals. The signals where send at different distances, the received signals are shown in Figure~\ref{fig:rep14-tx-rx}. From the received signals we retrieved the impulse responses which are shown in Figure~\ref{fig:rep14-impulse}. With this impulse reponses the signals send where reconstructed. The final results are shown in Figure~\ref{fig:rep14-comparison}. From this plots we can conclude the the our channel estimation works sufficiently well to be used for our TDOA localization.
+Figure~\ref{fig:ass-1-rep-14-rx-tx} shows the sent and received signals by making use of the given \texttt{refsignal.m} script for various distances. Note that the amplitude is shown logaritmic to improve the readability of the graph. Figure~\ref{fig:ass-1-rep-14-imps} shows the impulse responses obtained by deconvolution by inversion.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{../../deliverable-7-resources/figures/ass-1/report-14-15/ass-1-report-14-sent-received.pdf}
-	\caption{The transmit- and receive sequence}
-	\label{fig:rep14-tx-rx}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-14-15/ass-1-report-14-sent-received.pdf}
+		\caption{\centering Time-domain representation of the transmitted and received signals}
+		\label{fig:ass-1-rep-14-rx-tx}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-14-15/ass-1-report-14-impulse-responses.pdf}
+		\caption{\centering Obtained channel impulse responses for the two distances}
+		\label{fig:ass-1-rep-14-imps}
+	\end{subfigure}
+	\caption{Measurement results}
+	\label{fig:ass-1-rep-14-both}
 \end{figure}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth]{../../deliverable-7-resources/figures/ass-1/report-14-15/ass-1-report-14-impulse-responses.pdf}
-	\caption{The calculated impulse response for measurements, at \SI{50}{cm} and \SI{100}{cm}}
-	\label{fig:rep14-impulse}
-\end{figure}
+We then tried to verify the obtained impulse responses by convolving the sent signal with the impulse responses. A comparison to the actual received signal can be found in Figure~\ref{fig:ass-1-rep-14-comp}.
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-14-15/ass-1-report-14-50cm-reconstruction.pdf}
+		\caption{\centering Reconstruction of the received signal at \SI{50}{cm}}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-14-15/ass-1-report-14-100cm-reconstruction.pdf}
+		\caption{\centering Reconstruction of the received signal at \SI{100}{cm}}
 	\end{subfigure}
-	\caption{A comparison of the original transmit sequence and the reconstructed transmit sequence, at \SI{50}{cm} and \SI{100}{cm}}
-	\label{fig:rep14-comparison}
+	\caption{A comparison of the received and reconstructed signal at two distances}
+	\label{fig:ass-1-rep-14-comp}
 \end{figure}
 
+We see that these comparisons are a very good demonstration of the filtering property (removal of uncorrelated signals) of the deconvolution as will be explained in Subsection \ref{subsec:ass-2-rep-5}.
 
 \subsection{Report 15}
-Design optimal parameters of audio beacon
+In this report we will design the optimal parameters of the audio beacon for a maximal distance of five to six meters. For a discussion of the actual parameters chosen, see Subsection~\ref{subsec:ass-2-rep-1}. For a discussing of the properties of the sent signal of impulse response estimation, see Subsection~\ref{subsec:ass-1-rep-10}.
 
-IK WEET NIET MEER WELKE WAARDES WE HEBBEN GEKOZEN
+In the previous reports, we have seen that there is a lot noise on the lower frequencies. Therefore, we expect to use a signal at higher frequencies to increase the signal-to-noise ratio. However, due to signal processing, the signal will go most likely through audio filters. We therefore expect to use a highest frequency around \SI{20}{kHz}. To satify the Nyquist criterion, we should use the conventional \SI{44.1}{kHz} sampling frequency. This also allows for a reasonable spatial resolution $\Delta \lambda$ of \SI{0.78}{cm}.
+
+To achieve good deconvolution properties, we will not use the theoretical sent signal, but a \SI{0}{cm} measurement. This will include filtering effects caused by signal processing and improve the performance of our algorithms.
+
+If the properties discussed in Subsection~\ref{subsec:ass-1-rep-10} are satified, then deconvolution should result in an impulse response without a statistical significant peak.
 
 \end{document}

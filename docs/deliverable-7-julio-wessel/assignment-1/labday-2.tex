@@ -17,96 +17,92 @@
 \begin{document}
 
 \section{Labday 2}
-\subsection{Report 8}
-The suitabily of four sequences had to be investigated. The four sequences given where:
-
-\begin{equation}
-x_1 = [1,-\frac{1}{2},0,0,....]^T \\ 
-222
-\end{equation}
-
-\begin{equation}
-x_2 = [1,-2,0,0,....]^T
-\end{equation}
-	
-\begin{equation}
-x_3[n] = \left\{ 
-  \begin{array}{l l}
-   cos(0.2n) & \quad \textrm{if $0 \leq n \leq N-1 $}\\
-    0 & \quad \textrm{if otherwise}
-  \end{array} \right.
-\end{equation}
- 
-\begin{equation}
-x_4 = sign(randn(N,1))
-\end{equation}
-
-For each of this sequences the autocorrelation was calculated and is displayed in Figure~\ref{fig:rep8-autocor}. From this plots we can see that minimum-phase and maximum-phase behave the most like impulses. Impulse behaviour within the autocorrelation means that the signal can better be detected. Thus we can conclude that minimum-phase and maximum-phase are most suited for our purpose. 
+In this report the suitability of four test signals are investigated. Figure \ref{fig:ass-1-rep-8} shows the autocorrelation of all four signals.
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-8/ass-1-report-8-minimum-phase-minimum-phase.pdf}
+		\caption{Autocorrelation of a minimum phase signal}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-8/ass-1-report-8-maximum-phase-maximum-phase.pdf}
+		\caption{Autocorrelation of a maximum phase signal}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-8/ass-1-report-8-sinusoidal-sinusoidal.pdf}
+		\caption{Autocorrelation of a sinusoidal signal}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-8/ass-1-report-8-BPSK-BPSK.pdf}
+		\caption{Autocorrelation of a BPSK signal}
 	\end{subfigure}
-	\caption{Autocorrelation sequences for each of the tested signals}
-	\label{fig:rep8-autocor}
+	\caption{Autocorrelation sequences of each of the tested signals}
+	\label{fig:ass-1-rep-8}
 \end{figure}
+
+The Matched Filter yields a channel estimation $\hat{h}[n]$ given by
+\[
+	\hat{h}[n] = h[n] \ast r[n]
+\]
+where $h[n]$ denotes the channel impulse response and $r[n]$ the training sequence's autocorrelation function. If we require that $\hat{n}[n] \rightarrow h[n]$, then obviously $r[n] \rightarrow \delta[n]$. Therefore, we require $r[n]$ to only have a peak at $n=0$. This makes the minimum phase of maximum phase signal the most suitable test signal. However, both have side lobes of $1/2.5$ the peak's height, so they are not optimal.
  
 
 \subsection{Report 9}
-
-
+Let $\hat{L}$ denote the lenght of the estimated channel impulse response $\hat{\vec{h}}$ and $L$ the length of the actual channel impulse response $\vec{h}$. Figure~\ref{fig:ass-1-rep-9-no-noise} shows the corrected channel estimation error $||\hat{\vec{h}}(\hat{\vec{h}} \cdot \vec{h})/(\hat{\vec{h}} \cdot \hat{\vec{h}}) - \vec{h}||$.
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}{0.49\textwidth}
-		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.5/ass-1-report-9-minimum-phase.pdf}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-no-noise/ass-1-report-9-minimum-phase.pdf}
+		\caption{\centering Channel estimation error for a minimum phase sequence}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
-		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.5/ass-1-report-9-maximum-phase.pdf}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-no-noise/ass-1-report-9-maximum-phase.pdf}
+		\caption{\centering Channel estimation error for a maximum phase sequence}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
-		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.5/ass-1-report-9-sinusoidal.pdf}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-no-noise/ass-1-report-9-sinusoidal.pdf}
+		\caption{\centering Channel estimation error for a sinusoidal sequence}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
-		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.5/ass-1-report-9-BPSK.pdf}
+		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-no-noise/ass-1-report-9-BPSK.pdf}
+		\caption{\centering Channel estimation error for a BPSK sequence}
 	\end{subfigure}
-	\caption{The channel estimation error for increasing $\hat{L}$,  with $\sigma = 0.5$ noise}
-	\label{fig:rep905}
+	\caption{The channel estimation error for increasing $\hat{L}$ without noise}
+	\label{fig:ass-1-rep-9-no-noise}
 \end{figure}
 
-The latter Figure~\ref{fig:rep905} shows the channel estimation with $\sigma = 0.5$. We see that the projection estimation method gives better results for $\hat{L} \ge L = 4$. This is to be espected since the projection method is supposed to give perfect results in situations without noise and sufficient estimated channel length, where the matched filter sacrifices estimation accuracy for faster performance due to less complex calculations. \\
-Now we see the results for $\sigma = 0.1$ in  Figure~\ref{fig:rep901}. We see that both methods give less errors. This the result we expected since less noise was introduced.
+We see that projection, which is deconvolution by calculating the pseudo-inverse, clearly outperforms the matched estimation, which is the estimation by the Matched Filter. Also, projection requires to have $\hat{L} \ge L$ to perform optimally. The matched estimation performs optimally if $\hat{L} = L$. Therefore, we conclude that if $\hat{L}$ is large enough, only the matched estimation is sensitive to the choice of $
+\hat{L}$.
+
+Figure~\ref{fig:ass-1-rep-9-0.1} shows the channel estimation error with noise added. The STD $\sigma_{\text{noise}}$ of the noise added is given by $0.1$. We conclude that the conclusions of the previous paragraph still hold. Also, we see that for a large enough $\hat{L}$ the BPSK sequence is the least sensitive to noise. The minimum phase and maximum phase sequences have the least error for the matched estimation.
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.1/ass-1-report-9-minimum-phase.pdf}
+		\caption{\centering Channel estimation error for a minimum phase sequence}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.1/ass-1-report-9-maximum-phase.pdf}
+		\caption{\centering Channel estimation error for a maximum phase sequence}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.1/ass-1-report-9-sinusoidal.pdf}
+		\caption{\centering Channel estimation error for a sinusoidal sequence}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{../../deliverable-7-resources/figures/ass-1/report-8-9-10/report-9-noise-0.1/ass-1-report-9-BPSK.pdf}
+		\caption{\centering Channel estimation error for a BPSK sequence}
 	\end{subfigure}
-	\caption{The channel estimation error for increasing $\hat{L}$, with $\sigma = 0.1$ noise}
-	\label{fig:rep901}
+	\caption{The channel estimation error for increasing $\hat{L}$, with $\sigma_{\text{noise}} = 0.1$}
+	\label{fig:ass-1-rep-9-0.1}
 \end{figure}
 
 
 \subsection{Report 10}
-The main idea is to use a training sequence which can always be identified even within surrounding sounds. One of the things that have to be done is giving the training sequence impulse-like autocorrelation behaviour. By doing this the sequence will be well recognizable. Also the crosscorrelation with the surrounding sounds has to be small enough in order to differentiate our signal from surrounding sounds. \\
-When choosing a signal length $N_x$ there are pros and cons to be considered. This is the case since a large $N_x$ give a more recognizable sequence, but at the same time increases the time to calculated the position of our car. \\
-From the tests we saw that $\hat{L}$ gave sufficiently good results for $\hat{L} = L$. Moreover we want to keep $\hat{L}$ as small as possible since this reduces the complexity of the calculations. Thus we want to keep $\hat{L}$ at $L$.
+\label{subsec:ass-1-rep-10}
+In this report we will discuss three aspects of our training sequence and the channel estimation; \textbf{(1)} the trainings sequence's length $N$, \textbf{(2)}, the estimated impulse response's length $\hat{L}$ and \textbf{(3)}, the properties of the training sequence itself.
+
+The training sequence's length should be chosen in consideration with the properties of the training sequence itself so that \textbf{(a)}, an autocorrelation which resembles a delta function, \textbf{(b)}, a crosscorrelation with every other signal of zero and \textbf{(c)}, a minimal length to minimize computations and maximize speed are achieved. A trade-off has to be made between \textbf{(a)} and \textbf{(c)}, so these are design choices. Also, to satisfy \textbf{(c)}, $\hat{L}$ should be chosen so that it matches the actual channel impulse response's length $L$.
 \end{document}
