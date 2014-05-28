@@ -17,7 +17,8 @@
 \begin{document}
 
 \section{Labday 2}
-In this report the suitability of four test signals are investigated. Figure \ref{fig:ass-1-rep-8} shows the autocorrelation of all four signals.
+\subsection{Report 8}
+In this report the suitability of four test signals are investigated. Figure \ref{fig:ass-1-rep-8} shows the autocorrelation of all four signals. We see that the autocorrelation functions of maximum phase and minimum phase are closely related. The autocorrelation functions of the sinusoidal and BPSK signal differ from the other functions.
 
 \begin{figure}[H]
 	\centering
@@ -45,9 +46,8 @@ The Matched Filter yields a channel estimation $\hat{h}[n]$ given by
 \[
 	\hat{h}[n] = h[n] \ast r[n]
 \]
-where $h[n]$ denotes the channel impulse response and $r[n]$ the training sequence's autocorrelation function. If we require that $\hat{n}[n] \rightarrow h[n]$, then obviously $r[n] \rightarrow \delta[n]$. Therefore, we require $r[n]$ to only have a peak at $n=0$. This makes the minimum phase of maximum phase signal the most suitable test signal. However, both have side lobes of $1/2.5$ the peak's height, so they are not optimal.
+where $h[n]$ denotes the channel impulse response and $r[n]$ the training sequence's autocorrelation function. If we require that $\hat{h}[n] \rightarrow h[n]$, then obviously $r[n] \rightarrow \delta[n]$. Therefore, we require $r[n]$ to only have a peak at $n=0$. This makes the minimum phase of maximum phase signal the most suitable test signal. However, both have side lobes of $1/2.5$ the peak's height, so they are not optimal. Note that for signals of greater length, the BPSK's autocorrelation is expected to be superior.
  
-
 \subsection{Report 9}
 Let $\hat{L}$ denote the lenght of the estimated channel impulse response $\hat{\vec{h}}$ and $L$ the length of the actual channel impulse response $\vec{h}$. Figure~\ref{fig:ass-1-rep-9-no-noise} shows the corrected channel estimation error $||\hat{\vec{h}}(\hat{\vec{h}} \cdot \vec{h})/(\hat{\vec{h}} \cdot \hat{\vec{h}}) - \vec{h}||$.
 \begin{figure}[H]
