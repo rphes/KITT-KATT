@@ -87,14 +87,14 @@ namespace Overwatch.ViewModel
 		public string SensorDistanceLeftString { get { return "Left: " + Vehicle.SensorDistanceLeft + " cm"; } }
 		public string SensorDistanceRightString { get { return "Right: " + Vehicle.SensorDistanceRight + " cm"; } }
 		public string BatteryVoltageString { get { return Vehicle.BatteryVoltage + " mV"; } }
-		public string BatteryPercentageString { get { return Math.Round(((double)Vehicle.BatteryVoltage / Data.BatteryVoltageMax * 100)).ToString() + " %"; } }
+		public string BatteryPercentageString { get { return Math.Round(((double)Vehicle.BatteryVoltage / Vehicle.BatteryVoltageMax * 100)).ToString() + " %"; } }
 		#endregion
 
 		#region Construction
 		public VehicleViewModel()
 		{
-			ActualPWMSpeed = Data.PWMSpeedDefault;
-			ActualPWMHeading = Data.PWMHeadingDefault;
+			ActualPWMSpeed = Vehicle.PWMSpeedDefault;
+			ActualPWMHeading = Vehicle.PWMHeadingDefault;
 		}
 		#endregion		
 	}

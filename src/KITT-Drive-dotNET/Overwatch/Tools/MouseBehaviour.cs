@@ -1,3 +1,5 @@
+// Original Author: Matthew Searles - http://www.codeproject.com/Tips/478643/Mouse-Event-Commands-for-MVVM
+
 using System.Windows;
 using System.Windows.Input;
 

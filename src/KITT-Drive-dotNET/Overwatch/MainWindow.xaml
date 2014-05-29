@@ -18,11 +18,11 @@
 		<GroupBox Name="GroupBox_Visualisation" Header="Visualisation" Grid.Column="0" Grid.RowSpan="999" HorizontalAlignment="Stretch" Margin="5,5,0,5" Padding="5" VerticalAlignment="Stretch" DataContext="{Binding Path=VisualisationViewModel}">
 			<Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Stretch="Uniform" StretchDirection="Both">
 				<Border BorderBrush="Gray" BorderThickness="1">
-					<Canvas Width="{Binding Path=CanvasSize}" Height="{Binding Path=CanvasSize}" tools:MouseBehaviour.MouseUpCommand="{Binding MouseUp}">
+					<Canvas Width="{Binding Path=CanvasSize}" Height="{Binding Path=CanvasSize}" tools:MouseBehaviour.MouseUpCommand="{Binding MouseUp}" Background="White">
 						<Canvas.LayoutTransform>
 							<ScaleTransform ScaleX="1" ScaleY="-1"/>
 						</Canvas.LayoutTransform>
-						<Image Name="Image_KITT" Source="{Binding Path=KITT.Bitmap}" Canvas.Left="{Binding Path=KITT.X}" Canvas.Top="{Binding Path=KITT.Y}" Width="{Binding Path=KITT.W}" Height="{Binding Path=KITT.H}"/>
+						<Image Name="Image_KITT" Source="{Binding Path=KITT.Bitmap}" Canvas.Left="{Binding Path=KITT_X}" Canvas.Top="{Binding Path=KITT_Y}" Width="{Binding Path=KITT_W}" Height="{Binding Path=KITT_H}"/>
 					</Canvas>
 				</Border>
 			</Viewbox>
@@ -41,21 +41,21 @@
 				</Grid.RowDefinitions>
 				
 				<!-- Vehicle direction -->
-				<Slider Name="Slider_ActualPWMSpeed" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="0,10,0,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Data.PWMSpeedMin}}" Maximum="{Binding Source={x:Static local:Data.PWMSpeedMax}}" Value="{Binding Path=ActualPWMSpeed, Mode=OneWay}" Focusable="False" IsEnabled="False"/>
+				<Slider Name="Slider_ActualPWMSpeed" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="0,10,0,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Vehicle.PWMSpeedMin}}" Maximum="{Binding Source={x:Static local:Vehicle.PWMSpeedMax}}" Value="{Binding Path=ActualPWMSpeed, Mode=OneWay}" Focusable="False" IsEnabled="False"/>
 				<Label Content="{Binding Path=ActualPWMSpeedString}" Target="{Binding ElementName=Slider_ActualPWMSpeed}" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5,25,0,0" VerticalAlignment="Top"/>
-				<Slider Name="Slider_ActualPWMHeading" HorizontalAlignment="Stretch" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,50,0,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Data.PWMHeadingMin}}" Maximum="{Binding Source={x:Static local:Data.PWMHeadingMax}}" Value="{Binding Path=ActualPWMHeading, Mode=OneWay}" Focusable="False" IsEnabled="False"/>
+				<Slider Name="Slider_ActualPWMHeading" HorizontalAlignment="Stretch" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,50,0,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Vehicle.PWMHeadingMin}}" Maximum="{Binding Source={x:Static local:Vehicle.PWMHeadingMax}}" Value="{Binding Path=ActualPWMHeading, Mode=OneWay}" Focusable="False" IsEnabled="False"/>
 				<Label Content="{Binding Path=ActualPWMHeadingString}" Target="{Binding ElementName=Slider_ActualPWMHeading}" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5,65,0,0" VerticalAlignment="Top"/>
 
 				<!-- Sensor status -->
 				<Label Content="Sensors:" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
-				<Slider Name="Slider_SensorLeft" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,25,5,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Data.SensorMinRange}}" Maximum="{Binding Source={x:Static local:Data.SensorMaxRange}}" Value="{Binding Path=SensorDistanceLeft, Mode=OneWay}" Focusable="False" IsEnabled="False"/>
+				<Slider Name="Slider_SensorLeft" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,25,5,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Vehicle.SensorMinRange}}" Maximum="{Binding Source={x:Static local:Vehicle.SensorMaxRange}}" Value="{Binding Path=SensorDistanceLeft, Mode=OneWay}" Focusable="False" IsEnabled="False"/>
 				<Label Content="{Binding Path=SensorDistanceLeftString}" Target="{Binding ElementName=Slider_SensorLeft}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Margin="0,40,0,0" VerticalAlignment="Top"/>
-				<Slider Name="Slider_SensorRight" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,25,0,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Data.SensorMinRange}}" Maximum="{Binding Source={x:Static local:Data.SensorMaxRange}}" Value="{Binding Path=SensorDistanceRight, Mode=OneWay}" Focusable="False" IsEnabled="False"/>
+				<Slider Name="Slider_SensorRight" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,25,0,0" VerticalAlignment="Top" Minimum="{Binding Source={x:Static local:Vehicle.SensorMinRange}}" Maximum="{Binding Source={x:Static local:Vehicle.SensorMaxRange}}" Value="{Binding Path=SensorDistanceRight, Mode=OneWay}" Focusable="False" IsEnabled="False"/>
 				<Label Content="{Binding Path=SensorDistanceRightString}" Target="{Binding ElementName=Slider_SensorRight}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Margin="0,40,0,0" VerticalAlignment="Top"/>
 
 				<!-- Battery status -->
 				<Label Content="Battery:" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
-				<ProgressBar Name="ProgressBar_Battery" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5,25,5,0" VerticalAlignment="Top" Height="22" Minimum="{Binding Source={x:Static local:Data.BatteryVoltageMin}}" Maximum="{Binding Source={x:Static local:Data.BatteryVoltageMax}}" Value="{Binding Path=BatteryVoltage}"/>
+				<ProgressBar Name="ProgressBar_Battery" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5,25,5,0" VerticalAlignment="Top" Height="22" Minimum="{Binding Source={x:Static local:Vehicle.BatteryVoltageMin}}" Maximum="{Binding Source={x:Static local:Vehicle.BatteryVoltageMax}}" Value="{Binding Path=BatteryVoltage}"/>
 				<Label Content="{Binding Path=BatteryPercentageString}" Target="{Binding ElementName=ProgressBar_Battery}" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,23,0,0" VerticalAlignment="Top"/>
 				<Label Content="{Binding Path=BatteryVoltageString}" Target="{Binding ElementName=ProgressBar_Battery}" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,50,0,0" VerticalAlignment="Top"/>
 			</Grid>

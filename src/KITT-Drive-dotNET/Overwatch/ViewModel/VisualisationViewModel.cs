@@ -11,60 +11,45 @@ using System.Windows.Media.Imaging;
 
 namespace Overwatch.ViewModel
 {
-	public class VirtualKITT : ObservableObject
-	{
-		public static double RealWidth { get { return 0.4; } }
-		public static double RealHeight { get { return 0.3; } }
-		public double X { get; set; }
-		public double Y { get; set; }
-		public double W { get { return Data.CanvasSize / Data.FieldSize * RealWidth *5; } }
-		public double H { get { return Data.CanvasSize / Data.FieldSize * RealHeight *5; } }
-		public double Scale { get; set; }
-		public BitmapImage Bitmap { get; set; }
-
-		public VirtualKITT()
-		{
-			Bitmap = new BitmapImage();
-		}
-
-		public void SetLocation(double x, double y)
-		{
-			X = x * Scale - W / 2;
-			Y = y * Scale - H / 2;
-			RaisePropertyChanged("X");
-			RaisePropertyChanged("Y");
-		}
-	}
-
 	public class VisualisationViewModel : ObservableObject
 	{
+		#region Data members
 		public int CanvasSize { get { return Data.CanvasSize; } }
-		BitmapImage BitmapKITT = new BitmapImage();
-		public ImageSource ImageSourceKITT { get; set; }
-		public VirtualKITT KITT { get; set; }
 
+		public VirtualVehicle KITT { get; protected set; }
+		public double KITT_X { get { return KITT.X; } }
+		public double KITT_Y { get { return KITT.Y; } }
+		public double KITT_W { get { return KITT.Width; } }
+		public double KITT_H { get { return KITT.Height; } }
+		#endregion
+
+		#region Construction
 		public VisualisationViewModel()
 		{
-			KITT = new VirtualKITT();
-			KITT.Scale = Data.CanvasSize;
-			KITT.Bitmap.BeginInit();
-			KITT.Bitmap.UriSource = new Uri(Directory.GetCurrentDirectory() + @"\Content\KITT.png");
-			KITT.Bitmap.EndInit();
-			KITT.SetLocation(0.5, 0.5);
-		}
+			KITT = new VirtualVehicle(Data.MainViewModel.VehicleViewModel.Vehicle, new Uri(Directory.GetCurrentDirectory() + @"\Content\KITT.png"));
 
-		void MouseUpExecute()
+			//For testing
+			Data.MainViewModel.VehicleViewModel.Vehicle.X = 0.5;
+			Data.MainViewModel.VehicleViewModel.Vehicle.Y = 0.5;
+		}
+		#endregion
+
+		#region Commands
+		void MouseUpExecute(MouseButtonEventArgs e)
 		{
-			Random r = new Random();
-
-			KITT.SetLocation(r.NextDouble(), r.NextDouble());
+			//For testing
+			Data.MainViewModel.VehicleViewModel.Vehicle.X = e.GetPosition(e.OriginalSource as IInputElement).X / Data.CanvasSize;
+			Data.MainViewModel.VehicleViewModel.Vehicle.Y = e.GetPosition(e.OriginalSource as IInputElement).Y / Data.CanvasSize;
+			RaisePropertyChanged("KITT_X");
+			RaisePropertyChanged("KITT_Y");
 		}
 
-		bool CanMouseUpExecute()
+		bool CanMouseUpExecute(MouseButtonEventArgs e)
 		{
 			return true;
 		}
 
-		public ICommand MouseUp { get { return new RelayCommand(MouseUpExecute, CanMouseUpExecute); } }
+		public ICommand MouseUp { get { return new RelayCommand<MouseButtonEventArgs>(MouseUpExecute, CanMouseUpExecute); } }
+		#endregion
 	}
 }
