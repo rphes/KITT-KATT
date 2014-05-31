@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:local="clr-namespace:Overwatch"
 		xmlns:tools="clr-namespace:Overwatch.Tools"
-        Title="MainWindow" Width="800" Height="600" MinWidth="255" MinHeight="400">
+		xmlns:vm="clr-namespace:Overwatch.ViewModel"
+        Title="MainWindow" Width="800" Height="600" MinWidth="255" MinHeight="420">
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
@@ -11,19 +12,39 @@
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
 		<GroupBox Name="GroupBox_Visualisation" Header="Visualisation" Grid.Column="0" Grid.RowSpan="999" HorizontalAlignment="Stretch" Margin="5,5,0,5" Padding="5" VerticalAlignment="Stretch" DataContext="{Binding Path=VisualisationViewModel}">
+
 			<Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Stretch="Uniform" StretchDirection="Both">
 				<Border BorderBrush="Gray" BorderThickness="1">
-					<Canvas Width="{Binding Path=CanvasSize}" Height="{Binding Path=CanvasSize}" tools:MouseBehaviour.MouseUpCommand="{Binding MouseUp}" Background="White">
-						<Canvas.LayoutTransform>
-							<ScaleTransform ScaleX="1" ScaleY="-1"/>
-						</Canvas.LayoutTransform>
-						<Image Name="Image_KITT" Source="{Binding Path=KITT.Bitmap}" Canvas.Left="{Binding Path=KITT_X}" Canvas.Top="{Binding Path=KITT_Y}" Width="{Binding Path=KITT_W}" Height="{Binding Path=KITT_H}"/>
-					</Canvas>
+					<ItemsControl ItemsSource="{Binding Path=Objects}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<Canvas Width="{Binding Path=CanvasSize}" Height="{Binding Path=CanvasSize}" tools:MouseBehaviour.MouseUpCommand="{Binding MouseUp}" Background="White">
+									<Canvas.LayoutTransform>
+										<ScaleTransform ScaleX="1" ScaleY="-1"/>
+									</Canvas.LayoutTransform>
+								</Canvas>
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.Resources>
+							<DataTemplate DataType="{x:Type vm:VirtualVehicleViewModel}">
+								<Image Source="{Binding Path=Bitmap}" Width="{Binding Path=Width}" Height="{Binding Path=Height}" IsHitTestVisible="False"/>
+							</DataTemplate>
+							<DataTemplate DataType="{x:Type local:Node}">
+								<Ellipse Width="{Binding Path=Width}" Height="{Binding Path=Height}" IsHitTestVisible="False" Fill="Blue"/>
+							</DataTemplate>
+						</ItemsControl.Resources>
+						<ItemsControl.ItemContainerStyle>
+							<Style>
+								<Setter Property="Canvas.Left" Value="{Binding Path=X}" />
+								<Setter Property="Canvas.Top" Value="{Binding Path=Y}" />
+							</Style>
+						</ItemsControl.ItemContainerStyle>
+					</ItemsControl>
 				</Border>
 			</Viewbox>
 		</GroupBox>
@@ -80,6 +101,14 @@
 
 		<GroupBox Name="GroupBox_AutoControl" Header="Autonomous Control" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="5" Padding="5" DataContext="{Binding Path=AutoControlViewModel}">
 			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				
+				<ComboBox Name="ComboBox_PlaceObject" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" ItemsSource="{Binding PlaceableObjects}" SelectedItem="{Binding SelectedObject}"/>
+				<Label Content="Place object:" Grid.Row="0" HorizontalAlignment="Left" Target="{Binding ElementName=ComboBox_PlaceObject}"/>
+				
 				<Button Name="Button_AutoControl" Grid.Row="1" Content="{Binding Path=AutoControlButtonString}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Height="22" Margin="10" Command="{Binding Path=ToggleAutoControl}"/>
 			</Grid>
 		</GroupBox>

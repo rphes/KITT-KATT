@@ -1,13 +1,11 @@
 ﻿using Overwatch.Tools;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace Overwatch.ViewModel
 {
+	/// <summary>
+	/// Provides binding data for all vehicle-status related gui-elements, based on an instance of the Vehicle class
+	/// </summary>
 	public class VehicleViewModel : ObservableObject
 	{
 		#region Data members
@@ -64,6 +62,25 @@ namespace Overwatch.ViewModel
 			}
 		}
 
+		//Position
+		public double X
+		{
+			get { return Vehicle.X; }
+			set 
+			{ 
+				Vehicle.X = value; //from 0 to 1
+				RaisePropertyChanged("X");
+			} 
+		}
+		public double Y
+		{
+			get { return Vehicle.Y; }
+			set
+			{
+				Vehicle.Y = value;
+				RaisePropertyChanged("Y");
+			} //from 0 to 1
+		}
 		public int BatteryVoltage
 		{
 			get { return Vehicle.BatteryVoltage; }

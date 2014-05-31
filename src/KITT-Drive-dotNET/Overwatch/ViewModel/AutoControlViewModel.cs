@@ -1,12 +1,11 @@
 ﻿using Overwatch.Tools;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace Overwatch.ViewModel
 {
+	/// <summary>
+	/// Provides binding data and commands for all autonomous control related gui-elements, based on an instance of the AutoControl class
+	/// </summary>
 	public class AutoControlViewModel : ObservableObject
 	{
 		private AutoControl _autocontrol = new AutoControl();
@@ -34,8 +33,12 @@ namespace Overwatch.ViewModel
 			}
 		}
 
+		public string[] PlaceableObjects { get { return new string[] { "Start", "Finish", "Charger" }; } }
+
+		public string SelectedObject { get; set; }
+
 		#region Commands
-		#region Connect
+		#region Toggle AutoControl
 		void ToggleAutoControlExecute()
 		{
 			Enabled = !Enabled;

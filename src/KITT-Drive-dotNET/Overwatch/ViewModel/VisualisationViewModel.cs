@@ -1,47 +1,52 @@
 ﻿using Overwatch.Tools;
 using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace Overwatch.ViewModel
 {
+	/// <summary>
+	/// Provides general binding data and commands for the visualisation canvas
+	/// </summary>
 	public class VisualisationViewModel : ObservableObject
 	{
 		#region Data members
 		public int CanvasSize { get { return Data.CanvasSize; } }
 
-		public VirtualVehicle KITT { get; protected set; }
-		public double KITT_X { get { return KITT.X; } }
-		public double KITT_Y { get { return KITT.Y; } }
-		public double KITT_W { get { return KITT.Width; } }
-		public double KITT_H { get { return KITT.Height; } }
+		public VirtualVehicleViewModel KITT { get; protected set; }
+
+		public BindingList<object> Objects { get; set; }
 		#endregion
 
 		#region Construction
 		public VisualisationViewModel()
 		{
-			KITT = new VirtualVehicle(Data.MainViewModel.VehicleViewModel.Vehicle, new Uri(Directory.GetCurrentDirectory() + @"\Content\KITT.png"));
+			KITT = new VirtualVehicleViewModel(Data.MainViewModel.VehicleViewModel.Vehicle, new Uri(Directory.GetCurrentDirectory() + @"\Content\KITT.png"));
 
 			//For testing
 			Data.MainViewModel.VehicleViewModel.Vehicle.X = 0.5;
 			Data.MainViewModel.VehicleViewModel.Vehicle.Y = 0.5;
+
+			Node node = new Node();
+			node.X = 50;
+			node.Y = 60;
+
+			Objects = new BindingList<object>();
+			Objects.Add(KITT);
+			Objects.Add(node);
 		}
 		#endregion
 
 		#region Commands
 		void MouseUpExecute(MouseButtonEventArgs e)
 		{
-			//For testing
-			Data.MainViewModel.VehicleViewModel.Vehicle.X = e.GetPosition(e.OriginalSource as IInputElement).X / Data.CanvasSize;
-			Data.MainViewModel.VehicleViewModel.Vehicle.Y = e.GetPosition(e.OriginalSource as IInputElement).Y / Data.CanvasSize;
-			RaisePropertyChanged("KITT_X");
-			RaisePropertyChanged("KITT_Y");
+			//tests
+			double x = e.GetPosition(e.OriginalSource as IInputElement).X;
+			double y = e.GetPosition(e.OriginalSource as IInputElement).Y;
+			Node node = new Node() { X = x, Y = y };
+			Objects.Add(node);
 		}
 
 		bool CanMouseUpExecute(MouseButtonEventArgs e)

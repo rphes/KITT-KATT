@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.IO.Ports;
-using System.Text;
 
 namespace Overwatch
 {
 	public delegate void StatusReceivedEventHandler(object sender, EventArgs e);
 
+	/// <summary>
+	/// Holds all data and methods to be able to communicate with the vehicle via a serial connection
+	/// </summary>
 	public class Communication : IDisposable
 	{
 		#region Data members
@@ -38,6 +40,9 @@ namespace Overwatch
 		#endregion
 
 		#region Construction/Destruction
+		/// <summary>
+		/// Constructs a default instance of the Communication class
+		/// </summary>
 		public Communication()
 		{
 			SerialPort = new SerialPort();
@@ -111,13 +116,6 @@ namespace Overwatch
 		#endregion
 
 		#region Transmission
-		public void SendByte(Byte data)
-		{
-			byte[] buf = { data };
-			SerialPort.Write(buf, 0, 1);
-			System.Diagnostics.Debug.WriteLine("Serial byte sent: {0:X}", data);
-		}
-
 		/// <summary>
 		/// Send a string over the connected COM-port, a newline character ('\n') is appended
 		/// </summary>
@@ -141,12 +139,20 @@ namespace Overwatch
 			}
 		}
 
+		/// <summary>
+		/// Send a status request to the vehicle
+		/// </summary>
 		public void RequestStatus()
 		{
 			SendString("S");
 			lastStatusRequest = DateTime.Now;
 		}
 
+		/// <summary>
+		/// Send a command to the vehicle to change its speed and direction
+		/// </summary>
+		/// <param name="dir">The new PWM value for direction</param>
+		/// <param name="speed">The new PWM value for speed</param>
 		public void DoDrive(int dir, int speed)
 		{
 			string dirstring = dir.ToString();
@@ -156,6 +162,9 @@ namespace Overwatch
 			SendString(stringbuffer);
 		}
 
+		/// <summary>
+		/// Send a command to the vehicle to toggle its audio beacon
+		/// </summary>
 		public void ToggleAudio()
 		{
 			bool b = !Data.MainViewModel.VehicleViewModel.BeaconIsEnabled;
@@ -164,6 +173,10 @@ namespace Overwatch
 		#endregion
 
 		#region Reception
+		/// <summary>
+		/// Parse a single line of the vehicle's response to status variables
+		/// </summary>
+		/// <param name="response">The response to parse</param>
 		private void parseResponse(string response)
 		{
 			response = response.Trim();
@@ -244,6 +257,11 @@ namespace Overwatch
 		#endregion
 
 		#region Serial event handling
+		/// <summary>
+		/// Event handler for performing the required actions when data is received through the serial connection
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
 		{
 			int rx;
@@ -272,7 +290,6 @@ namespace Overwatch
 					lineBuffer += (char)rx;
 			}
 		}
-
 		#endregion
 	}
 }

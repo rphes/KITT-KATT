@@ -5,6 +5,9 @@ using System.Windows.Input;
 
 namespace Overwatch.Tools
 {
+	/// <summary>
+	/// Provides a way to use mouse events on gui-elements to trigger viewmodel commands
+	/// </summary>
     public class MouseBehaviour
     {
         #region MouseUp

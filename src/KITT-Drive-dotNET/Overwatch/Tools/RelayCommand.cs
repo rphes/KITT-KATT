@@ -11,7 +11,6 @@ namespace Overwatch.Tools
 	/// </summary>
 	public class RelayCommand<T> : ICommand
 	{
-
 		#region Declarations
 
 		readonly Predicate<T> _canExecute;
@@ -83,7 +82,6 @@ namespace Overwatch.Tools
 	/// </summary>
 	public class RelayCommand : ICommand
 	{
-
 		#region Declarations
 
 		readonly Func<Boolean> _canExecute;

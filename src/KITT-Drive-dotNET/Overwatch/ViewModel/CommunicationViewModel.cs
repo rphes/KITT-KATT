@@ -6,6 +6,9 @@ using System.Windows.Input;
 
 namespace Overwatch.ViewModel
 {
+	/// <summary>
+	/// Provides binding data and commands for all communication-related gui-elements, based on an instance of the Communication clas
+	/// </summary>
 	public class CommunicationViewModel : ObservableObject
 	{
 		#region Properties
@@ -63,13 +66,15 @@ namespace Overwatch.ViewModel
 		}
 		#endregion
 
-
 		#region Construction
 		public CommunicationViewModel()
 		{
 			Communication.StatusReceived += Communication_StatusReceived;
+			SelectedSerialPort = "COM0";
 		}
+		#endregion
 
+		#region Event handling
 		private void Communication_StatusReceived(object sender, EventArgs e)
 		{
 			RaisePropertyChanged("PingString");

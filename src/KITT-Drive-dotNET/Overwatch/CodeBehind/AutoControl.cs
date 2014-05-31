@@ -6,6 +6,9 @@ using System.Windows.Threading;
 
 namespace Overwatch
 {
+	/// <summary>
+	/// Holds all required data and methods to enable autonomous control of the vehicle
+	/// </summary>
 	public class AutoControl
 	{
 		#region Data members

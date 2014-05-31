@@ -1,10 +1,11 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace Overwatch.Tools
 {
+	/// <summary>
+	/// Provides methods to notify the gui of any change in viewmodel data
+	/// </summary>
 	public abstract class ObservableObject : INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler PropertyChanged;

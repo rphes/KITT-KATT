@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Overwatch.Tools;
+using System;
 using System.Windows.Media.Imaging;
 
-namespace Overwatch
+namespace Overwatch.ViewModel
 {
-	public class VirtualVehicle
+	/// <summary>
+	/// Provides binding data for displaying a miniature vehicle in the visualisation canvas, using data from an instance of the Vehicle class
+	/// </summary>
+	public class VirtualVehicleViewModel : ObservableObject
 	{
 		#region Data members
 		//Base vehicle
@@ -25,13 +26,21 @@ namespace Overwatch
 		#endregion
 
 		#region Construction
-		public VirtualVehicle(Vehicle vehicle, Uri bitmap)
+		public VirtualVehicleViewModel(Vehicle vehicle, Uri bitmap)
 		{
+			Data.MainViewModel.VehicleViewModel.PropertyChanged += VehicleViewModel_PropertyChanged;
+
 			Vehicle = vehicle;
 			Bitmap = new BitmapImage();
 			Bitmap.BeginInit();
 			Bitmap.UriSource = bitmap;
 			Bitmap.EndInit();
+		}
+
+		void VehicleViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			RaisePropertyChanged("X");
+			RaisePropertyChanged("Y");
 		}
 		#endregion
 

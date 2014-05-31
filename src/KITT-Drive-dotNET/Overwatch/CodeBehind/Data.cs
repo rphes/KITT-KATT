@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Overwatch.ViewModel;
+﻿using Overwatch.ViewModel;
 
 namespace Overwatch
 {
+	/// <summary>
+	/// Provides access to all modules, as well as some global constants and methods
+	/// </summary>
 	public static class Data
 	{
 		#region Global constants
@@ -38,11 +36,4 @@ namespace Overwatch
 		}
 		#endregion
 	}
-
-	public enum Direction
-	{
-		up, down, left, right
-	}
-
-
 }
