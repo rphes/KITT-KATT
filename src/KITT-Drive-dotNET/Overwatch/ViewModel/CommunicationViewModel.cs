@@ -67,6 +67,9 @@ namespace Overwatch.ViewModel
 		#endregion
 
 		#region Construction
+		/// <summary>
+		/// Constructs a default instance of the CommunicationViewModel class
+		/// </summary>
 		public CommunicationViewModel()
 		{
 			Communication.StatusReceived += Communication_StatusReceived;
@@ -75,6 +78,11 @@ namespace Overwatch.ViewModel
 		#endregion
 
 		#region Event handling
+		/// <summary>
+		/// Sends a notification to the gui whenever base connection parameters have changed
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Communication_StatusReceived(object sender, EventArgs e)
 		{
 			RaisePropertyChanged("PingString");
@@ -84,6 +92,9 @@ namespace Overwatch.ViewModel
 
 		#region Commands
 		#region Connect
+		/// <summary>
+		/// Connects to the vehicle via a serial connection
+		/// </summary>
 		void ConnectExecute()
 		{
 			if (!Communication.SerialPort.IsOpen)
@@ -120,6 +131,9 @@ namespace Overwatch.ViewModel
 		public ICommand Connect { get { return new RelayCommand(ConnectExecute, CanConnectExecute); } }
 		#endregion
 		#region Toggle beacon
+		/// <summary>
+		/// Toggles the vehicle's audio beacon
+		/// </summary>
 		void ToggleBeaconExecute()
 		{
 			Communication.ToggleAudio();

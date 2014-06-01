@@ -8,6 +8,7 @@ namespace Overwatch.ViewModel
 	/// </summary>
 	public class AutoControlViewModel : ObservableObject
 	{
+		#region Data members
 		private AutoControl _autocontrol = new AutoControl();
 
 		public AutoControl AutoControl
@@ -33,12 +34,26 @@ namespace Overwatch.ViewModel
 			}
 		}
 
-		public string[] PlaceableObjects { get { return new string[] { "Start", "Finish", "Charger" }; } }
+		public string[] PlaceableObjects { get { return new string[] { "Waypoint", "Charger" }; } }
 
 		public string SelectedObject { get; set; }
+		#endregion
+
+		#region Construction
+		/// <summary>
+		/// Constructs a default instance of the AutoControlViewModel class
+		/// </summary>
+		public AutoControlViewModel()
+		{
+			SelectedObject = "Waypoint";
+		}
+		#endregion
 
 		#region Commands
 		#region Toggle AutoControl
+		/// <summary>
+		/// Toggles autonomous vehicle control
+		/// </summary>
 		void ToggleAutoControlExecute()
 		{
 			Enabled = !Enabled;

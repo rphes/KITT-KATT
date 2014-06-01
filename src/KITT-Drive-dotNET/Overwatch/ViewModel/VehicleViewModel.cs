@@ -108,6 +108,9 @@ namespace Overwatch.ViewModel
 		#endregion
 
 		#region Construction
+		/// <summary>
+		/// Constructs a default instance of the VehicleViewModel class
+		/// </summary>
 		public VehicleViewModel()
 		{
 			ActualPWMSpeed = Vehicle.PWMSpeedDefault;

@@ -34,8 +34,10 @@
 							<DataTemplate DataType="{x:Type vm:VirtualVehicleViewModel}">
 								<Image Source="{Binding Path=Bitmap}" Width="{Binding Path=Width}" Height="{Binding Path=Height}" IsHitTestVisible="False"/>
 							</DataTemplate>
-							<DataTemplate DataType="{x:Type local:Node}">
-								<Ellipse Width="{Binding Path=Width}" Height="{Binding Path=Height}" IsHitTestVisible="False" Fill="Blue"/>
+							<DataTemplate DataType="{x:Type vm:WaypointViewModel}">
+								<Grid>
+									<Path Stroke="{Binding Path=Stroke}" Fill="{Binding Path=Fill}" Data="{Binding Path=PathData}" StrokeThickness="4"/>
+								</Grid>
 							</DataTemplate>
 						</ItemsControl.Resources>
 						<ItemsControl.ItemContainerStyle>

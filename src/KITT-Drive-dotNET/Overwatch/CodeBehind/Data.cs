@@ -18,6 +18,13 @@ namespace Overwatch
 		#endregion
 
 		#region Utility methods
+		/// <summary>
+		/// Clamps a value between a given minimum and maximum
+		/// </summary>
+		/// <param name="value">The value to clamp</param>
+		/// <param name="min">The minimum clamped value</param>
+		/// <param name="max">The maximum clamped value</param>
+		/// <returns></returns>
 		public static double Clamp(double value, double min, double max)
 		{
 			if (value > max)
@@ -25,14 +32,6 @@ namespace Overwatch
 			if (value < min)
 				return min;
 			return value;
-		}
-
-		public static double Snap(double value, double snap, double min, double max)
-		{
-			if (value < max && value > min)
-				return snap;
-			else
-				return value;
 		}
 		#endregion
 	}

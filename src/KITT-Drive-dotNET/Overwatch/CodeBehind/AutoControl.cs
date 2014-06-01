@@ -16,6 +16,9 @@ namespace Overwatch
 		#endregion
 
 		#region Construction
+		/// <summary>
+		/// Constructs a default instance of the AutoControl class
+		/// </summary>
 		public AutoControl()
 		{
 			Enabled = false;
@@ -25,6 +28,11 @@ namespace Overwatch
 		#endregion
 
 		#region Event handling
+		/// <summary>
+		/// Performs the required actions whenever a new status update is received from the vehicle
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void Communication_StatusReceived(object sender, EventArgs e)
 		{
 			if (!Enabled) return;

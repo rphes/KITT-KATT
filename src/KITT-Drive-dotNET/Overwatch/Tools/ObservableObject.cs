@@ -10,6 +10,10 @@ namespace Overwatch.Tools
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		/// <summary>
+		/// Notifies the gui of a changed property
+		/// </summary>
+		/// <param name="e"></param>
 		protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
 		{
 			var handler = this.PropertyChanged;
@@ -19,12 +23,20 @@ namespace Overwatch.Tools
 			}
 		}
 
+		/// <summary>
+		/// Wraps the OnPropertyChanged event, to add a name verification step
+		/// </summary>
+		/// <param name="propertyName">The name of the changed property</param>
 		protected void RaisePropertyChanged(string propertyName)
 		{
 			VerifyPropertyName(propertyName);
 			OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
 		}
 
+		/// <summary>
+		/// Provides a public method to update the given data binding
+		/// </summary>
+		/// <param name="propertyName">The name of the binding property to update</param>
 		public void UpdateBinding(string propertyName)
 		{
 			RaisePropertyChanged(propertyName);
