@@ -7,7 +7,7 @@ using System.Windows.Input;
 namespace Overwatch.ViewModel
 {
 	/// <summary>
-	/// Provides binding data and commands for all communication-related gui-elements, based on an instance of the Communication clas
+	/// Provides binding data and commands for all communication-related gui-elements, based on an instance of the Communication class
 	/// </summary>
 	public class CommunicationViewModel : ObservableObject
 	{
