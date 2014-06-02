@@ -16,6 +16,9 @@ namespace Overwatch.ViewModel
 		//Position
 		public double X { get { return Vehicle.X * Data.CanvasSize - Width / 2; } set { } }
 		public double Y { get { return Vehicle.Y * Data.CanvasSize - Height / 2; } set { } }
+
+		//Rotation
+		public double Angle { get; set; }
 		
 		//Dimensions
 		public double Width { get { return Data.CanvasSize / Data.FieldSize * Vehicle.Width * 5; } }
