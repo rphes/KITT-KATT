@@ -68,8 +68,8 @@ Therefore
 	R = \frac{L}{\sin{(\phi)}}
 \end{equation}
 
-\chapter*{Control}
-\section*{Feedback}
+\section*{Control}
+\subsection*{Feedback}
 In the previous section we derived the relation
 \[
 	\dot{\theta}(\phi) = \frac{v \sin{(\phi)}}{L}.
@@ -84,7 +84,7 @@ where $k \in \mathbb{R}$, $k > 0$. Substituting yields the autonomous system
 \]
 Solving $\dot{\theta}(\theta)=0$ yields our critical point of interest $\theta=\theta_{\text{ref}}$.
 
-\section*{Stability}
+\subsection*{Stability}
 Consider the Lyapunov function
 \[
 	V(\theta) = \frac{1}{2}(\theta-\theta_{\text{ref}})^2
@@ -95,7 +95,7 @@ which is positive definite for $\left\{\theta | -\frac{\pi}{k} < \theta-\theta_{
 \end{align*}
 which is negative semi-definite for $\left\{\theta | -\frac{\pi}{k} < \theta-\theta_{\text{ref}} < \frac{\pi}{k}\right\}$. Therefore, we can conclude our critical point of interest $\theta=\theta_{\text{ref}}$ is asymptotically stable.
 
-\section*{Linearisation}
+\subsection*{Linearisation}
 Linearizing around $\theta=\theta_{\text{ref}}$ yields
 \[
 	\dot{\theta}(\theta) = \frac{- v k}{L} (\theta-\theta_{\text{ref}}).
