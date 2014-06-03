@@ -3,12 +3,12 @@
 namespace Overwatch
 {
 	/// <summary>
-	/// Provides access to all modules, as well as some global constants and methods
+	/// Provides access to all modules, as well as some global constants and methods.
 	/// </summary>
 	public static class Data
 	{
 		#region Global constants
-		//Field
+		// Field
 		public static int CanvasSize { get { return 700; } } //700 px default
 		public static int FieldSize { get { return 10; } } //10 meter
 		#endregion
@@ -19,11 +19,11 @@ namespace Overwatch
 
 		#region Utility methods
 		/// <summary>
-		/// Clamps a value between a given minimum and maximum
+		/// Clamps a value between a given minimum and maximum.
 		/// </summary>
-		/// <param name="value">The value to clamp</param>
-		/// <param name="min">The minimum clamped value</param>
-		/// <param name="max">The maximum clamped value</param>
+		/// <param name="value">The value to clamp.</param>
+		/// <param name="min">The minimum clamped value.</param>
+		/// <param name="max">The maximum clamped value.</param>
 		/// <returns></returns>
 		public static double Clamp(double value, double min, double max)
 		{

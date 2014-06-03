@@ -1,7 +1,7 @@
 ﻿namespace Overwatch.ViewModel
 {
 	/// <summary>
-	/// Holds each independent viewmodel
+	/// Holds each independent viewmodel.
 	/// </summary>
 	public class MainViewModel
 	{
@@ -14,7 +14,7 @@
 
 		#region Methods
 		/// <summary>
-		/// Initializes each viewmodel after the MainViewModel has been constructed
+		/// Initializes each viewmodel after the MainViewModel has been constructed.
 		/// </summary>
 		public void Init()
 		{

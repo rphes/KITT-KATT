@@ -2,15 +2,13 @@
 using System;
 using System.ComponentModel;
 using System.IO;
-using System.Runtime.Remoting;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Overwatch.ViewModel
 {
 	/// <summary>
-	/// Provides general binding data and commands for the visualisation canvas
+	/// Provides general binding data and commands for the visualisation canvas.
 	/// </summary>
 	public class VisualisationViewModel : ObservableObject
 	{
@@ -24,13 +22,13 @@ namespace Overwatch.ViewModel
 
 		#region Construction
 		/// <summary>
-		/// Constructs a default instance of the VisualisationViewModel class
+		/// Constructs a default instance of the VisualisationViewModel class.
 		/// </summary>
 		public VisualisationViewModel()
 		{
 			Objects = new BindingList<IVisualisationObject>();
 
-			//add KITT to our visualisation canvas
+			// Add KITT to our visualisation canvas
 			KITT = new VirtualVehicleViewModel(Data.MainViewModel.VehicleViewModel.Vehicle, new Uri(Directory.GetCurrentDirectory() + @"\Content\KITT.png"));
 
 			Data.MainViewModel.VehicleViewModel.Vehicle.X = 0.5;
@@ -42,45 +40,41 @@ namespace Overwatch.ViewModel
 
 		#region Methods
 		/// <summary>
-		/// Adds an object, of the type as selected in the gui, to the visualisation canvas, on the given location
+		/// Adds an object, of the type as selected in the gui, to the visualisation canvas, on the given location.
 		/// </summary>
-		/// <param name="x">The object's location on the X-axis</param>
-		/// <param name="y">The object's location on the Y-axis</param>
+		/// <param name="x">The object's location on the X-axis.</param>
+		/// <param name="y">The object's location on the Y-axis.</param>
 		public void PlaceObject (double x, double y)
 		{
-			string s = "Overwatch.ViewModel." + Data.MainViewModel.AutoControlViewModel.SelectedObject + "ViewModel";
-			IVisualisationObject p = null;
-			try
-			{
-				ObjectHandle h = Activator.CreateInstance(null, s);
-				p = (IVisualisationObject)h.Unwrap();
-			}
-			catch (Exception exc)
-			{
-				System.Diagnostics.Debug.WriteLine(exc.ToString());
-			}
+			string s = Data.MainViewModel.AutoControlViewModel.SelectedObject;
 
-			if (p != null)
+			if (s == "Waypoint")
 			{
-				p.X = x;
-				p.Y = y;
-				Objects.Add(p);
+				// Add a waypoint
+				WaypointViewModel w = Data.MainViewModel.AutoControlViewModel.AutoControl.AddWaypoint(x, y);
+				Objects.Add(w);
 			}
 		}
 
 		/// <summary>
-		/// Remove an object from the visualisation canvas
+		/// Remove an object from the visualisation canvas.
 		/// </summary>
-		/// <param name="o">The object to remove</param>
+		/// <param name="o">The object to remove.</param>
 		public void RemoveObject (IVisualisationObject o)
 		{
+			if ((o as WaypointViewModel) != null)
+			{
+				// Remove a waypoint
+				Data.MainViewModel.AutoControlViewModel.AutoControl.RemoveWaypoint((WaypointViewModel)o);
+			}
+
 			Objects.Remove(o);
 		}
 		#endregion
 
 		#region Commands
 		/// <summary>
-		/// Performs the required actions when the visualisation canvas is clicked
+		/// Performs the required actions when the visualisation canvas is clicked.
 		/// </summary>
 		/// <param name="e"></param>
 		void MouseUpExecute(MouseButtonEventArgs e)
@@ -91,12 +85,12 @@ namespace Overwatch.ViewModel
 			
 			if (e.OriginalSource.GetType().FullName != "System.Windows.Controls.Canvas")
 			{
-				//remove an existing object
+				// Remove an existing object
 				IVisualisationObject o = (IVisualisationObject)(src as FrameworkElement).DataContext;
 				RemoveObject(o);
 			}
 			else
-				PlaceObject(x, y); //place a new object	
+				PlaceObject(x, y); // Place a new object	
 		}
 
 		bool CanMouseUpExecute(MouseButtonEventArgs e)

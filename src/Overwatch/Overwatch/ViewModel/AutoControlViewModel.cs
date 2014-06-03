@@ -4,7 +4,7 @@ using System.Windows.Input;
 namespace Overwatch.ViewModel
 {
 	/// <summary>
-	/// Provides binding data and commands for all autonomous control related gui-elements, based on an instance of the AutoControl class
+	/// Provides binding data and commands for all autonomous control related gui-elements, based on an instance of the AutoControl class.
 	/// </summary>
 	public class AutoControlViewModel : ObservableObject
 	{
@@ -41,7 +41,7 @@ namespace Overwatch.ViewModel
 
 		#region Construction
 		/// <summary>
-		/// Constructs a default instance of the AutoControlViewModel class
+		/// Constructs a default instance of the AutoControlViewModel class.
 		/// </summary>
 		public AutoControlViewModel()
 		{
@@ -49,21 +49,32 @@ namespace Overwatch.ViewModel
 		}
 		#endregion
 
+		#region Methods
+		public void Toggle()
+		{
+			// Toggle autonomous control and send initial status request if enabled
+			if (AutoControl.Toggle())
+				Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
+
+			RaisePropertyChanged("AutoControlButtonString");
+		}
+		#endregion
+
 		#region Commands
 		#region Toggle AutoControl
 		/// <summary>
-		/// Toggles autonomous vehicle control
+		/// Toggles autonomous vehicle control.
 		/// </summary>
 		void ToggleAutoControlExecute()
 		{
-			if (AutoControl.Enable())
-				Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
-			
-			RaisePropertyChanged("AutoControlButtonString");
+			Toggle();
 		}
 
 		bool CanToggleAutoControlExecute()
 		{
+			if (!AutoControl.Matlab.Visible && Enabled)
+				Toggle();
+
 			return Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen &&
 				AutoControl.Matlab.Running;
 		}

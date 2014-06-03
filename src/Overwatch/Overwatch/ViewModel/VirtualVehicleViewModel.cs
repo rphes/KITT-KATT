@@ -5,35 +5,35 @@ using System.Windows.Media.Imaging;
 namespace Overwatch.ViewModel
 {
 	/// <summary>
-	/// Provides binding data for displaying a miniature vehicle in the visualisation canvas, using data from an instance of the Vehicle class
+	/// Provides binding data for displaying a miniature vehicle in the visualisation canvas, using data from an instance of the Vehicle class.
 	/// </summary>
 	public class VirtualVehicleViewModel : ObservableObject, IVisualisationObject
 	{
 		#region Data members
-		//Base vehicle
+		// Base vehicle
 		public Vehicle Vehicle { get; protected set; }
 
-		//Position
+		// Position
 		public double X { get { return Vehicle.X * Data.CanvasSize - Width / 2; } set { } }
 		public double Y { get { return Vehicle.Y * Data.CanvasSize - Height / 2; } set { } }
 
-		//Rotation
+		// Rotation
 		public double Angle { get { return Vehicle.Angle; } }
 		
-		//Dimensions
+		// Dimensions
 		public double Width { get { return Data.CanvasSize / Data.FieldSize * Vehicle.Width * 5; } }
 		public double Height { get { return Data.CanvasSize / Data.FieldSize * Vehicle.Height *5; } }
 
-		//Graphics
+		// Graphics
 		public BitmapImage Bitmap { get; set; }
 		#endregion
 
 		#region Construction
 		/// <summary>
-		/// Constructs an instance of the VirtualVehicleViewModel class, requiring a base vehicle and vehicle image
+		/// Constructs an instance of the VirtualVehicleViewModel class, requiring a base vehicle and vehicle image.
 		/// </summary>
-		/// <param name="vehicle">The base vehicle</param>
-		/// <param name="bitmap">The bitmap image to display in the visualisation canvas</param>
+		/// <param name="vehicle">The base vehicle.</param>
+		/// <param name="bitmap">The bitmap image to display in the visualisation canvas.</param>
 		public VirtualVehicleViewModel(Vehicle vehicle, Uri bitmap)
 		{
 			Data.MainViewModel.VehicleViewModel.PropertyChanged += VehicleViewModel_PropertyChanged;
@@ -48,7 +48,7 @@ namespace Overwatch.ViewModel
 
 		#region Event handling
 		/// <summary>
-		/// Sends a notification to the gui whenever base vehicle parameters have changed
+		/// Sends a notification to the gui whenever base vehicle parameters have changed.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>

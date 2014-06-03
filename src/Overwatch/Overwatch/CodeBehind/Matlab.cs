@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace Overwatch
 {
 	/// <summary>
-	/// Holds all data and methods to be able to make use of MATLAB from within this application, using the MATLAB COM Automation Server
+	/// Holds all data and methods to be able to make use of MATLAB from within this application, using the MATLAB COM Automation Server.
 	/// </summary>
 	public class Matlab
 	{
@@ -13,12 +13,12 @@ namespace Overwatch
 		private BackgroundWorker matlabStarter = new BackgroundWorker();
 
 		public bool Running { get { return Instance != null; } }
-		public bool Visible { get { return Instance.Visible == 1; } }
+		public bool Visible { get { return Running && Instance.Visible == 1; } }
 		#endregion
 
 		#region Construction
 		/// <summary>
-		/// Constructs a default instance of the Matlab class
+		/// Constructs a default instance of the Matlab class.
 		/// </summary>
 		public Matlab()
 		{
@@ -28,8 +28,13 @@ namespace Overwatch
 			matlabStarter.RunWorkerAsync();
 		}
 
+		~Matlab()
+		{
+			Quit();
+		}
+
 		/// <summary>
-		/// Start the MATLAB COM Automation Server via a BackgroundWorker
+		/// Start the MATLAB COM Automation Server via a BackgroundWorker.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -41,7 +46,7 @@ namespace Overwatch
 
 		#region Methods
 		/// <summary>
-		/// Show the MATLAB command window
+		/// Show the MATLAB command window.
 		/// </summary>
 		public void Show()
 		{
@@ -50,7 +55,7 @@ namespace Overwatch
 		}
 
 		/// <summary>
-		/// Hide the MATLAB command window
+		/// Hide the MATLAB command window.
 		/// </summary>
 		public void Hide()
 		{
@@ -59,7 +64,7 @@ namespace Overwatch
 		}
 
 		/// <summary>
-		/// Close MATLAB and dereference its instance
+		/// Close MATLAB and dereference its instance.
 		/// </summary>
 		public void Quit()
 		{
@@ -71,12 +76,12 @@ namespace Overwatch
 		}
 
 		/// <summary>
-		/// Push an object to MATLAB
+		/// Push an object to MATLAB.
 		/// </summary>
-		/// <param name="name">The variable name in MATLAB</param>
-		/// <param name="workspace">The MATLAB workspace in which the variable resides</param>
-		/// <param name="data">The data to push</param>
-		/// <returns>True if succesful, false if not</returns>
+		/// <param name="name">The variable name in MATLAB.</param>
+		/// <param name="workspace">The MATLAB workspace in which the variable resides.</param>
+		/// <param name="data">The data to push.</param>
+		/// <returns>True if succesful, false if not.</returns>
 		public bool PutVariable(string name, string workspace, object data)
 		{
 			if (Instance == null) return false;
@@ -95,22 +100,22 @@ namespace Overwatch
 		}
 
 		/// <summary>
-		/// Push an object to MATLAB, in the "base" (default) workspace
+		/// Push an object to MATLAB, in the "base" (default) workspace.
 		/// </summary>
-		/// <param name="name">The variable name in MATLAB</param>
-		/// <param name="data">The data to push</param>
-		/// <returns>True if succesful, false if not</returns>
+		/// <param name="name">The variable name in MATLAB.</param>
+		/// <param name="data">The data to push.</param>
+		/// <returns>True if succesful, false if not.</returns>
 		public object PutVariable(string name, object data)
 		{
 			return PutVariable(name, "base", data);
 		}
 
 		/// <summary>
-		/// Get an object from MATLAB
+		/// Get an object from MATLAB.
 		/// </summary>
-		/// <param name="name">The variable name in MATLAB</param>
-		/// <param name="workspace">The MATLAB workspace in which the variable resides</param>
-		/// <returns>The object if succesful, null if not</returns>
+		/// <param name="name">The variable name in MATLAB.</param>
+		/// <param name="workspace">The MATLAB workspace in which the variable resides.</param>
+		/// <returns>The object if succesful, null if not.</returns>
 		public object GetVariable(string name, string workspace)
 		{
 			if (Instance == null) return null;
@@ -132,10 +137,10 @@ namespace Overwatch
 		}
 
 		/// <summary>
-		/// Get an object from MATLAB, from the "base" (default) workspace
+		/// Get an object from MATLAB, from the "base" (default) workspace.
 		/// </summary>
-		/// <param name="name">The variable name in MATLAB</param>
-		/// <returns>The object if succesful, null if not</returns>
+		/// <param name="name">The variable name in MATLAB.</param>
+		/// <returns>The object if succesful, null if not.</returns>
 		public object GetVariable(string name)
 		{
 			return GetVariable(name, "base");

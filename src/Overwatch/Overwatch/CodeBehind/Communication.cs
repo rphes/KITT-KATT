@@ -7,7 +7,7 @@ namespace Overwatch
 	public delegate void StatusReceivedEventHandler(object sender, EventArgs e);
 
 	/// <summary>
-	/// Holds all data and methods to be able to communicate with the vehicle via a serial connection
+	/// Holds all data and methods to be able to communicate with the vehicle via a serial connection.
 	/// </summary>
 	public class Communication : IDisposable
 	{
@@ -41,7 +41,7 @@ namespace Overwatch
 
 		#region Construction/Destruction
 		/// <summary>
-		/// Constructs a default instance of the Communication class
+		/// Constructs a default instance of the Communication class.
 		/// </summary>
 		public Communication()
 		{
@@ -117,9 +117,9 @@ namespace Overwatch
 
 		#region Transmission
 		/// <summary>
-		/// Send a string over the connected COM-port, a newline character ('\n') is appended
+		/// Send a string over the connected COM-port, a newline character ('\n') is appended.
 		/// </summary>
-		/// <param name="data">The string to send, without trailing newline character ('\n')</param>
+		/// <param name="data">The string to send, without trailing newline character ('\n').</param>
 		public void SendString(string data)
 		{
 			if (!SerialPort.IsOpen)
@@ -140,7 +140,7 @@ namespace Overwatch
 		}
 
 		/// <summary>
-		/// Send a status request to the vehicle
+		/// Send a status request to the vehicle.
 		/// </summary>
 		public void RequestStatus()
 		{
@@ -149,10 +149,10 @@ namespace Overwatch
 		}
 
 		/// <summary>
-		/// Send a command to the vehicle to change its speed and direction
+		/// Send a command to the vehicle to change its speed and direction.
 		/// </summary>
-		/// <param name="dir">The new PWM value for direction</param>
-		/// <param name="speed">The new PWM value for speed</param>
+		/// <param name="dir">The new PWM value for direction.</param>
+		/// <param name="speed">The new PWM value for speed.</param>
 		public void DoDrive(int dir, int speed)
 		{
 			string dirstring = dir.ToString();
@@ -163,7 +163,7 @@ namespace Overwatch
 		}
 
 		/// <summary>
-		/// Send a command to the vehicle to toggle its audio beacon
+		/// Send a command to the vehicle to toggle its audio beacon.
 		/// </summary>
 		public void ToggleAudio()
 		{
@@ -174,9 +174,9 @@ namespace Overwatch
 
 		#region Reception
 		/// <summary>
-		/// Parse a single line of the vehicle's response to status variables
+		/// Parse a single line of the vehicle's response to status variables.
 		/// </summary>
-		/// <param name="response">The response to parse</param>
+		/// <param name="response">The response to parse.</param>
 		private void parseResponse(string response)
 		{
 			response = response.Trim();
@@ -206,10 +206,11 @@ namespace Overwatch
 				{
 					if (responseType == 'D')
 					{
-						//current drive commands
+						// Current drive commands
 						Data.MainViewModel.VehicleViewModel.ActualPWMHeading = value1;
 						Data.MainViewModel.VehicleViewModel.ActualPWMSpeed = value2;
 
+						// Complete status transmission received, calculate ping
 						lastStatusResponse = DateTime.Now;
 						Ping = lastStatusResponse - lastStatusRequest;
 
@@ -218,7 +219,7 @@ namespace Overwatch
 					}
 					else if (responseType == 'U')
 					{
-						//ultrasonic sensor readout
+						// Ultrasonic sensor readout
 						Data.MainViewModel.VehicleViewModel.SensorDistanceLeft = value1;
 						Data.MainViewModel.VehicleViewModel.SensorDistanceRight = value2;
 					}
@@ -228,7 +229,7 @@ namespace Overwatch
 			{
 				if (response.Length > 5 && response.Substring(0, 5) == "Audio")
 				{
-					//audio status readout
+					// Audio status readout
 					if (response.Length == 7)
 					{
 						char c = response[response.Length - 1];
@@ -240,7 +241,7 @@ namespace Overwatch
 				}
 				else
 				{
-					//battery voltage readout
+					// Battery voltage readout
 					int voltage;
 					string data = response.Substring(1);
 
@@ -258,7 +259,7 @@ namespace Overwatch
 
 		#region Serial event handling
 		/// <summary>
-		/// Event handler for performing the required actions when data is received through the serial connection
+		/// Event handler for performing the required actions when data is received through the serial connection.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -280,12 +281,12 @@ namespace Overwatch
 
 				if (rx == 10)
 				{
-					LastLine = lineBuffer; //line feed received, push linebuffer to output
+					LastLine = lineBuffer; // Line feed received, push linebuffer to output
 					lineBuffer = "";
 					parseResponse(LastLine);
 				}
 				else if (rx == 4)
-					continue; //EOT received, discard and continue
+					continue; // EOT received, discard and continue
 				else
 					lineBuffer += (char)rx;
 			}
