@@ -1,0 +1,73 @@
+%!TEX program = xelatex 
+\documentclass[11pt,titlepage]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\newcommand{\mat}[1]{\mathbf{#1}}
+
+\chapter*{Steering}
+\section*{Analysis}
+Let us consider a car with distance $L$ between both wheel axes. The rear axis of the car is located at $(0,0)$ and the front axis at $(L,0)$ in a way that they are parallel to each other. The front wheels are turned an angle $\phi$ relative to the positive $x$-axis. If the car drives at a speed $v$, then approximately, after an infinitesimally small time $dt$, the rear axis is located at $(v \cos{(\phi)}dt,0)$ and the front axis at $(L+v \cos{(\phi)}dt,v \sin{(\phi)}dt)$. The car was first parallel to the positive $x$-axis. Therefore, if $\theta$ denotes the angle of the car relative to the positive $x$-axis,
+\[
+	\theta(t) = 0
+\]
+and
+\[
+	\theta(t+dt)=\arctan{\left(\frac{v \sin{(\phi)}dt}{L}\right)}.
+\]
+We can now evaluate $\dot{\theta}$ by evaluating the limit
+\begin{align}
+	\frac{d}{dt}\theta(t) &= \lim_{dt \rightarrow 0} \frac{\theta(t+dt)-\theta(t)}{dt} \nonumber \\
+	&= \lim_{dt \rightarrow 0} \frac{\arctan{\left(\frac{v \sin{(\phi)}dt}{L}\right)}}{dt} \nonumber \\
+	&= \lim_{dt \rightarrow 0} \left(1+\frac{v^2 \sin{(\phi)}dt^2}{L^2}\right)^{-1}\frac{v \sin{(\phi)}}{L} \quad \quad \text{(L'H\^opital's rule)} \nonumber \\
+	&= \frac{v \sin{(\phi)}}{L}.
+\end{align}
+Let us now consider a car whose trajectory is given by
+\begin{align*}
+	x(t) = R \cos{(\omega t)}, \\
+	y(t) = R \sin{(\omega t)}.
+\end{align*}
+Here $R$ denotes the turning radius of the car. Note that
+\[
+	x^2(t)+y^2(t)=R^2.
+\]
+Differentiating both sides yields
+\[
+	\frac{dy}{dx}=-\frac{x}{y}.
+\]
+The angle of the car is then given by
+\[
+	\theta(t) = \arctan{(dy/dx)} = -\arctan{(1/\tan{\omega t})}.
+\]
+Note that
+\[
+	\frac{d}{dt} \theta(t) = \frac{-1}{1+1/\tan^2{(\omega t)}} \frac{-1}{\tan^2{(\omega t)}} \frac{\omega}{\cos^2{(\omega t)}} = \omega.
+\]
+The angle of the car relative to the positive $x$-axis in this trajectory is given by
+\[
+	\alpha(t) = \omega t.
+\]
+Note that
+\[
+	\frac{d}{dt} \alpha(t) = \omega = \frac{d}{dt} \theta(t).
+\]
+Let $s$ denote the distance moved by the car and $v$ the speed of the car. Then, for some $\Delta t$ and $\Delta \alpha$,
+\[
+	s = v \Delta t = R \Delta \alpha.
+\]
+Now note that
+\begin{align*}
+	\frac{\Delta \alpha}{\Delta t} &= \frac{v}{R} \\
+	&=\frac{d}{dt} \alpha(t)=\frac{d}{dt} \theta(t) = \frac{v \sin{(\phi)}}{L}.
+\end{align*}
+Therefore
+\begin{equation}
+	R = \frac{L}{\sin{(\phi)}}.
+\end{equation}
+
+\section*{Control}
+
+\end{document}
