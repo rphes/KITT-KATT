@@ -10,7 +10,7 @@
 
 \chapter*{Steering}
 \section*{Analysis}
-Let us consider a car with distance $L$ between both wheel axes. The rear axis of the car is located at $(0,0)$ and the front axis at $(L,0)$ in a way that they are parallel to each other. The front wheels are turned an angle $\phi$ relative to the positive $x$-axis. If the car drives at a speed $v$, then, after an infinitesimally small time $dt$, the rear axis is located at $(v \cos{(\phi)}dt,0)$ and the front axis at $(L+v \cos{(\phi)}dt,v \sin{(\phi)}dt)$. The car was first parallel to the positive $x$-axis. Therefore, if $\theta$ denotes the angle of the car relative to the positive $x$-axis,
+Let us consider a car with distance $L$ between both wheel axes. The rear axis of the car is located at $(0,0)$ and the front axis at $(L,0)$ in a way that they are parallel to each other. The front wheels are turned an angle $\phi$ relative to the positive $x$-axis. If the car drives at a speed $v$, then approximately, after an infinitesimally small time $dt$, the rear axis is located at $(v \cos{(\phi)}dt,0)$ and the front axis at $(L+v \cos{(\phi)}dt,v \sin{(\phi)}dt)$. The car was first parallel to the positive $x$-axis. Therefore, if $\theta$ denotes the angle of the car relative to the positive $x$-axis,
 \[
 	\theta(t) = 0
 \]
@@ -18,9 +18,9 @@ and
 \[
 	\theta(t+dt)=\arctan{\left(\frac{v \sin{(\phi)}dt}{L}\right)}.
 \]
-We can now evaluate $\dot{\theta}$ by evaluating the limit
+We can now evaluate $\dot{\theta}(t)$ by evaluating the limit
 \begin{align}
-	\frac{d}{dt}\theta(t) &= \lim_{dt \rightarrow 0} \frac{\theta(t+dt)-\theta(t)}{dt} \nonumber \\
+	\dot{\theta}(t) &= \lim_{dt \rightarrow 0} \frac{\theta(t+dt)-\theta(t)}{dt} \nonumber \\
 	&= \lim_{dt \rightarrow 0} \frac{\arctan{\left(\frac{v \sin{(\phi)}dt}{L}\right)}}{dt} \nonumber \\
 	&= \lim_{dt \rightarrow 0} \left(1+\frac{v^2 \sin{(\phi)}dt^2}{L^2}\right)^{-1}\frac{v \sin{(\phi)}}{L} \quad \quad \text{(L'H\^opital's rule)} \nonumber \\
 	&= \frac{v \sin{(\phi)}}{L}. \label{eq:steering-derivative}
@@ -36,7 +36,7 @@ Here $R$ denotes the turning radius of the car. Note that
 \]
 Differentiating both sides yields
 \[
-	\frac{dy}{dx}=-\frac{x}{y}.
+	\frac{dy}{dx}=-\frac{x(t)}{y(t)}.
 \]
 The angle of the car is then given by
 \[
@@ -44,7 +44,7 @@ The angle of the car is then given by
 \]
 Note that
 \[
-	\frac{d}{dt} \theta(t) = \frac{-1}{1+1/\tan^2{(\omega t)}} \frac{-1}{\tan^2{(\omega t)}} \frac{\omega}{\cos^2{(\omega t)}} = \omega.
+	\dot{\theta}(t) = \frac{-1}{1+1/\tan^2{(\omega t)}} \frac{-1}{\tan^2{(\omega t)}} \frac{\omega}{\cos^2{(\omega t)}} = \omega.
 \]
 The angle of the car relative to the positive $x$-axis in this trajectory is given by
 \[
@@ -52,7 +52,7 @@ The angle of the car relative to the positive $x$-axis in this trajectory is giv
 \]
 Note that
 \[
-	\frac{d}{dt} \alpha(t) = \omega = \frac{d}{dt} \theta(t).
+	\dot{\alpha}(t) = \omega = \dot{\theta}(t).
 \]
 Let $s$ denote the distance moved by the car and $v$ the speed of the car. Then, for some $\Delta t$ and $\Delta \alpha$,
 \[
@@ -61,7 +61,7 @@ Let $s$ denote the distance moved by the car and $v$ the speed of the car. Then,
 Now note that
 \begin{align*}
 	\frac{\Delta \alpha}{\Delta t} &= \frac{v}{R} \\
-	&=\frac{d}{dt} \alpha(t)=\frac{d}{dt} \theta(t) = \frac{v \sin{(\phi)}}{L}.
+	&=\dot{\alpha}(t)=\dot{\theta}(t) = \frac{v \sin{(\phi)}}{L}.
 \end{align*}
 Therefore
 \begin{equation} \label{eq:steering-radius}
@@ -69,10 +69,40 @@ Therefore
 \end{equation}
 Combining Eq. \ref{eq:steering-derivative} and \ref{eq:steering-radius} yields
 \[
-	v=R \dot{\theta}=R \omega,
+	v=R \dot{\theta}(t)=R \omega,
 \]
 which confirms the relationships.
 
 \section*{Control}
+\subsection*{Feedback}
+In the previous section we derived the relation
+\[
+	\dot{\theta}(\phi) = \frac{v \sin{(\phi)}}{L}.
+\]
+Let a feedback law be given by
+\[
+	\phi(\theta) = -k(\theta-\theta_{\text{ref}}).
+\]
+Substituting yields the autonomous system
+\[
+	\dot{\theta}(\theta) = \frac{- v \sin{(k (\theta-\theta_{\text{ref}}))}}{L}.
+\]
+Solving $\dot{\theta}(\theta)=0$ yields our critical point of interest $\theta=\theta_{\text{ref}}$.
 
+\subsection*{Stability}
+Consider the Lyapunov function
+\[
+	V(\theta) = \frac{1}{2}(\theta-\theta_{\text{ref}})^2
+\]
+which is positive definite for $\left\{\theta | -\frac{\pi}{k} < \theta-\theta_{\text{ref}} < \frac{\pi}{k}, \theta \neq \theta_{\text{ref}} \right\}$. Now,
+\begin{align*}
+	\dot{V}(\theta) = (\theta-\theta_{\text{ref}}) \frac{- v \sin{(k ({\theta-\theta_{\text{ref}}}))}}{L}
+\end{align*}
+which is negative semi-definite for $\left\{\theta | -\frac{\pi}{k} < \theta-\theta_{\text{ref}} < \frac{\pi}{k}\right\}$. Therefore, we can conclude our critical point of interest $\theta=\theta_{\text{ref}}$ is asymptotically stable.
+
+\subsection*{Linearisation}
+Linearizing around $\theta=\theta_{\text{ref}}$ yields
+\[
+	\dot{\theta}(\theta) = \frac{- v k}{L} (\theta-\theta_{\text{ref}}).
+\]
 \end{document}
