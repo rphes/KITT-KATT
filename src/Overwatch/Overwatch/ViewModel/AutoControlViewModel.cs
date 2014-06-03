@@ -56,16 +56,16 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		void ToggleAutoControlExecute()
 		{
-			Enabled = !Enabled;
-			if (Enabled)
+			if (AutoControl.Enable())
 				Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
-
+			
 			RaisePropertyChanged("AutoControlButtonString");
 		}
 
 		bool CanToggleAutoControlExecute()
 		{
-			return Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen;
+			return Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen &&
+				AutoControl.Matlab.Running;
 		}
 
 		public ICommand ToggleAutoControl { get { return new RelayCommand(ToggleAutoControlExecute, CanToggleAutoControlExecute); } }

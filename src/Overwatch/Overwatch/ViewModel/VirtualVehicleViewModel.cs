@@ -18,7 +18,7 @@ namespace Overwatch.ViewModel
 		public double Y { get { return Vehicle.Y * Data.CanvasSize - Height / 2; } set { } }
 
 		//Rotation
-		public double Angle { get; set; }
+		public double Angle { get { return Vehicle.Angle; } }
 		
 		//Dimensions
 		public double Width { get { return Data.CanvasSize / Data.FieldSize * Vehicle.Width * 5; } }
@@ -56,6 +56,7 @@ namespace Overwatch.ViewModel
 		{
 			RaisePropertyChanged("X");
 			RaisePropertyChanged("Y");
+			RaisePropertyChanged("Angle");
 		}
 		#endregion
 	}

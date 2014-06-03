@@ -17,6 +17,8 @@ namespace SerialApp
 
 		public void CalculateNewState()
 		{
+			if (Data.FakeKITT == false) return;
+
 			double distancedriven;
 			TimeSpan delta = new TimeSpan(0, 0, 0, 0, 50);//DateTime.Now - timestamp;
 			timestamp = DateTime.Now;

@@ -13,7 +13,6 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
@@ -107,13 +106,7 @@
 			</Grid>
 		</GroupBox>
 
-		<GroupBox Name="GroupBox_Matlab" Header="Matlab" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="5" Padding="5" DataContext="{Binding Path=MatlabViewModel}">
-			<Grid>		
-				<Button Name="Button_ToggleMatlab" Content="{Binding Path=ToggleMatlabButtonString}" HorizontalAlignment="Center" Width="120" Height="22" Command="{Binding Path=ToggleMatlab}"/>
-			</Grid>
-		</GroupBox>
-
-		<GroupBox Name="GroupBox_AutoControl" Header="Autonomous Control" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="5" Padding="5" DataContext="{Binding Path=AutoControlViewModel}">
+		<GroupBox Name="GroupBox_AutoControl" Header="Autonomous Control" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="5" Padding="5" DataContext="{Binding Path=AutoControlViewModel}">
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition />

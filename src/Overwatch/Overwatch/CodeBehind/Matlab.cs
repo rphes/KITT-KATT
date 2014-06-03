@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Overwatch
 {
@@ -8,46 +9,64 @@ namespace Overwatch
 	public class Matlab
 	{
 		#region Data members
-		MLApp.MLApp matlab;
+		public MLApp.MLApp Instance { get; protected set; }
+		private BackgroundWorker matlabStarter = new BackgroundWorker();
 
-		public bool Connected
-		{
-			get
-			{
-				if (matlab == null || matlab.Visible == 0)
-					return false;
-				else
-					return true;
-			}
-		}
+		public bool Running { get { return Instance != null; } }
+		public bool Visible { get { return Instance.Visible == 1; } }
 		#endregion
 
 		#region Construction
+		/// <summary>
+		/// Constructs a default instance of the Matlab class
+		/// </summary>
 		public Matlab()
 		{
+			matlabStarter.WorkerSupportsCancellation = false;
+			matlabStarter.WorkerReportsProgress = false;
+			matlabStarter.DoWork += matlabStarter_DoWork;
+			matlabStarter.RunWorkerAsync();
+		}
+
+		/// <summary>
+		/// Start the MATLAB COM Automation Server via a BackgroundWorker
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void matlabStarter_DoWork(object sender, DoWorkEventArgs e)
+		{
+			Instance = new MLApp.MLApp();
 		}
 		#endregion
 
 		#region Methods
 		/// <summary>
-		/// Initialise an instance of MATLAB and make the command window visible
+		/// Show the MATLAB command window
 		/// </summary>
-		public void Connect()
+		public void Show()
 		{
-			matlab = new MLApp.MLApp();
-			if (matlab.Visible != 1)
-				matlab.MaximizeCommandWindow();
+			if (Running && !Visible)
+				Instance.MaximizeCommandWindow();
 		}
 
 		/// <summary>
-		/// Close MATLAB and dereference the current instance
+		/// Hide the MATLAB command window
 		/// </summary>
-		public void Disconnect()
+		public void Hide()
 		{
-			if (matlab != null)
+			if (Running && Visible)
+				Instance.MinimizeCommandWindow();
+		}
+
+		/// <summary>
+		/// Close MATLAB and dereference its instance
+		/// </summary>
+		public void Quit()
+		{
+			if (Instance != null)
 			{
-				matlab.Quit();
-				matlab = null;
+				Instance.Quit();
+				Instance = null;
 			}
 		}
 
@@ -60,11 +79,11 @@ namespace Overwatch
 		/// <returns>True if succesful, false if not</returns>
 		public bool PutVariable(string name, string workspace, object data)
 		{
-			if (matlab == null) return false;
+			if (Instance == null) return false;
 
 			try
 			{
-				matlab.PutWorkspaceData(name, "base", data);
+				Instance.PutWorkspaceData(name, "base", data);
 			}
 			catch (Exception exc)
 			{
@@ -94,13 +113,13 @@ namespace Overwatch
 		/// <returns>The object if succesful, null if not</returns>
 		public object GetVariable(string name, string workspace)
 		{
-			if (matlab == null) return null;
+			if (Instance == null) return null;
 
 			object obj;
 
 			try
 			{
-				matlab.GetWorkspaceData(name, workspace, out obj);
+				Instance.GetWorkspaceData(name, workspace, out obj);
 				System.Diagnostics.Debug.WriteLine(obj.ToString());
 			}
 			catch (Exception exc)

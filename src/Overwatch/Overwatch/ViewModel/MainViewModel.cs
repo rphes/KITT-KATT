@@ -10,7 +10,6 @@
 		public CommunicationViewModel CommunicationViewModel { get; set; }
 		public VisualisationViewModel VisualisationViewModel { get; set; }
 		public AutoControlViewModel AutoControlViewModel { get; set; }
-		public MatlabViewModel MatlabViewModel { get; set; }
 		#endregion
 
 		#region Methods
@@ -27,8 +26,6 @@
 				VisualisationViewModel = new VisualisationViewModel();
 			if (AutoControlViewModel == null)
 				AutoControlViewModel = new AutoControlViewModel();
-			if (MatlabViewModel == null)
-				MatlabViewModel = new MatlabViewModel();
 		}
 		#endregion
 	}
