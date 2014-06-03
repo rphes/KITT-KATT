@@ -24,12 +24,12 @@ classdef Wrapper
     
     methods
         % Constructor
-        function Self = Wrapper(InitialLocation, MicrophoneLocations)
+        function Self = Wrapper(InitialLocation, InitialAngle, MicrophoneLocations)
             % Initialize all objects
             Self.tdoa = TDOA();
             Self.route = Route();
             Self.loc = Loc();
-            Self.ssSteer = SsSteer();
+            Self.ssSteer = SsSteer(InitialAngle);
             Self.ssDrive = SsDrive();
             Self.mapSteer = MapSteer();
             Self.mapDrive = MapDrive();
