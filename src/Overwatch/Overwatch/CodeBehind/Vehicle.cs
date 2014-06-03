@@ -54,11 +54,13 @@ namespace Overwatch
 		public double X { get; set; } //from 0 to 1
 		public double Y { get; set; } //from 0 to 1
 		public Point Position { get { return new Point(X, Y); } }
+		public double Angle { get; set; }
 		#endregion
 
 		#region Speed and heading
 		public int ActualPWMSpeed { get; set; }
 		public int ActualPWMHeading { get; set; }
+		public double Velocity { get; set; }
 		#endregion
 
 		#region Sensors

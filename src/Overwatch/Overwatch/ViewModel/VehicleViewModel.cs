@@ -81,6 +81,15 @@ namespace Overwatch.ViewModel
 				RaisePropertyChanged("Y");
 			} //from 0 to 1
 		}
+		public double Angle
+		{
+			get { return Vehicle.Angle; }
+			set
+			{
+				Vehicle.Angle = value;
+				RaisePropertyChanged("Angle");
+			}
+		}
 		public int BatteryVoltage
 		{
 			get { return Vehicle.BatteryVoltage; }

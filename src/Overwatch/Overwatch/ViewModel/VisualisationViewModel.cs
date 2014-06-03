@@ -96,7 +96,7 @@ namespace Overwatch.ViewModel
 				RemoveObject(o);
 			}
 			else
-				PlaceObject(x, y); //place a new object			
+				PlaceObject(x, y); //place a new object	
 		}
 
 		bool CanMouseUpExecute(MouseButtonEventArgs e)
