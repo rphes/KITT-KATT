@@ -23,7 +23,7 @@ We can now evaluate $\dot{\theta}$ by evaluating the limit
 	\frac{d}{dt}\theta(t) &= \lim_{dt \rightarrow 0} \frac{\theta(t+dt)-\theta(t)}{dt} \nonumber \\
 	&= \lim_{dt \rightarrow 0} \frac{\arctan{\left(\frac{v \sin{(\phi)}dt}{L}\right)}}{dt} \nonumber \\
 	&= \lim_{dt \rightarrow 0} \left(1+\frac{v^2 \sin{(\phi)}dt^2}{L^2}\right)^{-1}\frac{v \sin{(\phi)}}{L} \quad \quad \text{(L'H\^opital's rule)} \nonumber \\
-	&= \frac{v \sin{(\phi)}}{L}.
+	&= \frac{v \sin{(\phi)}}{L}. \label{eq:steering-derivative}
 \end{align}
 Let us now consider a car whose trajectory is given by
 \begin{align*}
@@ -64,9 +64,14 @@ Now note that
 	&=\frac{d}{dt} \alpha(t)=\frac{d}{dt} \theta(t) = \frac{v \sin{(\phi)}}{L}.
 \end{align*}
 Therefore
-\begin{equation}
-	R = \frac{L}{\sin{(\phi)}}.
+\begin{equation} \label{eq:steering-radius}
+	R = \frac{L}{\sin{(\phi)}}
 \end{equation}
+Combining Eq. \ref{eq:steering-derivative} and \ref{eq:steering-radius} yields
+\[
+	v=R \dot{\theta}=R \omega,
+\]
+which confirms the relationships.
 
 \section*{Control}
 
