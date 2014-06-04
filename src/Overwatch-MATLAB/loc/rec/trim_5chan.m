@@ -16,11 +16,10 @@ function [result] = trim_fast_5chan(data, num_ints)
     
     start_fast_time = tic();
     for i=1:size(data,2)
-        start(i) = find_start_fast(data,7,num_ints);
+        start(i) = find_start_fast(data(:,i),7,num_ints)
     end
     start = min(start);
     toc(start_fast_time);
-    % this may be optimized 
     
     result = data(start:start+10000,:);
 end
