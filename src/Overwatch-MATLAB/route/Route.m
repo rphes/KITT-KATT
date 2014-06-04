@@ -54,7 +54,7 @@ turning_radius = 1;  %De draaicirkel in meter.
             
       
     else                %Lijn is:  -slope*x + y - b = 0
-        slope = (y_loc - y0_loc)/(x_loc - x0_loc);
+        slope = (y_loc - y0_loc)/(x_loc - x0_loc)
         b = y_loc - slope*x_loc;
         punt_lijn = abs(-slope*waypoint_x + waypoint_y - b)/sqrt(slope^2 + 1);
         if x_loc > x0_loc
@@ -70,7 +70,7 @@ turning_radius = 1;  %De draaicirkel in meter.
 
     
 %Bereken de rechte stuk van het traject(l_recht).
-l_recht = ((punt_lijn - turning_radius)^2 - punt_lijn^2 + punt_punt^2 - turning_radius^2)^(1/2)
+l_recht = ((punt_lijn - turning_radius)^2 - punt_lijn^2 + punt_punt^2 - turning_radius^2)^(1/2);
 
 %----------------------------------------------------------------------------------------------------------------------------
 %----------------------------------------------------------------------------------------------------------------------------
@@ -124,11 +124,42 @@ l_recht = ((punt_lijn - turning_radius)^2 - punt_lijn^2 + punt_punt^2 - turning_
     
     
     
+    
+    
 %Bereken de RD_hoek
     
     if x_loc == x0_loc
-    else
-        perp_slope = -1/slope; 
+        c = y_loc;  % y = perp_lope*x + c
+        
+        %Snijpunt van deze lijn met een cirkel met straat R om de huidige
+        %locatie.
+        A = 1;
+        B = 2*(-x_loc);
+        C = (y_loc^2 - turning_radius^2 + x_loc^2 - 2*c*y_loc + c^2);
+        x1 = ( -B + sqrt(B^2-4*A*C) )/(2*A);
+        x2 = ( -B - sqrt(B^2-4*A*C) )/(2*A);
+        y1 = c;
+        y2 = c;
+        
+        %Kies 1 van deze snijpunten
+        if waypoint_x > x_loc
+            if x1 > x2
+                r_point = [x1, y1];
+            else 
+                r_point = [x2, y2];
+            end
+        else
+            if x1 < x2
+                r_point = [x1, y1];
+            else
+                r_point = [x2, y2];
+            end
+        end
+        
+        
+        
+    elseif slope ~= 0
+        perp_slope = -1/slope;
         c = y_loc  - perp_slope*x_loc;  % y = perp_lope*x + c
         
         %Snijpunt van deze lijn met een cirkel met straat R om de huidige
@@ -156,8 +187,31 @@ l_recht = ((punt_lijn - turning_radius)^2 - punt_lijn^2 + punt_punt^2 - turning_
                 r_point = [x2, y2];
             end
         end
-    end
         
+        
+        
+    else
+        x1 = x_loc;
+        x2 = x_loc;
+        y1 = y_loc + turning_radius;
+        y2 = y_loc - turning_radius;
+        if waypoint_y > y_loc
+            if y1 > y2
+                r_point = [x1, y1];
+            else 
+                r_point = [x2, y2];
+            end
+        else
+            if y1 < y2
+                r_point = [x1, y1];
+            else
+                r_point = [x2, y2];
+            end
+        end
+    
+        
+    end
+    
     
     
     %Bereken de hoek tussen de loodrechte lijn en de D_lijn
@@ -199,7 +253,6 @@ l_recht = ((punt_lijn - turning_radius)^2 - punt_lijn^2 + punt_punt^2 - turning_
     end 
     
 %Bereken afgelegde weg tijdens de draaiïng(l_krom).
-alpha_hoek = alpha*180/pi
 l_kromme = alpha*turning_radius;
 %----------------------------------------------------------------------------------------------------------------------------
 %----------------------------------------------------------------------------------------------------------------------------
@@ -236,7 +289,7 @@ y = [0, 1];
 
 
 cosbetha = dot(y,waypoint_v)/(norm(y)*norm(waypoint_v));
-ReferenceAngle = acos(cosbetha);
+ReferenceAngle = -acos(cosbetha);
 
 
 
