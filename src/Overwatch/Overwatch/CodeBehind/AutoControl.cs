@@ -134,8 +134,9 @@ namespace Overwatch
 			double[,] w = new double[2, Waypoints.Count];
 			for (int i = 0; i < Waypoints.Count(); i++)
 			{
-				w[0, i] = Waypoints[i].X;
-				w[1, i] = Waypoints[i].Y;
+				// Scale from canvas pixels to position in the real field
+				w[0, i] = (Waypoints[i].X / Data.CanvasWidth) * Data.FieldSize;
+				w[1, i] = (Waypoints[i].Y / Data.CanvasHeight) * Data.FieldSize;
 			}
 			Matlab.PutVariable("waypoints", w);
 		}
