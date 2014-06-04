@@ -6,7 +6,7 @@ using System.Text;
 namespace Overwatch
 {
 	/// <summary>
-	/// Holds all required data and methods for displaying a waypoint in the visualisation canvas
+	/// Holds all required data and methods for displaying a waypoint in the visualisation canvas.
 	/// </summary>
 	public class Waypoint
 	{

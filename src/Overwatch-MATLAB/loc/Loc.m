@@ -1,38 +1,27 @@
-%% This is a class calling all other functions in the right order
-
 classdef Loc
-    properties(GetAccess = 'public', SetAccess = 'private')
-        %alle eigenschappen hier
-        x_loc;
-        y_loc;
-%         mic_locations; overbodig
+    properties(GetAccess = public, SetAccess = private)
     end
     
     methods
-        %methods including constructor
-        function obj = Loc()
-            obj.x_loc=x_loc;
-            obj.y_loc=y_loc;
-            %class constructor
+        % Constructor
+        function Self = Loc()
         end
         
-%         function [x, y] = getLoc()
-%             x = x_loc;
-%             y = y_loc;
-%         end
-        function localize(R, mics, th)
-            % Makes use of the fact that it is overdetermined!
-            % Therefore, should not use 3D data
-            N = size(R,1);
+        % Processing function
+        function CurrentLocation = Localize(~, RangeDiff, MicrophoneLocations, Threshold)
+            % Makes use of the fact that the system is overdetermined!
+            % Therefore, using 3D is not advised.
+            N = size(RangeDiff, 1);
             Np = (N*N-N)/2;
-            pairs = zeros(Np,2);
-            D = size(mics,2);
+            Pairs = zeros(Np, 2);
+            D = size(MicrophoneLocations, 2);
 
+            % Pair generation
             ii = 1;
             for i = 1:N
                 for j = (i+1):N
-                    pairs(ii,1) = i;
-                    pairs(ii,2) = j;
+                    Pairs(ii,1) = i;
+                    Pairs(ii,2) = j;
                     ii = ii+1;
                 end
             end
@@ -40,42 +29,41 @@ classdef Loc
             % Generate A and B
             A = zeros(Np,2+N-1);
             for i = 1:Np
-                i1 = pairs(i,1);
-                i2 = pairs(i,2);
+                i1 = Pairs(i,1);
+                i2 = Pairs(i,2);
 
-                A(i,1:D) = 2*(mics(i2,:) - mics(i1,:));
-                A(i,D+(i2-1)) = -2*R(i2,i1);
+                A(i,1:D) = 2*(MicrophoneLocations(i2,:) - MicrophoneLocations(i1,:));
+                A(i,D+(i2-1)) = -2*RangeDiff(i2,i1);
             end
 
             b = zeros(Np,1);
             for i = 1:Np
-                i1 = pairs(i,1);
-                i2 = pairs(i,2);
+                i1 = Pairs(i,1);
+                i2 = Pairs(i,2);
 
-                b(i) = R(i1,i2)^2-norm(mics(i1,:),2)^2+norm(mics(i2,:),2)^2;
+                b(i) = RangeDiff(i1,i2)^2-norm(MicrophoneLocations(i1,:),2)^2+norm(MicrophoneLocations(i2,:),2)^2;
             end
 
             % Remove possible worst column
-            smallest_value = 0;
-            smallest_id = [];
+            SmallestValue = 0;
+            SmallestID = [];
 
             for i = 1:size(A,2)
-                value = sum(abs(A(:,i)));
+                Value = sum(abs(A(:,i)));
 
-                if value < th
-                    if (value < smallest_value) || (isempty(smallest_id))
-                        smallest_value = value;
-                        smallest_id = i;
+                if Value < Threshold
+                    if (Value < SmallestValue) || (isempty(SmallestID))
+                        SmallestValue = Value;
+                        SmallestID = i;
                     end
                 end
             end
 
-            A(:,smallest_id) = [];
+            A(:, SmallestID) = [];
 
             % Least squares approximation
-            loc = (A'*A)^-1*A'*b;
-            loc = loc(1:D)';
-            
+            CurrentLocation = (A'*A)^-1*A'*b;
+            CurrentLocation = CurrentLocation(1:D)';
         end
     end
 end

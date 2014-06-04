@@ -4,14 +4,14 @@ using System.Diagnostics;
 namespace Overwatch.Tools
 {
 	/// <summary>
-	/// Provides methods to notify the gui of any change in viewmodel data
+	/// Provides methods to notify the gui of any change in viewmodel data.
 	/// </summary>
 	public abstract class ObservableObject : INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		/// <summary>
-		/// Notifies the gui of a changed property
+		/// Notifies the gui of a changed property.
 		/// </summary>
 		/// <param name="e"></param>
 		protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -24,9 +24,9 @@ namespace Overwatch.Tools
 		}
 
 		/// <summary>
-		/// Wraps the OnPropertyChanged event, to add a name verification step
+		/// Wraps the OnPropertyChanged event, to add a name verification step.
 		/// </summary>
-		/// <param name="propertyName">The name of the changed property</param>
+		/// <param name="propertyName">The name of the changed property.</param>
 		protected void RaisePropertyChanged(string propertyName)
 		{
 			VerifyPropertyName(propertyName);
@@ -34,9 +34,9 @@ namespace Overwatch.Tools
 		}
 
 		/// <summary>
-		/// Provides a public method to update the given data binding
+		/// Provides a public method to update the given data binding.
 		/// </summary>
-		/// <param name="propertyName">The name of the binding property to update</param>
+		/// <param name="propertyName">The name of the binding property to update.</param>
 		public void UpdateBinding(string propertyName)
 		{
 			RaisePropertyChanged(propertyName);

@@ -1,0 +1,79 @@
+%!TEX program = xelatex 
+\documentclass[11pt,titlepage]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+
+\begin{document}
+
+\newcommand{\mat}[1]{\mathbf{#1}}
+
+\usetikzlibrary{shapes,arrows}
+\tikzstyle{block} = [
+	rectangle,
+	draw,
+	fill=blue!20, 
+    text width=6em, 
+    text centered,
+    rounded corners,
+    minimum height=4em
+]
+\tikzstyle{every edge} = [
+	draw,
+	>=triangle 90
+]
+\tikzstyle{line} = [
+	draw,
+	>=triangle 90
+]
+
+\begin{figure}[H]
+	\hbox{
+	\hspace{-1.8cm}
+	\centering
+	\begin{tikzpicture}[node distance = 5cm, auto]
+		% Nodes
+		\node [block] (tdoa) {TDOA};
+		\node [block, right of=tdoa] (loc) {Localization};
+		\node [block, right of=loc] (angle) {Angle};
+		\node [block, below of=loc] (route) {Route};
+		\node [block, below of=route] (ang) {Angle controller};
+		\node [block, left of=ang] (dist) {Distance controller};
+		\node [block, below of=dist] (speedmap) {Speed mapping};
+		\node [block, right of=speedmap] (steermap) {Steer mapping};
+
+		% Edges
+		\path (tdoa) edge [->] node [anchor=center,fill=white] {TDOA's} (loc);
+		\path [line, ->, black] (angle.south) |- node [anchor=center,pos=0.25,fill=white] {Angle} (route.east);
+		\path [line, ->, black] (10,-5) |- (ang.east);
+		\path [line, ->, black] (10,-10) |- (2.5,-13.5) |- (2.5, -15) -- (speedmap);
+		\path [line, ->] ([yshift=-1.5cm]route) -| node [anchor=center,pos=0.79,fill=white] {Distance} ([xshift=0.5cm]dist.north);
+		\path [line, ->] (route) -- node [anchor=center,fill=white] {Reference angle} (ang);
+		\path [line, ->] (dist) -- node [anchor=center,fill=white] {Speed excitation} (speedmap);
+		\path [line, ->] (speedmap) -- node [anchor=center,fill=white] {Drive PWM} (0,-17);
+		\path [line, ->] (ang) -- node [anchor=center,fill=white] {Steer excitation} (steermap);
+		\path [line, ->] (steermap) -- node [anchor=center,fill=white] {Steer PWM} (5, -17);
+		\path [line, ->] (-2,-5) -| node [pos=0] {Reference distance} ([xshift=-0.5cm]dist.north);
+		\path [line, ->] (-2,-4) -- node [pos=0] {Distance sensor values} (0.5,-4) |- (route.west);
+		\path [line, ->] (-2,-3) -- node [pos=0] {Waypoints} (1.5,-3) |- ([yshift=0.5cm]route.west);
+		\path [line, ->] (-2,-2) -- node [pos=0] {Battery voltage} (2.5,-2) |- (dist.east);
+		\path [line, ->] (2.5,-10) -- (ang.west);
+		\path [line, ->] (10,-13.5) -- (10,-17);
+		\path [line, ->] (8,0) -- (8, -17);
+		\path [line, ->] (dist.west) -| node [anchor=center,pos=0.68,fill=white] {Speed} (-2,-17);
+		\path (loc) edge [->] node [anchor=center,fill=white] {Location} (angle);
+		\path (loc) edge [->] node [anchor=center,fill=white] {Location} (route);
+
+
+		% Rectangles
+		\draw [dashed,red] (-4,-1) rectangle (0,-5.5);
+		\node [] at (-2,-6) {\textbf{From C\#}};
+		\draw [dashed,red] (-3,-16) rectangle (11,-17.1);
+		\node [fill=white] at (10,-15.5) {\textbf{To C\#}};
+	\end{tikzpicture}
+	}
+	\caption{Overview}
+\end{figure}
+
+\end{document}

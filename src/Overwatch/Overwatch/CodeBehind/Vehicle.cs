@@ -4,7 +4,7 @@ using System.Windows;
 namespace Overwatch
 {
 	/// <summary>
-	/// Holds all vehicle-specific data
+	/// Holds all vehicle-specific data.
 	/// </summary>
 	public class Vehicle
 	{

@@ -7,7 +7,7 @@ using System.Windows.Input;
 namespace Overwatch.ViewModel
 {
 	/// <summary>
-	/// Provides binding data and commands for all communication-related gui-elements, based on an instance of the Communication class
+	/// Provides binding data and commands for all communication-related gui-elements, based on an instance of the Communication class.
 	/// </summary>
 	public class CommunicationViewModel : ObservableObject
 	{
@@ -68,7 +68,7 @@ namespace Overwatch.ViewModel
 
 		#region Construction
 		/// <summary>
-		/// Constructs a default instance of the CommunicationViewModel class
+		/// Constructs a default instance of the CommunicationViewModel class.
 		/// </summary>
 		public CommunicationViewModel()
 		{
@@ -79,7 +79,7 @@ namespace Overwatch.ViewModel
 
 		#region Event handling
 		/// <summary>
-		/// Sends a notification to the gui whenever base connection parameters have changed
+		/// Sends a notification to the gui whenever base connection parameters have changed.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -93,13 +93,13 @@ namespace Overwatch.ViewModel
 		#region Commands
 		#region Connect
 		/// <summary>
-		/// Connects to the vehicle via a serial connection
+		/// Connects to the vehicle via a serial connection.
 		/// </summary>
 		void ConnectExecute()
 		{
 			if (!Communication.SerialPort.IsOpen)
 			{
-				//Connect
+				// Connect
 				Communication.SerialPort.PortName = (string)SelectedSerialPort;
 
 				if (Communication.OpenPort() != 0)
@@ -109,9 +109,13 @@ namespace Overwatch.ViewModel
 			}
 			else
 			{
-				//Disconnect
+				// Disconnect
 				Communication.SerialPort.Close();
 				RaisePropertyChanged("SerialPorts");
+
+				// Disable autonomous control if needed
+				if (Data.MainViewModel.AutoControlViewModel.Enabled)
+					Data.MainViewModel.AutoControlViewModel.Toggle();
 			}
 
 			RaisePropertyChanged("ConnectButtonString");
@@ -132,7 +136,7 @@ namespace Overwatch.ViewModel
 		#endregion
 		#region Toggle beacon
 		/// <summary>
-		/// Toggles the vehicle's audio beacon
+		/// Toggles the vehicle's audio beacon.
 		/// </summary>
 		void ToggleBeaconExecute()
 		{
