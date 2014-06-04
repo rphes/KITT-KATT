@@ -8,7 +8,7 @@ classdef Route
         end
         
         % Determine route
-        function [CurrentDistance, ReferenceAngle] = DetermineRoute(Self, CurrentLocation, Waypoints, SensorValues)
+        function [CurrentDistance, ReferenceAngle] = DetermineRoute(Self, CurrentLocation, CurrentAngle, Waypoints, SensorValues)
             CurrentDistance = 0;
             ReferenceAngle = 0;
         end

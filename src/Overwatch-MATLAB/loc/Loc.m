@@ -16,6 +16,7 @@ classdef Loc
             Pairs = zeros(Np, 2);
             D = size(MicrophoneLocations, 2);
 
+            % Pair generation
             ii = 1;
             for i = 1:N
                 for j = (i+1):N

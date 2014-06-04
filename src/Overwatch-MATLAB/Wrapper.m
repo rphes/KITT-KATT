@@ -8,6 +8,7 @@ classdef Wrapper
         
         % Localization
         loc
+        ang
         
         % Controlling
         ssSteer
@@ -29,7 +30,8 @@ classdef Wrapper
             Self.tdoa = TDOA();
             Self.route = Route();
             Self.loc = Loc();
-            Self.ssSteer = SsSteer(InitialAngle);
+            Self.ang = Angle(InitialLocation, InitialAngle);
+            Self.ssSteer = SsSteer();
             Self.ssDrive = SsDrive();
             Self.mapSteer = MapSteer();
             Self.mapDrive = MapDrive();
@@ -67,14 +69,17 @@ classdef Wrapper
                 end
             end
             
+            % Determine current angle
+            CurrentAngle = Self.ang.DetermineAngle(Self.currentLocation);
+            
             % Information processing chain
             % Process route
-            [CurrentDistance, ReferenceAngle] = Self.route.DetermineRoute(Self.currentLocation, waypoints, [sensor_l sensor_r]);
+            [CurrentDistance, ReferenceAngle] = Self.route.DetermineRoute(Self.currentLocation, CurrentAngle, waypoints, [sensor_l sensor_r]);
             
             % Call controllers
             ReferenceDistance = 0;
             [CurrentSpeed, DriveExcitation] = Self.ssDrive.Iterate(CurrentDistance, ReferenceDistance, battery);
-            [CurrentAngle, SteerExcitation] = Self.ssSteer.Iterate(Self.currentLocation, ReferenceAngle, battery);
+            [SteerExcitation] = Self.ssSteer.Iterate(CurrentAngle, ReferenceAngle, battery);
             
             % Excitation mapping
             [PWMDrive] = Self.mapDrive.Map(DriveExcitation, CurrentAngle);
