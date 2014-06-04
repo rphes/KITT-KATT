@@ -4,7 +4,8 @@ function [start] = find_start_fast(data, threshold, number_of_intervals)
     % If the standard deviation of a particular interval std(i) is more than
     % threshold*std(i-1), the start has been found.
     % The interval length can also be specified
-    % Recommended settings: threshold: 7, interval_length: 5
+    % Recommended settings: threshold: 7, interval_length: >100 (depending
+    % on the number of samples in the data)
     std_interval=[];
     mean_interval=[];
     
