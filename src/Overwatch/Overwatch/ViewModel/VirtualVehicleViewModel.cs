@@ -14,15 +14,15 @@ namespace Overwatch.ViewModel
 		public Vehicle Vehicle { get; protected set; }
 
 		// Position
-		public double X { get { return Vehicle.X * Data.CanvasSize - Width / 2; } set { } }
-		public double Y { get { return Vehicle.Y * Data.CanvasSize - Height / 2; } set { } }
+		public double X { get { return Vehicle.X * Data.CanvasWidth - Width / 2; } set { } }
+		public double Y { get { return Vehicle.Y * Data.CanvasHeight - Height / 2; } set { } }
 
 		// Rotation
 		public double Angle { get { return Vehicle.Angle; } }
 		
 		// Dimensions
-		public double Width { get { return Data.CanvasSize / Data.FieldSize * Vehicle.Width * 5; } }
-		public double Height { get { return Data.CanvasSize / Data.FieldSize * Vehicle.Height *5; } }
+		public double Width { get { return Data.CanvasWidth / Data.FieldSize * Vehicle.Width * 5; } }
+		public double Height { get { return Data.CanvasHeight / Data.FieldSize * Vehicle.Height *5; } }
 
 		// Graphics
 		public BitmapImage Bitmap { get; set; }

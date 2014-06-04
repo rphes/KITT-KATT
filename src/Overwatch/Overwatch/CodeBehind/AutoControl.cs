@@ -50,11 +50,46 @@ namespace Overwatch
 
 			// Hide or show MATLAB
 			if (Enabled)
+			{
 				Matlab.Show();
+				InitMatlabScripts();
+			}
 			else
 				Matlab.Hide();
 
 			return Enabled;
+		}
+
+		/// <summary>
+		/// Initialise MATLAB to the correct directory and run the initialisation script.
+		/// </summary>
+		public void InitMatlabScripts()
+		{
+			object o;
+
+			// Get scripts location and try to change MATLAB's directory to it
+			string loc = Data.SrcDirectory + "\\Overwatch-MATLAB";
+
+			try
+			{
+				Matlab.Instance.Feval("cd", 0, out o, loc);
+			}
+			catch (Exception exc)
+			{
+				System.Diagnostics.Debug.WriteLine(exc.ToString());
+			}
+
+			o = null; // Has to be reset for some reason
+
+			// Run the init.m script
+			try
+			{		
+				Matlab.Instance.Feval("init", 0, out o);
+			}
+			catch (Exception exc)
+			{
+				System.Diagnostics.Debug.WriteLine(exc.ToString());
+			}
 		}
 
 		/// <summary>
@@ -122,7 +157,7 @@ namespace Overwatch
 			Matlab.PutVariable("battery", Vehicle.BatteryVoltage);
 
 			// Run the iterative function in MATLAB
-			object success = false;			
+			object success = null;			
 			try
 			{
 				Matlab.Instance.Feval("loop", 1, out success);
@@ -133,15 +168,15 @@ namespace Overwatch
 			}
 
 			// Get relevant newly calculated data from MATLAB
-			if ((bool)success)
+			if (success != null)
 			{
-				VehicleViewModel.X = (double)Matlab.GetVariable("loc_x");
-				VehicleViewModel.Y = (double)Matlab.GetVariable("loc_y");
+				VehicleViewModel.X = (double)Matlab.GetVariable("loc_x") / Data.FieldSize;
+				VehicleViewModel.Y = (double)Matlab.GetVariable("loc_y") / Data.FieldSize;
 				VehicleViewModel.Angle = (double)Matlab.GetVariable("angle");
 				Vehicle.Velocity = (double)Matlab.GetVariable("speed");
-				int PWMSteer = (int)Matlab.GetVariable("pwm_steer");
-				int PWMDrive = (int)Matlab.GetVariable("pwm_drive");
-				Data.MainViewModel.CommunicationViewModel.Communication.DoDrive(PWMSteer, PWMDrive);
+				double PWMSteer = (double)Matlab.GetVariable("pwm_steer");
+				double PWMDrive = (double)Matlab.GetVariable("pwm_drive");
+				Data.MainViewModel.CommunicationViewModel.Communication.DoDrive((int)PWMSteer, (int)PWMDrive);
 			}
 
 			// Request new status

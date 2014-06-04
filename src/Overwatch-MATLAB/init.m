@@ -7,9 +7,6 @@ InitialAngle = 0;
 MicrophoneLocations = [];
 wrapper = Wrapper(InitialLocation, InitialAngle, MicrophoneLocations);
 
-% Create anonymous function for C# to call
-loop = @() wrapper.Loop();
-
 % Define global variables for communication
 % Global variables set by C#
 global sensor_l

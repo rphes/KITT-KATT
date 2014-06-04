@@ -1,5 +1,7 @@
 ﻿using Overwatch.Tools;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
@@ -13,11 +15,40 @@ namespace Overwatch.ViewModel
 	public class VisualisationViewModel : ObservableObject
 	{
 		#region Data members
-		public int CanvasSize { get { return Data.CanvasSize; } }
+		public int CanvasWidth { get { return Data.CanvasWidth; } }
+		public int CanvasHeight { get { return Data.CanvasHeight; } }
 
-		public VirtualVehicleViewModel KITT { get; protected set; }
+		//public FieldViewModel Field { get; set; }
 
-		public BindingList<IVisualisationObject> Objects { get; set; }
+		private VirtualVehicleViewModel _kitt;
+		public VirtualVehicleViewModel KITT
+		{
+			get { return _kitt; }
+			protected set
+			{
+				_kitt = value;
+				RaisePropertyChanged("Objects");
+			}
+		}
+
+		public ObservableCollection<WaypointViewModel> Waypoints { get; set; }
+
+		//public ObservableCollection<MicrophoneViewModel> Microphones { get; set; }
+
+		public List<IVisualisationObject> Objects
+		{
+			get 
+			{
+				if (Waypoints == null /*|| Microphones == null*/ || KITT == null)
+					return null;
+
+				List<IVisualisationObject> l = new List<IVisualisationObject>(Waypoints);
+				//l.AddRange(Microphones);
+				l.Add(KITT);
+				//l.Add(Field);
+				return l;
+			} 
+		}
 		#endregion
 
 		#region Construction
@@ -26,7 +57,8 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		public VisualisationViewModel()
 		{
-			Objects = new BindingList<IVisualisationObject>();
+			// Add the field to our visualisation canvas
+			//Field = new FieldViewModel();
 
 			// Add KITT to our visualisation canvas
 			KITT = new VirtualVehicleViewModel(Data.MainViewModel.VehicleViewModel.Vehicle, new Uri(Directory.GetCurrentDirectory() + @"\Content\KITT.png"));
@@ -34,7 +66,10 @@ namespace Overwatch.ViewModel
 			Data.MainViewModel.VehicleViewModel.Vehicle.X = 0.5;
 			Data.MainViewModel.VehicleViewModel.Vehicle.Y = 0.5;
 
-			Objects.Add(KITT);
+			Waypoints = new ObservableCollection<WaypointViewModel>();
+			Waypoints.CollectionChanged += ObjectsChanged;
+			//Microphones = new ObservableCollection<MicrophoneViewModel>();
+			//Microphones.CollectionChanged += ObjectsChanged;
 		}
 		#endregion
 
@@ -52,7 +87,7 @@ namespace Overwatch.ViewModel
 			{
 				// Add a waypoint
 				WaypointViewModel w = Data.MainViewModel.AutoControlViewModel.AutoControl.AddWaypoint(x, y);
-				Objects.Add(w);
+				Waypoints.Add(w);
 			}
 		}
 
@@ -65,10 +100,23 @@ namespace Overwatch.ViewModel
 			if ((o as WaypointViewModel) != null)
 			{
 				// Remove a waypoint
-				Data.MainViewModel.AutoControlViewModel.AutoControl.RemoveWaypoint((WaypointViewModel)o);
+				WaypointViewModel wvm = (WaypointViewModel)o;
+				Data.MainViewModel.AutoControlViewModel.AutoControl.RemoveWaypoint(wvm);
+				Waypoints.Remove(wvm);
 			}
 
-			Objects.Remove(o);
+		}
+		#endregion
+
+		#region Event handling
+		/// <summary>
+		/// Notifies the gui that the objects in the visualisation canvas have changed. 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void ObjectsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			RaisePropertyChanged("Objects");
 		}
 		#endregion
 

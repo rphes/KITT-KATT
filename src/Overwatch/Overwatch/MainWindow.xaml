@@ -23,7 +23,7 @@
 					<ItemsControl ItemsSource="{Binding Path=Objects}">
 						<ItemsControl.ItemsPanel>
 							<ItemsPanelTemplate>
-								<Canvas Width="{Binding Path=CanvasSize}" Height="{Binding Path=CanvasSize}" tools:MouseBehaviour.MouseUpCommand="{Binding MouseUp}" Background="White">
+								<Canvas Width="{Binding Path=CanvasWidth}" Height="{Binding Path=CanvasHeight}" tools:MouseBehaviour.MouseUpCommand="{Binding MouseUp}" Background="White">
 									<Canvas.LayoutTransform>
 										<ScaleTransform ScaleX="1" ScaleY="-1"/>
 									</Canvas.LayoutTransform>
