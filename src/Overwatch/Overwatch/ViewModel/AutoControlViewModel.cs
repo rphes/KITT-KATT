@@ -76,7 +76,8 @@ namespace Overwatch.ViewModel
 				Toggle();
 
 			return Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen &&
-				AutoControl.Matlab.Running;
+				AutoControl.Matlab.Running &&
+				Data.SrcDirectory != null;
 		}
 
 		public ICommand ToggleAutoControl { get { return new RelayCommand(ToggleAutoControlExecute, CanToggleAutoControlExecute); } }

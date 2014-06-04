@@ -1,4 +1,6 @@
 ﻿using Overwatch.ViewModel;
+using System.IO;
+using System.Windows;
 
 namespace Overwatch
 {
@@ -11,6 +13,39 @@ namespace Overwatch
 		// Field
 		public static int CanvasSize { get { return 700; } } //700 px default
 		public static int FieldSize { get { return 10; } } //10 meter
+		#endregion
+
+		#region Global parameters
+		private static bool findSrcDirectoryFailed = false;
+		private static DirectoryInfo _srcDirectory;
+		public static DirectoryInfo SrcDirectory
+		{
+			get
+			{
+				if (_srcDirectory == null && !findSrcDirectoryFailed)
+				{
+					// Find current directory
+					string dir = Directory.GetCurrentDirectory();
+					// Try to find containing "src" directory
+					int i = dir.IndexOf("src");
+					if (i == -1)
+					{
+						// Could not find "src" directory, make errors
+						MessageBox.Show("It appears you are not running Overwatch from a directory inside the project's src folder, please run it from the correct location.", "src folder not found!", MessageBoxButton.OK, MessageBoxImage.Error);
+						findSrcDirectoryFailed = true;
+						_srcDirectory = null;
+					}
+					else
+					{
+						// Found "src" directory, save and return
+						dir = dir.Substring(0, i + 3);
+						_srcDirectory = new DirectoryInfo(dir);
+					}
+				}
+
+				return _srcDirectory; 
+			}
+		} 
 		#endregion
 
 		#region Modules
