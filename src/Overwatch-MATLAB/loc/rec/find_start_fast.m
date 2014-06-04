@@ -8,8 +8,8 @@ function [start] = find_start_fast(data, threshold, number_of_intervals)
     % on the number of samples in the data)
     std_interval=[];
     mean_interval=[];
-    
-    step_size=floor(length(data)/number_of_intervals);
+    start=0;
+    step_size=floor(length(data)/number_of_intervals)-1;
     for i=1:number_of_intervals
         interval_start=1+(i-1)*step_size;
         std_interval(i)=std(data(interval_start:interval_start+step_size));
@@ -18,5 +18,8 @@ function [start] = find_start_fast(data, threshold, number_of_intervals)
             start=interval_start;
             return
         end
+    end
+    if (start == 0)
+        start=1;
     end
 end
