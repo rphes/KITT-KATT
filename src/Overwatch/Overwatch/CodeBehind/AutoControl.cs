@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Overwatch.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Overwatch.ViewModel;
 
 namespace Overwatch
 {
@@ -45,8 +45,10 @@ namespace Overwatch
 		/// <returns>True if autocontrol is enabled, false if disabled.</returns>
 		public bool Toggle()
 		{
+			// Flip the switch
 			Enabled = !Enabled;
 
+			// Hide or show MATLAB
 			if (Enabled)
 				Matlab.Show();
 			else
@@ -91,8 +93,9 @@ namespace Overwatch
 		/// <summary>
 		/// Push a m*2 double containing all waypoint locations to MATLAB.
 		/// </summary>
-		private void pushWaypointsToMatlab()
+		void pushWaypointsToMatlab()
 		{
+			// Parse the Waypoint list into a m*2 double
 			double[,] w = new double[2, Waypoints.Count];
 			for (int i = 0; i < Waypoints.Count(); i++)
 			{
