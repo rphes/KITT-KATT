@@ -72,7 +72,6 @@ classdef Wrapper
             % Determine current angle
             CurrentAngle = Self.ang.DetermineAngle(Self.currentLocation);
             
-            % Information processing chain
             % Process route
             [CurrentDistance, ReferenceAngle] = Self.route.DetermineRoute(Self.currentLocation, CurrentAngle, waypoints, [sensor_l sensor_r]);
             
