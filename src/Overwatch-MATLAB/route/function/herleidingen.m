@@ -55,6 +55,9 @@ alpha = PI/2 - theta - omega
 %Onder de loodrechte lijn
 theta2 = atan(G/C);
 omega2 = acos(R/D);
-alpha2 = 2*PI - theta - omega
+alpha2 = 2*PI - theta2 - omega2
 
+if atan(G/C) ~= atan(C/G)
+    AAHHHHH = 0
+end
 
