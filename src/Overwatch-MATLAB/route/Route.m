@@ -120,7 +120,7 @@ l_recht = ((punt_lijn - turning_radius)^2 - punt_lijn^2 + punt_punt^2 - turning_
     end
     costheta = dot(vector_beweeg_richting,vector_waypoint)/(norm(vector_beweeg_richting)*norm(vector_waypoint));
     hoek_theta = acos(costheta);
-    theta = hoek_theta*180/pi
+    theta = hoek_theta*180/pi;
     
     
     
@@ -250,7 +250,7 @@ l_recht = ((punt_lijn - turning_radius)^2 - punt_lijn^2 + punt_punt^2 - turning_
     
     cosgamma = dot(vector_RD,vector_RP)/(norm(vector_RD)*norm(vector_RP));
     hoek_gamma = acos(cosgamma);
-    gamma = hoek_gamma*180/pi
+    gamma = hoek_gamma*180/pi;
  
     r_punticos = r_point;
 
@@ -271,7 +271,7 @@ l_recht = ((punt_lijn - turning_radius)^2 - punt_lijn^2 + punt_punt^2 - turning_
     end 
     
 %Bereken afgelegde weg tijdens de draaiïng(l_krom).
-hoek_alpha = alpha*180/pi
+hoek_alpha = alpha*180/pi;
 l_kromme = alpha*turning_radius;
 %----------------------------------------------------------------------------------------------------------------------------
 %----------------------------------------------------------------------------------------------------------------------------

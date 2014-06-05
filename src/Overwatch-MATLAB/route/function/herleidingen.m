@@ -57,7 +57,7 @@ theta2 = atan(G/C);
 omega2 = acos(R/D);
 alpha2 = 2*PI - theta2 - omega2
 
-if atan(G/C) ~= atan(C/G)
+if atan(G/C) == -atan(G/(P_L-R))
     AAHHHHH = 0
 end
 
