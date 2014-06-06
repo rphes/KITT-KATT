@@ -57,12 +57,17 @@ classdef Wrapper
             global pwm_drive
             
             % Handle TDOA determination
+            DoObserve = 0;
+            
             if ~Self.tdoa.IsBusy()
                 Self.tdoa.Start();
             else
                 if Self.tdoa.IsReady()
                     % Get new location
                     Self.currentLocation = Self.loc.Localize(TDOA.GetRangeDiffMatrix());
+                    
+                    % A new location is determined, we can observe
+                    DoObserve = 1;
                     
                     % Start new TDOA determination
                     Self.tdoa.Start();
@@ -77,7 +82,7 @@ classdef Wrapper
             
             % Call controllers
             ReferenceDistance = 0;
-            [CurrentSpeed, DriveExcitation] = Self.ssDrive.Iterate(CurrentDistance, ReferenceDistance, battery);
+            [DriveExcitation, ~, ~] = Self.ssDrive.Iterate(CurrentDistance, ReferenceDistance, battery, DoObserve);
             [SteerExcitation] = Self.ssSteer.Iterate(CurrentAngle, ReferenceAngle, battery);
             
             % Excitation mapping

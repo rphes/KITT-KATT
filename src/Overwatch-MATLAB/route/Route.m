@@ -270,7 +270,7 @@ l_recht = ((punt_lijn - turning_radius)^2 - punt_lijn^2 + punt_punt^2 - turning_
         end
     end 
     
-%Bereken afgelegde weg tijdens de draaiïng(l_krom).
+%Bereken afgelegde weg tijdens de draaiing(l_krom).
 hoek_alpha = alpha*180/pi;
 l_kromme = alpha*turning_radius;
 %----------------------------------------------------------------------------------------------------------------------------
