@@ -21,6 +21,7 @@ for j = 0:100
     
     [distance, Ref_angle] = DetermineRoute(s, Oldlocation, Currentlocation, waypoints);
     if j == 0 
+        constant = distance;
         distance_vector = [distance];
         ref_angle_vector = [Ref_angle];
     else
@@ -28,6 +29,9 @@ for j = 0:100
         ref_angle_vector = [ref_angle_vector Ref_angle];
     end
 end
+
+slope1 = (distance - constant)/(100*delta_a)
+
 
 figure(1)
 
@@ -40,7 +44,7 @@ plot(ref_angle_vector*180/pi);
 
 
 
-clc; clear all;
+clear all;
 %-------------------------------------------------------------------------------------------
 %Test: Als de auto naar links rijdt en een bocht met de klok mee maakt
 %-------------------------------------------------------------------------------------------
@@ -63,6 +67,7 @@ for j = 0:100
     
     [distance, Ref_angle] = DetermineRoute(s, Oldlocation, Currentlocation, waypoints);
     if j == 0 
+        constant = distance;
         distance_vector = [distance];
         ref_angle_vector = [Ref_angle];
     else
@@ -71,6 +76,7 @@ for j = 0:100
     end
 end
 
+slope2 = (distance - constant)/(100*delta_a)
 
 figure(2)
 
