@@ -12,6 +12,9 @@ classdef Configuration
         DriveMapTOC = -0.0114;
         DriveMapOffset = 6;
         
+        CarTurningRadius = 0.65;
+        CarLength = 0.35;
+        
         % Measured turning radius: 0.65 m
         % Measured length of car: 0.35 m
         % PWM range: 100 (utmost left) - 150 (middle) - 200 (utmost right)
@@ -20,6 +23,8 @@ classdef Configuration
         SteerMapBound = 0;
         SteerMapFOC = 50/asin(0.35/0.65);
         SteerMapTOC = 0;
+        
+        
     end
 end
 
