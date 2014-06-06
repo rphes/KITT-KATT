@@ -9,17 +9,17 @@ classdef MapSteer < handle
         
         % Mapping
         function [PWMSteer] = Map(~, SteerExcitation)
-            if abs(SteerExcitation) < Configuration.MapSteerBound
+            if abs(SteerExcitation) < Configuration.SteerMapBound
                 PWMSteerRaw = 150;
             else
                 if SteerExcitation > 0
                     PWMSteerRaw = 150 + ...
-                        Configuration.MapSteerFOC*(SteerExcitation - Configuration.MapSteerBound) + ...
-                        Configuration.MapSteerTOC*(SteerExcitation - Configuration.MapSteerBound)^3;
+                        Configuration.SteerMapFOC*(SteerExcitation - Configuration.SteerMapBound) + ...
+                        Configuration.SteerMapFOC*(SteerExcitation - Configuration.SteerMapBound)^3;
                 else
                     PWMSteerRaw = 150 + ...
-                        Configuration.MapSteerFOC*(SteerExcitation + Configuration.MapSteerBound) + ...
-                        Configuration.MapSteerTOC*(SteerExcitation + Configuration.MapSteerBound)^3;
+                        Configuration.SteerMapFOC*(SteerExcitation + Configuration.SteerMapBound) + ...
+                        Configuration.SteerMapFOC*(SteerExcitation + Configuration.SteerMapBound)^3;
                 end
             end
         
