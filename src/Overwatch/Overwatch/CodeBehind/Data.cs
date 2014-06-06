@@ -1,14 +1,19 @@
 ﻿using Overwatch.ViewModel;
+using System;
 using System.IO;
 using System.Windows;
 
 namespace Overwatch
 {
+	public delegate void SrcDirectoryNotFoundEventHandler(object sender, EventArgs e);
+
 	/// <summary>
 	/// Provides access to all modules, as well as some global constants and methods.
 	/// </summary>
 	public static class Data
 	{
+		public static event SrcDirectoryNotFoundEventHandler SrcDirectoryNotFound;
+
 		#region Global constants
 		// Field
 		public static int CanvasWidth { get { return 700; } }
@@ -17,13 +22,13 @@ namespace Overwatch
 		#endregion
 
 		#region Global parameters
-		private static bool findSrcDirectoryFailed = false;
+		public static bool FindSrcDirectoryFailed = false;
 		private static DirectoryInfo _srcDirectory;
 		public static DirectoryInfo SrcDirectory
 		{
 			get
 			{
-				if (_srcDirectory == null && !findSrcDirectoryFailed)
+				if (_srcDirectory == null && !FindSrcDirectoryFailed)
 				{
 					// Find current directory
 					string dir = Directory.GetCurrentDirectory();
@@ -31,9 +36,11 @@ namespace Overwatch
 					int i = dir.IndexOf("src");
 					if (i == -1)
 					{
-						// Could not find "src" directory, make errors
-						MessageBox.Show("It appears you are not running Overwatch from a directory inside the project's src folder, please run it from the correct location.", "src folder not found!", MessageBoxButton.OK, MessageBoxImage.Error);
-						findSrcDirectoryFailed = true;
+						if (SrcDirectoryNotFound != null && !FindSrcDirectoryFailed)
+						{
+							FindSrcDirectoryFailed = true;
+							SrcDirectoryNotFound(null, new EventArgs());
+						}
 						_srcDirectory = null;
 					}
 					else
