@@ -17,20 +17,35 @@ namespace Overwatch.ViewModel
 			set { _autocontrol = value; }
 		}
 
-		public bool Enabled
+		public bool ObservationEnabled
 		{
-			get { return AutoControl.Enabled; }
-			set { AutoControl.Enabled = value; }
+			get { return AutoControl.ObservationEnabled; }
 		}
 		
-		public string AutoControlButtonString
+		public string ObservationButtonString
 		{
 			get
 			{
-				if (Enabled)
-					return "Disable AutoControl";
+				if (ObservationEnabled)
+					return "Disable Observation";
 				else
-					return "Enable AutoControl";
+					return "Enable Observation";
+			}
+		}
+
+		public bool ControlEnabled
+		{
+			get { return AutoControl.ControlEnabled; }
+		}
+
+		public string ControlButtonString
+		{
+			get
+			{
+				if (ControlEnabled)
+					return "Disable Control";
+				else
+					return "Enable Control";
 			}
 		}
 
@@ -50,37 +65,66 @@ namespace Overwatch.ViewModel
 		#endregion
 
 		#region Methods
+		/// <summary>
+		/// Toggle both observation and control at the same time.
+		/// </summary>
 		public void Toggle()
 		{
-			// Toggle autonomous control and send initial status request if enabled
-			if (AutoControl.Toggle())
-				Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
-
-			RaisePropertyChanged("AutoControlButtonString");
+			ToggleObservationExecute();
+			ToggleControlExecute();
 		}
 		#endregion
 
 		#region Commands
-		#region Toggle AutoControl
+		#region Toggle Observation
 		/// <summary>
-		/// Toggles autonomous vehicle control.
+		/// Toggles vehicle observation.
 		/// </summary>
-		void ToggleAutoControlExecute()
+		void ToggleObservationExecute()
 		{
-			Toggle();
+			if (AutoControl.ToggleObservation())
+				Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
+
+			RaisePropertyChanged("ObservationButtonString");
 		}
 
-		bool CanToggleAutoControlExecute()
+		bool CanToggleObservationExecute()
 		{
-			if (!AutoControl.Matlab.Visible && Enabled)
-				Toggle();
+			if (!AutoControl.Matlab.Visible && ObservationEnabled)
+				AutoControl.ToggleObservation();
+
+			RaisePropertyChanged("ObservationButtonString");
 
 			return Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen &&
 				AutoControl.Matlab.Running &&
 				Data.SrcDirectory != null;
 		}
 
-		public ICommand ToggleAutoControl { get { return new RelayCommand(ToggleAutoControlExecute, CanToggleAutoControlExecute); } }
+		public ICommand ToggleObservation { get { return new RelayCommand(ToggleObservationExecute, CanToggleObservationExecute); } }
+		#endregion
+
+		#region Toggle Control
+		/// <summary>
+		/// Toggles autonomous vehicle control.
+		/// </summary>
+		void ToggleControlExecute()
+		{
+			// Toggle autonomous control and send initial status request if enabled
+			AutoControl.ToggleControl();
+			RaisePropertyChanged("ControlButtonString");
+		}
+
+		bool CanToggleControlExecute()
+		{
+			if ((!AutoControl.Matlab.Visible || !ObservationEnabled) && ObservationEnabled)
+				AutoControl.ToggleControl();
+
+			RaisePropertyChanged("ControlButtonString");
+
+			return ObservationEnabled;
+		}
+
+		public ICommand ToggleControl { get { return new RelayCommand(ToggleControlExecute, CanToggleControlExecute); } }
 		#endregion
 		#endregion
 	}

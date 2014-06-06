@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows;
 
 namespace Overwatch
 {
+	public delegate void MatlabNotFoundEventHandler(object sender, EventArgs e);
+
 	/// <summary>
 	/// Holds all data and methods to be able to make use of MATLAB from within this application, using the MATLAB COM Automation Server.
 	/// </summary>
@@ -11,9 +14,34 @@ namespace Overwatch
 		#region Data members
 		public MLApp.MLApp Instance { get; protected set; }
 		private BackgroundWorker matlabStarter = new BackgroundWorker();
+		public bool MatlabFailed;
+		public event MatlabNotFoundEventHandler MatlabNotFound;
 
 		public bool Running { get { return Instance != null; } }
-		public bool Visible { get { return Running && Instance.Visible == 1; } }
+		public bool Visible {
+			get 
+			{
+				bool b = false;
+				try
+				{
+					b = Running && Instance.Visible == 1;
+				}
+				catch(Exception exc)
+				{
+					if ((exc as System.Reflection.TargetException) != null)
+					{
+						if (MatlabNotFound != null && !MatlabFailed)
+						{
+							MatlabFailed = true;
+							MatlabNotFound(this, new EventArgs());
+						}
+					}
+					else
+						System.Diagnostics.Debug.WriteLine(exc.ToString());
+				}
+				return b;
+			} 
+		}
 		#endregion
 
 		#region Construction
@@ -68,7 +96,7 @@ namespace Overwatch
 		/// </summary>
 		public void Quit()
 		{
-			if (Instance != null)
+			if (Instance != null && !MatlabFailed)
 			{
 				Instance.Quit();
 				Instance = null;
