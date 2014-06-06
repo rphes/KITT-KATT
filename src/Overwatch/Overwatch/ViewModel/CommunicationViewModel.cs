@@ -114,7 +114,7 @@ namespace Overwatch.ViewModel
 				RaisePropertyChanged("SerialPorts");
 
 				// Disable autonomous control if needed
-				if (Data.MainViewModel.AutoControlViewModel.Enabled)
+				if (Data.MainViewModel.AutoControlViewModel.ObservationEnabled)
 					Data.MainViewModel.AutoControlViewModel.Toggle();
 			}
 

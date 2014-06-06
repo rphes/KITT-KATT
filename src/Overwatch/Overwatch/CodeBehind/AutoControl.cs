@@ -17,7 +17,8 @@ namespace Overwatch
 		public ViewModel.VehicleViewModel VehicleViewModel { get { return Data.MainViewModel.VehicleViewModel; } }
 		public List<Waypoint> Waypoints { get; protected set; }
 
-		public bool Enabled { get; set; }
+		public bool ObservationEnabled { get; set; }
+		public bool ControlEnabled { get; set; }
 		#endregion
 
 		#region Construction
@@ -27,7 +28,7 @@ namespace Overwatch
 		public AutoControl()
 		{
 			// Disable by default
-			Enabled = false;
+			ObservationEnabled = false;
 			// Initialise MATLAB
 			Matlab = new Matlab();
 			Matlab.Hide();
@@ -40,16 +41,16 @@ namespace Overwatch
 
 		#region Methods
 		/// <summary>
-		/// Toggles autonomous control of the vehicle.
+		/// Toggles observation of the vehicle.
 		/// </summary>
-		/// <returns>True if autocontrol is enabled, false if disabled.</returns>
-		public bool Toggle()
+		/// <returns>True if observation is enabled, false if disabled.</returns>
+		public bool ToggleObservation()
 		{
 			// Flip the switch
-			Enabled = !Enabled;
+			ObservationEnabled = !ObservationEnabled;
 
 			// Hide or show MATLAB
-			if (Enabled)
+			if (ObservationEnabled)
 			{
 				Matlab.Show();
 				InitMatlabScripts();
@@ -57,7 +58,17 @@ namespace Overwatch
 			else
 				Matlab.Hide();
 
-			return Enabled;
+			return ObservationEnabled;
+		}
+
+		/// <summary>
+		/// Toggles autonomous control of the vehicle.
+		/// </summary>
+		/// <returns>True if autocontrol is enabled, false if disabled.</returns>
+		public void ToggleControl()
+		{
+			// Flip the switch
+			ControlEnabled = !ControlEnabled;
 		}
 
 		/// <summary>
@@ -150,7 +161,7 @@ namespace Overwatch
 		/// <param name="e"></param>
 		void Communication_StatusReceived(object sender, EventArgs e)
 		{
-			if (!Enabled) return;
+			if (!ObservationEnabled) return;
 
 			// Push relevant newly received data to MATLAB
 			Matlab.PutVariable("sensor_l", Vehicle.SensorDistanceLeft);
@@ -177,7 +188,8 @@ namespace Overwatch
 				Vehicle.Velocity = (double)Matlab.GetVariable("speed");
 				double PWMSteer = (double)Matlab.GetVariable("pwm_steer");
 				double PWMDrive = (double)Matlab.GetVariable("pwm_drive");
-				Data.MainViewModel.CommunicationViewModel.Communication.DoDrive((int)PWMSteer, (int)PWMDrive);
+				if (ControlEnabled)
+					Data.MainViewModel.CommunicationViewModel.Communication.DoDrive((int)PWMSteer, (int)PWMDrive);
 			}
 
 			// Request new status
