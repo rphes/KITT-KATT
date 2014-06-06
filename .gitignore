@@ -249,6 +249,7 @@ pip-log.txt
 *.gz(busy)
 *.sublime-workspace
 !docs/deliverable-7-resources/**
+!src/Overwatch-MATLAB/**
 
 #Matlab shit
 *.asv
