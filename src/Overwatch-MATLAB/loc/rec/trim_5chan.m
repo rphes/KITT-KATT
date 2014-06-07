@@ -23,7 +23,11 @@ function [result, start] = trim_5chan(data, num_ints,std_thres)
         start(i) = find_start_fast(data(:,i),std_thres,num_ints)
     end
     start = min(start);
+    nsamples_to_trim=1000;
     toc(start_fast_time);
-    
-    result = data(start:start+10000,:);
+    if size(data,1)>=start+nsamples_to_trim
+        result = data(start:start+1000,:);
+    else
+        result = data(start:end,:);
+    end
 end
