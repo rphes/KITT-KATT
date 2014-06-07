@@ -7,7 +7,7 @@ classdef TDOA < hgsetget
         R=[]; % the range difference matrix
         settings = struct('Fs', 44100,...
             'peak_threshold', 0.5, ...
-            'peak_stddev', 3, ...
+            'peak_stddev', 2, ...
             'peak_intervals', 200, ... % no. of intervals divided into
             'trim_threshold', 0.85, ...
             'trim_padding', 200, ...
@@ -17,12 +17,13 @@ classdef TDOA < hgsetget
         RecData = []; % the raw, recorded data
         RecDataTrimmed = []; % the raw data trimmed to right length
         % debatable if needed:
-%         MicrophoneLocations = ...
-%             [0 0; ...
-%             0 1; ...
-%             1 1; ...
-%             0 1; ...
-%             0.5 0];
+%         MicrophoneLocations = [
+%             0 0; 
+%             0 7; 
+%             7 7; 
+%             0 7; 
+%             3.5 0
+%             ];
         MicrophoneLocations = [
             0     0;
             0     2.9;
@@ -124,7 +125,7 @@ classdef TDOA < hgsetget
             h = Self.M{i}*x;
 
 
-            % Find delay
+%             Find delay
             delay = Self.FindPeak(h)/Self.settings.Fs;
 %             figure
 %             plot(h)
