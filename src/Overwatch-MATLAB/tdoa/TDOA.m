@@ -4,28 +4,42 @@ classdef TDOA < hgsetget
 %         x; % The 1cm recording 
         IsBusyFlag = 0;
         IsReadyFlag= 0;
-        R = []; % the range difference matrix
+        R=[]; % the range difference matrix
         settings = struct('Fs', 44100,...
             'peak_threshold', 0.5, ...
-            'peak_stddev', 7, ...
-            'peak_intervals', 100, ... % no. of intervals divided into
+            'peak_stddev', 3, ...
+            'peak_intervals', 200, ... % no. of intervals divided into
             'trim_threshold', 0.85, ...
-            'trim_padding', 750, ...
-            'speed_sound', 330, ...
-            'nsamples', 44100/8*2); % number of samples to record
+            'trim_padding', 200, ...
+            'speed_sound', 343, ...
+            'nsamples', 44100/8*2, ... % number of samples to record
+            'loc_threshold',0.1);
         RecData = []; % the raw, recorded data
         RecDataTrimmed = []; % the raw data trimmed to right length
+        % debatable if needed:
+%         MicrophoneLocations = ...
+%             [0 0; ...
+%             0 1; ...
+%             1 1; ...
+%             0 1; ...
+%             0.5 0];
+        MicrophoneLocations = [
+            0     0;
+            0     2.9;
+            2.9   2.9;
+            2.9   0;
+            -0.95 1.45
+            ];
     end
     
     methods
         % Constructor
         function Self = TDOA(M, RXXr)
-            Self.M=M;
-%             Self.x=x;
+            set(Self,'M',M);
             % not needed when recording:
             data = RXXr(1,:,:);
             data = reshape(data,size(data,2),size(data,3));
-            Self.RecData = data;
+            set(Self,'RecData',data);
         end
         
         % Check if TDOA determination is busy
@@ -107,10 +121,16 @@ classdef TDOA < hgsetget
                 x = x(1:N_y);
             end
 
-            h = Self.M{1}*x;
+            h = Self.M{i}*x;
+
 
             % Find delay
-            delay = Self.FindPeak(h);
+            delay = Self.FindPeak(h)/Self.settings.Fs;
+%             figure
+%             plot(h)
+%             hold on;
+%             plot(delay*Self.settings.Fs,h(delay*Self.settings.Fs),'r+');
+%             hold off;
         end
         
         % make R matrix
@@ -141,24 +161,25 @@ classdef TDOA < hgsetget
         % Start TDOA determination
         function Start(Self)
             % Make sure TDOA indicates it is busy and not ready
-            Self.IsBusyFlag = 1;
-            Self.IsReadyFlag = 0;
+            set(Self,'IsBusyFlag',1,'IsReadyFlag',0);
+%             Self.IsBusyFlag = 1;
+%             Self.IsReadyFlag = 0;
             
             % Record
 %             Self.Record5Channels();
-            disp('Trimming data');
-            Self = set(Self,'RecDataTrimmed',Self.TrimData());
-            disp('Trimming done');
+            set(Self,'RecDataTrimmed',Self.TrimData());
             
             % Create R matrix
-            Self = set(Self,'R',Self.RangeDiff());
+            set(Self,'R',Self.RangeDiff());
             
             % Then set TDOA status to not-busy and processing is ready
-            Self.IsBusyFlag = 0;
-            Self.IsReadyFlag = 1;
-            plot(Self.RecDataTrimmed);
-            figure
-            plot(Self.RecData);
+            set(Self,'IsBusyFlag',0,'IsReadyFlag',1);
+
+%             plot(Self.RecDataTrimmed);
+%             title('trimmed');
+%             figure
+%             plot(Self.RecData);
+%             title('original');
         end
         
     end
