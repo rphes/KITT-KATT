@@ -2,6 +2,10 @@ classdef Configuration
     properties (Constant = true)
         SteeringFeedbackCoefficient = -4;
         
+        % Field dimensions
+        XMax = 10;
+        YMax = 10;
+ 
         DriveCarWeight = 0.16;
         DriveRollingCoefficient = 0.08;
         DriveObserverPoles = -4.1;
@@ -27,6 +31,9 @@ classdef Configuration
         
         RouteThreshold = 1;
         RouteClearance = 0.5;
+        
+        % Plot stuff
+        PlotTimeFrame = 15;
     end
 end
 
