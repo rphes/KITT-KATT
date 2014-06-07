@@ -1,4 +1,4 @@
-classdef Wrapper
+classdef Wrapper < handle
     properties (SetAccess = private)
         % TDOA determination
         tdoa

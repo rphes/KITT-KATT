@@ -1,4 +1,4 @@
-classdef MapDrive
+classdef MapDrive < handle
     properties (SetAccess = private)
     end
     

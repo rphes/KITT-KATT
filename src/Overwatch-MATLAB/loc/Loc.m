@@ -1,4 +1,4 @@
-classdef Loc
+classdef Loc < handle
     properties(GetAccess = public, SetAccess = private)
     end
     

@@ -1,4 +1,4 @@
-classdef MapSteer
+classdef MapSteer < handle
     properties (SetAccess = private)
     end
     

@@ -1,4 +1,4 @@
-classdef SsDrive
+classdef SsDrive < handle
     properties (SetAccess = private)
         % Time keeping
         currentTime
@@ -41,20 +41,20 @@ classdef SsDrive
             ]);
             
             % Start tracking time
-            self.currentTime = tic;
+            Self.currentTime = tic;
             
             % State initialization
-            self.currentState = [0; 0];
+            Self.currentState = [0; 0];
         end
         
         % Iteration
         function [DriveExcitation, CurrentTrackedSpeed, CurrentTrackedDistance] = Iterate(Self, CurrentDistance, ReferenceDistance, ~, DoObserve) % BatteryVoltage
             % Time tracking
-            dt = toc(Self.currentTime);
+            Dt = toc(Self.currentTime);
             Self.currentTime = tic;
             
             % State calculation by Euler
-            N = 1000;
+            N = 100;
             NewState = Self.currentState;
             ReferenceState = [ReferenceDistance; 0]; % Not moving at a distance
             
@@ -62,7 +62,7 @@ classdef SsDrive
                 r = (Self.A - Self.B*Self.K - DoObserve*Self.L*Self.C)*NewState+ ... System feedback
                     Self.B*Self.K*ReferenceState+ ... Compensation
                     DoObserve*Self.L*CurrentDistance; % Observation
-                NewState = NewState + dt*r/N;
+                NewState = NewState + Dt*r/N;
             end
             
             % Save state and stuff

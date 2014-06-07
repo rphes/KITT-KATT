@@ -1,4 +1,4 @@
-classdef Angle
+classdef Angle < handle
     properties (SetAccess = private)
         currentLocation
         currentAngle
@@ -14,13 +14,12 @@ classdef Angle
         % Determine route
         function [CurrentAngle] = DetermineAngle(Self, NewLocation)
             % First determine angle of the car
-            Dx = NewLocation(1) - Self.currentLocation(1);
-            Dy = NewLocation(2) - Self.currentLocation(2);
+            DeltaLocation = NewLocation - Self.currentLocation;
             
             % If both Dx and Dy are zero, the car does not move, and the
             % angle has not changed
-            if (Dx ~= 0) && (Dy ~= 0)
-                Self.currentAngle = atan2(Dy, Dx);
+            if norm(DeltaLocation) > 0.01
+                Self.currentAngle = atan2(DeltaLocation(2), DeltaLocation(1));
             end
             
             % Save new location and angle
