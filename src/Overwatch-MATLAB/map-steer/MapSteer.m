@@ -15,11 +15,11 @@ classdef MapSteer < handle
                 if SteerExcitation > 0
                     PWMSteerRaw = 150 + ...
                         Configuration.MapSteerFOC*(SteerExcitation - Configuration.MapSteerBound) + ...
-                        Configuration.MapSteerFOC*(SteerExcitation - Configuration.MapSteerBound)^3;
+                        Configuration.MapSteerTOC*(SteerExcitation - Configuration.MapSteerBound)^3;
                 else
                     PWMSteerRaw = 150 + ...
                         Configuration.MapSteerFOC*(SteerExcitation + Configuration.MapSteerBound) + ...
-                        Configuration.MapSteerFOC*(SteerExcitation + Configuration.MapSteerBound)^3;
+                        Configuration.MapSteerTOC*(SteerExcitation + Configuration.MapSteerBound)^3;
                 end
             end
         

@@ -15,11 +15,11 @@ classdef MapDrive < handle
                 if DriveExcitation > 0
                     PWMDriveRaw = 150 + Configuration.MapDriveOffset + ...
                         Configuration.MapDriveFOC*(DriveExcitation - Configuration.MapDriveBound) + ...
-                        Configuration.MapDriveFOC*(DriveExcitation - Configuration.MapDriveBound)^3;
+                        Configuration.MapDriveTOC*(DriveExcitation - Configuration.MapDriveBound)^3;
                 else
                     PWMDriveRaw = 150 - Configuration.MapDriveOffset + ...
                         Configuration.MapDriveFOC*(DriveExcitation + Configuration.MapDriveBound) + ...
-                        Configuration.MapDriveFOC*(DriveExcitation + Configuration.MapDriveBound)^3;
+                        Configuration.MapDriveTOC*(DriveExcitation + Configuration.MapDriveBound)^3;
                 end
             end
         

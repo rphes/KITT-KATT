@@ -14,23 +14,25 @@ CurrentLocation = [0; 0];
 CarPosition = [0; 0];
 CarAngle = 0;
 CarSpeed = 0;
-Waypoint = [-5; 5];
+Waypoints = [[5;-5] [1;1] [-5;5]];
 Battery = 0;
 ReferenceDistance = 0;
 
 Delay = 0.15;
-SimulationTime = 10;
+SimulationTime = 20;
 LocationDelay = 0.15;
 
-SpeedAccelerationCoefficient = .5;
+SpeedAccelerationCoefficient = .6;
 AngleCoefficient = asin(0.35/0.65)/50;
-FrictionAcceleration = 1.2; % = NormalForce * KinematicFrictionCoefficient / CarMass
+FrictionAcceleration = .5;
 
 %% Simulation
 LocationIndexIterations = ceil(Delay/LocationDelay);
 Timer = tic;
 TimerStart = tic;
 LocationIndex = 0;
+CurrentWaypointIndex = 1;
+Waypoint = Waypoints(:, CurrentWaypointIndex);
 
 hold off;
 
@@ -47,6 +49,13 @@ while toc(TimerStart) < SimulationTime
     % Sensor data
     SensorData = [3 3];
     
+    % Determine waypoint
+    % Check if waypoint is reached and another waypoint is available
+    if (norm(CarPosition-Waypoint) < 0.3) && (CurrentWaypointIndex < size(Waypoints,2))
+        CurrentWaypointIndex = CurrentWaypointIndex+1;
+    end
+    Waypoint = Waypoints(:, CurrentWaypointIndex);
+    
     %% Simulation    
     % Determine current angle
     CurrentAngle = ang.DetermineAngle(CurrentLocation);
@@ -55,13 +64,13 @@ while toc(TimerStart) < SimulationTime
     [CurrentDistance, ReferenceAngle] = route.DetermineRoute(CurrentLocation, CurrentAngle, Waypoint, SensorData);
 
     % Call controllers
-    ReferenceDistance = 0;
     [DriveExcitation, CurrentTrackedSpeed, CurrentTrackedDistance] = ssDrive.Iterate(CurrentDistance, ReferenceDistance, Battery, DoObserve);
     [SteerExcitation] = ssSteer.Iterate(CurrentAngle, ReferenceAngle, Battery);
 
     % Excitation mapping
     [PWMDrive] = mapDrive.Map(DriveExcitation, CurrentAngle);
     [PWMSteer] = mapSteer.Map(SteerExcitation);
+    
     
     %% Car movement
     % Two step approximation
@@ -82,9 +91,7 @@ while toc(TimerStart) < SimulationTime
         PWMDriveNormalized = 0;
     end
     
-    CarSpeedNew = CarSpeed + Dt*PWMDriveNormalized*SpeedAccelerationCoefficient;
-    AverageCarSpeed = (CarSpeedNew + CarSpeed)/2;
-    CarSpeed = CarSpeedNew;
+    CarSpeed = CarSpeed + Dt*PWMDriveNormalized*SpeedAccelerationCoefficient;
     
     if CarSpeed > 0
         CarSpeed = CarSpeed - Dt*FrictionAcceleration;
@@ -114,8 +121,8 @@ while toc(TimerStart) < SimulationTime
     plot(Waypoint(1), Waypoint(2), 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'blue', 'MarkerEdgeColor', 'blue');
     xlabel 'x (m)';
     ylabel 'y (m)';
-    xlim([-6 3]);
-    ylim([-4 6]);
+    xlim([-10 10]);
+    ylim([-10 10]);
     title 'Controller test';
     grid on;
     

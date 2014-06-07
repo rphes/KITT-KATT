@@ -1,19 +1,19 @@
 classdef Configuration
     properties (Constant = true)
-        SteeringFeedbackCoefficient = -4;
+        SteeringFeedbackCoefficient = -1.5;
         
         % Field dimensions
         XMax = 10;
         YMax = 10;
  
-        DriveCarWeight = 0.16;
-        DriveRollingCoefficient = 0.08;
+        DriveCarWeight = 0.15;
+        DriveRollingCoefficient = 0.05;
         DriveObserverPoles = -4.1;
-        DriveCompensatorPoles = -1.3;
+        DriveCompensatorPoles = -0.55; % -1.3
         
-        MapDriveBound = 0; %0.02
-        MapDriveFOC = 3.23;
-        MapDriveTOC = -0.0114;
+        MapDriveBound = 0.005;
+        MapDriveFOC = 3.25;
+        MapDriveTOC = -0.015;
         MapDriveOffset = 6;
         
         CarTurningRadius = 0.65;
