@@ -1,10 +1,10 @@
-classdef TDOA
+classdef TDOA < hgsetget
     properties (SetAccess = private)
         M; % The deconvolution matrix
-        x; % The 1cm recording 
+%         x; % The 1cm recording 
         IsBusyFlag = 0;
         IsReadyFlag= 0;
-        R ={}; % the range difference matrix
+        R = []; % the range difference matrix
         settings = struct('Fs', 44100,...
             'peak_threshold', 0.5, ...
             'peak_stddev', 7, ...
@@ -19,9 +19,9 @@ classdef TDOA
     
     methods
         % Constructor
-        function Self = TDOA(M, RXXr, x)
+        function Self = TDOA(M, RXXr)
             Self.M=M;
-            Self.x=x;
+%             Self.x=x;
             % not needed when recording:
             data = RXXr(1,:,:);
             data = reshape(data,size(data,2),size(data,3));
@@ -30,12 +30,12 @@ classdef TDOA
         
         % Check if TDOA determination is busy
         function Ret = IsBusy(Self)
-            Ret = Self.IsBusyFlag;
+            Ret = get(Self,'IsBusyFlag');
         end
         
         % Check if TDOA determination is ready
         function Ret = IsReady(Self)
-            Ret = Self.IsReadyFlag;
+            Ret = get(Self,'IsReadyFlag');
         end
         
         % function to record the right amount of samples (>=2 periods)
@@ -92,13 +92,13 @@ classdef TDOA
         end      
         
         % estimate h[n]
-        function [h, delay] = EstChannel(Self)
-            x = Self.x;
+        function [h, delay] = EstChannel(Self, i)
+            x = Self.RecDataTrimmed(:,i);
             if size(x,2) > 1
                 x = x';
             end    
 
-            N_y = size(Self.M{1},2);
+            N_y = size(Self.M{i},2);
             diff = N_y-length(x);
 
             if diff > 0
@@ -115,17 +115,16 @@ classdef TDOA
         
         % make R matrix
         function R = RangeDiff(Self)
-            data_trimmed = Self.RecDataTrimmed;
-            M = Self.M;
-            N = size(data_trimmed,2);
+            N = size(Self.RecDataTrimmed,2);
     
             d = [];
             % Recover channel impulse responses
             for i = 1:N
-                 [~, d(i)] = Self.EstChannel();
+                 [~, d(i)] = Self.EstChannel(i);
             end
 
             % Generate R matrix
+            R=[];
             for i = 1:N
                 for j = (i+1):N
                     R(i,j) = (d(i)-d(j))*Self.settings.speed_sound;
@@ -136,7 +135,7 @@ classdef TDOA
         
         % Range difference matrix retrieval function
         function RangeDiffMatrix = GetRangeDiffMatrix(Self)
-            RangeDiffMatrix = Self.R;
+            RangeDiffMatrix = get(Self,'R');
         end
 
         % Start TDOA determination
@@ -148,16 +147,11 @@ classdef TDOA
             % Record
 %             Self.Record5Channels();
             disp('Trimming data');
-            Self.RecDataTrimmed = Self.TrimData();
+            Self = set(Self,'RecDataTrimmed',Self.TrimData());
             disp('Trimming done');
-
-            % Deconvolve
-            disp('Deconvolving data');
-            Self.RangeDiff();
-            disp('Deconvolving done');
             
             % Create R matrix
-            Self.R = Self.RangeDiff();
+            Self = set(Self,'R',Self.RangeDiff());
             
             % Then set TDOA status to not-busy and processing is ready
             Self.IsBusyFlag = 0;
