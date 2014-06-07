@@ -1,5 +1,10 @@
 classdef Configuration
     properties (Constant = true)
+        
+        % Field dimensions
+        XMax = 10;
+        YMax = 10;
+        
         SteeringFeedbackCoefficient = -1;
         
         DriveCarWeight = 0.16;
@@ -24,7 +29,8 @@ classdef Configuration
         SteerMapFOC = 50/asin(0.35/0.65);
         SteerMapTOC = 0;
         
-        
+        % Plot stuff
+        PlotTimeFrame = 15;
     end
 end
 

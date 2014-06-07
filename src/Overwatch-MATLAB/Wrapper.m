@@ -98,6 +98,8 @@ classdef Wrapper
             pwm_drive = PWMDrive;
             
             Ret = 1;
+            
+            debug;
         end
     end
 end

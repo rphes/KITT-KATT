@@ -1,7 +1,48 @@
 clc;
-display(['Current X: ' loc_x]);
-display(['Current Y: ' loc_y]);
-display(['Current Angle: ' angle]);
-display(['Current Speed: ' speed]);
 
-subplot
+display(['Current X: ' num2str(loc_x)]);
+display(['Current Y: ' num2str(loc_y)]);
+display(['Current Angle: ' num2str(angle)]);
+display(['Current Speed: ' num2str(speed)]);
+
+t = toc(subplotTimer);
+
+%% Top left
+addLinePoint(subplotLines{1,1}(1), loc_x, loc_y);
+for i = 1:size(waypoints,2)
+    addLinePoint(subplotLines{1,1}(2), waypoints(1,i), waypoints(2,i));
+end
+
+%% Top left center
+addLinePoint(subplotLines{1,2}(1), t, loc_x);
+addLinePoint(subplotLines{1,2}(2), t, waypoints(1,1));
+shiftAxis(subplotAxes{1,2}, t);
+
+%% Top right center
+addLinePoint(subplotLines{1,3}(1), t, loc_y);
+addLinePoint(subplotLines{1,3}(2), t, waypoints(2,1));
+shiftAxis(subplotAxes{1,3}, t);
+
+%% Top right
+addLinePoint(subplotLines{1,4}(1), t, angle);
+addLinePoint(subplotLines{1,4}(2), t, ReferenceAngle);
+shiftAxis(subplotAxes{1,4}, t);
+
+%% Bottom left
+addLinePoint(subplotLines{2,1}(1), t, sensor_l);
+addLinePoint(subplotLines{2,1}(2), t, sensor_r);
+shiftAxis(subplotAxes{2,1}, t);
+
+%% Bottom left center
+addLinePoint(subplotLines{2,2}(1), t, pwm_steer);
+addLinePoint(subplotLines{2,2}(2), t, pwm_drive);
+shiftAxis(subplotAxes{2,2}, t);
+
+%% Bottom right center
+addLinePoint(subplotLines{2,3}(1), t, speed);
+addLinePoint(subplotLines{2,3}(2), t, CurrentDistance);
+shiftAxis(subplotAxes{2,3}, t);
+
+%% Bottom right
+addLinePoint(subplotLines{2,4}(1), t, battery);
+shiftAxis(subplotAxes{2,4}, t);
