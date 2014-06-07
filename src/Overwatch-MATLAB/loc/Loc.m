@@ -9,61 +9,63 @@ classdef Loc
         
         % Processing function
         function CurrentLocation = Localize(~, RangeDiff, MicrophoneLocations, Threshold)
-            % Makes use of the fact that the system is overdetermined!
-            % Therefore, using 3D is not advised.
-            N = size(RangeDiff, 1);
+            R = RangeDiff;
+            mics = MicrophoneLocations;
+            th = Threshold;
+            N = size(R,1);
             Np = (N*N-N)/2;
-            Pairs = zeros(Np, 2);
-            D = size(MicrophoneLocations, 2);
-
-            % Pair generation
+            pairs = zeros(Np,2);
+            D = size(mics,2);
+            
             ii = 1;
             for i = 1:N
                 for j = (i+1):N
-                    Pairs(ii,1) = i;
-                    Pairs(ii,2) = j;
+                    pairs(ii,1) = i;
+                    pairs(ii,2) = j;
                     ii = ii+1;
                 end
             end
-
+            
             % Generate A and B
             A = zeros(Np,2+N-1);
             for i = 1:Np
-                i1 = Pairs(i,1);
-                i2 = Pairs(i,2);
-
-                A(i,1:D) = 2*(MicrophoneLocations(i2,:) - MicrophoneLocations(i1,:));
-                A(i,D+(i2-1)) = -2*RangeDiff(i2,i1);
+                i1 = pairs(i,1);
+                i2 = pairs(i,2);
+                
+                A(i,1:D) = 2*(mics(i2,:) - mics(i1,:));
+                A(i,D+(i2-1)) = -2*R(i2,i1);
             end
-
+            
             b = zeros(Np,1);
             for i = 1:Np
-                i1 = Pairs(i,1);
-                i2 = Pairs(i,2);
-
-                b(i) = RangeDiff(i1,i2)^2-norm(MicrophoneLocations(i1,:),2)^2+norm(MicrophoneLocations(i2,:),2)^2;
+                i1 = pairs(i,1);
+                i2 = pairs(i,2);
+                
+                b(i) = R(i1,i2)^2-norm(mics(i1,:),2)^2+norm(mics(i2,:),2)^2;
             end
-
+            
             % Remove possible worst column
-            SmallestValue = 0;
-            SmallestID = [];
-
+            smallest_value = 0;
+            smallest_id = [];
+            
             for i = 1:size(A,2)
-                Value = sum(abs(A(:,i)));
-
-                if Value < Threshold
-                    if (Value < SmallestValue) || (isempty(SmallestID))
-                        SmallestValue = Value;
-                        SmallestID = i;
+                value = sum(abs(A(:,i)));
+                
+                if value < th
+                    if (value < smallest_value) || (isempty(smallest_id))
+                        smallest_value = value;
+                        smallest_id = i;
                     end
                 end
             end
-
-            A(:, SmallestID) = [];
-
+            
+            A(:,smallest_id) = [];
+            
             % Least squares approximation
-            CurrentLocation = (A'*A)^-1*A'*b;
-            CurrentLocation = CurrentLocation(1:D)';
+            loc = (A'*A)^-1*A'*b;
+            loc = loc(1:D)';
+            CurrentLocation = loc;
         end
+        
     end
 end
