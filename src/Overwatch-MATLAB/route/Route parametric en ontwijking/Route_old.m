@@ -46,15 +46,7 @@ classdef Route<handle
                 [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
                 
                 if Sensors(1) < Sens_thres && Sensors(2) < Sens_thres
-                    draai = 'dunno';
-                    
-                    [tempwaypoint] = TEMPway(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai);
-                    Self.propTemp_waypoint = tempwaypoint;
-                    
-                    [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = bereken_outputs(Self, Currentlocation, Currentangle, tempwaypoint);
-                    
-                    test_lengths(Self, alpha, Currentlocation, r_point, beweeg, turning_radius, tempwaypoint, l_recht);
-                    
+                    [CurrentDistance, ReferenceAngle] = lr_object(Self, Currentlocation, Currentangle);
                 elseif Sensors(1) < 0.9
                     draai = 'links';
                 elseif Sensors(2) < 0.9
@@ -62,7 +54,7 @@ classdef Route<handle
                 else
                     
                         
-                [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = bereken_outputs(Self, Currentlocation, Currentangle, Waypoints);
+                [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = geen_object(Self, Currentlocation, Currentangle, Waypoints);
                 
                 
                 %Dit is om de berekende lengtes te testen
@@ -75,7 +67,7 @@ classdef Route<handle
         
         
         %Bereken Distance en Angle als er geen object is
-        function [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = bereken_outputs(Self, Currentlocation, Currentangle, Waypoints)
+        function [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = geen_object(Self, Currentlocation, Currentangle, Waypoints)
                     
                     [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
                 
@@ -124,6 +116,45 @@ classdef Route<handle
                     x = [1, 0];
                     cosbetha = dot(x,Waypoints)/(norm(x)*norm(Waypoints));
                     ReferenceAngle = acos(cosbetha);
+        end
+        
+        
+        
+        %Bereken de tijdelijke Distance en Angle als beide sensoren een
+        %object zien.
+        function [CurrentDistance, ReferenceAngle] = lr_object(Self, Currentlocation, Currentangle)
+                  
+                    [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle); 
+                    
+                    draai = 'dunno';
+                    
+                    %Bereken de kromme afstand
+                    alpha = 80*pi/180;
+                    l_kromme = turning_radius*alpha;
+                   
+                    %De rechte kan nog getuned worden
+                    l_recht = sqrt((length_objects+turning_radius)^2 + Sens_thres^2);
+                    
+                    CurrentDistance = l_recht + l_kromme;
+                    
+                    
+                    %Bepaal bepaal welke bocht de auto maakt(links of rechts)
+                    [r_point, draai] = origin(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai);
+                    Self.propr_point2 = r_point;
+                    
+                    
+                    %Bepaal de positie van mijn tijdelijke doel
+                    [Temp_waypoint, Circlepoint] = tempwaypoint(Currentlocation, r_point, alpha, draai, Currentangle, l_recht);
+                    
+                    
+                    Self.propTemp_waypoint = Temp_waypoint;
+                    Self.propCirclepoint = Circlepoint;
+                    
+                    
+                    x = [1, 0];
+                    cosbetha = dot(x,Temp_waypoint)/(norm(x)*norm(Temp_waypoint));
+                    ReferenceAngle = acos(cosbetha);
+            
         end
         
         
@@ -234,7 +265,7 @@ end
 
 
         %Functie bepaald wat het middenpunt in van de draaicirkel    
-        function [tempwaypoint] = TEMPway(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai)
+        function [r_point, draai] = origin(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai)
             %Functie bepaald wat het middenpunt in van de draaicirkel
             
             beweeg = [cos(Currentangle), sin(Currentangle)];
@@ -287,47 +318,11 @@ end
             
             
             if strcmp(draai,'dunno') == 1
-                [tempwaypoint] = choose_longestwaypoint(snijvector1, snijvector2, Currentlocation, Currentangle);
+                [r_point, draai] = cirkel_draai(snijvector1, snijvector2, r_point1, r_point2, beweeg);
             elseif strcmp(draai,'links') == 1
             elseif strcmp(draai,'rechts') == 1
             end
             
-        end
-        
-        %Functie bepaald welke waypoint je moet kiezen
-        function [tempwaypoint] = choose_longestwaypoint(snijvector1, snijvector2, Currentlocation, Currentangle)
-            [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
-            [tempw90, tempw270] = tempwaypoints(Currentlocation, Currentangle);
-            
-            afstand1 = norm(snijvector1);
-            afstand2 = norm(snijvector2);
-            
-            if afstand1 > afstand2
-                Angle = twee_pi(beweeg, snijvector1);
-                if Angle < 180
-                    tempwaypoint = tempw90;
-                else
-                    tempwaypoint = tempw270;
-                end
-            else
-                Angle = twee_pi(beweeg, snijvector2);
-                if Angle < 180
-                    tempwaypoint = tempw90;
-                else
-                    tempwaypoint = tempw270;
-                end
-            end
-        end
-        
-        function [tempw90, tempw270] = tempwaypoints(Currentlocation, Currentangle)
-            [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
-            Objectlocation = Currentlocation + Sens_thres*beweeg;
-            
-            perp_beweeg1 = [sin(Currentangle), -cos(Currentangle)]; 
-            perp_beweeg2 = [-sin(Currentangle), cos(Currentangle)];
-            
-            tempw90 = Objectlocation + (turning_radius + length_objects)*perp_beweeg1;
-            tempw270 = Objectlocation + (turning_radius + length_objects)*perp_beweeg2;
         end
         
         %Functie berekend de snijpunt tussen twee lijnen
@@ -345,6 +340,34 @@ end
             end
         end
         
+        %Functie berekend welke kant die op moet draaien en de middel van de draaicirkel.
+        function [r_point, draai] = cirkel_draai(snijvector1, snijvector2, r_point1, r_point2, beweeg)
+            %Functie berekend welke kant die op moet draaien en de middel van de draaicirkel.
+            
+            
+            
+            afstand1 = norm(snijvector1);
+            afstand2 = norm(snijvector2);
+            if afstand1 > afstand2
+                Angle = twee_pi(beweeg, snijvector1);
+                if Angle < 180
+                    r_point = r_point1;
+                    draai = 'rechts';
+                else
+                    r_point = r_point2;
+                    draai = 'links';
+                end
+            else
+                Angle = twee_pi(beweeg, snijvector2);
+                if Angle < 180
+                    r_point = r_point1;
+                    draai = 'rechts';
+                else
+                    r_point = r_point2;
+                    draai = 'links';
+                end
+            end
+        end
         
         %Dit zijn de variabelen die vaak in andere function worden gebruikt
         function [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle)
@@ -365,7 +388,42 @@ end
             r_point1 = Currentlocation + turning_radius*perp_beweeg1;
             r_point2 = Currentlocation + turning_radius*perp_beweeg2;
         end
+        
+        %Functie bepaald wat de positie is het tijdelijke doel
+        function [Temp_waypoint, Circlepoint] = tempwaypoint(Currentlocation, r_point, alpha, draai, Currentangle, l_recht)
+        
+                    [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
+                    hoek_current = atan2(Currentlocation(2) - r_point(2), Currentlocation(1) - r_point(1));
 
+                    Angle = twee_pi(beweeg, r_point - Currentlocation);
+                    
+                    if  Angle < 180
+                        Eindhoek  = hoek_current - alpha;
+                    else 
+                        Eindhoek =  hoek_current + alpha;
+                    end
+                    
+                    
+                    x_circle = r_point(1) + turning_radius*cos(Eindhoek);
+                    y_circle = r_point(2) + turning_radius*sin(Eindhoek);
+                    
+                    Circlepoint = [x_circle y_circle];
+                    
+                    
+                    %Bepaal de temporary waypoint
+                    Cirkelvector = Circlepoint - r_point;
+                    
+                    if strcmp(draai,'links') == 1
+                        richting_rechtelijn = [-Cirkelvector(2) Cirkelvector(1)];
+                    elseif strcmp(draai,'rechts') == 1
+                        richting_rechtelijn = [Cirkelvector(2) -Cirkelvector(1)];
+                    else
+                    end
+                        
+                    unit_rrl = richting_rechtelijn/norm(richting_rechtelijn);
+                    Temp_waypoint = Circlepoint + l_recht*unit_rrl;
+        end
+        
         %Bereken de hoek v2 tegenover v1 met de klok mee.
         function [Angle] = twee_pi(v1, v2)
             %Bereken de hoek v2 tegenover v1 met de klok mee.
