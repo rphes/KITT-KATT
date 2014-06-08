@@ -12,14 +12,18 @@ classdef Route<handle
         proplijn_y
         propkop_x
         propkop_y
+        propbeginpunt
+        propeindpunt 
         
         %Dit zijn properties om functie lr_object te testen
         propCirclepoint
         propr_point2
         
         
+        
         %Dit zijn properties die daadwerkelijk gebruikt worden
         propTemp_waypoint
+        propObjectlocation
         
     end
     
@@ -33,7 +37,10 @@ classdef Route<handle
             Self.proplijn_y = [0 0];
             Self.propkop_x = [0 0];
             Self.propkop_y = [0 0];
+            Self.propbeginpunt = [0 0];
+            Self.propeindpunt = [0 0]; 
             
+            Self.propObjectlocation = [];
             Self.propTemp_waypoint = [100 100];
         end
         
@@ -41,7 +48,7 @@ classdef Route<handle
         
         
         % Determine route
-        function [CurrentDistance, ReferenceAngle] = DetermineRoute(Self, Currentlocation, Currentangle, Waypoints, Sensors)
+        function [CurrentDistance, ReferenceAngle] = DetermineRoute(Self, Currentlocation, Currentangle, Waypoints, Sensors, Steering)
                 
                 Distance_CW = norm(Currentlocation - Self.propTemp_waypoint);
                 [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
@@ -50,9 +57,10 @@ classdef Route<handle
                     Self.propTemp_waypoint = [100 100];
                 end
                 
-                if Self.propTemp_waypoint(1) > 0 || Self.propTemp_waypoint(1) < Uiterste_punt(1) 
-                    if Self.propTemp_waypoint(2) > 0 || Self.propTemp_waypoint(2) < Uiterste_punt(2)
-                        Waypoints = Self.propTemp_waypoint;
+                
+                if Self.propTemp_waypoint(1) > 0 && Self.propTemp_waypoint(1) < Uiterste_punt(1) 
+                    if Self.propTemp_waypoint(2) > 0 && Self.propTemp_waypoint(2) < Uiterste_punt(2)
+                        Waypoints = Self.propTemp_waypoint
                     end
                 end
                     
@@ -60,30 +68,35 @@ classdef Route<handle
                 
                 
                 
-                if Sensors(1) < Sens_thres && Sensors(2) < Sens_thres
+                if Sensors(1) < Sens_thres && Sensors(2) < Sens_thres && Steering == 150
                     draai = 'dunno';
                     
-                    [tempwaypoint] = TEMPway(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai);
+                    [tempwaypoint, Objeclocation] = TEMPway(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai);
                     Self.propTemp_waypoint = tempwaypoint;
+                    Self.propObjectlocation = [Self.propObjectlocation Objeclocation];
                     
                     [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = bereken_outputs(Self, Currentlocation, Currentangle, tempwaypoint);
                     
                     test_lengths(Self, alpha, Currentlocation, r_point, beweeg, turning_radius, tempwaypoint, l_recht);
                     
-                elseif Sensors(1) < 0.9
-                    draai = 'links';
-                    
-                    [tempwaypoint] = TEMPway(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai);
-                    Self.propTemp_waypoint = tempwaypoint;
-                    
-                    [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = bereken_outputs(Self, Currentlocation, Currentangle, tempwaypoint);
-                    
-                    test_lengths(Self, alpha, Currentlocation, r_point, beweeg, turning_radius, tempwaypoint, l_recht);
-                    
-                elseif Sensors(2) < 0.9
+                elseif Sensors(1) < 0.9 && Steering == 150
                     draai = 'rechts';
                     
-                    [tempwaypoint] = TEMPway(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai);
+                    [tempwaypoint, Objeclocation] = TEMPway(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai);
+                    Self.propObjectlocation = [Self.propObjectlocation Objeclocation];
+                    
+                    Self.propTemp_waypoint = tempwaypoint;
+                    
+                    [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = bereken_outputs(Self, Currentlocation, Currentangle, tempwaypoint);
+                    
+                    test_lengths(Self, alpha, Currentlocation, r_point, beweeg, turning_radius, tempwaypoint, l_recht);
+                    
+                elseif Sensors(2) < 0.9 && Steering == 150
+                    draai = 'links';
+                    
+                    [tempwaypoint, Objeclocation] = TEMPway(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai);
+                    Self.propObjectlocation = [Self.propObjectlocation Objeclocation];
+                    
                     Self.propTemp_waypoint = tempwaypoint;
                     
                     [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = bereken_outputs(Self, Currentlocation, Currentangle, tempwaypoint);
@@ -204,6 +217,9 @@ classdef Route<handle
                 unit_bw = beginlijn_waypoints/norm(beginlijn_waypoints);
                 eindpunt_lijn = beginpunt_lijn + l_recht*unit_bw;
                 
+                Self.propbeginpunt = beginpunt_lijn;
+                Self.propeindpunt = eindpunt_lijn; 
+                
                 lijn_x = [beginpunt_lijn(1) eindpunt_lijn(1)];
                 lijn_y = [beginpunt_lijn(2) eindpunt_lijn(2)];
                 
@@ -260,7 +276,7 @@ end
 
 
         %Functie bepaald wat het middenpunt in van de draaicirkel    
-        function [tempwaypoint] = TEMPway(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai)
+        function [tempwaypoint, Objeclocation] = TEMPway(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai)
             %Functie bepaald wat het middenpunt in van de draaicirkel
             
             beweeg = [cos(Currentangle), sin(Currentangle)];
@@ -313,14 +329,15 @@ end
             
             
             if strcmp(draai,'dunno') == 1
-                [tempwaypoint] = choose_longestwaypoint(snijvector1, snijvector2, Currentlocation, Currentangle);
+                [tempwaypoint, Objeclocation] = choose_longestwaypoint(snijvector1, snijvector2, Currentlocation, Currentangle);
             elseif strcmp(draai,'links') == 1 || strcmp(draai,'rechts') == 1
                 
-                [possible, waypoint] = check_wanted_waypoint(draai, Currentlocation, Currentangle);
+                [possible, waypoint, Objeclocation] = check_wanted_waypoint(draai, Currentlocation, Currentangle);
+                
                 if strcmp(possible,'true')
                     tempwaypoint = waypoint;
                 elseif strcmp(possible,'false') == 1
-                    [tempwaypoint] = choose_longestwaypoint(snijvector1, snijvector2, Currentlocation, Currentangle);
+                    [tempwaypoint, Objeclocation] = choose_longestwaypoint(snijvector1, snijvector2, Currentlocation, Currentangle);
                 else
                     Error = 'Error'
                 end
@@ -333,10 +350,9 @@ end
         
         
         %Functie bepaald welke waypoint je moet kiezen
-        function [tempwaypoint] = choose_longestwaypoint(snijvector1, snijvector2, Currentlocation, Currentangle)
+        function [tempwaypoint, Objeclocation] = choose_longestwaypoint(snijvector1, snijvector2, Currentlocation, Currentangle)
             [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
-            [tempw90, tempw270] = tempwaypoints1(Currentlocation, Currentangle);
-            
+            [tempw90, tempw270, Objeclocation] = tempwaypoints1(Currentlocation, Currentangle);
             afstand1 = norm(snijvector1);
             afstand2 = norm(snijvector2);
             
@@ -359,7 +375,7 @@ end
         
         %Functie bepaald wat de twee mogelijke waypoints zijn als beide
         %sensoren iets zien
-        function [tempw90, tempw270] = tempwaypoints1(Currentlocation, Currentangle)
+        function [tempw90, tempw270, Objectlocation] = tempwaypoints1(Currentlocation, Currentangle)
             [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
             Objectlocation = Currentlocation + Sens_thres*beweeg;
             
@@ -373,10 +389,11 @@ end
         
         
         %Functie beslist of die kan draaien waar die naartoe wilt draaien
-        function [possible, waypoint] = check_wanted_waypoint(draai, Currentlocation, Currentangle)
+        function [possible, waypoint, Objeclocation] = check_wanted_waypoint(draai, Currentlocation, Currentangle)
+        
             [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
-            [tempw90, tempw270] = tempwaypoints2(Currentlocation, Currentangle);
-            
+            [tempw90, tempw270, Objeclocation] = tempwaypoints2(Currentlocation, Currentangle);
+      
             possible = 'true';
             
             if strcmp(draai,'rechts') == 1
@@ -387,7 +404,7 @@ end
                 Error = 'Error'
             end
             
-            N = 2*pi*turning_radius*1000; %Dit is hoeveel samples ik op de cirkel neem
+            N = 2*pi*2*turning_radius*1000; %Dit is hoeveel samples ik op de cirkel neem
             N = ceil(N);
             
             huidighoek = 0;
@@ -399,8 +416,8 @@ end
             for loopvar = 1:N
                 huidighoek = huidighoek + loopvar*delta_hoek;
             
-                x = cx + turning_radius*cos(huidighoek);
-                y = cy + turning_radius*sin(huidighoek);
+                x = cx + 2*turning_radius*cos(huidighoek);
+                y = cy + 2*turning_radius*sin(huidighoek);
                 
                 if x < 0 || x > Uiterste_punt(1)
                     possible = 'false';
@@ -415,7 +432,7 @@ end
         
         %Functie bepaald wat de twee mogelijke waypoints zijn als slechts 1
         %sensor iets ziet
-        function [tempw90, tempw270] = tempwaypoints2(Currentlocation, Currentangle)
+        function [tempw90, tempw270, Objectlocation] = tempwaypoints2(Currentlocation, Currentangle)
             [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
             Objectlocation = Currentlocation + Sens_thres*beweeg;
             
@@ -451,7 +468,7 @@ end
             turning_radius = 0.7;
             Uiterste_punt = [20 20];
             Sens_thres = 0.9;
-            length_objects = 2;
+            length_objects = 0.5;
             
             beweeg = [cos(Currentangle), sin(Currentangle)];
             

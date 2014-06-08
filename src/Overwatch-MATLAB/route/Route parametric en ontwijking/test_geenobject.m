@@ -5,6 +5,7 @@ clc;
 subplot(2, 3, dr);
 Currentlocation = [10 10]; Currentangle = dr*pi/4; s = Route;
 Sensor = [10, 10];
+Steering = 150;
 
 
 %Ik heb een circle (x-p)^2+(y-q)^2 = r^2
@@ -19,7 +20,7 @@ for j = 1:100
     y = cy + r*sin(a);
     Waypoints = [x, y];
     
-    [distance, Ref_angle] = DetermineRoute(s, Currentlocation, Currentangle, Waypoints, Sensor);
+    [distance, Ref_angle] = DetermineRoute(s, Currentlocation, Currentangle, Waypoints, Sensor, Steering);
     
     plot(Currentlocation(1), Currentlocation(2), 'o', s.propr_point(1), s.propr_point(2), '+', Waypoints(1), Waypoints(2), 'x', s.propcircle_x, s.propcircle_y, 'b', s.proplijn_x,  s.proplijn_y, 'g', s.propkop_x, s.propkop_y, 'r');
     hold on;
