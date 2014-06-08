@@ -11,7 +11,7 @@ classdef Configuration
         DriveObserverPoles = -4.1;
         DriveCompensatorPoles = -0.55; % -1.3
         
-        MapDriveBound = 0.005;
+        MapDriveBound = 0.02;
         MapDriveFOC = 3.25;
         MapDriveTOC = -0.015;
         MapDriveOffset = 6;

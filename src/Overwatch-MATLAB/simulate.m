@@ -2,7 +2,6 @@ clear all
 
 InitialLocation = [0; 0];
 InitialAngle = 0;
-
 ang = Angle(InitialLocation, InitialAngle);
 ssSteer = SsSteer();
 ssDrive = SsDrive();
@@ -10,29 +9,27 @@ mapSteer = MapSteer();
 mapDrive = MapDrive();
 route = Route();
 
-CurrentLocation = [0; 0];
-CarPosition = [0; 0];
-CarAngle = 0;
-CarSpeed = 0;
 Waypoints = [[5;-5] [1;1] [-5;5]];
 Battery = 0;
 ReferenceDistance = 0;
+CarPosition = [0; 0];
 
 Delay = 0.15;
 SimulationTime = 20;
 LocationDelay = 0.15;
 
-SpeedAccelerationCoefficient = .6;
-AngleCoefficient = asin(0.35/0.65)/50;
-FrictionAcceleration = .5;
+% KITT model
+Model = KITT();
 
 %% Simulation
 LocationIndexIterations = ceil(Delay/LocationDelay);
-Timer = tic;
-TimerStart = tic;
 LocationIndex = 0;
+
 CurrentWaypointIndex = 1;
 Waypoint = Waypoints(:, CurrentWaypointIndex);
+
+Timer = tic;
+TimerStart = tic;
 
 hold off;
 
@@ -71,52 +68,17 @@ while toc(TimerStart) < SimulationTime
     [PWMDrive] = mapDrive.Map(DriveExcitation, CurrentAngle);
     [PWMSteer] = mapSteer.Map(SteerExcitation);
     
-    
-    %% Car movement
-    % Two step approximation
-    Dt = toc(Timer);
-    Timer = tic;
-    
-    % Update position for half dt
-    OldPosition = CarPosition;
-    CarDirection = [cos(CarAngle); sin(CarAngle)];
-    CarPosition = CarPosition + CarDirection*CarSpeed*Dt/2;
-    
-    % Update speed including friction
-    if PWMDrive > 155
-        PWMDriveNormalized = PWMDrive - 155;
-    elseif PWMDrive < 145
-        PWMDriveNormalized = PWMDrive - 145;
-    else
-        PWMDriveNormalized = 0;
-    end
-    
-    CarSpeed = CarSpeed + Dt*PWMDriveNormalized*SpeedAccelerationCoefficient;
-    
-    if CarSpeed > 0
-        CarSpeed = CarSpeed - Dt*FrictionAcceleration;
-        if CarSpeed < 0
-            CarSpeed = 0;
-        end
-    else
-        CarSpeed = CarSpeed + Dt*FrictionAcceleration;
-        if CarSpeed > 0
-            CarSpeed = 0;
-        end
-    end
-    
-    % Update position for another half of dt
-    CarAngle = mod(CarAngle + AngleCoefficient*(PWMSteer-150)*Dt,2*pi);
-    CarDirection = [cos(CarAngle); sin(CarAngle)];
-    CarPosition = CarPosition + CarDirection*CarSpeed*Dt/2;
+    %% Update KITT
+    [CarPosition, CarSpeed, CarAngle] = Model.Iterate(PWMDrive, PWMSteer);
     
     %% Information display
     CarReferenceDirection = [cos(ReferenceAngle); sin(ReferenceAngle)];
+    CarDirection = [cos(CarAngle); sin(CarAngle)];
     figure(1);
     
     plot(CarPosition(1), CarPosition(2), 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'red', 'MarkerEdgeColor', 'red');
     hold on;
-    plot([CarPosition(1) CarPosition(1)+CarDirection(1)],[CarPosition(2) CarPosition(2)+CarDirection(2)],'-r');
+    plot([CurrentLocation(1) CurrentLocation(1)+CarDirection(1)],[CurrentLocation(2) CurrentLocation(2)+CarDirection(2)],'-r');
     plot([CurrentLocation(1) CurrentLocation(1)+CarReferenceDirection(1)],[CurrentLocation(2) CurrentLocation(2)+CarReferenceDirection(2)],'-b');
     plot(Waypoint(1), Waypoint(2), 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'blue', 'MarkerEdgeColor', 'blue');
     xlabel 'x (m)';
