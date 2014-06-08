@@ -6,12 +6,13 @@ classdef TDOA < hgsetget
         IsReadyFlag= 0;
         R=[]; % the range difference matrix
         settings = struct('Fs', 48000,...
-            'peak_threshold', 0.85, ...
+            'peak_threshold', 1, ...
             'peak_stddev', 4, ...
             'peak_intervals', 600, ... % no. of intervals divided into
             'trim_threshold', 0.8, ...
-            'trim_padding', 50, ... % no. of trailing zeros
-            'trim_spacing', 250, ... % no. of samples as 'prediction error' 
+            'trim_padding', 250, ... % no. of trailing zeros
+            'trim_spacing', 250, ... % no. of samples as 'prediction error'
+            'trim_length', 10000, ... % no. of samples the trimmed data should be
             'speed_sound', 330, ...
             'nsamples', 44100/8*2, ... % number of samples to record
             'loc_threshold',0.05);
@@ -91,7 +92,8 @@ classdef TDOA < hgsetget
             else
                 data = temp((start-padding):size(temp,1),:);
             end
-            result = data;
+            size(data)
+            result = data(1:Self.settings.trim_length,:);
         end
         
         % find peaks with std_dev algorithm
@@ -168,9 +170,9 @@ classdef TDOA < hgsetget
             subplot(5,1,i)
             hold on;
             size(h)
+            plot(tmp,h(tmp),'r+','MarkerSize',20);
             plot(h);
             tmp
-            plot(tmp,h(tmp),'r+','MarkerSize',20);
             hold off;
             if i==5
                 figure
