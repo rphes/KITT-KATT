@@ -22,6 +22,7 @@ Waypoints = [[5;-5] [1;1] [-5;5]];
 Delay = 0.15;
 SimulationTime = 60;
 LocationDelay = 0.15;
+InitialisationTime = 2;
 
 % KITT model
 Model = KITT();
@@ -77,7 +78,8 @@ while toc(TimerStart) < SimulationTime
     [PWMDrive] = mapDrive.Map(DriveExcitation, CurrentAngle);
     [PWMSteer] = mapSteer.Map(SteerExcitation);
     
-    if toc(TimerStart) < 2
+    % Initialisation
+    if toc(TimerStart) < InitialisationTime
         PWMDrive = 150;
     end
     

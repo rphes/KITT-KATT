@@ -1,7 +1,7 @@
 classdef KITT < handle
     properties (SetAccess = private)
         % State-space model parameters
-        carMass = 6; % Car mass
+        carMass = 1; % Car mass
         carResistance = 0.15; % Car resistance
         motorInductance = 0.020; % Self-inductance
         motorConstant = 0.5; % Motor constant
