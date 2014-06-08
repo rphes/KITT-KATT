@@ -82,7 +82,7 @@ classdef Wrapper < handle
             
             % Call controllers
             ReferenceDistance = 0;
-            [DriveExcitation, ~, ~] = Self.ssDrive.Iterate(CurrentDistance, ReferenceDistance, battery, DoObserve);
+            [DriveExcitation, CurrentSpeed, ~] = Self.ssDrive.Iterate(CurrentDistance, ReferenceDistance, battery, DoObserve);
             [SteerExcitation] = Self.ssSteer.Iterate(CurrentAngle, ReferenceAngle, battery);
             
             % Excitation mapping
@@ -97,9 +97,9 @@ classdef Wrapper < handle
             pwm_steer = PWMSteer;
             pwm_drive = PWMDrive;
             
-            Ret = 1;
-            
             debug;
+            
+            Ret = 1;
         end
     end
 end

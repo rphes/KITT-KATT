@@ -1,4 +1,5 @@
-clear all
+%% Init
+DoDraw = 0;
 
 % Wrapper objects
 InitialLocation = [0; 0];
@@ -16,7 +17,7 @@ ReferenceDistance = 0;
 CarPosition = [0; 0];
 
 % Waypoints
-Waypoints = [[5;-5] [1;1] [-5;5]];
+Waypoints = [[5;5] [9;1] [1;8]];
 
 % Simulation parameters
 Delay = 0.15;
@@ -63,7 +64,21 @@ while toc(TimerStart) < SimulationTime
     % Determine current waypoint
     Waypoint = Waypoints(:, CurrentWaypointIndex);
     
-    %% Simulation    
+    %% Simulation
+    % Global variables set by C#
+    global sensor_l
+    global sensor_r
+    global battery
+    global waypoints
+
+    % Global variables to set
+    global loc_x
+    global loc_y
+    global angle
+    global speed
+    global pwm_steer
+    global pwm_drive
+    
     % Determine current angle
     CurrentAngle = ang.DetermineAngle(CurrentLocation);
 
@@ -83,41 +98,57 @@ while toc(TimerStart) < SimulationTime
         PWMDrive = 150;
     end
     
+    % Set
+    loc_x = CurrentLocation(1);
+    loc_y = CurrentLocation(2);
+    angle = CurrentAngle;
+    speed = CurrentTrackedSpeed;
+    pwm_steer = PWMSteer;
+    pwm_drive = PWMDrive;
+    waypoints = Waypoints;
+    battery = 20;
+    sensor_l = 0;
+    sensor_r = 0;
+    
     %% Update KITT
     [CarPosition, CarSpeed, CarAngle] = Model.Iterate(PWMDrive, PWMSteer);
     
     %% Information display
     CarReferenceDirection = [cos(ReferenceAngle); sin(ReferenceAngle)];
     CarDirection = [cos(CarAngle); sin(CarAngle)];
-    figure(1);
     
-    plot(CarPosition(1), CarPosition(2), 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'red', 'MarkerEdgeColor', 'red');
-    hold on;
-    plot([CurrentLocation(1) CurrentLocation(1)+CarDirection(1)],[CurrentLocation(2) CurrentLocation(2)+CarDirection(2)],'-r');
-    plot([CurrentLocation(1) CurrentLocation(1)+CarReferenceDirection(1)],[CurrentLocation(2) CurrentLocation(2)+CarReferenceDirection(2)],'-b');
-    plot(Waypoint(1), Waypoint(2), 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'blue', 'MarkerEdgeColor', 'blue');
-    xlabel 'x (m)';
-    ylabel 'y (m)';
-    xlim([-10 10]);
-    ylim([-10 10]);
-    title 'Controller test';
-    grid on;
+    if DoDraw
+        figure(10);
+        plot(CarPosition(1), CarPosition(2), 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'red', 'MarkerEdgeColor', 'red');
+        hold on;
+        plot([CurrentLocation(1) CurrentLocation(1)+CarDirection(1)],[CurrentLocation(2) CurrentLocation(2)+CarDirection(2)],'-r');
+        plot([CurrentLocation(1) CurrentLocation(1)+CarReferenceDirection(1)],[CurrentLocation(2) CurrentLocation(2)+CarReferenceDirection(2)],'-b');
+        plot(Waypoint(1), Waypoint(2), 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'blue', 'MarkerEdgeColor', 'blue');
+        xlabel 'x (m)';
+        ylabel 'y (m)';
+        xlim([-10 10]);
+        ylim([-10 10]);
+        title 'Controller test';
+        grid on;
     
-    clc;
-    display 'BEUNED KITT SIMULATOR';
-    display '---------------------';
-    display(['Time:               ' num2str(round(toc(TimerStart)*100)/100) '/' num2str(round(100*SimulationTime)/100) ' s']);
-    display(['State 1 (distance): ' num2str(round(CurrentTrackedDistance*100)) ' cm']);
-    display(['State 2 (speed):    ' num2str(round(abs(CurrentTrackedSpeed)*100)) ' cm/s']);
-    display ' ';
-    display(['Current distance:   ' num2str(round(CurrentDistance*100)) ' cm']);
-    display(['Current speed:      ' num2str(round(CarSpeed*100)) ' cm']);
-    display ' ';
-    display(['Actual angle:       ' num2str(round(mod(CarAngle,2*pi)*180/pi)) ' deg']);
-    display(['Tracked angle:      ' num2str(round(mod(CurrentAngle,2*pi)*180/pi)) ' deg']);
-    display ' ';
-    display(['Drive PWM:          ' num2str(PWMDrive)]);
-    display(['Steer PWM:          ' num2str(PWMSteer)]);
+        clc;
+        display 'BEUNED KITT SIMULATOR';
+        display '---------------------';
+        display(['Time:               ' num2str(round(toc(TimerStart)*100)/100) '/' num2str(round(100*SimulationTime)/100) ' s']);
+        display(['State 1 (distance): ' num2str(round(CurrentTrackedDistance*100)) ' cm']);
+        display(['State 2 (speed):    ' num2str(round(abs(CurrentTrackedSpeed)*100)) ' cm/s']);
+        display ' ';
+        display(['Current distance:   ' num2str(round(CurrentDistance*100)) ' cm']);
+        display(['Current speed:      ' num2str(round(CarSpeed*100)) ' cm']);
+        display ' ';
+        display(['Actual angle:       ' num2str(round(mod(CarAngle,2*pi)*180/pi)) ' deg']);
+        display(['Tracked angle:      ' num2str(round(mod(CurrentAngle,2*pi)*180/pi)) ' deg']);
+        display ' ';
+        display(['Drive PWM:          ' num2str(PWMDrive)]);
+        display(['Steer PWM:          ' num2str(PWMSteer)]);
+    end
+    
+    debug;
     
     %% Delay
     pause(Delay);
