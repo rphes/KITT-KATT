@@ -34,7 +34,7 @@ classdef Route<handle
             Self.propkop_x = [0 0];
             Self.propkop_y = [0 0];
             
-            Self.propTemp_waypoint = [0 0];
+            Self.propTemp_waypoint = [100 100];
         end
         
         
@@ -42,8 +42,23 @@ classdef Route<handle
         
         % Determine route
         function [CurrentDistance, ReferenceAngle] = DetermineRoute(Self, Currentlocation, Currentangle, Waypoints, Sensors)
-            
+                
+                Distance_CW = norm(Currentlocation - Self.propTemp_waypoint);
                 [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
+                
+                if Distance_CW < 1/50
+                    Self.propTemp_waypoint = [100 100];
+                end
+                
+                if Self.propTemp_waypoint(1) > 0 || Self.propTemp_waypoint(1) < Uiterste_punt(1) 
+                    if Self.propTemp_waypoint(2) > 0 || Self.propTemp_waypoint(2) < Uiterste_punt(2)
+                        Waypoints = Self.propTemp_waypoint;
+                    end
+                end
+                    
+                    
+                
+                
                 
                 if Sensors(1) < Sens_thres && Sensors(2) < Sens_thres
                     draai = 'dunno';
@@ -57,18 +72,29 @@ classdef Route<handle
                     
                 elseif Sensors(1) < 0.9
                     draai = 'links';
+                    
+                    [tempwaypoint] = TEMPway(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai);
+                    Self.propTemp_waypoint = tempwaypoint;
+                    
+                    [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = bereken_outputs(Self, Currentlocation, Currentangle, tempwaypoint);
+                    
+                    test_lengths(Self, alpha, Currentlocation, r_point, beweeg, turning_radius, tempwaypoint, l_recht);
+                    
                 elseif Sensors(2) < 0.9
                     draai = 'rechts';
+                    
+                    [tempwaypoint] = TEMPway(Currentlocation, Currentangle, Uiterste_punt, r_point1, r_point2, draai);
+                    Self.propTemp_waypoint = tempwaypoint;
+                    
+                    [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = bereken_outputs(Self, Currentlocation, Currentangle, tempwaypoint);
+                    
+                    test_lengths(Self, alpha, Currentlocation, r_point, beweeg, turning_radius, tempwaypoint, l_recht);
                 else
                     
-                        
-                [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = bereken_outputs(Self, Currentlocation, Currentangle, Waypoints);
+                    [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = bereken_outputs(Self, Currentlocation, Currentangle, Waypoints);
                 
                 
-                %Dit is om de berekende lengtes te testen
-                test_lengths(Self, alpha, Currentlocation, r_point, beweeg, turning_radius, Waypoints, l_recht);
-                
-
+                     test_lengths(Self, alpha, Currentlocation, r_point, beweeg, turning_radius, Waypoints, l_recht);
                 end
         end
         
@@ -128,7 +154,7 @@ classdef Route<handle
         
         
         
-        %Dit is om functie geen object te testen   
+        %Dit is om functie te testen   
         function test_lengths(Self, alpha, Currentlocation, r_point, beweeg, turning_radius, Waypoints, l_recht)
                 %Deze functie is om de lengtes te testen
                 
@@ -288,16 +314,28 @@ end
             
             if strcmp(draai,'dunno') == 1
                 [tempwaypoint] = choose_longestwaypoint(snijvector1, snijvector2, Currentlocation, Currentangle);
-            elseif strcmp(draai,'links') == 1
-            elseif strcmp(draai,'rechts') == 1
+            elseif strcmp(draai,'links') == 1 || strcmp(draai,'rechts') == 1
+                
+                [possible, waypoint] = check_wanted_waypoint(draai, Currentlocation, Currentangle);
+                if strcmp(possible,'true')
+                    tempwaypoint = waypoint;
+                elseif strcmp(possible,'false') == 1
+                    [tempwaypoint] = choose_longestwaypoint(snijvector1, snijvector2, Currentlocation, Currentangle);
+                else
+                    Error = 'Error'
+                end
+                
+            else
+                Error = 'Error'
             end
             
         end
         
+        
         %Functie bepaald welke waypoint je moet kiezen
         function [tempwaypoint] = choose_longestwaypoint(snijvector1, snijvector2, Currentlocation, Currentangle)
             [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
-            [tempw90, tempw270] = tempwaypoints(Currentlocation, Currentangle);
+            [tempw90, tempw270] = tempwaypoints1(Currentlocation, Currentangle);
             
             afstand1 = norm(snijvector1);
             afstand2 = norm(snijvector2);
@@ -319,7 +357,9 @@ end
             end
         end
         
-        function [tempw90, tempw270] = tempwaypoints(Currentlocation, Currentangle)
+        %Functie bepaald wat de twee mogelijke waypoints zijn als beide
+        %sensoren iets zien
+        function [tempw90, tempw270] = tempwaypoints1(Currentlocation, Currentangle)
             [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
             Objectlocation = Currentlocation + Sens_thres*beweeg;
             
@@ -329,6 +369,64 @@ end
             tempw90 = Objectlocation + (turning_radius + length_objects)*perp_beweeg1;
             tempw270 = Objectlocation + (turning_radius + length_objects)*perp_beweeg2;
         end
+        
+        
+        
+        %Functie beslist of die kan draaien waar die naartoe wilt draaien
+        function [possible, waypoint] = check_wanted_waypoint(draai, Currentlocation, Currentangle)
+            [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
+            [tempw90, tempw270] = tempwaypoints2(Currentlocation, Currentangle);
+            
+            possible = 'true';
+            
+            if strcmp(draai,'rechts') == 1
+                waypoint = tempw90;
+            elseif strcmp(draai,'links') == 1
+                waypoint = tempw270;
+            else
+                Error = 'Error'
+            end
+            
+            N = 2*pi*turning_radius*1000; %Dit is hoeveel samples ik op de cirkel neem
+            N = ceil(N);
+            
+            huidighoek = 0;
+            delta_hoek = 2*pi/N;
+            
+            cx = waypoint(1);
+            cy = waypoint(2);
+            
+            for loopvar = 1:N
+                huidighoek = huidighoek + loopvar*delta_hoek;
+            
+                x = cx + turning_radius*cos(huidighoek);
+                y = cy + turning_radius*sin(huidighoek);
+                
+                if x < 0 || x > Uiterste_punt(1)
+                    possible = 'false';
+                elseif y < 0 || y > Uiterste_punt(2)
+                    possible = 'false';
+                else
+                end
+            end
+            
+        end
+        
+        
+        %Functie bepaald wat de twee mogelijke waypoints zijn als slechts 1
+        %sensor iets ziet
+        function [tempw90, tempw270] = tempwaypoints2(Currentlocation, Currentangle)
+            [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
+            Objectlocation = Currentlocation + Sens_thres*beweeg;
+            
+            perp_beweeg1 = [sin(Currentangle), -cos(Currentangle)]; 
+            perp_beweeg2 = [-sin(Currentangle), cos(Currentangle)];
+            
+            tempw90 = Objectlocation + (turning_radius*1.5)*perp_beweeg1;
+            tempw270 = Objectlocation + (turning_radius*1.5)*perp_beweeg2;
+        end
+        
+        
         
         %Functie berekend de snijpunt tussen twee lijnen
         function [snijpunt] = Intersection(richting1, constant1, richting2, constant2)

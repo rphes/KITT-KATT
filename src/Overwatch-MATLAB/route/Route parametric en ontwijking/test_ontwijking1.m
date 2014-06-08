@@ -1,11 +1,11 @@
 for dr = 1:6
-figure(1)
+figure(dr)
 clc;
 
-subplot(2, 3, dr);
-Currentlocation = [10 10];
+subplot(1, 1, dr);
+Currentlocation = [12 10];
 Waypoints = [11 10]; Currentangle = dr*pi/2; s = Route;
-Sensor = [0, 0];
+Sensor = [10, 0];
 
 
 %Ik heb een circle (x-p)^2+(y-q)^2 = r^2
