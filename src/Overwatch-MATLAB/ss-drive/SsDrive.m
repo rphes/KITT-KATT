@@ -10,7 +10,7 @@ classdef SsDrive < handle
         motorConstant = 0.5; % Motor constant
         motorResistance = 0.05; % Motor resistance (current oscillation)
         wheelRadius = 0.15; % Wheel radius
-        motorGearRatio = 40; % Gear ratio <!--- IMPORTANT ---!> (attack)
+        motorGearRatio = 10; % Gear ratio <!--- IMPORTANT ---!> (attack)
         
         % State-space model
         currentState = [0; 0; 0];

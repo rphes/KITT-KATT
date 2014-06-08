@@ -24,7 +24,7 @@ classdef KITT < handle
         currentAngle = 0;
         
         % Coefficients
-        pwmCoefficient = 0.5;
+        pwmCoefficient = 0.1;
         angleCoefficient
         
         % Car characteristics

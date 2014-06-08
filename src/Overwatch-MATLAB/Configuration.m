@@ -9,7 +9,7 @@ classdef Configuration
         DriveCarWeight = 0.15;
         DriveRollingCoefficient = 0.05;
         DriveObserverPoles = -4.1;
-        DriveCompensatorPoles = -0.55; % -1.3
+        DriveCompensatorPoles = -0.5; % -1.3
         
         MapDriveBound = 0.02;
         MapDriveFOC = 3.25;
