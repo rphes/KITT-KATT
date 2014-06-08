@@ -3,19 +3,21 @@ close all;
 % load('test/M_22chan.mat'); %this is for the audiomeasure22
 % load('test/audiodata5.mat'); 
 addpath('../loc');
-ii=[1 
+ii=[
+    1 
     2 
     3 
     4 
     5 
     6 
-    7];
+    7
+    ];
 clear testcase
 clear location
 clear loctestcase
 
 for i=1:length(ii)
-    testcase{i} = TDOA(M_anders,RXXr,ii(i));
+    testcase{i} = TDOA(M_anders,RXXr,ii(i),x);
     testcase{i}.Start;
     loctestcase = Loc();
     location{i} = loctestcase.Localize(testcase{i}.R, testcase{i}.MicrophoneLocations, testcase{i}.settings.loc_threshold);
