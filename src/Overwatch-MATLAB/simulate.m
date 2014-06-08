@@ -1,5 +1,6 @@
 clear all
 
+% Wrapper objects
 InitialLocation = [0; 0];
 InitialAngle = 0;
 ang = Angle(InitialLocation, InitialAngle);
@@ -9,11 +10,15 @@ mapSteer = MapSteer();
 mapDrive = MapDrive();
 route = Route();
 
-Waypoints = [[5;-5] [1;1] [-5;5]];
+% Wrapper parameters
 Battery = 0;
 ReferenceDistance = 0;
 CarPosition = [0; 0];
 
+% Waypoints
+Waypoints = [[5;-5] [1;1] [-5;5]];
+
+% Simulation parameters
 Delay = 0.15;
 SimulationTime = 20;
 LocationDelay = 0.15;
@@ -22,12 +27,15 @@ LocationDelay = 0.15;
 Model = KITT();
 
 %% Simulation
+% Location delay simulation initialisation
 LocationIndexIterations = ceil(Delay/LocationDelay);
 LocationIndex = 0;
 
+% Waypoint initalisation
 CurrentWaypointIndex = 1;
 Waypoint = Waypoints(:, CurrentWaypointIndex);
 
+% Timers
 Timer = tic;
 TimerStart = tic;
 
@@ -46,11 +54,12 @@ while toc(TimerStart) < SimulationTime
     % Sensor data
     SensorData = [3 3];
     
-    % Determine waypoint
     % Check if waypoint is reached and another waypoint is available
-    if (norm(CarPosition-Waypoint) < 0.3) && (CurrentWaypointIndex < size(Waypoints,2))
+    if (norm(CarPosition-Waypoint) < 0.1) && (CurrentWaypointIndex < size(Waypoints,2))
         CurrentWaypointIndex = CurrentWaypointIndex+1;
     end
+    
+    % Determine current waypoint
     Waypoint = Waypoints(:, CurrentWaypointIndex);
     
     %% Simulation    
@@ -89,8 +98,8 @@ while toc(TimerStart) < SimulationTime
     grid on;
     
     clc;
-    display(['BEUNED KITT SIMULATOR']);
-    display('---------------------');
+    display 'BEUNED KITT SIMULATOR';
+    display '---------------------';
     display(['Time:               ' num2str(round(toc(TimerStart)*100)/100) '/' num2str(round(100*SimulationTime)/100) ' s']);
     display(['State 1 (distance): ' num2str(round(CurrentTrackedDistance*100)) ' cm']);
     display(['State 2 (speed):    ' num2str(round(abs(CurrentTrackedSpeed)*100)) ' cm/s']);

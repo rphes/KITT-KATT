@@ -18,18 +18,22 @@ classdef KITT < handle
         
         % Tracks
         timer
+        timerBegin
         distance = 0;
         currentPosition = [0; 0];
         currentAngle = 0;
         
         % Coefficients
-        pwmCoefficient = 1;
+        pwmCoefficient = 0.5;
         angleCoefficient
         
         % Car characteristics
         turningRadius = 0.65;
         carLength = 0.35;
         
+        % State tracking
+        states
+        time        
     end
     
     methods
@@ -47,6 +51,7 @@ classdef KITT < handle
             Self.D = 0;
             
             Self.timer = tic;
+            Self.timerBegin = tic;
             
             % Coefficient calculation
             Self.angleCoefficient = asin(Self.carLength/Self.turningRadius)/50;
@@ -67,13 +72,17 @@ classdef KITT < handle
             
             Self.currentState = NewState;
             
+            % Save
+            states = [states NewState];
+            time = [time toc(timerBegin)];
+            
             % Output calculation
             CurrentDistance = Self.currentState(1);
             CurrentSpeed = Self.currentState(2);    
         end
         
         % New position calculation
-        function [CurrentPosition, CurrentSpeed] = Iterate(Self, PWMDrive, PWMSteer)
+        function [CurrentPosition, CurrentSpeed, CurrentAngle] = Iterate(Self, PWMDrive, PWMSteer)
             % Delta time calculation
             Dt = toc(Self.timer);
             Self.timer = tic;
@@ -81,8 +90,8 @@ classdef KITT < handle
             % Dead-zone PWM correction
             if PWMDrive < 145
                 PWMDriveNormalized = PWMDrive - 145;
-            elseif PWMDrive > 165
-                PWMDriveNormalized = PWMDrive - 165;
+            elseif PWMDrive > 155
+                PWMDriveNormalized = PWMDrive - 155;
             else
                 PWMDriveNormalized = 0;
             end
@@ -90,20 +99,27 @@ classdef KITT < handle
             [CurrentDistance, CurrentSpeed] = Self.IterateDistance(PWMDriveNormalized, Dt);
                 
             % Delta distance calculation
-            DeltaDistance = CurrentDistance - Self.distance
+            DeltaDistance = CurrentDistance - Self.distance;
             Self.distance = CurrentDistance;
+            
+            % Quick fix for edge case
+            if PWMSteer == 150
+                PWMSteer = 150.01;
+            end
             
             SteerAngle = (PWMSteer - 150)*Self.angleCoefficient;
             
             % New position calculation
-            [CurrentPosition] = Self.IteratePosition(Self, DeltaDistance, SteerAngle);
+            [CurrentPosition] = Self.IteratePosition(DeltaDistance, SteerAngle);
+            
+            CurrentAngle = Self.currentAngle;
         end
         
+        % Position calculation
         function [NewPosition] = IteratePosition(Self, DeltaDistance, SteerAngle)
-            CurrentPosition = Self.currentPosition
+            CurrentPosition = Self.currentPosition;
         
             % Turning radius calculation and delta angle
-            SteerAngle = (PWMSteer-150)*Self.angleCoefficient
             TurningRadius = Self.carLength/sin(SteerAngle);
             DeltaAngle = DeltaDistance/TurningRadius;
             
@@ -116,7 +132,23 @@ classdef KITT < handle
             Rotation = [cos(DeltaAngle) -sin(DeltaAngle);sin(DeltaAngle) cos(DeltaAngle)];
             
             % Rotate
+            NewPosition = Rotation*(CurrentPosition - TurningPoint) + TurningPoint;
             
+            % Current angle calculation
+            % Proof in etc/steering
+            CurrentAngle = Self.currentAngle + DeltaAngle;
+            Self.currentAngle = CurrentAngle;
+            
+            % Save new position
+            Self.currentPosition = NewPosition;
+        end
+        
+        % Inspect function
+        function Inspect(Self)
+            hold off;
+            figure(2);
+            subplot(3,1,1);
+            plot('Dis
     end
 end
 

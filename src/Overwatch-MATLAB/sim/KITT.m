@@ -7,7 +7,7 @@ classdef KITT < handle
         motorConstant = 0.5; % Motor constant
         motorResistance = 0.05; % Motor resistance (current oscillation)
         wheelRadius = 0.15; % Wheel radius
-        motorGearRatio = 40; % Gear ratio <!--- IMPORTANT ---!> (attack)
+        motorGearRatio = 20; % Gear ratio <!--- IMPORTANT ---!> (attack)
         
         % State-space model
         currentState = [0; 0; 0];
@@ -18,6 +18,7 @@ classdef KITT < handle
         
         % Tracks
         timer
+        timerBegin
         distance = 0;
         currentPosition = [0; 0];
         currentAngle = 0;
@@ -30,6 +31,9 @@ classdef KITT < handle
         turningRadius = 0.65;
         carLength = 0.35;
         
+        % State tracking
+        states
+        time        
     end
     
     methods
@@ -47,6 +51,7 @@ classdef KITT < handle
             Self.D = 0;
             
             Self.timer = tic;
+            Self.timerBegin = tic;
             
             % Coefficient calculation
             Self.angleCoefficient = asin(Self.carLength/Self.turningRadius)/50;
@@ -66,6 +71,10 @@ classdef KITT < handle
             end
             
             Self.currentState = NewState;
+            
+            % Save
+            Self.states = [Self.states NewState];
+            Self.time = [Self.time toc(Self.timerBegin)];
             
             % Output calculation
             CurrentDistance = Self.currentState(1);
@@ -132,6 +141,33 @@ classdef KITT < handle
             
             % Save new position
             Self.currentPosition = NewPosition;
+        end
+        
+        % Inspect function
+        function Inspect(Self)
+            hold off;
+            figure(2);
+            
+            subplot(3,1,1);
+            plot(Self.time, Self.states(1,:));
+            title 'State 1 (distance)';
+            xlabel 'Time (s)';
+            ylabel 'Distance (m)';
+            grid on;
+            
+            subplot(3,1,2);
+            plot(Self.time, Self.states(2,:));
+            title 'State 2 (speed)';
+            xlabel 'Time (s)';
+            ylabel 'Speed (m/s)';
+            grid on;
+            
+            subplot(3,1,3);
+            plot(Self.time, Self.states(3,:));
+            title 'State 3 (current)';
+            xlabel 'Time (s)';
+            ylabel 'Current (A)';
+            grid on;
         end
     end
 end

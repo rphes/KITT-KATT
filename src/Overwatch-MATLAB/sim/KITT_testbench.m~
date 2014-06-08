@@ -1,9 +1,0 @@
-% Init
-Model = KITT();
-SimulationTime = 10;
-StepTime = 0.1;
-BeginTime = tic;
-
-% Loop
-while
-
