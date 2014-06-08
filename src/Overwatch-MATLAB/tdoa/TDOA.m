@@ -5,13 +5,14 @@ classdef TDOA < hgsetget
         IsBusyFlag = 0;
         IsReadyFlag= 0;
         R=[]; % the range difference matrix
-        settings = struct('Fs', 44100,...
-            'peak_threshold', 0.5, ...
-            'peak_stddev', 3, ...
-            'peak_intervals', 500, ... % no. of intervals divided into
-            'trim_threshold', 0.85, ...
-            'trim_padding', 750, ...
-            'speed_sound', 330, ...
+        settings = struct('Fs', 48000,...
+            'peak_threshold', 0.65, ...
+            'peak_stddev', 4, ...
+            'peak_intervals', 600, ... % no. of intervals divided into
+            'trim_threshold', 0.8, ...
+            'trim_padding', 50, ... % no. of trailing zeros
+            'trim_spacing', 250, ... % no. of samples as 'prediction error' 
+            'speed_sound', 340, ...
             'nsamples', 44100/8*2, ... % number of samples to record
             'loc_threshold',0.05);
         RecData = []; % the raw, recorded data
@@ -63,32 +64,32 @@ classdef TDOA < hgsetget
         
         % function to trim the recorded data to the right length
         function [result] = TrimData(Self)
-            start = [];
-            data=Self.RecData;
+            temp=Self.RecData;
+            data=abs(temp);
+            start = size(data,1)*ones(1,size(data,2));
             level=Self.settings.trim_threshold;
             padding = Self.settings.trim_padding;
             % Find starts
+            max_sig = max(max(data));
             for i = 1:size(data,2)
-                % Maximum signal level
-                max_sig = max(data(:,i));
-                
-                for j = 1:length(data(:,i))
-                    if data(j,i) >= level*max_sig
+                for j = 1:size(data,1)
+                    if abs(data(j,i)) >= level*max_sig
                         start(i) = j;
                         break
                     end
                 end
             end
-            
-            start = min(start);
-            
-            if start-padding <= 0
-                data = [zeros(padding-start, size(data,2)); data];
+            if start>Self.settings.trim_spacing
+                start = min(start)-Self.settings.trim_spacing;
             else
-                data = data((start-padding):size(data,1),:);
+                start = 1;
             end
-            result=data;
-            %             plot(result)
+            if start-padding <= 0
+                data = [zeros(padding-start, size(temp,2)); temp];
+            else
+                data = temp((start-padding):size(temp,1),:);
+            end
+            result = data;
         end
         
         % find peaks with std_dev algorithm
@@ -97,15 +98,23 @@ classdef TDOA < hgsetget
             mean_interval=[];
             number_of_intervals=Self.settings.peak_intervals;
             threshold=Self.settings.peak_stddev;
-            Peak=0;
-            step_size=floor(length(data)/number_of_intervals)-1;
-            for i=1:number_of_intervals
-                interval_start=1+(i-1)*step_size;
-                std_interval(i)=std(data(interval_start:interval_start+step_size));
-                mean_interval(i)=mean(std_interval(1:i-1));
-                if (i~=1)&&(std_interval(i)/mean_interval(i)>threshold)
-                    Peak=interval_start;
-                    return
+%             Peak=0;
+%             step_size=floor(length(data)/number_of_intervals)-1;
+%             for i=1:number_of_intervals
+%                 interval_start=1+(i-1)*step_size;
+%                 std_interval(i)=std(data(interval_start:interval_start+step_size));
+%                 mean_interval(i)=mean(std_interval(1:i-1));
+%                 if (i~=1)&&(std_interval(i)/mean_interval(i)>threshold)
+%                     Peak=interval_start;
+%                     return
+%                 end
+%             end
+            Peak = 0;
+            maxval = max(abs(data));
+            for i=1:length(data)
+                if abs(data(i))>=Self.settings.peak_threshold*maxval
+                    Peak = i;
+                    break;
                 end
             end
             if (Peak == 0)
@@ -116,7 +125,6 @@ classdef TDOA < hgsetget
         % estimate h[n]
         function [h, delay] = EstChannel(Self, i)
             x{i} = Self.RecDataTrimmed(:,i);
-            
             N_y = size(Self.M{i},2);
             diff = N_y-length(x{i});
             
@@ -127,14 +135,16 @@ classdef TDOA < hgsetget
             end
             h = Self.M{i}*x{i};
             
-            
             %             Find delay
             delay = Self.FindPeak(h)/Self.settings.Fs;
-            %             figure
-            %             plot(h)
-            %             hold on;
-            %             plot(delay*Self.settings.Fs,h(delay*Self.settings.Fs),'r+');
-            %             hold off;
+            %   Plot delay
+%             sampleno = Self.FindPeak(h);
+%             subplot(5,1,i)
+%             title(['recording number' num2str(i)]);
+%             plot(h)
+%             hold on;
+%             plot(sampleno,h(sampleno),'r+');
+%             hold off;
         end
         
         % make R matrix
@@ -179,12 +189,16 @@ classdef TDOA < hgsetget
             
             % Then set TDOA status to not-busy and processing is ready
             set(Self,'IsBusyFlag',0,'IsReadyFlag',1);
-            
-            %             plot(Self.RecDataTrimmed);
-            %             title('trimmed');
-            %             figure
-            %             plot(Self.RecData);
-            %             title('original');
+%            
+            figure
+            subplot(2,1,2)
+            plot(Self.RecDataTrimmed);
+            xlim([0 18000]);
+            title('trimmed');
+            subplot(2,1,1)
+            plot(Self.RecData);
+            xlim([0 18000]);
+            title('original');
         end
         
     end

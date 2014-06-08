@@ -10,18 +10,27 @@ ii=[1
     5 
     6 
     7];
+clear testcase
+clear location
+clear loctestcase
+
 for i=1:length(ii)
-    clear testcase
-    testcase = TDOA(M_22,RXXr,ii(i));
-    testcase.Start;
+    testcase{i} = TDOA(M_anders,RXXr,ii(i));
+    testcase{i}.Start;
     loctestcase = Loc();
-    location = loctestcase.Localize(testcase.R, testcase.MicrophoneLocations, testcase.settings.loc_threshold);
-    hold on;
-    plot(location(1),location(2),'ro','MarkerSize',20,'MarkerFaceColor','r');
-    hold off;
+    location{i} = loctestcase.Localize(testcase{i}.R, testcase{i}.MicrophoneLocations, testcase{i}.settings.loc_threshold);
+    a=i;
 end
+
+figure
 for i=1:5
     hold on;
-    plot(testcase.MicrophoneLocations(i,1),testcase.MicrophoneLocations(i,2),'bo','MarkerSize',20,'MarkerFaceColor','b');
+    plot(testcase{a}.MicrophoneLocations(i,1),testcase{a}.MicrophoneLocations(i,2),'bo','MarkerSize',20,'MarkerFaceColor','b');
+    hold off;
+end
+
+for i=1:a
+    hold on;
+    plot(location{i}(1),location{i}(2),'ro','MarkerSize',20,'MarkerFaceColor','r');
     hold off;
 end
