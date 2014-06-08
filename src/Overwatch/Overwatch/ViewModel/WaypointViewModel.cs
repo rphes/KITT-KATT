@@ -1,4 +1,5 @@
 ﻿using Overwatch.Tools;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
@@ -39,25 +40,45 @@ namespace Overwatch.ViewModel
 			}
 		}
 
-		// Appearance
-		private Brush _stroke;
-		public Brush Stroke
+		public bool Visited
 		{
-			get { return _stroke; }
-			set
+			get { return Waypoint.Visited; }
+			set 
 			{
-				_stroke = value;
-				RaisePropertyChanged("Stroke");
+				Waypoint.Visited = value;
+				RaisePropertyChanged("Fill");
 			}
 		}
-		private Brush _fill;
+
+		public int Index { get; set; }
+
+		public string IndexString
+		{
+			get
+			{
+				if (Visited)
+				{
+					Index = -1;
+					return "";
+				}
+				else
+					return Index.ToString();
+			}
+		}
+
+		// Appearance
+		public Brush Stroke
+		{
+			get { return Brushes.Black; }
+		}
 		public Brush Fill
 		{
-			get { return _fill; }
-			set
+			get
 			{
-				_fill = value;
-				RaisePropertyChanged("Fill");
+				if (!Visited)
+					return Brushes.Red;
+				else
+					return Brushes.LightGreen;
 			}
 		}
 		private string _pathData;
@@ -78,9 +99,8 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		public WaypointViewModel()
 		{
-			Stroke = Brushes.Black;
-			Fill = Brushes.Blue;
-			PathData = "m 0 0 v 100 L 30 80 L 0 60";
+			Visited = false;
+			PathData = "m 0 0 v -100 L 30 -80 L 0 -60";
 		}
 
 		/// <summary>

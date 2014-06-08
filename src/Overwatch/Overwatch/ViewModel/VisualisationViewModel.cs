@@ -31,7 +31,7 @@ namespace Overwatch.ViewModel
 			}
 		}
 
-		public ObservableCollection<WaypointViewModel> Waypoints { get; set; }
+		public ObservableCollection<WaypointViewModel> WaypointViewModels { get; set; }
 
 		//public ObservableCollection<MicrophoneViewModel> Microphones { get; set; }
 
@@ -39,10 +39,10 @@ namespace Overwatch.ViewModel
 		{
 			get 
 			{
-				if (Waypoints == null /*|| Microphones == null*/ || KITT == null)
+				if (WaypointViewModels == null /*|| Microphones == null*/ || KITT == null)
 					return null;
 
-				List<IVisualisationObject> l = new List<IVisualisationObject>(Waypoints);
+				List<IVisualisationObject> l = new List<IVisualisationObject>(WaypointViewModels);
 				//l.AddRange(Microphones);
 				l.Add(KITT);
 				//l.Add(Field);
@@ -63,11 +63,12 @@ namespace Overwatch.ViewModel
 			// Add KITT to our visualisation canvas
 			KITT = new VirtualVehicleViewModel(Data.MainViewModel.VehicleViewModel.Vehicle, new Uri(Directory.GetCurrentDirectory() + @"\Content\KITT.png"));
 
-			Data.MainViewModel.VehicleViewModel.Vehicle.X = 0.5;
-			Data.MainViewModel.VehicleViewModel.Vehicle.Y = 0.5;
+			Data.MainViewModel.VehicleViewModel.Vehicle.X = 0.7;
+			Data.MainViewModel.VehicleViewModel.Vehicle.Y = 0.3;
+			Data.MainViewModel.VehicleViewModel.Vehicle.Angle = 45;
 
-			Waypoints = new ObservableCollection<WaypointViewModel>();
-			Waypoints.CollectionChanged += ObjectsChanged;
+			WaypointViewModels = new ObservableCollection<WaypointViewModel>();
+			WaypointViewModels.CollectionChanged += ObjectsChanged;
 			//Microphones = new ObservableCollection<MicrophoneViewModel>();
 			//Microphones.CollectionChanged += ObjectsChanged;
 		}
@@ -86,8 +87,10 @@ namespace Overwatch.ViewModel
 			if (s == "Waypoint")
 			{
 				// Add a waypoint
-				WaypointViewModel w = Data.MainViewModel.AutoControlViewModel.AutoControl.AddWaypoint(x, y);
-				Waypoints.Add(w);
+				WaypointViewModel w = new WaypointViewModel(x, y);
+				w.Index = Data.MainViewModel.AutoControlViewModel.AutoControl.QueuedWaypoints.Count;
+				Data.MainViewModel.AutoControlViewModel.AutoControl.AddWaypoint(w.Waypoint);
+				WaypointViewModels.Add(w);
 			}
 		}
 
@@ -101,10 +104,24 @@ namespace Overwatch.ViewModel
 			{
 				// Remove a waypoint
 				WaypointViewModel wvm = (WaypointViewModel)o;
-				Data.MainViewModel.AutoControlViewModel.AutoControl.RemoveWaypoint(wvm);
-				Waypoints.Remove(wvm);
+				Data.MainViewModel.AutoControlViewModel.AutoControl.RemoveWaypoint(wvm.Waypoint);
+				WaypointViewModels.Remove(wvm);
+				UpdateWaypointViewModelIndices();
 			}
 
+		}
+
+		public void UpdateWaypointViewModelIndices()
+		{
+			int i = 0;
+			foreach(WaypointViewModel wvm in WaypointViewModels)
+			{
+				if (!wvm.Visited)
+				{
+					wvm.Index = i;
+					i++;
+				}
+			}
 		}
 		#endregion
 
@@ -121,11 +138,12 @@ namespace Overwatch.ViewModel
 		#endregion
 
 		#region Commands
+		#region Mouse left button up
 		/// <summary>
-		/// Performs the required actions when the visualisation canvas is clicked.
+		/// Performs the required actions when the left mouse button is released on the visualisation canvas.
 		/// </summary>
 		/// <param name="e"></param>
-		void MouseUpExecute(MouseButtonEventArgs e)
+		void MouseLeftButtonUpExecute(MouseButtonEventArgs e)
 		{
 			var src = e.OriginalSource as IInputElement;
 			double x = e.GetPosition(src as IInputElement).X;
@@ -141,12 +159,52 @@ namespace Overwatch.ViewModel
 				PlaceObject(x, y); // Place a new object	
 		}
 
-		bool CanMouseUpExecute(MouseButtonEventArgs e)
+		bool CanMouseLeftButtonUpExecute(MouseButtonEventArgs e)
 		{
 			return true;
 		}
 
-		public ICommand MouseUp { get { return new RelayCommand<MouseButtonEventArgs>(MouseUpExecute, CanMouseUpExecute); } }
+		public ICommand MouseLeftButtonUp { get { return new RelayCommand<MouseButtonEventArgs>(MouseLeftButtonUpExecute, CanMouseLeftButtonUpExecute); } }
+		#endregion
+
+		#region Mouse right button up
+		/// <summary>
+		/// Performs the required actions when the left mouse button is released on the visualisation canvas.
+		/// </summary>
+		/// <param name="e"></param>
+		void MouseRightButtonUpExecute(MouseButtonEventArgs e)
+		{
+			var src = e.OriginalSource as IInputElement;
+
+			if ((src as FrameworkElement) != null)
+			{
+				// Manually finish a waypoint
+				if (((src as FrameworkElement).DataContext as WaypointViewModel) != null)
+				{
+					WaypointViewModel wvm = (WaypointViewModel)((FrameworkElement)src).DataContext;
+					if (!wvm.Visited)
+					{
+						Data.MainViewModel.AutoControlViewModel.AutoControl.FinishWaypoint(wvm.Waypoint);
+						wvm.Visited = true;
+					}
+					else
+					{
+						Data.MainViewModel.AutoControlViewModel.AutoControl.UnFinishWaypoint(wvm.Waypoint);
+						wvm.Visited = false;
+					}
+					UpdateWaypointViewModelIndices();
+				}
+			}
+			RaisePropertyChanged("Objects");
+		}
+		
+		bool CanMouseRightButtonUpExecute(MouseButtonEventArgs e)
+		{
+			return true;
+		}
+
+		public ICommand MouseRightButtonUp { get { return new RelayCommand<MouseButtonEventArgs>(MouseRightButtonUpExecute, CanMouseRightButtonUpExecute); } }
+		#endregion
 		#endregion
 	}
 }

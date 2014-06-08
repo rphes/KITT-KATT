@@ -13,6 +13,7 @@ namespace Overwatch
 		#region Data members
 		public double X { get; set; }
 		public double Y { get; set; }
+		public bool Visited { get; set; }
 		#endregion
 	}
 }

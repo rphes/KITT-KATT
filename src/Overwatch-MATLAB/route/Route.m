@@ -35,7 +35,7 @@ classdef Route < handle
                 CurrentDistance = SensorDataMin;
                 
                 % Determine the path which must be taken
-                DeltaAngle = atan(SensorDataMin/(Configuration.CarWidth/2 + Configuration.RouteClearance));
+                DeltaAngle = atan((Configuration.CarWidth/2 + Configuration.RouteClearance) / SensorDataMin);
                 
                 if SensorData(1) < SensorData(2)
                     ReferenceAngle = CurrentAngle + DeltaAngle;

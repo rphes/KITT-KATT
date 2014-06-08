@@ -49,8 +49,15 @@ namespace Overwatch.ViewModel
 			}
 		}
 
-		public string[] PlaceableObjects { get { return new string[] { "Waypoint", "Charger" }; } }
+		public string[] Modes { get { return new string[] { "Reality", "Simulation" }; } }
+		public string SelectedMode
+		{
+			get { return AutoControl.Mode; }
+			set { AutoControl.Mode = value; }
+		}
+		public bool CanSelectMode { get { return !ControlEnabled; } }
 
+		public string[] PlaceableObjects { get { return new string[] { "Waypoint", "Charger" }; } }
 		public string SelectedObject { get; set; }
 		#endregion
 
@@ -60,6 +67,7 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		public AutoControlViewModel()
 		{
+			SelectedMode = "Reality";
 			SelectedObject = "Waypoint";
 		}
 		#endregion
@@ -95,7 +103,7 @@ namespace Overwatch.ViewModel
 
 			RaisePropertyChanged("ObservationButtonString");
 
-			return Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen &&
+			return (Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen || SelectedMode == "Simulation") &&
 				AutoControl.Matlab.Running &&
 				Data.SrcDirectory != null;
 		}
@@ -112,14 +120,17 @@ namespace Overwatch.ViewModel
 			// Toggle autonomous control and send initial status request if enabled
 			AutoControl.ToggleControl();
 			RaisePropertyChanged("ControlButtonString");
+			RaisePropertyChanged("CanSelectAutoControlMode");
 		}
 
 		bool CanToggleControlExecute()
 		{
 			if ((!AutoControl.Matlab.Visible || !ObservationEnabled) && ObservationEnabled)
+			{
 				AutoControl.ToggleControl();
-
-			RaisePropertyChanged("ControlButtonString");
+				RaisePropertyChanged("ControlButtonString");
+				RaisePropertyChanged("CanSelectAutoControlMode");
+			}
 
 			return ObservationEnabled;
 		}

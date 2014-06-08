@@ -15,10 +15,13 @@ namespace Overwatch
 		public Matlab Matlab { get; set; }
 		public Vehicle Vehicle { get { return Data.MainViewModel.VehicleViewModel.Vehicle; } }
 		public ViewModel.VehicleViewModel VehicleViewModel { get { return Data.MainViewModel.VehicleViewModel; } }
-		public List<Waypoint> Waypoints { get; protected set; }
+		public List<Waypoint> QueuedWaypoints { get; protected set; }
+		public List<Waypoint> VisitedWaypoints { get; protected set; }
+		public Waypoint CurrentWayPoint { get { return QueuedWaypoints[0]; } }
 
 		public bool ObservationEnabled { get; set; }
 		public bool ControlEnabled { get; set; }
+		public string Mode { get; set; }
 		#endregion
 
 		#region Construction
@@ -33,7 +36,8 @@ namespace Overwatch
 			Matlab = new Matlab();
 			Matlab.Hide();
 			// Initialise some other stuff
-			Waypoints = new List<Waypoint>();
+			QueuedWaypoints = new List<Waypoint>();
+			VisitedWaypoints = new List<Waypoint>();
 			// Subscribe to status updates
 			Data.MainViewModel.CommunicationViewModel.Communication.StatusReceived += Communication_StatusReceived;
 		}
@@ -101,6 +105,16 @@ namespace Overwatch
 			{
 				System.Diagnostics.Debug.WriteLine(exc.ToString());
 			}
+
+			// Try to start simulation
+			try
+			{
+				Matlab.Instance.Feval("simulate", 0, out o);
+			}
+			catch (Exception exc)
+			{
+				System.Diagnostics.Debug.WriteLine(exc.ToString());
+			}
 		}
 
 		/// <summary>
@@ -109,47 +123,42 @@ namespace Overwatch
 		/// <param name="x">The position of the waypoint on the X-axis.</param>
 		/// <param name="y">The position of the waypoint on the Y-axis.</param>
 		/// <returns>The newly created WaypointViewModel.</returns>
-		public WaypointViewModel AddWaypoint(double x, double y)
+		public void AddWaypoint(Waypoint w)
 		{
-			// Create a new ViewModel
-			WaypointViewModel wvm = new WaypointViewModel(x, y);
-			// Add its Waypoint to the list
-			Waypoints.Add(wvm.Waypoint);
-
-			// Push new list to MATLAB
-			pushWaypointsToMatlab();
-
-			// Return the ViewModel
-			return wvm;
+			// Add Waypoint to the list
+			QueuedWaypoints.Add(w);
 		}
 
 		/// <summary>
 		/// Remove the given waypoint.
 		/// </summary>
 		/// <param name="w">The waypoint to remove.</param>
-		public void RemoveWaypoint(WaypointViewModel w)
+		public void RemoveWaypoint(Waypoint w)
 		{
-			// Remove the waypoint from the list
-			Waypoints.Remove(w.Waypoint);
-
-			// Push new list to MATLAB
-			pushWaypointsToMatlab();
+			// Remove the waypoint from the correct list
+			if (!w.Visited)
+				QueuedWaypoints.Remove(w);
+			else
+				VisitedWaypoints.Remove(w);
 		}
 
-		/// <summary>
-		/// Push a m*2 double containing all waypoint locations to MATLAB.
-		/// </summary>
-		void pushWaypointsToMatlab()
+		public void FinishWaypoint(Waypoint w)
 		{
-			// Parse the Waypoint list into a m*2 double
-			double[,] w = new double[2, Waypoints.Count];
-			for (int i = 0; i < Waypoints.Count(); i++)
-			{
-				// Scale from canvas pixels to position in the real field
-				w[0, i] = (Waypoints[i].X / Data.CanvasWidth) * Data.FieldSize;
-				w[1, i] = (Waypoints[i].Y / Data.CanvasHeight) * Data.FieldSize;
-			}
-			Matlab.PutVariable("waypoints", w);
+			QueuedWaypoints.Remove(w);
+			VisitedWaypoints.Add(w);
+		}
+
+		public void UnFinishWaypoint(Waypoint w)
+		{
+			VisitedWaypoints.Remove(w);
+			QueuedWaypoints.Add(w);
+		}
+
+		public void SwapWaypoints(int index1, int index2)
+		{
+			Waypoint tmp = QueuedWaypoints[index1];
+			QueuedWaypoints[index1] = QueuedWaypoints[index2];
+			QueuedWaypoints[index2] = tmp;
 		}
 		#endregion
 
@@ -167,30 +176,36 @@ namespace Overwatch
 			Matlab.PutVariable("sensor_l", Vehicle.SensorDistanceLeft);
 			Matlab.PutVariable("sensor_r", Vehicle.SensorDistanceRight);
 			Matlab.PutVariable("battery", Vehicle.BatteryVoltage);
-
-			// Run the iterative function in MATLAB
-			object success = null;			
-			try
+			Matlab.PutVariable("waypoint", new double[] { CurrentWayPoint.X, CurrentWayPoint.Y });
+		
+			if (Mode == "Reality")
 			{
-				Matlab.Instance.Feval("loop", 1, out success);
-			}
-			catch(Exception exc)
-			{
-				System.Diagnostics.Debug.WriteLine(exc.ToString());
+				// Run the iterative function in MATLAB
+				try
+				{
+					object success = null;
+					Matlab.Instance.Feval("loop", 1, out success);
+				}
+				catch (Exception exc)
+				{
+					System.Diagnostics.Debug.WriteLine(exc.ToString());
+				}
 			}
 
 			// Get relevant newly calculated data from MATLAB
-			if (success != null)
-			{
-				VehicleViewModel.X = (double)Matlab.GetVariable("loc_x") / Data.FieldSize;
-				VehicleViewModel.Y = (double)Matlab.GetVariable("loc_y") / Data.FieldSize;
-				VehicleViewModel.Angle = (double)Matlab.GetVariable("angle");
-				Vehicle.Velocity = (double)Matlab.GetVariable("speed");
-				double PWMSteer = (double)Matlab.GetVariable("pwm_steer");
-				double PWMDrive = (double)Matlab.GetVariable("pwm_drive");
-				if (ControlEnabled)
-					Data.MainViewModel.CommunicationViewModel.Communication.DoDrive((int)PWMSteer, (int)PWMDrive);
-			}
+			VehicleViewModel.X = (double)Matlab.GetVariable("loc_x") / Data.FieldSize;
+			VehicleViewModel.Y = (double)Matlab.GetVariable("loc_y") / Data.FieldSize;
+			VehicleViewModel.Angle = (double)Matlab.GetVariable("angle");
+			Vehicle.Velocity = (double)Matlab.GetVariable("speed");
+			double PWMSteer = (double)Matlab.GetVariable("pwm_steer");
+			double PWMDrive = (double)Matlab.GetVariable("pwm_drive");
+			if (ControlEnabled)
+				Data.MainViewModel.CommunicationViewModel.Communication.DoDrive((int)PWMSteer, (int)PWMDrive);
+
+			// Check if we should advance to the next waypoint
+			double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
+			if (d * Data.FieldSize < 0.1)
+				FinishWaypoint(CurrentWayPoint);
 
 			// Request new status
 			Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
