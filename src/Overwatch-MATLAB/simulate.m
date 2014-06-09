@@ -1,11 +1,7 @@
 %% Init
-clear all;
-% init;
-
 % Config
 DoDraw = 1;
 DoDebug = 0;
-DoAdditional = 0;
 
 % Wrapper objects
 InitialLocation = [0; 0];
@@ -26,19 +22,30 @@ CurrentTrackedSpeed = 0;
 SteerAngle = 0;
 
 % Waypoints
-Waypoints = [[5;5] [9;1] [1;8]];
+Waypoints = [[5;5] [9;1] [-8;4]];
+
+% Obstacles
+obstacles = Obstacles([
+    -2 2 1;
+    3 3 1
+]);
+obstacles.PrepareDraw();
 
 % Simulation parameters
 Delay = 0.15;
 SimulationTime = 60;
-InitialisationTime = 2;
+InitialisationTime = .5;
 
 % KITT model
 Model = KITT();
 
 % Localisation
-LocalisationDelay = 3; % Number of measurements
+LocalisationDelay = 1; % Number of measurements
 LocalisationNoise = 0.04;
+
+% Obstacles, circles
+% These the first two parameters determine the position, the final
+% parameters determines the radius.
 
 
 %% Simulation
@@ -74,7 +81,7 @@ while toc(TimerStart) < SimulationTime
     end
     
     % Sensor data
-    SensorData = [3 3];
+    SensorData = Model.GenerateSensorData(obstacles);
     
     % Check if waypoint is reached and another waypoint is available
     if (norm(CarPosition-Waypoint) < 0.1) && (CurrentWaypointIndex < size(Waypoints,2))
@@ -140,11 +147,16 @@ while toc(TimerStart) < SimulationTime
     
     if DoDraw
         figure(10);
+        % Draw KITT shizzle
         plot(CarPosition(1), CarPosition(2), 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'red', 'MarkerEdgeColor', 'red');
         hold on;
         plot([CurrentLocation(1) CurrentLocation(1)+CarDirection(1)],[CurrentLocation(2) CurrentLocation(2)+CarDirection(2)],'-r');
         plot([CurrentLocation(1) CurrentLocation(1)+CarReferenceDirection(1)],[CurrentLocation(2) CurrentLocation(2)+CarReferenceDirection(2)],'-b');
         plot(Waypoint(1), Waypoint(2), 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'blue', 'MarkerEdgeColor', 'blue');
+        
+        % Draw obstacles
+        obstacles.Draw();
+        
         xlabel 'x (m)';
         ylabel 'y (m)';
         xlim([-10 10]);
@@ -155,24 +167,27 @@ while toc(TimerStart) < SimulationTime
         clc;
         display 'BEUNED KITT SIMULATOR';
         display '---------------------';
-        display(['Time:               ' num2str(round(toc(TimerStart)*100)/100) '/' num2str(round(100*SimulationTime)/100) ' s']);
-        display(['State 1 (distance): ' num2str(round(CurrentTrackedDistance*100)) ' cm']);
-        display(['State 2 (speed):    ' num2str(round(abs(CurrentTrackedSpeed)*100)) ' cm/s']);
+        display(['Time:                  ' num2str(round(toc(TimerStart)*100)/100) '/' num2str(round(100*SimulationTime)/100) ' s']);
+        display(['State 1 (distance):    ' num2str(round(CurrentTrackedDistance*100)) ' cm']);
+        display(['State 2 (speed):       ' num2str(round(abs(CurrentTrackedSpeed)*100)) ' cm/s']);
         display ' ';
-        display(['Current distance:   ' num2str(round(CurrentDistance*100)) ' cm']);
-        display(['Current speed:      ' num2str(round(CarSpeed*100)) ' cm']);
+        display(['Current distance:      ' num2str(round(CurrentDistance*100)) ' cm']);
+        display(['Current speed:         ' num2str(round(CarSpeed*100)) ' cm']);
         display ' ';
-        display(['Actual angle:       ' num2str(round(mod(CarAngle,2*pi)*180/pi)) ' deg']);
-        display(['Tracked angle:      ' num2str(round(mod(CurrentAngle,2*pi)*180/pi)) ' deg']);
+        display(['Actual angle:          ' num2str(round(mod(CarAngle,2*pi)*180/pi)) ' deg']);
+        display(['Tracked angle:         ' num2str(round(mod(CurrentAngle,2*pi)*180/pi)) ' deg']);
         display ' ';
-        display(['Drive PWM:          ' num2str(PWMDrive)]);
-        display(['Steer PWM:          ' num2str(PWMSteer)]);
+        display(['Drive PWM:             ' num2str(PWMDrive)]);
+        display(['Steer PWM:             ' num2str(PWMSteer)]);
         display ' ';
         if DoObserve
-            display 'Observation:        yes';
+            display 'Observation:           yes';
         else
-            display 'Observation:        no';
+            display 'Observation:           no';
         end
+        display ' ';
+        display(['Sensor left distance:  ' num2str(round(SensorData(1)*100)) ' cm']);
+        display(['Sensor right distance: ' num2str(round(SensorData(2)*100)) ' cm']);
     end
     
     if DoDebug

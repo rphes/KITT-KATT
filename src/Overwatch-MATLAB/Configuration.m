@@ -1,6 +1,6 @@
 classdef Configuration
     properties (Constant = true)
-        SteeringFeedbackCoefficient = -.5;
+        SteeringFeedbackCoefficient = -.8;
         % Note: combines with MapSteerFOC. -1 is the deepest pole!
         
         % Field dimensions
@@ -31,7 +31,8 @@ classdef Configuration
         MapSteerTOC = 0;
         
         RouteThreshold = 1;
-        RouteClearance = 0.5;
+        RouteClearance = 1;
+        RouteOverflowTime = 2;
         
         % Plot stuff
         PlotTimeFrame = 15;

@@ -1,10 +1,13 @@
 classdef Route < handle
     properties (SetAccess = private)
+        referenceAngle
+        overflowTimer
     end
     
     methods
         %% Constructor
         function Self = Route()
+            Self.overflowTimer = 0;
         end
         
         % Determine route
@@ -17,7 +20,8 @@ classdef Route < handle
             else
                 CurrentDistance = StraightDistance;
             end
-            ReferenceAngle = Self.DetermineReferenceAngle(CurrentLocation, CurrentAngle, Waypoint);
+
+            TargetReferenceAngle = Self.DetermineReferenceAngle(CurrentLocation, CurrentAngle, Waypoint);
             
             % This controller's first scope is to reach the target.
             % However, when an obstacle is detected, the controller
@@ -27,19 +31,39 @@ classdef Route < handle
             
             SensorDataMin = min(SensorData);
             
+            % Obstacle is detected, calculate reference angle
             if SensorDataMin < Configuration.RouteThreshold
+                % Reset overflow timer
+                Self.overflowTimer = tic;
+                
                 % Switch to the obstacle avoidance scope
                 CurrentDistance = SensorDataMin;
                 
                 % Determine the path which must be taken
                 DeltaAngle = atan((Configuration.CarWidth/2 + Configuration.RouteClearance) / SensorDataMin);
                 
-                if SensorData(1) < SensorData(2)
-                    ReferenceAngle = CurrentAngle + DeltaAngle;
+                if SensorData(1) > SensorData(2)
+                    Self.referenceAngle = CurrentAngle + DeltaAngle;
                 else
-                    ReferenceAngle = CurrentAngle - DeltaAngle;
+                    Self.referenceAngle = CurrentAngle - DeltaAngle;
                 end
+            
+            % Check if the overflow timer has expired
+            elseif (Self.overflowTimer > 0) && (toc(Self.overflowTimer) >= Configuration.RouteOverflowTime)
+                Self.overflowTimer = 0;
+            
+            % Check if overflow is busy
+            elseif (Self.overflowTimer > 0) && (toc(Self.overflowTimer) < Configuration.RouteOverflowTime)
+                % Keep reference angle
+            
+            % Check if nothing is going on
+            else
+                % Set reference angle to follow route
+                Self.referenceAngle = TargetReferenceAngle;
             end
+            
+            % Return reference angle
+            ReferenceAngle = Self.referenceAngle;
         end
         
         %% Determine reference angle

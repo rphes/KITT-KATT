@@ -2,10 +2,9 @@ clc;
 
 display 'DEBUG';
 display '--------------';
-display(['Current X: ' num2str(round(100*loc_x)) ' cm']);
-display(['Current Y: ' num2str(round(100*loc_y)) ' cm']);
-display(['Current Angle: ' num2str(round(angle*180/pi)) ' degrees']);
-display(['Current Speed: ' num2str(round(100*speed)) ' cm/s']);
+display(['Current position: (' num2str(round(100*loc_x)) ',' num2str(round(100*loc_y)) ') cm']);
+display(['Current angle: ' num2str(round(angle*180/pi)) ' degrees']);
+display(['Current speed: ' num2str(round(100*speed)) ' cm/s']);
 display ' ';
 
 t = toc(subplotTimer);

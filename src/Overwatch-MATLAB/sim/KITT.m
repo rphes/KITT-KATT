@@ -169,6 +169,11 @@ classdef KITT < handle
             ylabel 'Current (A)';
             grid on;
         end
+        
+        % Generate sensor data
+        function [SensorData] = GenerateSensorData(Self, obstacles)
+            SensorData = obstacles.DetermineSensorDistances(Self.currentPosition, Self.currentAngle);
+        end
     end
 end
 
