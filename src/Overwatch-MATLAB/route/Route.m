@@ -8,19 +8,16 @@ classdef Route < handle
         end
         
         % Determine route
-        function [CurrentDistance, ReferenceAngle] = DetermineRoute(Self, CurrentLocation, CurrentAngle, Waypoints, SensorData)
-            % Take first waypoint
-            Waypoint = Waypoints;
-        
+        function [CurrentDistance, ReferenceAngle] = DetermineRoute(Self, CurrentLocation, CurrentAngle, Waypoint, SensorData)
             % If distance to target is greater than two times the turning
             % radius, use the fancy algorithm
             StraightDistance = norm(CurrentLocation - Waypoint);
             if StraightDistance > Configuration.CarTurningRadius*2
-                CurrentDistance = Self.DetermineDistance(CurrentLocation, CurrentAngle, Waypoints);
+                CurrentDistance = Self.DetermineDistance(CurrentLocation, CurrentAngle, Waypoint);
             else
                 CurrentDistance = StraightDistance;
             end
-            ReferenceAngle = Self.DetermineReferenceAngle(CurrentLocation, CurrentAngle, Waypoints);
+            ReferenceAngle = Self.DetermineReferenceAngle(CurrentLocation, CurrentAngle, Waypoint);
             
             % This controller's first scope is to reach the target.
             % However, when an obstacle is detected, the controller
@@ -46,10 +43,7 @@ classdef Route < handle
         end
         
         %% Determine reference angle
-        function [ReferenceAngle] = DetermineReferenceAngle(~, CurrentLocation, CurrentAngle, Waypoints)
-            % Take first waypoint
-            Waypoint = Waypoints;
-            
+        function [ReferenceAngle] = DetermineReferenceAngle(~, CurrentLocation, CurrentAngle, Waypoint)
             % Transformation matrices
             TransformationOrthogonal = [0 -1;1 0];
             
@@ -79,10 +73,7 @@ classdef Route < handle
         end
         
         %% Determine remaining distance
-        function [CurrentDistance] = DetermineDistance(~, CurrentLocation, CurrentAngle, Waypoints)
-            % Take first waypoint
-            Waypoint = Waypoints;
-        
+        function [CurrentDistance] = DetermineDistance(~, CurrentLocation, CurrentAngle, Waypoint)
             % Transformation matrices
             TransformationOrthogonal = [0 -1;1 0];
         

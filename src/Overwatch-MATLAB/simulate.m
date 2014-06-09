@@ -1,5 +1,11 @@
 %% Init
-DoDraw = 0;
+clear all;
+% init;
+
+% Config
+DoDraw = 1;
+DoDebug = 0;
+DoAdditional = 0;
 
 % Wrapper objects
 InitialLocation = [0; 0];
@@ -15,6 +21,9 @@ route = Route();
 Battery = 0;
 ReferenceDistance = 0;
 CarPosition = [0; 0];
+CurrentLocation = [0; 0];
+CurrentTrackedSpeed = 0;
+SteerAngle = 0;
 
 % Waypoints
 Waypoints = [[5;5] [9;1] [1;8]];
@@ -22,16 +31,19 @@ Waypoints = [[5;5] [9;1] [1;8]];
 % Simulation parameters
 Delay = 0.15;
 SimulationTime = 60;
-LocationDelay = 0.15;
 InitialisationTime = 2;
 
 % KITT model
 Model = KITT();
 
+% Localisation
+LocalisationDelay = 3; % Number of measurements
+LocalisationNoise = 0.04;
+
+
 %% Simulation
 % Location delay simulation initialisation
-LocationIndexIterations = ceil(Delay/LocationDelay);
-LocationIndex = 0;
+LocalisationIndex = 0;
 
 % Waypoint initalisation
 CurrentWaypointIndex = 1;
@@ -47,10 +59,18 @@ while toc(TimerStart) < SimulationTime
     %% Pre
     % Check for localization
     DoObserve = 0;
-    LocationIndex = LocationIndex + 1;
-    if mod(LocationIndex, LocationIndexIterations) == 0
-        CurrentLocation = CarPosition; % Noise?
+    if LocalisationIndex == LocalisationDelay
+        LocalisationIndex = 0;
+        
+        % Generate noise
+        Noise = [0;0];
+        [Noise(1),Noise(2)] = pol2cart(rand(1,1)*2*pi,abs(randn(1,1)*LocalisationNoise));
+        
+        % Update location
+        CurrentLocation = CarPosition + Noise;
         DoObserve = 1;
+    else
+        LocalisationIndex = LocalisationIndex + 1;
     end
     
     % Sensor data
@@ -80,8 +100,8 @@ while toc(TimerStart) < SimulationTime
     global pwm_drive
     
     % Determine current angle
-    CurrentAngle = ang.DetermineAngle(CurrentLocation);
-
+    [CurrentAngle] = ang.DetermineAngle(CurrentLocation);
+    
     % Process route
     [CurrentDistance, ReferenceAngle] = route.DetermineRoute(CurrentLocation, CurrentAngle, Waypoint, SensorData);
 
@@ -96,6 +116,7 @@ while toc(TimerStart) < SimulationTime
     % Initialisation
     if toc(TimerStart) < InitialisationTime
         PWMDrive = 150;
+        PWMSteer = 0;
     end
     
     % Set
@@ -146,10 +167,18 @@ while toc(TimerStart) < SimulationTime
         display ' ';
         display(['Drive PWM:          ' num2str(PWMDrive)]);
         display(['Steer PWM:          ' num2str(PWMSteer)]);
+        display ' ';
+        if DoObserve
+            display 'Observation:        yes';
+        else
+            display 'Observation:        no';
+        end
     end
     
-    debug;
+    if DoDebug
+        debug;
+    end
     
-    %% Delay
+    %% Pause
     pause(Delay);
 end

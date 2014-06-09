@@ -24,6 +24,13 @@ classdef MapSteer < handle
             end
         
             PWMSteer = round(PWMSteerRaw);
+            
+            % Check for maximum value
+            if (PWMSteer > 0) && PWMSteer > 200
+                PWMSteer = 200;
+            elseif (PWMSteer < 0) && PWMSteer < 100
+                PWMSteer = 100;
+            end
         end
     end
 end

@@ -1,3 +1,5 @@
+clear all
+
 %% Init
 % Fix path
 addpath(genpath('.'));

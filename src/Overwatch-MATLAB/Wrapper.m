@@ -46,7 +46,7 @@ classdef Wrapper < handle
             global sensor_l
             global sensor_r
             global battery
-            global waypoints
+            global waypoint
             
             % Global variables to set
             global loc_x
@@ -78,7 +78,7 @@ classdef Wrapper < handle
             CurrentAngle = Self.ang.DetermineAngle(Self.currentLocation);
             
             % Process route
-            [CurrentDistance, ReferenceAngle] = Self.route.DetermineRoute(Self.currentLocation, CurrentAngle, waypoints, [sensor_l sensor_r]);
+            [CurrentDistance, ReferenceAngle] = Self.route.DetermineRoute(Self.currentLocation, CurrentAngle, waypoint, [sensor_l sensor_r]);
             
             % Call controllers
             ReferenceDistance = 0;
