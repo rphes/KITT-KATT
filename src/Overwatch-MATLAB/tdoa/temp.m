@@ -4,20 +4,20 @@ close all;
 % load('test/audiodata5.mat'); 
 addpath('../loc');
 ii=[
-    1 
-    2 
-    3 
-    4 
-    5 
-    6 
-    7
+    1 %niet echt
+    2 %nee
+    3 %nee
+    4 %nee
+    5 %nee
+    6 %nee
+    7 %nee
     ];
 clear testcase
 clear location
 clear loctestcase
 
 for i=1:length(ii)
-    testcase{i} = TDOA(M_anders,RXXr,ii(i),x);
+    testcase{i} = TDOA(RXXr,ii(i),x);
     testcase{i}.Start;
     loctestcase = Loc();
     location{i} = loctestcase.Localize(testcase{i}.R, testcase{i}.MicrophoneLocations, testcase{i}.settings.loc_threshold);

@@ -9,6 +9,7 @@ classdef TDOA < hgsetget
             'peak_threshold', 1, ...
             'peak_stddev', 4, ...
             'peak_intervals', 600, ... % no. of intervals divided into
+            'peak_maxinterval', 1000, ... % maximum no. of samples btwen pks
             'trim_threshold', 0.8, ...
             'trim_padding', 250, ... % no. of trailing zeros
             'trim_spacing', 250, ... % no. of samples as 'prediction error'
@@ -38,8 +39,9 @@ classdef TDOA < hgsetget
     
     methods
         % Constructor
-        function Self = TDOA(M, RXXr, RXXrPoint, x)
-            set(Self,'M',M);
+%         function Self = TDOA(M, RXXr, RXXrPoint, x)
+            function Self = TDOA(RXXr,RXXrPoint,x)
+%             set(Self,'M',M);
             % not neededwhen recording:
             data = RXXr(RXXrPoint,:,:);
             data = reshape(data,size(data,2),size(data,3));
@@ -98,10 +100,10 @@ classdef TDOA < hgsetget
         
         % find peaks with std_dev algorithm
         function [Peak] = FindPeak(Self, data)
-            std_interval=[];
-            mean_interval=[];
-            number_of_intervals=Self.settings.peak_intervals;
-            threshold=Self.settings.peak_stddev;
+%             std_interval=[];
+%             mean_interval=[];
+%             number_of_intervals=Self.settings.peak_intervals;
+%             threshold=Self.settings.peak_stddev;
 %             Peak=0;
 %             step_size=floor(length(data)/number_of_intervals)-1;
 %             for i=1:number_of_intervals
@@ -113,45 +115,80 @@ classdef TDOA < hgsetget
 %                     return
 %                 end
 %             end
-            Peak = 0;
-            maxval = max(abs(data));
-            for i=1:length(data)
-                if abs(data(i))>=Self.settings.peak_threshold*maxval
-                    Peak = i;
-                    break;
+            Peak = ones(1,size(data,2));
+%             maxval = max(abs(data));
+%             size(maxval)
+%             size(data)
+%             for j=1:size(data,2)
+%             for i=1:size(data,1)
+%                 if abs(data(i,j))>=Self.settings.peak_threshold*maxval
+%                     Peak(j) = i;
+%                     break;
+%                 end
+%             end
+%             end
+%             Peak
+            % Step 1: Find maximum peak in all samples
+            MaxInterval = Self.settings.peak_maxinterval;
+            maxloc = ones(1,size(data,2));
+            Height = ones(1,size(data,2));
+            Peak = ones(1, size(data,2));
+            for i = 1:size(data,2)
+                [~, maxloc(i)] = findpeaks(data(:,i),'SORTSTR','descend','NPEAKS',1);
+            end
+            maxloc = maxloc(1);
+            % Step 2: Set interval to [-1000+maxloc, 1000+maxloc]
+            if (maxloc-MaxInterval<=0 && maxloc+MaxInterval<=size(data,1))
+                NewVal = [1, maxloc+MaxInterval];
+            elseif (maxloc+MaxInterval>size(data,1) && maxloc-MaxInterval>0)
+                NewVal = [maxloc-MaxInterval, size(data,1)];
+            elseif (maxloc+MaxInterval>size(data,1) && maxloc-MaxInterval<=0)
+                NewVal = [1, size(data,1)];
+            else
+                NewVal = [maxloc-MaxInterval, maxloc+MaxInterval];
+            end
+            % Step 3: Find peaks in NewVal of all recordings
+            data = data(NewVal(1):NewVal(2),:);
+            for i = 1:size(data,2)
+                [Height(i), Peak(i)] = findpeaks(data(:,i),'SORTSTR','descend','NPEAKS',1);
+                subplot(5,1,i)
+                plot(data(:,i))
+                hold on
+                plot(Peak(i),Height(i),'r+');
+                hold off
+                if i == 5
+                    figure
                 end
             end
-            if (Peak == 0)
-                Peak=1;
-            end
+            
         end
         
         % estimate h[n]
-        function [h, delay] = EstChannel(Self, i)
-            x{i} = Self.RecDataTrimmed(:,i);
-            N_y = size(Self.M{i},2);
-            diff = N_y-length(x{i});
-            
-            if diff > 0
-                x{i} = [x{i};zeros(diff,1)];
-            elseif diff < 0
-                x{i} = x{i}(1:N_y);
-            end
-            h = Self.M{i}*x{i};
-            
-            %             Find delay
-            delay = Self.FindPeak(h)/Self.settings.Fs;
-            %   Plot delay
-%             sampleno = Self.FindPeak(h);
-%             subplot(5,1,i)
-%             title(['recording number' num2str(i)]);
-%             plot(h)
-%             hold on;
-%             plot(sampleno,h(sampleno),'r+');
-%             hold off;
-        end
+%         function [h, delay] = EstChannel(Self, i)
+%             x{i} = Self.RecDataTrimmed(:,i);
+%             N_y = size(Self.M{i},2);
+%             diff = N_y-length(x{i});
+%             
+%             if diff > 0
+%                 x{i} = [x{i};zeros(diff,1)];
+%             elseif diff < 0
+%                 x{i} = x{i}(1:N_y);
+%             end
+%             h = Self.M{i}*x{i};
+%             
+%             %             Find delay
+%             delay = Self.FindPeak(h)/Self.settings.Fs;
+%             %   Plot delay
+% %             sampleno = Self.FindPeak(h);
+% %             subplot(5,1,i)
+% %             title(['recording number' num2str(i)]);
+% %             plot(h)
+% %             hold on;
+% %             plot(sampleno,h(sampleno),'r+');
+% %             hold off;
+%         end
         
-        function [h, delay] = EstMatched(Self, i)
+        function [h] = EstMatched(Self, i)
             x1 = Self.x{i};
             y = Self.RecDataTrimmed(:,i);
             N_x = length(x1);
@@ -162,21 +199,6 @@ classdef TDOA < hgsetget
             h = h(N_x+1:end);
             alpha = x1'*x1;
             h = h/alpha;
-            tmp = Self.FindPeak(h);
-            delay = Self.FindPeak(h)/Self.settings.Fs;
-            disp(['Recording' num2str(i)]);
-            disp([num2str(tmp)]);
-            % plot
-            subplot(5,1,i)
-            hold on;
-            size(h)
-            plot(tmp,h(tmp),'r+','MarkerSize',20);
-            plot(h);
-            tmp
-            hold off;
-            if i==5
-                figure
-            end
         end
         % make R matrix
         function R = RangeDiff(Self)
@@ -185,9 +207,11 @@ classdef TDOA < hgsetget
             d = [];
             % Recover channel impulse responses
             for i = 1:N
-                [~, d(i)] = Self.EstMatched(i);
+                [h(:,i)] = Self.EstMatched(i);
             end
-            
+            % Find sample number of peak
+            d = Self.FindPeak(h)./Self.settings.Fs;
+
             % Generate R matrix
             R=[];
             for i = 1:N
@@ -196,6 +220,7 @@ classdef TDOA < hgsetget
                     R(j,i) = -R(i,j);
                 end
             end
+            R
         end
         
         
