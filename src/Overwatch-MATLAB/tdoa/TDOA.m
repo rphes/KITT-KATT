@@ -5,6 +5,7 @@ classdef TDOA < hgsetget
         IsBusyFlag = 0;
         IsReadyFlag= 0;
         R=[]; % the range difference matrix
+        h=[]; % the obtained channel impulse responses
         settings = struct('Fs', 48000,...
             'peak_threshold', 1, ...
             'peak_stddev', 4, ...
@@ -19,6 +20,7 @@ classdef TDOA < hgsetget
             'loc_threshold',0.05);
         RecData = []; % the raw, recorded data
         RecDataTrimmed = []; % the raw data trimmed to right length
+        RecDataSegment = {}; % the trimmed data is cut into segments stored in this variable
         % debatable if needed:
 %                 MicrophoneLocations = [
 %                     0 0;
@@ -98,36 +100,119 @@ classdef TDOA < hgsetget
             result = data(1:Self.settings.trim_length,:);
         end
         
-        % find peaks with std_dev algorithm
-        function [Peak] = FindPeak(Self, data)
-%             std_interval=[];
-%             mean_interval=[];
-%             number_of_intervals=Self.settings.peak_intervals;
-%             threshold=Self.settings.peak_stddev;
-%             Peak=0;
-%             step_size=floor(length(data)/number_of_intervals)-1;
-%             for i=1:number_of_intervals
-%                 interval_start=1+(i-1)*step_size;
-%                 std_interval(i)=std(data(interval_start:interval_start+step_size));
-%                 mean_interval(i)=mean(std_interval(1:i-1));
-%                 if (i~=1)&&(std_interval(i)/mean_interval(i)>threshold)
-%                     Peak=interval_start;
-%                     return
+        function [DataSegment] = TrimDataToIntervals(Self)
+            Data = Self.RecDataTrimmed;
+            PeakThreshold = 0.65;
+            SpacingCoefficient = 0.9;
+            PeakFrequency = 8;
+            Fs = 48000;
+            Shrink = 500;
+            
+            % Calculate stuff
+            PeakSkip = round(Fs/PeakFrequency*SpacingCoefficient);
+            IntervalLengthHalf = round(Fs/PeakFrequency/2);
+            
+            Peaks = {};
+            PeaksQuality = [];
+            NumberPeaks = 0;
+            
+            % Find peaks
+            for Set = 1:5
+                MaxLevel = max(Data(:, Set));
+                TriggerLevel = MaxLevel*PeakThreshold;
+                
+                Peaks{Set} = [];
+                
+                Sample = 1;
+                while Sample < length(Data(:, Set))
+                    if Data(Sample, Set) >= TriggerLevel
+                        Peaks{Set} = [Peaks{Set} Sample];
+                        NumberPeaks = NumberPeaks + 1;
+                        
+                        % Skip
+                        Sample = Sample + PeakSkip;
+                    else
+                        Sample = Sample + 1;
+                    end
+                end
+                
+                SetQuality = std(Data(:, Set))/max(Data(:, Set));
+                
+                % Determine quality
+                PeaksQuality = [PeaksQuality SetQuality];
+            end
+            
+            % Determine point
+            [~, PeaksBestQuality] = min(PeaksQuality);
+            PeaksBoundary = Peaks{PeaksBestQuality}(1) - IntervalLengthHalf;
+            
+            % Make negative
+            while PeaksBoundary > 0
+                PeaksBoundary = PeaksBoundary - 2*IntervalLengthHalf;
+            end
+            
+            % Great succes
+            % Much good
+            
+            DataSegmented = {};
+            DataSegmentedBounds = {};
+            
+            % Now segment data
+            Index = 1;
+            for Interval = PeaksBoundary:(2*IntervalLengthHalf):size(Data,1)
+                % The best peaks correspond most likely to the closest mic, therefore
+                % shrinking could prevent errors
+                
+                % Determine boundary
+                IntervalBegin = Interval+Shrink;
+                IntervalEnd = Interval + 2*IntervalLengthHalf;
+                
+                % Check boundaries
+                if IntervalBegin < 1
+                    IntervalBegin = 1;
+                end
+                
+                if IntervalBegin > size(Data,1)
+                    continue
+                end
+                
+                if IntervalEnd > size(Data,1)
+                    IntervalEnd = size(Data,1);
+                end
+                
+                % Create segment
+                DataSegmentedBounds{Index} = [IntervalBegin IntervalEnd];
+                DataSegment{Index} = Data(IntervalBegin:IntervalEnd, :);
+                Index = Index + 1;
+            end
+            
+            % Plot
+%             figure(1);
+%             hold off;
+%             for Index = 1:5
+%                 subplot(5,1,Index);
+%                 Time = (1:length(Data(:, Index)))/Fs;
+%                 plot(Time, Data(:, Index));
+%                 title(['Channel ' num2str(Index)]);
+%                 xlabel 'Time (s)';
+%                 ylabel 'Amplitude';
+%                 hold on;
+%                 
+%                 MaxValue = max(Data(:, Index));
+%                 
+%                 for Segment = 1:length(DataSegmentedBounds)
+%                     stem(DataSegmentedBounds{Segment}/Fs, MaxValue*[1 1], 'r');
 %                 end
 %             end
+        end
+        
+        % find peaks
+        function [Peak] = FindPeak(Self, k)
+            data = Self.h{k};
+            if isempty(data)
+                disp('empty dataset');
+            end
             Peak = ones(1,size(data,2));
-%             maxval = max(abs(data));
-%             size(maxval)
-%             size(data)
-%             for j=1:size(data,2)
-%             for i=1:size(data,1)
-%                 if abs(data(i,j))>=Self.settings.peak_threshold*maxval
-%                     Peak(j) = i;
-%                     break;
-%                 end
-%             end
-%             end
-%             Peak
             % Step 1: Find maximum peak in all samples
             MaxInterval = Self.settings.peak_maxinterval;
             maxloc = ones(1,size(data,2));
@@ -137,7 +222,7 @@ classdef TDOA < hgsetget
                 [~, maxloc(i)] = findpeaks(data(:,i),'SORTSTR','descend','NPEAKS',1);
             end
             maxloc = maxloc(1);
-            % Step 2: Set interval to [-1000+maxloc, 1000+maxloc]
+            % Step 2: Set interval to [maxloc-size, maxloc+size]
             if (maxloc-MaxInterval<=0 && maxloc+MaxInterval<=size(data,1))
                 NewVal = [1, maxloc+MaxInterval];
             elseif (maxloc+MaxInterval>size(data,1) && maxloc-MaxInterval>0)
@@ -151,67 +236,41 @@ classdef TDOA < hgsetget
             data = data(NewVal(1):NewVal(2),:);
             for i = 1:size(data,2)
                 [Height(i), Peak(i)] = findpeaks(data(:,i),'SORTSTR','descend','NPEAKS',1);
-                subplot(5,1,i)
-                plot(data(:,i))
-                hold on
-                plot(Peak(i),Height(i),'r+');
-                hold off
-                if i == 5
-                    figure
-                end
+                % plot result
+%                 subplot(5,1,i)
+%                 plot(data(:,i))
+%                 hold on
+%                 plot(Peak(i),Height(i),'r+');
+%                 hold off
+%                 if i == 5
+%                     figure
+%                 end
             end
             
         end
         
-        % estimate h[n]
-%         function [h, delay] = EstChannel(Self, i)
-%             x{i} = Self.RecDataTrimmed(:,i);
-%             N_y = size(Self.M{i},2);
-%             diff = N_y-length(x{i});
-%             
-%             if diff > 0
-%                 x{i} = [x{i};zeros(diff,1)];
-%             elseif diff < 0
-%                 x{i} = x{i}(1:N_y);
-%             end
-%             h = Self.M{i}*x{i};
-%             
-%             %             Find delay
-%             delay = Self.FindPeak(h)/Self.settings.Fs;
-%             %   Plot delay
-% %             sampleno = Self.FindPeak(h);
-% %             subplot(5,1,i)
-% %             title(['recording number' num2str(i)]);
-% %             plot(h)
-% %             hold on;
-% %             plot(sampleno,h(sampleno),'r+');
-% %             hold off;
-%         end
-        
-        function [h] = EstMatched(Self, i)
+        % estimate h[n] with MF        
+        function [h] = EstMatched(Self,ii, i)
             x1 = Self.x{i};
-            y = Self.RecDataTrimmed(:,i);
+            y = Self.RecDataSegment{ii}(:,i);
             N_x = length(x1);
             N_y=length(y);
             L = N_y-N_x+1;
             xr = flipud(x1);
-            h = filter(xr,1,y);
-            h = h(N_x+1:end);
+            h{1} = filter(xr,1,y);
+            h{1} = h{1}(N_x+1:end);
             alpha = x1'*x1;
-            h = h/alpha;
+            h{1} = h{1}/alpha;
         end
+        
         % make R matrix
-        function R = RangeDiff(Self)
+        function R = RangeDiff(Self,k)
             N = size(Self.RecDataTrimmed,2);
-            
             d = [];
-            % Recover channel impulse responses
-            for i = 1:N
-                [h(:,i)] = Self.EstMatched(i);
-            end
             % Find sample number of peak
-            d = Self.FindPeak(h)./Self.settings.Fs;
-
+            for m=1:N
+                d(m) = Self.FindPeak(k)./Self.settings.Fs;
+            end
             % Generate R matrix
             R=[];
             for i = 1:N
@@ -220,9 +279,7 @@ classdef TDOA < hgsetget
                     R(j,i) = -R(i,j);
                 end
             end
-            R
         end
-        
         
         % Range difference matrix retrieval function
         function RangeDiffMatrix = GetRangeDiffMatrix(Self)
@@ -233,18 +290,29 @@ classdef TDOA < hgsetget
         function Start(Self)
             % Make sure TDOA indicates it is busy and not ready
             set(Self,'IsBusyFlag',1,'IsReadyFlag',0);
-            %             Self.IsBusyFlag = 1;
-            %             Self.IsReadyFlag = 0;
-            
             % Record
             %             Self.Record5Channels();
             set(Self,'RecDataTrimmed',Self.TrimData());
-            
+            % Cut trimmed data recordings into segments
+            set(Self,'RecDataSegment',Self.TrimDataToIntervals());
+            % Now, for each interval we want to do the localization
+            % using the new interval data
+            for ii=1:size(Self.RecDataSegment,2);
+                for i = 1:size(Self.RecDataTrimmed,2)
+                    set(Self,'h',[Self.h, Self.EstMatched(ii,i)]);
+                end
+                % Each data segment must then be localized..
+                set(Self,'R',Self.RangeDiff(ii));
+                % .. and plotted.
+                figure
+                for p=1:5
+                    subplot(5,1,p)
+                    plot(Self.h{p})
+                end
+                title([num2str(ii)]);
+            end
             % Create R matrix
-            set(Self,'R',Self.RangeDiff());
-            
             % Then set TDOA status to not-busy and processing is ready
-            set(Self,'IsBusyFlag',0,'IsReadyFlag',1);
 %            
 %             figure
 %             subplot(2,1,2)
@@ -255,6 +323,7 @@ classdef TDOA < hgsetget
 %             plot(Self.RecData);
 %             xlim([0 18000]);
 %             title('original');
+            set(Self,'IsBusyFlag',0,'IsReadyFlag',1);
         end
         
     end

@@ -4,12 +4,12 @@ close all;
 % load('test/audiodata5.mat'); 
 addpath('../loc');
 ii=[
-    1 %niet echt
-    2 %nee
-    3 %nee
-    4 %nee
-    5 %nee
-    6 %nee
+%     1 %niet echt
+%     2 %nee
+%     3 %nee
+%     4 %nee
+%     5 %nee
+%     6 %nee
     7 %nee
     ];
 clear testcase
