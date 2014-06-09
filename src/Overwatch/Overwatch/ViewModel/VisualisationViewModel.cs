@@ -30,8 +30,18 @@ namespace Overwatch.ViewModel
 				RaisePropertyChanged("Objects");
 			}
 		}
+		private List<WaypointViewModel> WaypointViewModelQueue = new List<WaypointViewModel>();
+		private List<WaypointViewModel> WaypointViewModelVisited = new List<WaypointViewModel>();
 
-		public ObservableCollection<WaypointViewModel> WaypointViewModels { get; set; }
+		public List<WaypointViewModel> WaypointViewModels
+		{
+			get
+			{
+				List<WaypointViewModel> l = new List<WaypointViewModel>(WaypointViewModelQueue);
+				l.AddRange(WaypointViewModelVisited);
+				return l;
+			}
+		}
 
 		//public ObservableCollection<MicrophoneViewModel> Microphones { get; set; }
 
@@ -111,6 +121,22 @@ namespace Overwatch.ViewModel
 
 		}
 
+		/// <summary>
+		/// Swap two WaypointViewModels in the list.
+		/// </summary>
+		/// <param name="index1">The index of the first waypoint to swap.</param>
+		/// <param name="index2">The index of the second waypoint to swap.</param>
+		public void SwapWaypointViewModels(int index1, int index2)
+		{
+			Data.MainViewModel.AutoControlViewModel.AutoControl.SwapWaypoints(index1, index2);
+			WaypointViewModel tmp = WaypointViewModels[index1];
+			WaypointViewModels[index1] = WaypointViewModels[index2];
+			WaypointViewModels[index2] = tmp;
+		}
+
+		/// <summary>
+		/// Update the index stored in a WayPointViewModel for correct display in the visualisation canvas.
+		/// </summary>
 		public void UpdateWaypointViewModelIndices()
 		{
 			int i = 0;
@@ -140,7 +166,7 @@ namespace Overwatch.ViewModel
 		#region Commands
 		#region Mouse left button up
 		/// <summary>
-		/// Performs the required actions when the left mouse button is released on the visualisation canvas.
+		/// Add or remove a waypoint when clicked with the left mouse button.
 		/// </summary>
 		/// <param name="e"></param>
 		void MouseLeftButtonUpExecute(MouseButtonEventArgs e)
@@ -169,7 +195,7 @@ namespace Overwatch.ViewModel
 
 		#region Mouse right button up
 		/// <summary>
-		/// Performs the required actions when the left mouse button is released on the visualisation canvas.
+		/// Mark a waypoint as finished when clicked with the right mouse button.
 		/// </summary>
 		/// <param name="e"></param>
 		void MouseRightButtonUpExecute(MouseButtonEventArgs e)
@@ -204,6 +230,40 @@ namespace Overwatch.ViewModel
 		}
 
 		public ICommand MouseRightButtonUp { get { return new RelayCommand<MouseButtonEventArgs>(MouseRightButtonUpExecute, CanMouseRightButtonUpExecute); } }
+		#endregion
+
+		#region MouseWheel
+		/// <summary>
+		/// Reorders the waypoints in the visualisation canvas on scroll events.
+		/// </summary>
+		/// <param name="e"></param>
+		void MouseWheelExecute(MouseWheelEventArgs e)
+		{
+			var src = e.OriginalSource as IInputElement;
+
+			if ((src as FrameworkElement) != null)
+			{
+				if (((src as FrameworkElement).DataContext as WaypointViewModel) != null)
+				{
+					WaypointViewModel wvm = (WaypointViewModel)((FrameworkElement)src).DataContext;
+					if (!wvm.Visited)
+					{
+						int i = (int)Data.Clamp(wvm.Index + Math.Sign(e.Delta), 0, Data.MainViewModel.AutoControlViewModel.AutoControl.QueuedWaypoints.Count - 1);
+						SwapWaypointViewModels(wvm.Index, i);
+					}
+
+					UpdateWaypointViewModelIndices();
+				}
+			}
+			RaisePropertyChanged("Objects");
+		}
+
+		bool CanMouseWheelExecute(MouseWheelEventArgs e)
+		{
+			return true;
+		}
+
+		public ICommand MouseWheel { get { return new RelayCommand<MouseWheelEventArgs>(MouseWheelExecute, CanMouseWheelExecute); } }
 		#endregion
 		#endregion
 	}

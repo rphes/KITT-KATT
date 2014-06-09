@@ -142,18 +142,31 @@ namespace Overwatch
 				VisitedWaypoints.Remove(w);
 		}
 
+		/// <summary>
+		/// Mark a waypoint as finished by moving it from the queue to the visited list.
+		/// </summary>
+		/// <param name="w">The waypoint to mark as finished.</param>
 		public void FinishWaypoint(Waypoint w)
 		{
 			QueuedWaypoints.Remove(w);
 			VisitedWaypoints.Add(w);
 		}
 
+		/// <summary>
+		/// Mark a waypoint as no longer finished by moving it from the visited list back into the queue.
+		/// </summary>
+		/// <param name="w">The waypoint to mark as no longer finished.</param>
 		public void UnFinishWaypoint(Waypoint w)
 		{
 			VisitedWaypoints.Remove(w);
 			QueuedWaypoints.Add(w);
 		}
 
+		/// <summary>
+		/// Swap two waypoints in the queue.
+		/// </summary>
+		/// <param name="index1">The index of the first waypoint two sap.</param>
+		/// <param name="index2">The index of the second waypoint to swap.</param>
 		public void SwapWaypoints(int index1, int index2)
 		{
 			Waypoint tmp = QueuedWaypoints[index1];

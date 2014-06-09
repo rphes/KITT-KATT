@@ -28,6 +28,7 @@
 									Height="{Binding Path=CanvasHeight}" 
 									tools:MouseBehaviour.MouseLeftButtonUpCommand="{Binding MouseLeftButtonUp}" 
 									tools:MouseBehaviour.MouseRightButtonUpCommand="{Binding MouseRightButtonUp}" 
+									tools:MouseBehaviour.MouseWheelCommand="{Binding MouseWheel}" 
 									Background="White">
 								</Canvas>
 							</ItemsPanelTemplate>
