@@ -22,18 +22,20 @@ CurrentTrackedSpeed = 0;
 SteerAngle = 0;
 
 % Waypoints
-Waypoints = [[5;5] [9;1] [-8;4]];
+Waypoints = [[5;5] [9;1] [-8;4] [9;9] [0;-9]];
 
 % Obstacles
 obstacles = Obstacles([
     -2 2 1;
-    3 3 1
+    3 3 1;
+    -3 -3 2;
+    6 -7 1.5
 ]);
 obstacles.PrepareDraw();
 
 % Simulation parameters
 Delay = 0.15;
-SimulationTime = 60;
+SimulationTime = 60*4;
 InitialisationTime = .5;
 
 % KITT model
