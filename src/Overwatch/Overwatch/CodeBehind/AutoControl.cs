@@ -1,7 +1,6 @@
 ﻿using Overwatch.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Overwatch
 {
@@ -106,14 +105,17 @@ namespace Overwatch
 				System.Diagnostics.Debug.WriteLine(exc.ToString());
 			}
 
-			// Try to start simulation
-			try
+			if (Mode == "Simulation")
 			{
-				Matlab.Instance.Feval("simulate", 0, out o);
-			}
-			catch (Exception exc)
-			{
-				System.Diagnostics.Debug.WriteLine(exc.ToString());
+				// Try to start simulation
+				try
+				{
+					Matlab.Instance.Feval("simulate", 0, out o);
+				}
+				catch (Exception exc)
+				{
+					System.Diagnostics.Debug.WriteLine(exc.ToString());
+				}
 			}
 		}
 
