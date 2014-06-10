@@ -18,8 +18,6 @@ namespace Overwatch.ViewModel
 		public int CanvasWidth { get { return Data.CanvasWidth; } }
 		public int CanvasHeight { get { return Data.CanvasHeight; } }
 
-		//public FieldViewModel Field { get; set; }
-
 		private VirtualVehicleViewModel _kitt;
 		public VirtualVehicleViewModel KITT
 		{
@@ -43,19 +41,15 @@ namespace Overwatch.ViewModel
 			}
 		}
 
-		//public ObservableCollection<MicrophoneViewModel> Microphones { get; set; }
-
 		public List<IVisualisationObject> Objects
 		{
 			get 
 			{
-				if (WaypointViewModels == null /*|| Microphones == null*/ || KITT == null)
+				if (WaypointViewModels == null || KITT == null)
 					return null;
 
 				List<IVisualisationObject> l = new List<IVisualisationObject>(WaypointViewModels);
-				//l.AddRange(Microphones);
 				l.Add(KITT);
-				//l.Add(Field);
 				return l;
 			} 
 		}
@@ -67,20 +61,12 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		public VisualisationViewModel()
 		{
-			// Add the field to our visualisation canvas
-			//Field = new FieldViewModel();
-
 			// Add KITT to our visualisation canvas
 			KITT = new VirtualVehicleViewModel(Data.MainViewModel.VehicleViewModel.Vehicle, new Uri(Directory.GetCurrentDirectory() + @"\Content\KITT.png"));
 
 			Data.MainViewModel.VehicleViewModel.Vehicle.X = 0.7;
 			Data.MainViewModel.VehicleViewModel.Vehicle.Y = 0.3;
 			Data.MainViewModel.VehicleViewModel.Vehicle.Angle = 45;
-
-			WaypointViewModels = new ObservableCollection<WaypointViewModel>();
-			WaypointViewModels.CollectionChanged += ObjectsChanged;
-			//Microphones = new ObservableCollection<MicrophoneViewModel>();
-			//Microphones.CollectionChanged += ObjectsChanged;
 		}
 		#endregion
 
@@ -100,8 +86,10 @@ namespace Overwatch.ViewModel
 				WaypointViewModel w = new WaypointViewModel(x, y);
 				w.Index = Data.MainViewModel.AutoControlViewModel.AutoControl.QueuedWaypoints.Count;
 				Data.MainViewModel.AutoControlViewModel.AutoControl.AddWaypoint(w.Waypoint);
-				WaypointViewModels.Add(w);
+				WaypointViewModelQueue.Add(w);
 			}
+
+			UpdateWaypointViewModelIndices();
 		}
 
 		/// <summary>
@@ -115,10 +103,37 @@ namespace Overwatch.ViewModel
 				// Remove a waypoint
 				WaypointViewModel wvm = (WaypointViewModel)o;
 				Data.MainViewModel.AutoControlViewModel.AutoControl.RemoveWaypoint(wvm.Waypoint);
-				WaypointViewModels.Remove(wvm);
+
+				if (wvm.Visited)
+					WaypointViewModelVisited.Remove(wvm);
+				else
+					WaypointViewModelQueue.Remove(wvm);
+
 				UpdateWaypointViewModelIndices();
 			}
 
+		}
+
+		/// <summary>
+		/// Mark a waypoint as finished or not finished by moving it from the queue to the visited list or vice versa.
+		/// </summary>
+		/// <param name="w">The waypoint to mark as finished/not finished.</param>
+		public void FinishWaypointViewModel(WaypointViewModel wvm)
+		{
+			if (wvm.Visited)
+			{
+				WaypointViewModelQueue.Add(wvm);
+				WaypointViewModelVisited.Remove(wvm);
+				wvm.Visited = false;
+			}
+			else
+			{
+				WaypointViewModelQueue.Remove(wvm);
+				WaypointViewModelVisited.Add(wvm);
+				wvm.Visited = true;
+			}
+
+			UpdateWaypointViewModelIndices();
 		}
 
 		/// <summary>
@@ -129,9 +144,11 @@ namespace Overwatch.ViewModel
 		public void SwapWaypointViewModels(int index1, int index2)
 		{
 			Data.MainViewModel.AutoControlViewModel.AutoControl.SwapWaypoints(index1, index2);
-			WaypointViewModel tmp = WaypointViewModels[index1];
-			WaypointViewModels[index1] = WaypointViewModels[index2];
-			WaypointViewModels[index2] = tmp;
+			WaypointViewModel tmp = WaypointViewModelQueue[index1];
+			WaypointViewModelQueue[index1] = WaypointViewModels[index2];
+			WaypointViewModelQueue[index2] = tmp;
+
+			UpdateWaypointViewModelIndices();
 		}
 
 		/// <summary>
@@ -148,6 +165,8 @@ namespace Overwatch.ViewModel
 					i++;
 				}
 			}
+
+			RaisePropertyChanged("Objects");
 		}
 		#endregion
 
@@ -208,20 +227,9 @@ namespace Overwatch.ViewModel
 				if (((src as FrameworkElement).DataContext as WaypointViewModel) != null)
 				{
 					WaypointViewModel wvm = (WaypointViewModel)((FrameworkElement)src).DataContext;
-					if (!wvm.Visited)
-					{
-						Data.MainViewModel.AutoControlViewModel.AutoControl.FinishWaypoint(wvm.Waypoint);
-						wvm.Visited = true;
-					}
-					else
-					{
-						Data.MainViewModel.AutoControlViewModel.AutoControl.UnFinishWaypoint(wvm.Waypoint);
-						wvm.Visited = false;
-					}
-					UpdateWaypointViewModelIndices();
+					FinishWaypointViewModel(wvm);
 				}
 			}
-			RaisePropertyChanged("Objects");
 		}
 		
 		bool CanMouseRightButtonUpExecute(MouseButtonEventArgs e)
@@ -248,14 +256,12 @@ namespace Overwatch.ViewModel
 					WaypointViewModel wvm = (WaypointViewModel)((FrameworkElement)src).DataContext;
 					if (!wvm.Visited)
 					{
-						int i = (int)Data.Clamp(wvm.Index + Math.Sign(e.Delta), 0, Data.MainViewModel.AutoControlViewModel.AutoControl.QueuedWaypoints.Count - 1);
-						SwapWaypointViewModels(wvm.Index, i);
+						int i = (int)Data.Clamp(wvm.Index + Math.Sign(e.Delta), 0, WaypointViewModelQueue.Count - 1);
+						if (wvm.Index != i)
+							SwapWaypointViewModels(wvm.Index, i);
 					}
-
-					UpdateWaypointViewModelIndices();
 				}
-			}
-			RaisePropertyChanged("Objects");
+			}	
 		}
 
 		bool CanMouseWheelExecute(MouseWheelEventArgs e)

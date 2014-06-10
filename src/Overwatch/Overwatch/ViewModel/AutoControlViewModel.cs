@@ -57,7 +57,7 @@ namespace Overwatch.ViewModel
 		}
 		public bool CanSelectMode { get { return !ControlEnabled; } }
 
-		public string[] PlaceableObjects { get { return new string[] { "Waypoint", "Charger" }; } }
+		public string[] PlaceableObjects { get { return new string[] { "Waypoint" }; } }
 		public string SelectedObject { get; set; }
 		#endregion
 
