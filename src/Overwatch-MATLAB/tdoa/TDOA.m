@@ -1,29 +1,33 @@
-classdef TDOA
+classdef TDOA < handle
     properties (SetAccess = private)
+        deconvolutionMatrix
     end
     
     methods
-        % Constructor
-        function Self = TDOA()
-        end
-        
-        % Check if TDOA determination is busy
-        function Ret = IsBusy(Self)
-            Ret = 0;
-        end
-        
-        % Check if TDOA determination is ready
-        function Ret = IsReady(Self)
-            Ret = 0;
-        end
-        
-        % Start TDOA determination
-        function Start(Self)
+        function RetrieveDeconvolutionMatrix(Self)
+            global DeconvolutionMatrix
+            Self.deconvolutionMatrix = DeconvolutionMatrix;
         end
         
         % Range difference matrix retrieval function
         function RangeDiffMatrix = GetRangeDiffMatrix(Self)
-            RangeDiffMatrix = [];
+            Data = pa_wavrecord(1, 5, Configuration.TDOARecordingTime*Configuration.Fs, Configuration.Fs);
+            
+            TrimmedData = TrimData(Data,...
+                Configuration.Fs,...
+                Configuration.TDOATrimPeakThreshold,...
+                Configuration.TDOATrimPeakFrequency,...
+                Configuration.TDOATrimSkipCoefficient,...
+                Configuration.TDOATrimClearanceAfter,...
+                Configuration.TDOATrimClearanceBefore);
+    
+            % Check if no valid peaks were found
+            if isempty(TrimmedData)
+                RangeDiffMatrix = [];
+                return
+            end    
+
+            [RangeDiffMatrix, ~, ~, ~] = GenerateRangeDiffMatrix(TrimmedData, Self.deconvolutionMatrix, Configuration.Fs, Configuration.TDOAImpulsePeakThreshold, Configuration.TDOASoundSpeed);
         end
     end
 end

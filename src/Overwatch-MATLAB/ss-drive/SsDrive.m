@@ -4,13 +4,13 @@ classdef SsDrive < handle
         currentTime
         
         % State-space model parameters
-        carMass = 1; % Car mass (carefulness)
-        carResistance = 0.15; % Car resistance (lack of carefulness)
+        carMass = 1;             % Car mass (carefulness)
+        carResistance = 0.15;    % Car resistance (lack of carefulness)
         motorInductance = 0.020; % Self-inductance
-        motorConstant = 0.5; % Motor constant
-        motorResistance = 0.05; % Motor resistance (current oscillation)
-        wheelRadius = 0.15; % Wheel radius
-        motorGearRatio = 20; % Gear ratio <!--- IMPORTANT ---!> (attack)
+        motorConstant = 0.5;     % Motor constant
+        motorResistance = 0.05;  % Motor resistance (current oscillation)
+        wheelRadius = 0.15;      % Wheel radius
+        motorGearRatio = 20;     % Gear ratio <!--- IMPORTANT ---!> (attack)
         
         % State-space model
         currentState = [0; 0; 0];

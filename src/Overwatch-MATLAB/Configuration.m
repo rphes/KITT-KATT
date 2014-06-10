@@ -1,16 +1,12 @@
 classdef Configuration
     properties (Constant = true)
-        SteeringFeedbackCoefficient = -.5;
-        % Note: combines with MapSteerFOC. -1 is the deepest pole!
+        SteeringFeedbackCoefficient = -.5; % Note: combines with MapSteerFOC. -1 is the deepest pole!
         
-        % Field dimensions
-        XMax = 10;
-        YMax = 10;
+        FieldWidth = 7;
+        FieldHeight = 7;
  
-        DriveCarWeight = 0.15;
-        DriveRollingCoefficient = 0.05;
         DriveObserverPoles = -4.1;
-        DriveCompensatorPoles = -0.5; % -1.3
+        DriveCompensatorPoles = -0.5;
         
         MapDriveBound = 0.01
         MapDriveFOC = 3.25;
@@ -21,11 +17,6 @@ classdef Configuration
         CarLength = 0.35;
         CarWidth = 0.20;
         
-        % Measured turning radius: 0.65 m
-        % Measured length of car: 0.35 m
-        % PWM range: 100 (utmost left) - 150 (middle) - 200 (utmost right)
-        % PWM deviation: 50
-        
         MapSteerBound = 0;
         MapSteerFOC = 50/asin(0.35/0.65);
         MapSteerTOC = 0;
@@ -33,11 +24,30 @@ classdef Configuration
         RouteThreshold = 1.5;
         RouteClearance = 1;
         RouteOverflowTime = 2;
+        RouteOvershootThreshold = 0.2;
         
-        OvershootThreshold = 0.2;
-        
-        % Plot stuff
         PlotTimeFrame = 15;
+        
+        TDOARecordingTime = 0.2;
+        TDOAImpulsePeakThreshold = 0.85;
+        TDOASoundSpeed = 348;
+        TDOATrimPeakFrequency = 8;
+        TDOATrimSkipCoefficient = 0.85;
+        TDOATrimPeakThreshold = 0.7;
+        TDOATrimClearanceBefore = 1000;
+        TDOATrimClearanceAfter = 1500; % 2000
+        
+        LocMics = [
+            0   0;
+            0   7;
+            7   7;
+            7   0;
+            3.5 0
+        ]
+        LocPredictionFilterOrder = 1
+        LocPredictionFilterMaximumDevitation = 1e99
+        
+        Fs = 48000;
     end
 end
 

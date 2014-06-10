@@ -1,69 +1,28 @@
 classdef Loc < handle
-    properties(GetAccess = public, SetAccess = private)
+    properties (SetAccess = private)
+        locations
     end
     
     methods
         % Constructor
-        function Self = Loc()
+        function Self = Loc(InitialLocation)
+            Self.locations = PredictionFilter(Configuration.LocPredictionFilterMaximumDevitation, Configuration.LocPredictionFilterOrder);
+            Self.locations.Evaluate(InitialLocation);
         end
         
         % Processing function
-        function CurrentLocation = Localize(~, RangeDiff, MicrophoneLocations, Threshold)
-            % Makes use of the fact that the system is overdetermined!
-            % Therefore, using 3D is not advised.
-            N = size(RangeDiff, 1);
-            Np = (N*N-N)/2;
-            Pairs = zeros(Np, 2);
-            D = size(MicrophoneLocations, 2);
-
-            % Pair generation
-            ii = 1;
-            for i = 1:N
-                for j = (i+1):N
-                    Pairs(ii,1) = i;
-                    Pairs(ii,2) = j;
-                    ii = ii+1;
-                end
+        function [CurrentLocation, DoObserve] = Localize(Self, RangeDiff)
+            NewLocation = Localize(RangeDiff, Configuration.LocMics)
+            
+            if isempty(NewLocation)
+                DoObserve = 0;
+            else
+                DoObserve = 1;
+                Self.locations.Evaluate(NewLocation);
             end
-
-            % Generate A and B
-            A = zeros(Np,2+N-1);
-            for i = 1:Np
-                i1 = Pairs(i,1);
-                i2 = Pairs(i,2);
-
-                A(i,1:D) = 2*(MicrophoneLocations(i2,:) - MicrophoneLocations(i1,:));
-                A(i,D+(i2-1)) = -2*RangeDiff(i2,i1);
-            end
-
-            b = zeros(Np,1);
-            for i = 1:Np
-                i1 = Pairs(i,1);
-                i2 = Pairs(i,2);
-
-                b(i) = RangeDiff(i1,i2)^2-norm(MicrophoneLocations(i1,:),2)^2+norm(MicrophoneLocations(i2,:),2)^2;
-            end
-
-            % Remove possible worst column
-            SmallestValue = 0;
-            SmallestID = [];
-
-            for i = 1:size(A,2)
-                Value = sum(abs(A(:,i)));
-
-                if Value < Threshold
-                    if (Value < SmallestValue) || (isempty(SmallestID))
-                        SmallestValue = Value;
-                        SmallestID = i;
-                    end
-                end
-            end
-
-            A(:, SmallestID) = [];
-
-            % Least squares approximation
-            CurrentLocation = (A'*A)^-1*A'*b;
-            CurrentLocation = CurrentLocation(1:D)';
+            
+            % Get last location
+            CurrentLocation = Self.locations.Data(size(Self.locations.Data,1),:)';
         end
     end
 end

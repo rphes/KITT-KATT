@@ -29,7 +29,7 @@ classdef Wrapper < handle
             % Initialize all objects
             Self.tdoa = TDOA();
             Self.route = Route();
-            Self.loc = Loc();
+            Self.loc = Loc(InitialLocation);
             Self.ang = Angle(InitialLocation, InitialAngle);
             Self.ssSteer = SsSteer();
             Self.ssDrive = SsDrive();
@@ -38,6 +38,8 @@ classdef Wrapper < handle
             
             Self.currentLocation = InitialLocation;
             Self.microphoneLocations = MicrophoneLocations;
+            
+            Self.tdoa.RetrieveDeconvolutionMatrix();
         end
         
         % Looping function
@@ -56,23 +58,8 @@ classdef Wrapper < handle
             global pwm_steer
             global pwm_drive
             
-            % Handle TDOA determination
-            DoObserve = 0;
-            
-            if ~Self.tdoa.IsBusy()
-                Self.tdoa.Start();
-            else
-                if Self.tdoa.IsReady()
-                    % Get new location
-                    Self.currentLocation = Self.loc.Localize(TDOA.GetRangeDiffMatrix());
-                    
-                    % A new location is determined, we can observe
-                    DoObserve = 1;
-                    
-                    % Start new TDOA determination
-                    Self.tdoa.Start();
-                end
-            end
+            % Localization
+            [Self.currentLocation, DoObserve] = Self.loc.Localize(Self.tdoa.GetRangeDiffMatrix());
             
             % Determine current angle
             CurrentAngle = Self.ang.DetermineAngle(Self.currentLocation);

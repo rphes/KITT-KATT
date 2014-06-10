@@ -1,18 +1,22 @@
-clear all
+clear wrapper Wrapper tdoa TDOA loc Loc
 
 %% Init
 % Fix path
 addpath(genpath('.'));
+% rmpath('./pa-wav-sim');
+
+% Simulation shizz
+rmpath('./pa-wav');
 
 % Create wrapper object with initial location
-InitialLocation = [0 0];
+InitialLocation = [0; 0];
 InitialAngle = 0;
 MicrophoneLocations = [];
-%wrapper = Wrapper(InitialLocation, InitialAngle, MicrophoneLocations);
+wrapper = Wrapper(InitialLocation, InitialAngle, MicrophoneLocations);
 
 %% Debug
 % Create and initialise handles for the figure, its subplots and their lines
-close all;
+figure(99);
 global subplotAxes % subplot axis handles
 global subplotLines % subplot line handles
 global subplotTimer % subplot timer
@@ -46,20 +50,20 @@ for subplotY = 1:2
             case 1
                 subplotLines{subplotY, subplotX} = plot(0,0,'b',0,0,'ro');
                 grid on;
-                xlim([0 Configuration.XMax]);
+                xlim([0 Configuration.FieldWidth]);
                 xlabel('X (m)');
-                ylim([0 Configuration.YMax]);
+                ylim([0 Configuration.FieldHeight]);
                 ylabel('Y (m)');
                 title('Car trajectory');
                 legend('Trajectory', 'Waypoints');
             case 2
-                ylim([0 Configuration.XMax]);
+                ylim([0 Configuration.FieldWidth]);
                 xlabel('time (s)');
                 ylabel('X (m)');
                 title('Car and waypoint X-coords');
                 legend('Waypoint', 'Car');
             case 3
-                ylim([0 Configuration.YMax]);
+                ylim([0 Configuration.FieldHeight]);
                 xlabel('time (s)');
                 ylabel('Y (m)');
                 title('Car and waypoint Y-coords');

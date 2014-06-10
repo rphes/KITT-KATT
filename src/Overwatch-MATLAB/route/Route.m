@@ -26,7 +26,7 @@ classdef Route < handle
 
             % On overshoot, drive straight back
             CarDirection = [cos(CurrentAngle); sin(CurrentAngle)];
-            if StraightDistance < Configuration.OvershootThreshold...
+            if StraightDistance < Configuration.RouteOvershootThreshold...
                     && dot(Waypoint, CarDirection) < 0
                 CurrentDistance = -StraightDistance;
                 TargetReferenceAngle = 0;
