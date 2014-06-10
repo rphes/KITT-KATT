@@ -122,18 +122,28 @@ namespace Overwatch.ViewModel
 		{
 			if (wvm.Visited)
 			{
+				Data.MainViewModel.AutoControlViewModel.AutoControl.UnFinishWaypoint(wvm.Waypoint);
 				WaypointViewModelQueue.Add(wvm);
 				WaypointViewModelVisited.Remove(wvm);
 				wvm.Visited = false;
 			}
 			else
 			{
+				Data.MainViewModel.AutoControlViewModel.AutoControl.FinishWaypoint(wvm.Waypoint);
 				WaypointViewModelQueue.Remove(wvm);
 				WaypointViewModelVisited.Add(wvm);
 				wvm.Visited = true;
 			}
 
 			UpdateWaypointViewModelIndices();
+		}
+
+		/// <summary>
+		/// Marks the current WaypointViewModel as finished.
+		/// </summary>
+		public void FinishWaypointViewModel()
+		{
+			FinishWaypointViewModel(WaypointViewModelQueue[0]);
 		}
 
 		/// <summary>

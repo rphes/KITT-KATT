@@ -147,10 +147,13 @@ namespace Overwatch
 			if (!ObservationEnabled) return null;
 
 			// Push relevant newly received data to MATLAB
-			//Matlab.PutVariable("sensor_l", Vehicle.SensorDistanceLeft);
-			//Matlab.PutVariable("sensor_r", Vehicle.SensorDistanceRight);
+			if (Mode == "Reality")
+			{
+				Matlab.PutVariable("sensor_l", Vehicle.SensorDistanceLeft);
+				Matlab.PutVariable("sensor_r", Vehicle.SensorDistanceRight);
+			}
 			Matlab.PutVariable("battery", "global", Vehicle.BatteryVoltage);
-			Matlab.PutVariable("waypoint", "global", CurrentWayPoint != null ? new double[] { CurrentWayPoint.X * Data.FieldSize, CurrentWayPoint.Y * Data.FieldSize } : new double[0]);
+			Matlab.PutVariable("waypoint", "global", CurrentWayPoint != null ? new double[] { CurrentWayPoint.X * Data.FieldSize, CurrentWayPoint.Y * Data.FieldSize } : new double[]{});
 
 			// Run the iterative function in MATLAB
 			try
@@ -167,21 +170,28 @@ namespace Overwatch
 			}
 
 			// Get relevant newly calculated data from MATLAB
-			//object o = Matlab.GetVariable("loc_x");
-			//VehicleViewModel.X = o != null ? (double)o / Data.FieldSize : 0;
-			//VehicleViewModel.Y = (double)Matlab.GetVariable("loc_y") / Data.FieldSize;
-			//VehicleViewModel.Angle = (double)Matlab.GetVariable("angle") / Math.PI * 180;
-			//Vehicle.Velocity = (double)Matlab.GetVariable("speed");
-			//double PWMSteer = (double)Matlab.GetVariable("pwm_steer");
-			//double PWMDrive = (double)Matlab.GetVariable("pwm_drive");
+			object o = Matlab.GetVariable("loc_x");
+			VehicleViewModel.X = (double)Matlab.GetVariable("loc_x") / Data.FieldSize;
+			VehicleViewModel.Y = (double)Matlab.GetVariable("loc_y") / Data.FieldSize;
+			VehicleViewModel.Angle = (double)Matlab.GetVariable("angle") / Math.PI * 180;
+			Vehicle.Velocity = (double)Matlab.GetVariable("speed");
+			double PWMSteer = (double)Matlab.GetVariable("pwm_steer");
+			double PWMDrive = (double)Matlab.GetVariable("pwm_drive");
 
 			// Check if we should advance to the next waypoint
-			//double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
-			//if (d * Data.FieldSize < 0.1)
-			//	FinishWaypoint(CurrentWayPoint);
+			if (CurrentWayPoint != null)
+			{
+				double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
+				if (d * Data.FieldSize < 0.2)
+					Data.MainViewModel.VisualisationViewModel.FinishWaypointViewModel();
+			}
+			else
+			{
+				Data.MainViewModel.AutoControlViewModel.Toggle();
+			}
 
-			//return new double[] { PWMSteer, PWMDrive };
-			return null;
+
+			return new double[] { PWMSteer, PWMDrive };
 		}
 
 		/// <summary>

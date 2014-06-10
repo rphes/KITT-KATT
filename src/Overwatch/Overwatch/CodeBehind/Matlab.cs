@@ -116,7 +116,7 @@ namespace Overwatch
 
 			try
 			{
-				Instance.PutWorkspaceData(name, "base", data);
+				Instance.PutWorkspaceData(name, workspace, data);
 			}
 			catch (Exception exc)
 			{
