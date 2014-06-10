@@ -20,9 +20,18 @@ classdef Route < handle
             else
                 CurrentDistance = StraightDistance;
             end
-
-            TargetReferenceAngle = Self.DetermineReferenceAngle(CurrentLocation, CurrentAngle, Waypoint);
             
+            % Calculate angle the fancy way
+            TargetReferenceAngle = Self.DetermineReferenceAngle(CurrentLocation, CurrentAngle, Waypoint);
+
+            % On overshoot, drive straight back
+            CarDirection = [cos(CurrentAngle); sin(CurrentAngle)];
+            if StraightDistance < Configuration.OvershootThreshold...
+                    && dot(Waypoint, CarDirection) < 0
+                CurrentDistance = -StraightDistance;
+                TargetReferenceAngle = 0;
+            end
+
             % This controller's first scope is to reach the target.
             % However, when an obstacle is detected, the controller
             % switches to the second scope in which its focus is fully on

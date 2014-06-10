@@ -34,6 +34,8 @@ classdef Configuration
         RouteClearance = 1;
         RouteOverflowTime = 2;
         
+        OvershootThreshold = 0.2;
+        
         % Plot stuff
         PlotTimeFrame = 15;
     end
