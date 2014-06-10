@@ -22,7 +22,7 @@ CurrentTrackedSpeed = 0;
 SteerAngle = 0;
 
 % Waypoints
-Waypoints = [[5;5] [9;1] [-8;4] [9;9] [0;-9]];
+Waypoints = [[5;5]];
 
 % Obstacles
 obstacles = Obstacles([
@@ -86,8 +86,12 @@ while toc(TimerStart) < SimulationTime
     SensorData = Model.GenerateSensorData(obstacles);
     
     % Check if waypoint is reached and another waypoint is available
-    if (norm(CarPosition-Waypoint) < 0.1) && (CurrentWaypointIndex < size(Waypoints,2))
-        CurrentWaypointIndex = CurrentWaypointIndex+1;
+    if norm(CarPosition-Waypoint) < 0.1
+        if CurrentWaypointIndex < size(Waypoints,2)
+            CurrentWaypointIndex = CurrentWaypointIndex+1;
+        else
+            break;
+        end
     end
     
     % Determine current waypoint
@@ -139,6 +143,7 @@ while toc(TimerStart) < SimulationTime
     battery = 20;
     sensor_l = 0;
     sensor_r = 0;
+   
     
     %% Update KITT
     [CarPosition, CarSpeed, CarAngle] = Model.Iterate(PWMDrive, PWMSteer);
@@ -180,6 +185,7 @@ while toc(TimerStart) < SimulationTime
         display(['Tracked angle:         ' num2str(round(mod(CurrentAngle,2*pi)*180/pi)) ' deg']);
         display ' ';
         display(['Drive PWM:             ' num2str(PWMDrive)]);
+        display(['Drive Excitation:      ' num2str(DriveExcitation)]);
         display(['Steer PWM:             ' num2str(PWMSteer)]);
         display ' ';
         if DoObserve
@@ -190,6 +196,12 @@ while toc(TimerStart) < SimulationTime
         display ' ';
         display(['Sensor left distance:  ' num2str(round(SensorData(1)*100)) ' cm']);
         display(['Sensor right distance: ' num2str(round(SensorData(2)*100)) ' cm']);
+        if CurrentDistance < 0
+            display 'Overshoot:           yes';
+        else
+            display 'Overshoot:           no';
+        end
+        
     end
     
     if DoDebug
