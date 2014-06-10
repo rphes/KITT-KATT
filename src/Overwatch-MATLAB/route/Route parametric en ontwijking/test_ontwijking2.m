@@ -1,5 +1,5 @@
 Currentlocation = [16 6];
-Currentangle = 3*pi/4; s = Route;
+Currentangle = pi/2; s = Route;
 beweeg = [cos(Currentangle) sin(Currentangle)];
 Waypoints = Currentlocation + 3*beweeg;
 Sensor = [10, 0];
@@ -25,6 +25,6 @@ Currentlocation = s.propTemp_waypoint;
 
 Sensor = [10 10];
 [distance, Ref_angle] = DetermineRoute(s, Currentlocation, Currentangle, Waypoints, Sensor, Steering);
-plot(Currentlocation(1), Currentlocation(2), 'o', Waypoints(1), Waypoints(2), 'x', s.propTemp_waypoint(1), s.propTemp_waypoint(2), 'b*', s.propcircle_x, s.propcircle_y, 'b', s.proplijn_x,  s.proplijn_y, 'g', s.propkop_x, s.propkop_y, 'r');
+plot(Waypoints(1), Waypoints(2), 'x', s.propTemp_waypoint(1), s.propTemp_waypoint(2), 'b*', s.propcircle_x, s.propcircle_y, 'b', s.proplijn_x,  s.proplijn_y, 'g');
 hold off;
 axis([0, 20, 0 20])

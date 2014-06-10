@@ -14,6 +14,7 @@ classdef Route<handle
         propkop_y
         propbeginpunt
         propeindpunt 
+        propalpha
         
         %Dit zijn properties om functie lr_object te testen
         propCirclepoint
@@ -33,12 +34,13 @@ classdef Route<handle
             Self.propr_point = [0 0];
             Self.propcircle_x = [];
             Self.propcircle_y = [];
-            Self.proplijn_x = [0 0];
-            Self.proplijn_y = [0 0];
+            Self.proplijn_x = [];
+            Self.proplijn_y = [];
             Self.propkop_x = [0 0];
             Self.propkop_y = [0 0];
             Self.propbeginpunt = [0 0];
             Self.propeindpunt = [0 0]; 
+            Self.propalpha = 0;
             
             Self.propObjectlocation = [];
             Self.propTemp_waypoint = [100 100];
@@ -50,20 +52,21 @@ classdef Route<handle
         % Determine route
         function [CurrentDistance, ReferenceAngle] = DetermineRoute(Self, Currentlocation, Currentangle, Waypoints, Sensors, Steering)
                 
-                Distance_CW = norm(Currentlocation - Self.propTemp_waypoint);
+                Distance_CW = norm(Currentlocation - Self.propTemp_waypoint)
                 [turning_radius, beweeg, r_point1, r_point2, Uiterste_punt, Sens_thres, length_objects] = standaardvar(Currentlocation, Currentangle);
                 
-                if Distance_CW < 1/50
+                if Distance_CW < 0.1
                     Self.propTemp_waypoint = [100 100];
                 end
                 
                 
                 if Self.propTemp_waypoint(1) > 0 && Self.propTemp_waypoint(1) < Uiterste_punt(1) 
                     if Self.propTemp_waypoint(2) > 0 && Self.propTemp_waypoint(2) < Uiterste_punt(2)
-                        Waypoints = Self.propTemp_waypoint
+                        Waypoints = Self.propTemp_waypoint;
                     end
                 end
                     
+                Waypoints
                     
                 
                 
@@ -106,7 +109,7 @@ classdef Route<handle
                     
                     [CurrentDistance, ReferenceAngle, r_point, alpha, l_recht] = bereken_outputs(Self, Currentlocation, Currentangle, Waypoints);
                 
-                
+                     
                      test_lengths(Self, alpha, Currentlocation, r_point, beweeg, turning_radius, Waypoints, l_recht);
                 end
         end
@@ -170,8 +173,8 @@ classdef Route<handle
         %Dit is om functie te testen   
         function test_lengths(Self, alpha, Currentlocation, r_point, beweeg, turning_radius, Waypoints, l_recht)
                 %Deze functie is om de lengtes te testen
-                
-                delta_alpha = abs(alpha)/100;
+                Self.propalpha = alpha;
+                delta_alpha = abs(alpha)/4;
                 
                 %Hoek van Currentlocation op staat:
                 hoek_current = atan2(Currentlocation(2) - r_point(2), Currentlocation(1) - r_point(1));
@@ -187,14 +190,15 @@ classdef Route<handle
                 end
                 
                 
+
+                circle_x = [];
+                circle_y = [];
                 
-                for j = 0:100
+                for j = 0:4
                     huidig_alpha = begin_teken + j*delta_alpha;
                     x_circle = r_point(1) + turning_radius*cos(huidig_alpha);
                     y_circle = r_point(2) + turning_radius*sin(huidig_alpha);
                     if j == 0 
-                        circle_x = [x_circle];
-                        circle_y = [y_circle];
                         beginpunt_lijn = [x_circle y_circle];
                     else
                         circle_x = [circle_x x_circle];
@@ -209,19 +213,23 @@ classdef Route<handle
                     beginpunt_lijn = beginpunt_lijn2;
                 end
                 
-                
                 %-------------------------------------
                 %Dit is om de rechte lijn te tekenen
                 %-------------------------------------
                 beginlijn_waypoints = Waypoints - beginpunt_lijn;
                 unit_bw = beginlijn_waypoints/norm(beginlijn_waypoints);
                 eindpunt_lijn = beginpunt_lijn + l_recht*unit_bw;
+                lijn_x = [];
+                lijn_y = [];
                 
                 Self.propbeginpunt = beginpunt_lijn;
                 Self.propeindpunt = eindpunt_lijn; 
                 
-                lijn_x = [beginpunt_lijn(1) eindpunt_lijn(1)];
-                lijn_y = [beginpunt_lijn(2) eindpunt_lijn(2)];
+                
+                 LIJN = beginpunt_lijn + 0.2*l_recht*unit_bw;
+                 lijn_x = [lijn_x LIJN(1)];
+                 lijn_y = [lijn_y LIJN(2)];
+                
                 
                 %-------------------------------------
                 %-------------------------------------
@@ -232,7 +240,7 @@ classdef Route<handle
                 %Dit is om de kop van de auto te tekenen
                 %-------------------------------------
                 
-                koppunt = Currentlocation + 0.5*beweeg;
+                koppunt = Currentlocation + 0.2*beweeg;
                 kop_x = [Currentlocation(1) koppunt(1)];
                 kop_y = [Currentlocation(2) koppunt(2)];
                 
