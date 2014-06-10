@@ -153,7 +153,6 @@ namespace Overwatch
 			try
 			{
 				Instance.GetWorkspaceData(name, workspace, out obj);
-				System.Diagnostics.Debug.WriteLine(obj.ToString());
 			}
 			catch (Exception exc)
 			{

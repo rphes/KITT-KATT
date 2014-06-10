@@ -22,20 +22,20 @@ namespace Overwatch.ViewModel
 		// Position
 		public double X 
 		{
-			get { return Waypoint.X; }
+			get { return Waypoint.X * Data.CanvasWidth; }
 			set
 			{
-				Waypoint.X = value;
+				Waypoint.X = value / Data.CanvasWidth;
 				RaisePropertyChanged("X");
 			}
 		}
 
 		public double Y
 		{
-			get { return Waypoint.Y; }
+			get { return (1 - Waypoint.Y) * Data.CanvasHeight; }
 			set
 			{
-				Waypoint.Y = value;
+				Waypoint.Y = 1 - (value / Data.CanvasHeight);
 				RaisePropertyChanged("Y");
 			}
 		}

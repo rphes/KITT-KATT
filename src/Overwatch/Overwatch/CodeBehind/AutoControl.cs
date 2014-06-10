@@ -1,6 +1,8 @@
 ﻿using Overwatch.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Timers;
+using System.Windows.Threading;
 
 namespace Overwatch
 {
@@ -16,11 +18,22 @@ namespace Overwatch
 		public ViewModel.VehicleViewModel VehicleViewModel { get { return Data.MainViewModel.VehicleViewModel; } }
 		public List<Waypoint> QueuedWaypoints { get; protected set; }
 		public List<Waypoint> VisitedWaypoints { get; protected set; }
-		public Waypoint CurrentWayPoint { get { return QueuedWaypoints[0]; } }
+		public Waypoint CurrentWayPoint 
+		{ 
+			get 
+			{
+				if (QueuedWaypoints.Count > 0)
+					return QueuedWaypoints[0];
+				else
+					return null;
+			} 
+		}
 
 		public bool ObservationEnabled { get; set; }
 		public bool ControlEnabled { get; set; }
 		public string Mode { get; set; }
+
+		private Timer simulationTimer;
 		#endregion
 
 		#region Construction
@@ -59,7 +72,11 @@ namespace Overwatch
 				InitMatlabScripts();
 			}
 			else
+			{
 				Matlab.Hide();
+				if (simulationTimer.Enabled)
+					simulationTimer.Stop();
+			}
 
 			return ObservationEnabled;
 		}
@@ -97,7 +114,18 @@ namespace Overwatch
 
 			// Run the init.m script
 			try
-			{		
+			{
+				if (Mode == "Simulation")
+				{
+					Matlab.PutVariable("makeSimulator", 1);
+					Matlab.PutVariable("makeWrapper", 0);
+				}
+				else if (Mode == "Reality")
+				{
+					Matlab.PutVariable("makeWrapper", 1);
+					Matlab.PutVariable("makeSimulator", 0);
+				}
+
 				Matlab.Instance.Feval("init", 0, out o);
 			}
 			catch (Exception exc)
@@ -107,16 +135,53 @@ namespace Overwatch
 
 			if (Mode == "Simulation")
 			{
-				// Try to start simulation
-				try
-				{
-					Matlab.Instance.Feval("simulate", 0, out o);
-				}
-				catch (Exception exc)
-				{
-					System.Diagnostics.Debug.WriteLine(exc.ToString());
-				}
+				simulationTimer = new Timer();
+				simulationTimer.Interval = 125;
+				simulationTimer.Elapsed += simulationTimer_Elapsed;
+				simulationTimer.Start();
 			}
+		}
+
+		public double[] IterateMatlabScripts()
+		{
+			if (!ObservationEnabled) return null;
+
+			// Push relevant newly received data to MATLAB
+			//Matlab.PutVariable("sensor_l", Vehicle.SensorDistanceLeft);
+			//Matlab.PutVariable("sensor_r", Vehicle.SensorDistanceRight);
+			Matlab.PutVariable("battery", "global", Vehicle.BatteryVoltage);
+			Matlab.PutVariable("waypoint", "global", CurrentWayPoint != null ? new double[] { CurrentWayPoint.X * Data.FieldSize, CurrentWayPoint.Y * Data.FieldSize } : new double[0]);
+
+			// Run the iterative function in MATLAB
+			try
+			{
+				object success = null;
+				if (Mode == "Reality")
+					Matlab.Instance.Feval("loop", 0, out success);
+				else if (Mode == "Simulation")
+					Matlab.Instance.Feval("loop_sim", 0, out success);
+			}
+			catch (Exception exc)
+			{
+				System.Diagnostics.Debug.WriteLine(exc.ToString());
+			}
+
+			// Get relevant newly calculated data from MATLAB
+			//object o = Matlab.GetVariable("loc_x");
+			//VehicleViewModel.X = o != null ? (double)o / Data.FieldSize : 0;
+			//VehicleViewModel.Y = (double)Matlab.GetVariable("loc_y") / Data.FieldSize;
+			//VehicleViewModel.Angle = (double)Matlab.GetVariable("angle") / Math.PI * 180;
+			//Vehicle.Velocity = (double)Matlab.GetVariable("speed");
+			//double PWMSteer = (double)Matlab.GetVariable("pwm_steer");
+			//double PWMDrive = (double)Matlab.GetVariable("pwm_drive");
+
+			// Check if we should advance to the next waypoint
+			//double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
+			//if (d * Data.FieldSize < 0.1)
+			//	FinishWaypoint(CurrentWayPoint);
+
+			//return new double[] { PWMSteer, PWMDrive };
+			return null;
 		}
 
 		/// <summary>
@@ -185,45 +250,18 @@ namespace Overwatch
 		/// <param name="e"></param>
 		void Communication_StatusReceived(object sender, EventArgs e)
 		{
-			if (!ObservationEnabled) return;
-
-			// Push relevant newly received data to MATLAB
-			Matlab.PutVariable("sensor_l", Vehicle.SensorDistanceLeft);
-			Matlab.PutVariable("sensor_r", Vehicle.SensorDistanceRight);
-			Matlab.PutVariable("battery", Vehicle.BatteryVoltage);
-			Matlab.PutVariable("waypoint", new double[] { CurrentWayPoint.X, CurrentWayPoint.Y });
-		
-			if (Mode == "Reality")
-			{
-				// Run the iterative function in MATLAB
-				try
-				{
-					object success = null;
-					Matlab.Instance.Feval("loop", 1, out success);
-				}
-				catch (Exception exc)
-				{
-					System.Diagnostics.Debug.WriteLine(exc.ToString());
-				}
-			}
-
-			// Get relevant newly calculated data from MATLAB
-			VehicleViewModel.X = (double)Matlab.GetVariable("loc_x") / Data.FieldSize;
-			VehicleViewModel.Y = (double)Matlab.GetVariable("loc_y") / Data.FieldSize;
-			VehicleViewModel.Angle = (double)Matlab.GetVariable("angle");
-			Vehicle.Velocity = (double)Matlab.GetVariable("speed");
-			double PWMSteer = (double)Matlab.GetVariable("pwm_steer");
-			double PWMDrive = (double)Matlab.GetVariable("pwm_drive");
+			double[] PWM = IterateMatlabScripts();
+	
+			// Control KITT and request new status
 			if (ControlEnabled)
-				Data.MainViewModel.CommunicationViewModel.Communication.DoDrive((int)PWMSteer, (int)PWMDrive);
+				Data.MainViewModel.CommunicationViewModel.Communication.DoDrive((int)PWM[0], (int)PWM[1]);
 
-			// Check if we should advance to the next waypoint
-			double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
-			if (d * Data.FieldSize < 0.1)
-				FinishWaypoint(CurrentWayPoint);
-
-			// Request new status
 			Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
+		}
+
+		void simulationTimer_Elapsed(object sender, EventArgs e)
+		{
+			IterateMatlabScripts();
 		}
 		#endregion
 	}
