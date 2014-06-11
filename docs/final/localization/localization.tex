@@ -1,0 +1,38 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+
+\chapter{Localization}
+An important sub section of the complete system is the localization of KITT. Not only is it important to know whether a waypoint has been reached, the entire control strategy of the car relies on accurate location information. To achieve this, a Time-Difference of Arrival (TDOA) method was employed using audio transmitted by the beacon mounted to the car and received by five microphones placed in the room.
+
+Before the actual localization can take place, several steps must be taken to obtain the TDOAs. First, the transmitted signal must be specified. This is not quite trivial and is explained in section \ref{sec:loc_transmit}. Then, the difference in arrival times between the various microphones must be calculated. This is done by finding peaks (section \ref{sec:loc_peak}) in the propagation channel (section \ref{sec:loc_est_h}). Finally, once the TDOAs are known, they can be used to calculate the position of the sound source. The algorithm behind this is detailed in section \ref{sec:loc_alg}. Some future considerations which are not currently implemented are discussed in the last paragraph, section \ref{sec:loc_future}.
+
+\subsection{Transmitted signal}
+\label{sec:loc_transmit}
+As reported in \citep{epo4-del7} the main goal of the transmitted sequence is to be able to perfectly identify it under every circumstance; even in the presence of noise or signals emitted by other beacons. 
+
+Code length: 32 bits
+Carrier frequency: 15 kHz
+Code frequency: 5 kHz
+Repeat frequency: 8 Hz
+Code word: 4eeb428c
+
+\subsection{Channel estimation}
+\label{sec:loc_est_h}
+
+\subsection{Peak detection}
+\label{sec:loc_peak}
+
+\subsection{Localization algorithm}
+\label{sec:loc_alg}
+TDOA localization works by measuring the difference in arrival times of a transmitted signal to the different microphones. Because the propagation speed of sound is assumed to be known or can be approximated, these time differences can be converted to range differences. 
+
+\subsection{Future work}
+\label{sec:loc_future}
+Explain other methods we tried, e.g. Bancroft, MDS etc.
+\end{document}
