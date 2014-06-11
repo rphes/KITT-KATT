@@ -82,6 +82,11 @@ classdef Wrapper < handle
             global pwm_steer
             global pwm_drive
             
+            % Fix waypoint orientation
+            if size(waypoint, 2) > 1
+                waypoint = waypoint';
+            end
+            
             % Determine current angle
             CurrentAngle = Self.ang.DetermineAngle(Self.currentLocation);
             
