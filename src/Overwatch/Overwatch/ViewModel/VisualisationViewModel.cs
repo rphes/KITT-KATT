@@ -1,8 +1,6 @@
 ﻿using Overwatch.Tools;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -43,7 +41,7 @@ namespace Overwatch.ViewModel
 
 		public List<IVisualisationObject> Objects
 		{
-			get 
+			get
 			{
 				if (WaypointViewModels == null || KITT == null)
 					return null;
@@ -51,7 +49,7 @@ namespace Overwatch.ViewModel
 				List<IVisualisationObject> l = new List<IVisualisationObject>(WaypointViewModels);
 				l.Add(KITT);
 				return l;
-			} 
+			}
 		}
 		#endregion
 
@@ -76,7 +74,7 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		/// <param name="x">The object's location on the X-axis.</param>
 		/// <param name="y">The object's location on the Y-axis.</param>
-		public void PlaceObject (double x, double y)
+		public void PlaceObject(double x, double y)
 		{
 			string s = Data.MainViewModel.AutoControlViewModel.SelectedObject;
 
@@ -96,7 +94,7 @@ namespace Overwatch.ViewModel
 		/// Remove an object from the visualisation canvas.
 		/// </summary>
 		/// <param name="o">The object to remove.</param>
-		public void RemoveObject (IVisualisationObject o)
+		public void RemoveObject(IVisualisationObject o)
 		{
 			if ((o as WaypointViewModel) != null)
 			{
@@ -122,18 +120,28 @@ namespace Overwatch.ViewModel
 		{
 			if (wvm.Visited)
 			{
+				Data.MainViewModel.AutoControlViewModel.AutoControl.UnFinishWaypoint(wvm.Waypoint);
 				WaypointViewModelQueue.Add(wvm);
 				WaypointViewModelVisited.Remove(wvm);
 				wvm.Visited = false;
 			}
 			else
 			{
+				Data.MainViewModel.AutoControlViewModel.AutoControl.FinishWaypoint(wvm.Waypoint);
 				WaypointViewModelQueue.Remove(wvm);
 				WaypointViewModelVisited.Add(wvm);
 				wvm.Visited = true;
 			}
 
 			UpdateWaypointViewModelIndices();
+		}
+
+		/// <summary>
+		/// Marks the current WaypointViewModel as finished.
+		/// </summary>
+		public void FinishWaypointViewModel()
+		{
+			FinishWaypointViewModel(WaypointViewModelQueue[0]);
 		}
 
 		/// <summary>
@@ -157,7 +165,7 @@ namespace Overwatch.ViewModel
 		public void UpdateWaypointViewModelIndices()
 		{
 			int i = 0;
-			foreach(WaypointViewModel wvm in WaypointViewModels)
+			foreach (WaypointViewModel wvm in WaypointViewModels)
 			{
 				if (!wvm.Visited)
 				{
@@ -193,7 +201,7 @@ namespace Overwatch.ViewModel
 			var src = e.OriginalSource as IInputElement;
 			double x = e.GetPosition(src as IInputElement).X;
 			double y = e.GetPosition(src as IInputElement).Y;
-			
+
 			if (e.OriginalSource.GetType().FullName != "System.Windows.Controls.Canvas")
 			{
 				// Remove an existing object
@@ -231,7 +239,7 @@ namespace Overwatch.ViewModel
 				}
 			}
 		}
-		
+
 		bool CanMouseRightButtonUpExecute(MouseButtonEventArgs e)
 		{
 			return true;
@@ -261,7 +269,7 @@ namespace Overwatch.ViewModel
 							SwapWaypointViewModels(wvm.Index, i);
 					}
 				}
-			}	
+			}
 		}
 
 		bool CanMouseWheelExecute(MouseWheelEventArgs e)

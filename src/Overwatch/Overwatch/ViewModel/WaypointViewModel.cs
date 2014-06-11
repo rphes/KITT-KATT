@@ -1,6 +1,4 @@
 ﻿using Overwatch.Tools;
-using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Media;
 
 namespace Overwatch.ViewModel
@@ -20,22 +18,22 @@ namespace Overwatch.ViewModel
 		}
 
 		// Position
-		public double X 
+		public double X
 		{
-			get { return Waypoint.X; }
+			get { return Waypoint.X * Data.CanvasWidth; }
 			set
 			{
-				Waypoint.X = value;
+				Waypoint.X = value / Data.CanvasWidth;
 				RaisePropertyChanged("X");
 			}
 		}
 
 		public double Y
 		{
-			get { return Waypoint.Y; }
+			get { return (1 - Waypoint.Y) * Data.CanvasHeight; }
 			set
 			{
-				Waypoint.Y = value;
+				Waypoint.Y = 1 - (value / Data.CanvasHeight);
 				RaisePropertyChanged("Y");
 			}
 		}
@@ -43,7 +41,7 @@ namespace Overwatch.ViewModel
 		public bool Visited
 		{
 			get { return Waypoint.Visited; }
-			set 
+			set
 			{
 				Waypoint.Visited = value;
 				RaisePropertyChanged("Fill");
@@ -108,7 +106,8 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		/// <param name="x">The position of the waypoint on the X-axis</param>
 		/// <param name="y">The position of the waypoint on the Y-axis</param>
-		public WaypointViewModel(double x, double y) : this()
+		public WaypointViewModel(double x, double y)
+			: this()
 		{
 			X = x;
 			Y = y;

@@ -21,7 +21,7 @@ namespace Overwatch.ViewModel
 		{
 			get { return AutoControl.ObservationEnabled; }
 		}
-		
+
 		public string ObservationButtonString
 		{
 			get
@@ -78,8 +78,10 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		public void Toggle()
 		{
-			ToggleObservationExecute();
-			ToggleControlExecute();
+			if (CanToggleObservationExecute())
+				ToggleObservationExecute();
+			if (CanToggleControlExecute())
+				ToggleControlExecute();
 		}
 		#endregion
 
@@ -105,7 +107,8 @@ namespace Overwatch.ViewModel
 
 			return (Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen || SelectedMode == "Simulation") &&
 				AutoControl.Matlab.Running &&
-				Data.SrcDirectory != null;
+				Data.SrcDirectory != null &&
+				!(AutoControl.QueuedWaypoints.Count == 0 && !AutoControl.ObservationEnabled);
 		}
 
 		public ICommand ToggleObservation { get { return new RelayCommand(ToggleObservationExecute, CanToggleObservationExecute); } }
@@ -120,7 +123,7 @@ namespace Overwatch.ViewModel
 			// Toggle autonomous control and send initial status request if enabled
 			AutoControl.ToggleControl();
 			RaisePropertyChanged("ControlButtonString");
-			RaisePropertyChanged("CanSelectAutoControlMode");
+			RaisePropertyChanged("CanSelectMode");
 		}
 
 		bool CanToggleControlExecute()
@@ -129,7 +132,7 @@ namespace Overwatch.ViewModel
 			{
 				AutoControl.ToggleControl();
 				RaisePropertyChanged("ControlButtonString");
-				RaisePropertyChanged("CanSelectAutoControlMode");
+				RaisePropertyChanged("CanSelectMode");
 			}
 
 			return ObservationEnabled;
