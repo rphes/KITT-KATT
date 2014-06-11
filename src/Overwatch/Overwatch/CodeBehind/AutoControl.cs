@@ -232,10 +232,10 @@ namespace Overwatch
 				double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
 				if (d * Data.FieldSize < 0.2)
 					Data.MainViewModel.VisualisationViewModel.FinishWaypointViewModel();
-
-				if (Mode == AutoControlMode.LocalisationSimulation)
-					simTimer.Start();
 			}
+
+			if (Mode == AutoControlMode.LocalisationSimulation)
+				simTimer.Start();
 		}
 
 		public void MatlabDoSimulate()
