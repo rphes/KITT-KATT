@@ -1,15 +1,16 @@
 classdef Configuration
     properties (Constant = true)
-        SteeringFeedbackCoefficient = -.5; % Note: combines with MapSteerFOC. -1 is the deepest pole!
+        SteeringFeedbackCoefficient = -.4;
+        % Note: combines with MapSteerFOC. -1 is the deepest pole!
         
         FieldWidth = 7;
         FieldHeight = 7;
  
         DriveObserverPoles = -4.1;
-        DriveCompensatorPoles = -0.5;
+        DriveCompensatorPoles = -0.9; % -0.5
         
-        MapDriveBound = 0.01
-        MapDriveFOC = 3.25;
+        MapDriveBound = 0.02; % 0.01
+        MapDriveFOC = 3.2; % 3.25
         MapDriveTOC = -0.015;
         MapDriveOffset = 6;
         
@@ -22,7 +23,7 @@ classdef Configuration
         MapSteerTOC = 0;
         
         RouteThreshold = 1.5;
-        RouteClearance = 1;
+        RouteClearance = 1.5;
         RouteOverflowTime = 2;
         RouteOvershootThreshold = 0.2;
         

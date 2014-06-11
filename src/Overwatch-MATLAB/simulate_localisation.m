@@ -1,3 +1,7 @@
+clearvars -except DeconvolutionMatrix RecordData
+PaWavSimPath = 1;
+init;
+
 % Set globals
 global waypoint
 waypoint = [1; 1];
@@ -10,7 +14,7 @@ sensor_r = 3;
 global battery
 battery = 20;
 
-% Simulate dat shit
+% Simulate that shit
 ProcessingTime = 0.1;
 SimTime = 19;
 
@@ -20,5 +24,5 @@ SimTimer = tic;
 
 while toc(SimTimer) < SimTime
     loop();
-    pause(0.1);
+    pause(ProcessingTime);
 end

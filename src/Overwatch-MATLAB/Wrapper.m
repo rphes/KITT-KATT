@@ -67,6 +67,9 @@ classdef Wrapper < handle
             % Process route
             [CurrentDistance, ReferenceAngle] = Self.route.DetermineRoute(Self.currentLocation, CurrentAngle, waypoint, [sensor_l sensor_r]);
             
+            global DebugRefAng
+            DebugRefAng = ReferenceAngle;
+            
             % Call controllers
             ReferenceDistance = 0;
             [DriveExcitation, CurrentSpeed, ~] = Self.ssDrive.Iterate(CurrentDistance, ReferenceDistance, battery, DoObserve);
@@ -84,7 +87,7 @@ classdef Wrapper < handle
             pwm_steer = PWMSteer;
             pwm_drive = PWMDrive;
             
-            debug;
+%             debug;
             
             Ret = 1;
         end

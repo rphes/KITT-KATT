@@ -5,7 +5,7 @@ classdef SsDrive < handle
         
         % State-space model parameters
         carMass = 1;             % Car mass (carefulness)
-        carResistance = 0.15;    % Car resistance (lack of carefulness)
+        carResistance = 0.12;    % Car resistance (lack of carefulness)
         motorInductance = 0.020; % Self-inductance
         motorConstant = 0.5;     % Motor constant
         motorResistance = 0.05;  % Motor resistance (current oscillation)

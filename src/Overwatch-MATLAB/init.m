@@ -1,12 +1,18 @@
-clear wrapper Wrapper tdoa TDOA loc Loc
-
 %% Init
 % Fix path
 addpath(genpath('.'));
-% rmpath('./pa-wav-sim');
 
-% Simulation shizz
-rmpath('./pa-wav');
+% Simulation paths
+if exist('PaWavSimPath')
+    rmpath('./pa-wav');
+else
+    rmpath('./pa-wav-sim');
+end
+if exist('TDOASimPath')
+    rmpath('./tdoa');
+else
+    rmpath('./tdoa-sim');
+end
 
 % Create wrapper object with initial location
 InitialLocation = [0; 0];
@@ -14,6 +20,7 @@ InitialAngle = 0;
 MicrophoneLocations = [];
 wrapper = Wrapper(InitialLocation, InitialAngle, MicrophoneLocations);
 
+%{
 %% Debug
 % Create and initialise handles for the figure, its subplots and their lines
 figure(99);
@@ -111,6 +118,7 @@ for subplotY = 1:2
 	end
 end
 subplotTimer = tic;
+%}
 
 %% Globals
 % Define global variables for communication

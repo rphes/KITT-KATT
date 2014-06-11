@@ -9,8 +9,10 @@ classdef SsSteer
         
         % Iteration
         function [SteerExcitation] = Iterate(~, CurrentAngle, ReferenceAngle, ~) % BatteryVoltage
+            AngleDifference = CurrentAngle - ReferenceAngle;
+
             % Calculate excitation
-            SteerExcitation = Configuration.SteeringFeedbackCoefficient * (CurrentAngle - ReferenceAngle);
+            SteerExcitation = Configuration.SteeringFeedbackCoefficient * AngleDifference;
         end
     end
 end

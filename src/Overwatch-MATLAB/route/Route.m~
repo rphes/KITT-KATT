@@ -24,6 +24,7 @@ classdef Route < handle
             % Calculate angle the fancy way
             TargetReferenceAngle = Self.DetermineReferenceAngle(CurrentLocation, CurrentAngle, Waypoint);
 
+
             % On overshoot, drive straight back
             CarDirection = [cos(CurrentAngle); sin(CurrentAngle)];
             if StraightDistance < Configuration.RouteOvershootThreshold...

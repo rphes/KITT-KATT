@@ -12,7 +12,7 @@ classdef Loc < handle
         
         % Processing function
         function [CurrentLocation, DoObserve] = Localize(Self, RangeDiff)
-            NewLocation = Localize(RangeDiff, Configuration.LocMics)
+            NewLocation = Localize(RangeDiff, Configuration.LocMics);
             
             if isempty(NewLocation)
                 DoObserve = 0;
