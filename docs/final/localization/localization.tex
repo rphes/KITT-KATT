@@ -12,27 +12,40 @@ An important sub section of the complete system is the localization of KITT. Not
 
 Before the actual localization can take place, several steps must be taken to obtain the TDOAs. First, the transmitted signal must be specified. This is not quite trivial and is explained in section \ref{sec:loc_transmit}. Then, the difference in arrival times between the various microphones must be calculated. This is done by finding peaks (section \ref{sec:loc_peak}) in the propagation channel (section \ref{sec:loc_est_h}). Finally, once the TDOAs are known, they can be used to calculate the position of the sound source. The algorithm behind this is detailed in section \ref{sec:loc_alg}. Some future considerations which are not currently implemented are discussed in the last paragraph, section \ref{sec:loc_future}.
 
-\subsection{Transmitted signal}
+\section{Transmitted signal}
 \label{sec:loc_transmit}
-As reported in \citep{epo4-del7} the main goal of the transmitted sequence is to be able to perfectly identify it under every circumstance; even in the presence of noise or signals emitted by other beacons. 
+As reported in \cite{epo4-del7} the main goal of the transmitted sequence is to be able to perfectly identify it under every circumstance; even in the presence of noise or signals emitted by other beacons. Only some parameters of the transmitted signal can be changed; for example it is already defined to be an OOK signal. The tweaking parameters are the carrier frequency, the code frequency, the repetition frequency and the code word (and thus its length). More details on the choice of the sequence is given in \cite{epo4-del7} but the conclusions are summarized in table \ref{tab:loc_signal}.
 
-Code length: 32 bits
-Carrier frequency: 15 kHz
-Code frequency: 5 kHz
-Repeat frequency: 8 Hz
-Code word: 4eeb428c
+Using the given microcontroller programmer, the thus defined reference signal was programmed onto KITT.
 
-\subsection{Channel estimation}
+\begin{table}[H]
+\centering
+\begin{tabular}{c | c | c}
+\hline \hline
+Parameter & Choice & Reasoning \\
+\hline
+Carrier frequency & \SI{15}{khz} & \\
+Code frequency & \SI{5}{khz} & \\
+Repeat frequency & \SI{8}{hz} & \\
+Code word & \texttt{4eeb428c} & \\
+\end{tabular}
+\caption{Summary of chosen audio beacon parameters.}
+\label{tab:loc_signal}
+\end{table}
+
+\section{Channel estimation}
 \label{sec:loc_est_h}
+Channel estimation is done using matrix inversion as described in the manual \cite{epo4-manual}. The matched filter approach was also tested but proved to be less reliable because the obtained channel responses had no clear peak. Summarizing from \cite{epo4-manual} and \cite{epo4-del7}, a signal $y[n]=x[n]*h[n]$ is received at every microphone. The deconvolution method then approximates $h[n]$ as $\vec{\hat{h}}=(\mat{X}^T\mat{X})^{-1}\mat{X}^T\vec{y}$. Because the sent signal is known, the matrix $X^\dagger=(\mat{X}^T\mat{X})^{-1}\mat{X}^T$ can be calculated beforehand. In practical implementations, this matrix must be computed for every microphone because the response of each matrix will vary slightly. Therefore, the matrix was computed for every microphone using recordings of the training sequence which were recorded at \SI{1}{cm} distance from that microphone.  
 
-\subsection{Peak detection}
+
+\section{Peak detection}
 \label{sec:loc_peak}
 
-\subsection{Localization algorithm}
+\section{Localization algorithm}
 \label{sec:loc_alg}
 TDOA localization works by measuring the difference in arrival times of a transmitted signal to the different microphones. Because the propagation speed of sound is assumed to be known or can be approximated, these time differences can be converted to range differences. 
 
-\subsection{Future work}
+\section{Future work}
 \label{sec:loc_future}
 Explain other methods we tried, e.g. Bancroft, MDS etc.
 \end{document}
