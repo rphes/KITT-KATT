@@ -1,5 +1,10 @@
-global DeconvolutionMatrix
-Generation;
 global RecordData
-load pa-wav-sim/recorddata
+if (~exist('DeconvolutionMatrix')) && exist('PaWavSim')
+    global DeconvolutionMatrix
+    Generation;
+end
+
+if exist('PaWavSim')
+    load pa-wav-sim/recorddata
+end
 

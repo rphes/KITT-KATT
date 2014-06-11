@@ -1,5 +1,6 @@
 clearvars -except DeconvolutionMatrix RecordData
-PaWavSimPath = 1;
+PaWavSim = 1;
+generate;
 init;
 
 % Set globals
@@ -23,6 +24,7 @@ paWavSimTic = tic;
 SimTimer = tic;
 
 while toc(SimTimer) < SimTime
-    loop();
+    loopLocalize();
+    loopControl();
     pause(ProcessingTime);
 end

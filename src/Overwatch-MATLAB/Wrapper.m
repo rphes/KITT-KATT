@@ -20,12 +20,12 @@ classdef Wrapper < handle
         
         % Locations
         currentLocation
-        microphoneLocations
+        doObserve
     end
     
     methods
         % Constructor
-        function Self = Wrapper(InitialLocation, InitialAngle, MicrophoneLocations)
+        function Self = Wrapper(InitialLocation, InitialAngle)
             % Initialize all objects
             Self.tdoa = TDOA();
             Self.route = Route();
@@ -37,13 +37,28 @@ classdef Wrapper < handle
             Self.mapDrive = MapDrive();
             
             Self.currentLocation = InitialLocation;
-            Self.microphoneLocations = MicrophoneLocations;
             
             Self.tdoa.RetrieveDeconvolutionMatrix();
         end
         
         % Looping function
-        function Ret = Loop(Self)
+        function Ret = LoopLocalize(Self)
+            % Global variables to set
+            global loc_x
+            global loc_y
+            
+            % Localization
+            [Self.currentLocation, Self.doObserve] = Self.loc.Localize(Self.tdoa.GetRangeDiffMatrix());
+            
+            % Set
+            loc_x = Self.currentLocation(1);
+            loc_y = Self.currentLocation(2);
+            
+            Ret = 1;
+        end
+        
+        % Looping function for control
+        function Ret = LoopControl(Self)
             % Global variables set by C#
             global sensor_l
             global sensor_r
@@ -51,15 +66,10 @@ classdef Wrapper < handle
             global waypoint
             
             % Global variables to set
-            global loc_x
-            global loc_y
             global angle
             global speed
             global pwm_steer
             global pwm_drive
-            
-            % Localization
-            [Self.currentLocation, DoObserve] = Self.loc.Localize(Self.tdoa.GetRangeDiffMatrix());
             
             % Determine current angle
             CurrentAngle = Self.ang.DetermineAngle(Self.currentLocation);
@@ -67,12 +77,9 @@ classdef Wrapper < handle
             % Process route
             [CurrentDistance, ReferenceAngle] = Self.route.DetermineRoute(Self.currentLocation, CurrentAngle, waypoint, [sensor_l sensor_r]);
             
-            global DebugRefAng
-            DebugRefAng = ReferenceAngle;
-            
             % Call controllers
             ReferenceDistance = 0;
-            [DriveExcitation, CurrentSpeed, ~] = Self.ssDrive.Iterate(CurrentDistance, ReferenceDistance, battery, DoObserve);
+            [DriveExcitation, CurrentSpeed, ~] = Self.ssDrive.Iterate(CurrentDistance, ReferenceDistance, battery, Self.doObserve);
             [SteerExcitation] = Self.ssSteer.Iterate(CurrentAngle, ReferenceAngle, battery);
             
             % Excitation mapping
@@ -80,14 +87,12 @@ classdef Wrapper < handle
             [PWMSteer] = Self.mapSteer.Map(SteerExcitation);
             
             % Set
-            loc_x = Self.currentLocation(1);
-            loc_y = Self.currentLocation(2);
             angle = CurrentAngle;
             speed = CurrentSpeed;
             pwm_steer = PWMSteer;
             pwm_drive = PWMDrive;
             
-%             debug;
+            debug;
             
             Ret = 1;
         end

@@ -75,6 +75,10 @@ classdef Route < handle
             
             % Return reference angle
             ReferenceAngle = Self.referenceAngle;
+            
+            % Debug
+            global debugReferenceAngle
+            debugReferenceAngle = ReferenceAngle;
         end
         
         %% Determine reference angle

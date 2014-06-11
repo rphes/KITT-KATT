@@ -1,6 +1,6 @@
 classdef Configuration
     properties (Constant = true)
-        SteeringFeedbackCoefficient = -.4;
+        SteeringFeedbackCoefficient = -.7;
         % Note: combines with MapSteerFOC. -1 is the deepest pole!
         
         FieldWidth = 7;
@@ -46,7 +46,7 @@ classdef Configuration
             3.5 0
         ]
         LocPredictionFilterOrder = 1
-        LocPredictionFilterMaximumDevitation = 1e99
+        LocPredictionFilterMaximumDevitation = 1
         
         Fs = 48000;
     end

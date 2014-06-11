@@ -1,58 +1,56 @@
-clc;
-
-display 'DEBUG';
-display '--------------';
-display(['Current position: (' num2str(round(100*loc_x)) ',' num2str(round(100*loc_y)) ') cm']);
-display(['Current angle: ' num2str(round(angle*180/pi)) ' degrees']);
-display(['Current speed: ' num2str(round(100*speed)) ' cm/s']);
-display ' ';
-
-global subplotAxes % subplot axis handles
-global subplotLines % subplot line handles
-global subplotTimer % subplot timer
+%% Globals
+% Define global variables for communication
+% Global variables set by C#
+global sensor_l
+global sensor_r
+global battery
 global waypoint
 
-t = toc(subplotTimer);
+% Global variables to set
+global loc_x
+global loc_y
+global angle
+global speed
+global pwm_steer
+global pwm_drive
 
-%% Top left
-addLinePoint(subplotLines{1,1}(1), loc_x, loc_y);
-for i = 1:size(waypoint,2)
-    addLinePoint(subplotLines{1,1}(2), waypoint(1,i), waypoint(2,i));
-end
+% Debug globals
+global debugStateDistance
+global debugStateSpeed
+global debugReferenceAngle
 
-%% Top left center
-addLinePoint(subplotLines{1,2}(1), t, loc_x);
-addLinePoint(subplotLines{1,2}(2), t, waypoint(1,1));
-shiftAxis(subplotAxes{1,2}, t);
+CarDirection = [cos(angle); sin(angle)];
+CarReference = [cos(debugReferenceAngle); sin(debugReferenceAngle)];
 
-%% Top right center
-addLinePoint(subplotLines{1,3}(1), t, loc_y);
-addLinePoint(subplotLines{1,3}(2), t, waypoint(2,1));
-shiftAxis(subplotAxes{1,3}, t);
+figure(10);
+% Draw shizz
+plot(loc_x, loc_y, 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'red', 'MarkerEdgeColor', 'red');
+hold on;
+plot([loc_x loc_x+CarDirection(1)],[loc_y loc_y+CarDirection(2)],'-r');
+plot([loc_x loc_x+CarReference(1)],[loc_y loc_y+CarReference(2)],'-b');
+plot(waypoint(1), waypoint(2), 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'blue', 'MarkerEdgeColor', 'blue');
+xlabel 'x (m)';
+ylabel 'y (m)';
+xlim([-1 8]);
+ylim([-1 8]);
+title 'Field';
+grid on;
 
-%% Top right
-addLinePoint(subplotLines{1,4}(1), t, angle);
-addLinePoint(subplotLines{1,4}(2), t, ReferenceAngle);
-shiftAxis(subplotAxes{1,4}, t);
-
-%% Bottom left
-addLinePoint(subplotLines{2,1}(1), t, sensor_l);
-addLinePoint(subplotLines{2,1}(2), t, sensor_r);
-shiftAxis(subplotAxes{2,1}, t);
-
-%% Bottom left center
-addLinePoint(subplotLines{2,2}(1), t, pwm_steer);
-addLinePoint(subplotLines{2,2}(2), t, pwm_drive);
-shiftAxis(subplotAxes{2,2}, t);
-
-%% Bottom right center
-addLinePoint(subplotLines{2,3}(1), t, speed);
-addLinePoint(subplotLines{2,3}(2), t, CurrentDistance);
-shiftAxis(subplotAxes{2,3}, t);
-
-%% Bottom right
-addLinePoint(subplotLines{2,4}(1), t, battery);
-shiftAxis(subplotAxes{2,4}, t);
-
-%% Additional variables
-Self.currentLocation
+clc;
+display 'DEBUG INFO';
+display '---------------------';
+display(['Determined position:   (' num2str(round(loc_x*100)/100) ' m, ' num2str(round(loc_y*100)/100) ' m)']);
+display ' ';
+display(['Tracked angle:         ' num2str(round(mod(angle,2*pi)*180/pi)) ' deg']);
+display(['Reference angle:       ' num2str(round(mod(debugReferenceAngle,2*pi)*180/pi)) ' deg']);
+display ' ';
+display(['State 1 (distance):    ' num2str(round(debugStateDistance*100)) ' cm/s']);
+display(['State 2 (speed):       ' num2str(round(debugStateSpeed*100)) ' cm/s']);
+display ' ';
+display(['Drive PWM:             ' num2str(pwm_drive)]);
+display(['Steer PWM:             ' num2str(pwm_steer)]);
+display ' ';
+display(['Sensor left distance:  ' num2str(round(sensor_l*100)) ' cm']);
+display(['Sensor right distance: ' num2str(round(sensor_r*100)) ' cm']);
+display ' ';
+display(['Battery:               ' num2str(round(battery*100)/100) ' V']);

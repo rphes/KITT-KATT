@@ -96,6 +96,12 @@ classdef SsDrive < handle
             Self.time = [Self.time toc(Self.timerBegin)];
             Self.sensorDistance = [Self.sensorDistance CurrentDistance];
             Self.excitation = [Self.excitation DriveExcitation];
+            
+            % Debug
+            global debugStateDistance
+            global debugStateSpeed
+            debugStateDistance = NewState(1);
+            debugStateSpeed = NewState(2);
         end
         
         % Inspect function
