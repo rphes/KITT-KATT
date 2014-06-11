@@ -76,6 +76,7 @@ namespace Overwatch
 			{
 				Matlab.Show();
 				MatlabDoInitialise();
+				Data.MainViewModel.VisualisationViewModel.Trace = null;
 			}
 			else
 			{
@@ -83,6 +84,7 @@ namespace Overwatch
 
 				if (simTimer != null && simTimer.Enabled)
 					simTimer.Stop();
+				Data.MainViewModel.VisualisationViewModel.Trace = null;
 			}
 
 			return ObservationEnabled;
@@ -159,6 +161,9 @@ namespace Overwatch
 				MatlabDoLocalise();
 		}
 
+		/// <summary>
+		/// Runs one iteration of the localisation process.
+		/// </summary>
 		public void MatlabDoLocalise()
 		{
 			if (Mode == AutoControlMode.Reality)
@@ -184,6 +189,9 @@ namespace Overwatch
 				localiseFinished = true;
 		}
 
+		/// <summary>
+		/// Runs one iteration of the vehicle control process.
+		/// </summary>
 		public void MatlabDoControl()
 		{
 			// Stop control and observation if no more waypoints in queue
@@ -222,6 +230,9 @@ namespace Overwatch
 			int PWMSteer = (int)((double)Matlab.GetVariable("pwm_steer", "global"));
 			int PWMDrive = (int)((double)Matlab.GetVariable("pwm_drive", "global"));
 
+			// Update trace
+			Data.MainViewModel.VisualisationViewModel.UpdateTrace();
+
 			// Command KITT if necessary
 			if (Mode == AutoControlMode.Reality && ControlEnabled)
 				Data.MainViewModel.CommunicationViewModel.Communication.DoDrive(PWMSteer, PWMDrive);
@@ -236,8 +247,13 @@ namespace Overwatch
 
 			if (Mode == AutoControlMode.LocalisationSimulation)
 				simTimer.Start();
+			else
+				MatlabDoLocalise();
 		}
 
+		/// <summary>
+		/// Runs one iteration of the system simulation process.
+		/// </summary>
 		public void MatlabDoSimulate()
 		{
 			if (!ObservationEnabled)
@@ -273,6 +289,9 @@ namespace Overwatch
 			VehicleViewModel.Y = (double)Matlab.GetVariable("loc_y", "global") / Data.FieldSize;
 			VehicleViewModel.Angle = (double)Matlab.GetVariable("angle", "global") / Math.PI * 180;
 			Vehicle.Velocity = (double)Matlab.GetVariable("speed", "global");
+
+			// Create trace in visualisation canvas if needed
+			Data.MainViewModel.VisualisationViewModel.UpdateTrace();
 
 			// Advance to the next waypoint if current is reached
 			double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
@@ -331,7 +350,7 @@ namespace Overwatch
 		/// <summary>
 		/// Swap two waypoints in the queue.
 		/// </summary>
-		/// <param name="index1">The index of the first waypoint two sap.</param>
+		/// <param name="index1">The index of the first waypoint to swap.</param>
 		/// <param name="index2">The index of the second waypoint to swap.</param>
 		public void SwapWaypoints(int index1, int index2)
 		{
@@ -356,6 +375,11 @@ namespace Overwatch
 				statusReceived = true;
 		}
 
+		/// <summary>
+		/// Introduces a delay before continuing to the next step in simulation execution.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void simTimer_Elapsed(object sender, ElapsedEventArgs e)
 		{
 			simTimer.Stop();

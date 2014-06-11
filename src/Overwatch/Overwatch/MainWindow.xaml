@@ -35,7 +35,7 @@
 						</ItemsControl.ItemsPanel>
 						<ItemsControl.Resources>
 							<DataTemplate DataType="{x:Type vm:VirtualVehicleViewModel}">
-								<Image Source="{Binding Path=Bitmap}" Width="{Binding Path=Width}" Height="{Binding Path=Height}" IsHitTestVisible="False" RenderTransformOrigin="0.5,0.5">
+								<Image Source="{Binding Path=Bitmap}" Width="{Binding Path=Width}" Height="{Binding Path=Height}" IsHitTestVisible="False" RenderTransformOrigin="0.5,0.5" Canvas.ZIndex="2">
 									<Image.RenderTransform>
 										<TransformGroup>
 											<RotateTransform x:Name="r"  Angle="{Binding Path=Angle}"/>
@@ -45,8 +45,13 @@
 							</DataTemplate>
 							<DataTemplate DataType="{x:Type vm:WaypointViewModel}">
 								<Grid>
-									<Path Stroke="{Binding Path=Stroke}" Fill="{Binding Path=Fill}" Data="{Binding Path=PathData}" StrokeThickness="4"/>
+									<Path Stroke="{Binding Path=Stroke}" Fill="{Binding Path=Fill}" Data="{Binding Path=PathData}" StrokeThickness="4" Canvas.ZIndex="1"/>
 									<Label Content="{Binding Path=IndexString}"/>
+								</Grid>
+							</DataTemplate>
+							<DataTemplate DataType="{x:Type vm:TraceViewModel}">
+								<Grid>
+									<Path Stroke="{Binding Path=Stroke}" Data="{Binding Path=PathData}" StrokeThickness="2" Canvas.ZIndex="0"/>
 								</Grid>
 							</DataTemplate>
 						</ItemsControl.Resources>

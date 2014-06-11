@@ -39,6 +39,8 @@ namespace Overwatch.ViewModel
 			}
 		}
 
+		public TraceViewModel Trace;
+
 		public List<IVisualisationObject> Objects
 		{
 			get
@@ -48,6 +50,7 @@ namespace Overwatch.ViewModel
 
 				List<IVisualisationObject> l = new List<IVisualisationObject>(WaypointViewModels);
 				l.Add(KITT);
+				if (Trace != null) l.Add(Trace);
 				return l;
 			}
 		}
@@ -177,6 +180,19 @@ namespace Overwatch.ViewModel
 
 			if (WaypointViewModelQueue.Count > 0)
 				WaypointViewModelQueue[0].Current = true;
+
+			RaisePropertyChanged("Objects");
+		}
+
+		/// <summary>
+		/// Adds the current vehicle position to the trace for drawing in the visualisation canvas.
+		/// </summary>
+		public void UpdateTrace()
+		{
+			if (Trace == null)
+				Trace = new TraceViewModel(Data.MainViewModel.VehicleViewModel.X, Data.MainViewModel.VehicleViewModel.Y);
+			else
+				Trace.AddLineSegment(Data.MainViewModel.VehicleViewModel.X, Data.MainViewModel.VehicleViewModel.Y);
 
 			RaisePropertyChanged("Objects");
 		}

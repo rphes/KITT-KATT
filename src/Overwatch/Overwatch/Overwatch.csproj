@@ -84,6 +84,7 @@
     <Compile Include="CodeBehind\Waypoint.cs" />
     <Compile Include="ViewModel\FieldViewModel.cs" />
     <Compile Include="ViewModel\MicrophoneViewModel.cs" />
+    <Compile Include="ViewModel\TraceViewModel.cs" />
     <Compile Include="ViewModel\WaypointViewModel.cs" />
     <Compile Include="CodeBehind\Vehicle.cs" />
     <Compile Include="ViewModel\VirtualVehicleViewModel.cs" />
