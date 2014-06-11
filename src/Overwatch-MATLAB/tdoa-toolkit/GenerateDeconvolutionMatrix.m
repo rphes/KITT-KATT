@@ -10,7 +10,7 @@ function [DeconvulationMatrix, VectorLength] = GenerateDeconvolutionMatrix(Data,
     
     display 'Building Toeplitz matrix';
     % Build toeplitz matrix
-    ToeplitzMatrix = flip([zeros(1,ImpulseResponseLength-1) flip(Data)]);
+    ToeplitzMatrix = fliplr([zeros(1,ImpulseResponseLength-1) fliplr(Data)]);
     ToeplitzMatrix = tril(toeplitz(ToeplitzMatrix));
     ToeplitzMatrix = ToeplitzMatrix(:,1:(size(ToeplitzMatrix,2)-length(Data)+1));
     

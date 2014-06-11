@@ -6,6 +6,7 @@ classdef Configuration
         FieldWidth = 7;
         FieldHeight = 7;
  
+        DriveCalculatePoles = 0;
         DriveObserverPoles = -4.1;
         DriveCompensatorPoles = -0.9; % -0.5
         

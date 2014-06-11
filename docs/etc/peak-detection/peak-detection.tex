@@ -1,0 +1,25 @@
+%!TEX program = xelatex 
+\documentclass[11pt,titlepage]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\newcommand{\mat}[1]{\mathbf{#1}}
+
+\chapter*{Peak detection}
+When we implemented localization, the question arised how long the microphones should record. Let us consider an recorded interval of length $I$. To determine the TDOAs, we must be able to fully record a peak. Let a peak be located at a position $X$, which is a random variable uniformly distributed as $X \sim U(0,I)$. The peaks are spaced a time $L$. By calculating the maximum TDOA, one can show that if $L/2 < X < I-L/2$, then this peak will almost surely result in a good localization. The localization rate is then given by
+\begin{align*}
+	R &= \frac{\operatorname{Prob}\left[\text{Correct localization}\right]}{\text{Interval length}} \\
+	&= \frac{\int_{L/2}^{I-L/2}f_{X}(x)dx}{I} \\
+	&= \frac{I-L}{I^2}.
+\end{align*}
+Optimizing the data rate yields
+\begin{align*}
+	\frac{dR}{dI} &= \frac{I^2-2I(I-L)}{I^4} = 0, \\
+	I^2 &= 2IL, \\
+	I &= 2L \hspace{10em} \text{($I$ cannot be zero)}.
+\end{align*}
+Therefore, we chose our recording time to be twice the peak interval length.
+\end{document}

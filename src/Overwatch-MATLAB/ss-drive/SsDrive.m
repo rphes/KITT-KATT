@@ -46,18 +46,28 @@ classdef SsDrive < handle
             Self.D = 0;
 
             % Observer feedback matrix
-            Self.L = acker(Self.A', Self.C', [...
-                Configuration.DriveObserverPoles
-                Configuration.DriveObserverPoles
-                Configuration.DriveObserverPoles
-            ])';
+            if Configuration.DriveCalculatePoles
+                Self.L = acker(Self.A', Self.C', [...
+                    Configuration.DriveObserverPoles
+                    Configuration.DriveObserverPoles
+                    Configuration.DriveObserverPoles
+                ])';
+                L = Self.L;
 
-            % Stabilization matrix
-            Self.K = acker(Self.A, Self.B, [...
-                Configuration.DriveCompensatorPoles
-                Configuration.DriveCompensatorPoles
-                Configuration.DriveCompensatorPoles
-            ]);
+                % Stabilization matrix
+                Self.K = acker(Self.A, Self.B, [...
+                    Configuration.DriveCompensatorPoles
+                    Configuration.DriveCompensatorPoles
+                    Configuration.DriveCompensatorPoles
+                ]);
+                K = Self.K;
+            
+                save drivePoles L K
+            else
+                load drivePoles
+                Self.L = L;
+                Self.K = K;
+            end
             
             % Start tracking time
             Self.currentTime = tic;

@@ -1,5 +1,5 @@
 %% Init
-% Clear
+% Clear 
 clearvars -except DeconvolutionMatrix RecordData TDOASim PaWavSim
 
 % Clear simulation defined classes
