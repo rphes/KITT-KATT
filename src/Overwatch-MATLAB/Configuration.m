@@ -29,7 +29,7 @@ classdef Configuration
         
         PlotTimeFrame = 15;
         
-        TDOARecordingTime = 0.2;
+        TDOARecordingTime = 1.5/8;
         TDOAImpulsePeakThreshold = 0.85;
         TDOASoundSpeed = 348;
         TDOATrimPeakFrequency = 8;

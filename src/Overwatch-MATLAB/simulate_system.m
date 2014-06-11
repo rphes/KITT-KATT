@@ -1,5 +1,5 @@
-clearvars -except DeconvolutionMatrix RecordData
 TDOASim = 1;
+PaWavSim = 0;
 generate;
 init;
 
@@ -19,7 +19,7 @@ global pwm_drive
 global pwm_steer
 
 %% Simulate that shit
-ProcessingTime = 0.35;
+ProcessingTime = 0.1;
 InitialisationTime = 0.5;
 SimTime = 120;
 

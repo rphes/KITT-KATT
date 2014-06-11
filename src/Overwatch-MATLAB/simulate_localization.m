@@ -1,5 +1,5 @@
-clearvars -except DeconvolutionMatrix RecordData
 PaWavSim = 1;
+TDOASim = 0;
 generate;
 init;
 
@@ -17,7 +17,7 @@ battery = 20;
 
 % Simulate that shit
 ProcessingTime = 0.1;
-SimTime = 19;
+SimTime = 18;
 
 global paWavSimTic
 paWavSimTic = tic;
@@ -26,5 +26,6 @@ SimTimer = tic;
 while toc(SimTimer) < SimTime
     loopLocalize();
     loopControl();
+    
     pause(ProcessingTime);
 end

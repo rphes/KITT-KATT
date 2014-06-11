@@ -43,6 +43,10 @@ classdef Wrapper < handle
         
         % Looping function
         function Ret = LoopLocalize(Self)
+            % Debug timing
+            global debugLocalizeTime
+            debugLocalizeTime = tic;
+        
             % Global variables to set
             global loc_x
             global loc_y
@@ -54,11 +58,18 @@ classdef Wrapper < handle
             loc_x = Self.currentLocation(1);
             loc_y = Self.currentLocation(2);
             
+            % Debug timing
+            debugLocalizeTime = toc(debugLocalizeTime);
+            
             Ret = 1;
         end
         
         % Looping function for control
         function Ret = LoopControl(Self)
+            % Debug timing
+            global debugControlTime
+            debugControlTime = tic;
+        
             % Global variables set by C#
             global sensor_l
             global sensor_r
@@ -91,6 +102,9 @@ classdef Wrapper < handle
             speed = CurrentSpeed;
             pwm_steer = PWMSteer;
             pwm_drive = PWMDrive;
+            
+            % Debug timing
+            debugControlTime = toc(debugControlTime);
             
             debug;
             

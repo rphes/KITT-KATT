@@ -18,6 +18,8 @@ global pwm_drive
 global debugStateDistance
 global debugStateSpeed
 global debugReferenceAngle
+global debugLocalizeTime
+global debugControlTime
 
 CarDirection = [cos(angle); sin(angle)];
 CarReference = [cos(debugReferenceAngle); sin(debugReferenceAngle)];
@@ -29,6 +31,8 @@ hold on;
 plot([loc_x loc_x+CarDirection(1)],[loc_y loc_y+CarDirection(2)],'-r');
 plot([loc_x loc_x+CarReference(1)],[loc_y loc_y+CarReference(2)],'-b');
 plot(waypoint(1), waypoint(2), 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'blue', 'MarkerEdgeColor', 'blue');
+hold off;
+
 xlabel 'x (m)';
 ylabel 'y (m)';
 xlim([-1 8]);
@@ -54,3 +58,6 @@ display(['Sensor left distance:  ' num2str(round(sensor_l*100)) ' cm']);
 display(['Sensor right distance: ' num2str(round(sensor_r*100)) ' cm']);
 display ' ';
 display(['Battery:               ' num2str(round(battery*100)/100) ' V']);
+display ' ';
+display(['Localization latency:  ' num2str(round(1000*debugLocalizeTime)) ' ms']);
+display(['Control latency:       ' num2str(round(1000*debugControlTime)) ' ms']);

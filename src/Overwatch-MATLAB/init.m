@@ -1,4 +1,7 @@
 %% Init
+% Clear
+clearvars -except DeconvolutionMatrix RecordData TDOASim PaWavSim
+
 % Clear simulation defined classes
 clear TDOA
 
@@ -6,12 +9,12 @@ clear TDOA
 addpath(genpath('.'));
 
 % Simulation paths
-if exist('PaWavSim','var')
+if exist('PaWavSim','var') && (PaWavSim == 1)
     rmpath('./pa-wav');
 else
     rmpath('./pa-wav-sim');
 end
-if exist('TDOASim','var')
+if exist('TDOASim','var') && (TDOASim == 1)
     rmpath('./tdoa');
 else
     rmpath('./tdoa-sim');

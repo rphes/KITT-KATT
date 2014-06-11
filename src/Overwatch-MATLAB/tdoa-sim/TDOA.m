@@ -30,6 +30,8 @@ classdef TDOA < handle
                     RangeDiffMatrix(j,i) = -RangeDiffMatrix(i,j);
                 end
             end
+            
+            pause(1.5/8*(1 + 0.2 + 0.05*rand()));
         end
     end
 end
