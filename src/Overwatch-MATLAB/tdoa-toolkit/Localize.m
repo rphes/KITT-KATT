@@ -1,4 +1,10 @@
 function [Location] = Localize(RangeDiffMatrix, Mics)
+    % Check for error
+    if isempty(RangeDiffMatrix)
+        Location = [];
+        return
+    end
+
     N = size(RangeDiffMatrix,1);
     Np = (N*N-N)/2;
     Pairs = zeros(Np,2);
