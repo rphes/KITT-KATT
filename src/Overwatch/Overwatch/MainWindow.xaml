@@ -120,7 +120,7 @@
 					<RowDefinition />
 				</Grid.RowDefinitions>
 					
-				<ComboBox Name="ComboBox_AutoControlMode" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" ItemsSource="{Binding Path=Modes}" SelectedItem="{Binding Path=SelectedMode}" IsEnabled="{Binding Path=CanSelectMode}"/>
+				<ComboBox Name="ComboBox_AutoControlMode" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" ItemsSource="{Binding Path=Modes}" SelectedIndex="{Binding Path=SelectedModeIndex}" IsEnabled="{Binding Path=CanSelectMode}"/>
 				<Label Content="Mode:" Grid.Row="0" HorizontalAlignment="Left" Target="{Binding ElementName=ComboBox_AutoControlMode}"/>
 				
 				<ComboBox Name="ComboBox_PlaceObject" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" ItemsSource="{Binding Path=PlaceableObjects}" SelectedItem="{Binding Path=SelectedObject}"/>

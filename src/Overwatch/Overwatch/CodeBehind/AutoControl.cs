@@ -5,6 +5,8 @@ using System.Timers;
 
 namespace Overwatch
 {
+	public enum AutoControlMode{Reality, SystemSimulation, LocalisationSimulation};
+
 	/// <summary>
 	/// Holds all required data and methods to enable autonomous control of the vehicle via MATLAB.
 	/// Also handles the connection with MATLAB for the exchange of data.
@@ -30,7 +32,8 @@ namespace Overwatch
 
 		public bool ObservationEnabled { get; set; }
 		public bool ControlEnabled { get; set; }
-		public string Mode { get; set; }
+		//public string Mode { get; set; }
+		public AutoControlMode Mode { get; set; }
 
 		// State variables
 		bool localiseFinished = false;
@@ -72,18 +75,14 @@ namespace Overwatch
 			if (ObservationEnabled)
 			{
 				Matlab.Show();
-				InitMatlabScripts();
+				MatlabDoInitialise();
 			}
 			else
 			{
 				Matlab.Hide();
 
-				if (Mode == "Simulation")
-				{
-					Matlab.PutVariable("PaWavSim", 0);
-					Matlab.PutVariable("TDOASim", 0);
+				if (simTimer != null && simTimer.Enabled)
 					simTimer.Stop();
-				}
 			}
 
 			return ObservationEnabled;
@@ -102,13 +101,12 @@ namespace Overwatch
 		/// <summary>
 		/// Initialise MATLAB to the correct directory and run the initialisation script.
 		/// </summary>
-		public void InitMatlabScripts()
+		public void MatlabDoInitialise()
 		{
 			object o;
 
 			// Get scripts location and try to change MATLAB's directory to it
 			string loc = Data.SrcDirectory + "\\Overwatch-MATLAB";
-
 			try
 			{
 				Matlab.Instance.Feval("cd", 0, out o, loc);
@@ -118,13 +116,20 @@ namespace Overwatch
 				System.Diagnostics.Debug.WriteLine(exc.ToString());
 			}
 
-			if (Mode == "Simulation")
+			if (Mode == AutoControlMode.SystemSimulation)
 			{
 				Matlab.PutVariable("PaWavSim", 0);
 				Matlab.PutVariable("TDOASim", 1);
 				Vehicle.SensorDistanceLeft = 3;
 				Vehicle.SensorDistanceRight = 3;
 			}
+			else if (Mode == AutoControlMode.LocalisationSimulation)
+			{
+				Matlab.PutVariable("PaWavSim", 1);
+				Matlab.PutVariable("TDOASim", 0);
+				Vehicle.SensorDistanceLeft = 3;
+				Vehicle.SensorDistanceRight = 3;
+			}			
 
 			// Run the init.m script
 			o = null; // Has to be reset for some reason
@@ -139,26 +144,24 @@ namespace Overwatch
 				System.Diagnostics.Debug.WriteLine(exc.ToString());
 			}
 
-			if (Mode == "Simulation")
+			if (Mode == AutoControlMode.SystemSimulation || Mode == AutoControlMode.LocalisationSimulation)
 			{
 				simTimer = new Timer();
 				simTimer.Interval = 100;
 				simTimer.Elapsed += simTimer_Elapsed;
-				MatlabDoSimulate();	
+
+				if (Mode == AutoControlMode.SystemSimulation)
+					MatlabDoSimulate();
+				else
+					MatlabDoLocalise();	
 			}
 			else
 				MatlabDoLocalise();
 		}
 
-		void simTimer_Elapsed(object sender, ElapsedEventArgs e)
-		{
-			simTimer.Stop();
-			MatlabDoSimulate();
-		}
-
 		public void MatlabDoLocalise()
 		{
-			if (Mode == "Reality")
+			if (Mode == AutoControlMode.Reality)
 				Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
 			else
 				statusReceived = true;
@@ -220,20 +223,29 @@ namespace Overwatch
 			int PWMDrive = (int)((double)Matlab.GetVariable("pwm_drive", "global"));
 
 			// Command KITT if necessary
-			if (Mode == "Reality" && ControlEnabled)
+			if (Mode == AutoControlMode.Reality && ControlEnabled)
 				Data.MainViewModel.CommunicationViewModel.Communication.DoDrive(PWMSteer, PWMDrive);
 
-			// Advance to the next waypoint if current is reached
-			double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
-			if (d * Data.FieldSize < 0.2)
-				Data.MainViewModel.VisualisationViewModel.FinishWaypointViewModel();
+			if (Mode == AutoControlMode.Reality)
+			{
+				// Advance to the next waypoint if current is reached
+				double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
+				if (d * Data.FieldSize < 0.2)
+					Data.MainViewModel.VisualisationViewModel.FinishWaypointViewModel();
 
-			if (Mode == "Simulation")
-				MatlabDoLocalise();
+				if (Mode == AutoControlMode.LocalisationSimulation)
+					simTimer.Start();
+			}
 		}
 
 		public void MatlabDoSimulate()
 		{
+			if (!ObservationEnabled)
+			{
+				simTimer.Stop();
+				return;
+			}
+
 			// Stop control and observation if no more waypoints in queue
 			if (CurrentWayPoint == null)
 			{
@@ -342,6 +354,15 @@ namespace Overwatch
 				MatlabDoControl();
 			else
 				statusReceived = true;
+		}
+
+		void simTimer_Elapsed(object sender, ElapsedEventArgs e)
+		{
+			simTimer.Stop();
+			if (Mode == AutoControlMode.SystemSimulation)
+				MatlabDoSimulate();
+			else if (Mode == AutoControlMode.LocalisationSimulation)
+				MatlabDoLocalise();
 		}
 		#endregion
 	}

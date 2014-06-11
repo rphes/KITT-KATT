@@ -48,6 +48,16 @@ namespace Overwatch.ViewModel
 			}
 		}
 
+		public bool Current
+		{
+			get { return Waypoint.Current; }
+			set
+			{
+				Waypoint.Current = value;
+				RaisePropertyChanged("Fill");
+			}
+		}
+
 		public int Index { get; set; }
 
 		public string IndexString
@@ -73,7 +83,9 @@ namespace Overwatch.ViewModel
 		{
 			get
 			{
-				if (!Visited)
+				if (Current)
+					return Brushes.Yellow;
+				else if (!Visited)
 					return Brushes.Red;
 				else
 					return Brushes.LightGreen;

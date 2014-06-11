@@ -26,10 +26,20 @@ namespace Overwatch.ViewModel
 		{
 			get
 			{
-				if (ObservationEnabled)
-					return "Disable Observation";
+				if ((AutoControlMode)SelectedModeIndex == AutoControlMode.Reality)
+				{
+					if (ObservationEnabled)
+						return "Disable Observation";
+					else
+						return "Enable Observation";
+				}
 				else
-					return "Enable Observation";
+				{
+					if (ObservationEnabled)
+						return "Disable Simulation";
+					else
+						return "Enable Simulation";
+				}
 			}
 		}
 
@@ -49,11 +59,11 @@ namespace Overwatch.ViewModel
 			}
 		}
 
-		public string[] Modes { get { return new string[] { "Reality", "Simulation" }; } }
-		public string SelectedMode
+		public string[] Modes { get { return new string[] { "Reality", "System Simulation", "Localisation Simulation" }; } }
+		public int SelectedModeIndex
 		{
-			get { return AutoControl.Mode; }
-			set { AutoControl.Mode = value; }
+			get { return (int)AutoControl.Mode; }
+			set { AutoControl.Mode = (AutoControlMode)value; }
 		}
 		public bool CanSelectMode { get { return !ControlEnabled; } }
 
@@ -67,7 +77,7 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		public AutoControlViewModel()
 		{
-			SelectedMode = "Reality";
+			SelectedModeIndex = 0;
 			SelectedObject = "Waypoint";
 		}
 		#endregion
@@ -105,7 +115,9 @@ namespace Overwatch.ViewModel
 
 			RaisePropertyChanged("ObservationButtonString");
 
-			return (Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen || SelectedMode == "Simulation") &&
+			return (Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen || 
+				(AutoControlMode)SelectedModeIndex == AutoControlMode.SystemSimulation ||
+				(AutoControlMode)SelectedModeIndex == AutoControlMode.LocalisationSimulation) &&
 				AutoControl.Matlab.Running &&
 				Data.SrcDirectory != null &&
 				!(AutoControl.QueuedWaypoints.Count == 0 && !AutoControl.ObservationEnabled);
@@ -128,14 +140,14 @@ namespace Overwatch.ViewModel
 
 		bool CanToggleControlExecute()
 		{
-			if ((!AutoControl.Matlab.Visible || !ObservationEnabled) && ObservationEnabled && AutoControl.Mode == "Reality")
+			if ((!AutoControl.Matlab.Visible || !ObservationEnabled) && ObservationEnabled && AutoControl.Mode == AutoControlMode.Reality)
 			{
 				AutoControl.ToggleControl();
 				RaisePropertyChanged("ControlButtonString");
 				RaisePropertyChanged("CanSelectMode");
 			}
 
-			return ObservationEnabled;
+			return ObservationEnabled && AutoControl.Mode == AutoControlMode.Reality;
 		}
 
 		public ICommand ToggleControl { get { return new RelayCommand(ToggleControlExecute, CanToggleControlExecute); } }

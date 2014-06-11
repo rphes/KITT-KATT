@@ -14,6 +14,7 @@ namespace Overwatch
 		public double X { get; set; }
 		public double Y { get; set; }
 		public bool Visited { get; set; }
+		public bool Current { get; set; }
 		#endregion
 	}
 }

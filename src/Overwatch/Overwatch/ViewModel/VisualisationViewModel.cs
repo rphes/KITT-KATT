@@ -87,7 +87,7 @@ namespace Overwatch.ViewModel
 				WaypointViewModelQueue.Add(w);
 			}
 
-			UpdateWaypointViewModelIndices();
+			UpdateWaypointViewModels();
 		}
 
 		/// <summary>
@@ -107,7 +107,7 @@ namespace Overwatch.ViewModel
 				else
 					WaypointViewModelQueue.Remove(wvm);
 
-				UpdateWaypointViewModelIndices();
+				UpdateWaypointViewModels();
 			}
 
 		}
@@ -133,7 +133,7 @@ namespace Overwatch.ViewModel
 				wvm.Visited = true;
 			}
 
-			UpdateWaypointViewModelIndices();
+			UpdateWaypointViewModels();
 		}
 
 		/// <summary>
@@ -156,13 +156,13 @@ namespace Overwatch.ViewModel
 			WaypointViewModelQueue[index1] = WaypointViewModels[index2];
 			WaypointViewModelQueue[index2] = tmp;
 
-			UpdateWaypointViewModelIndices();
+			UpdateWaypointViewModels();
 		}
 
 		/// <summary>
 		/// Update the index stored in a WayPointViewModel for correct display in the visualisation canvas.
 		/// </summary>
-		public void UpdateWaypointViewModelIndices()
+		public void UpdateWaypointViewModels()
 		{
 			int i = 0;
 			foreach (WaypointViewModel wvm in WaypointViewModels)
@@ -172,7 +172,11 @@ namespace Overwatch.ViewModel
 					wvm.Index = i;
 					i++;
 				}
+				wvm.Current = false;
 			}
+
+			if (WaypointViewModelQueue.Count > 0)
+				WaypointViewModelQueue[0].Current = true;
 
 			RaisePropertyChanged("Objects");
 		}
