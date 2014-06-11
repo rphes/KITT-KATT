@@ -128,7 +128,7 @@ namespace Overwatch.ViewModel
 
 		bool CanToggleControlExecute()
 		{
-			if ((!AutoControl.Matlab.Visible || !ObservationEnabled) && ObservationEnabled)
+			if ((!AutoControl.Matlab.Visible || !ObservationEnabled) && ObservationEnabled && AutoControl.Mode == "Reality")
 			{
 				AutoControl.ToggleControl();
 				RaisePropertyChanged("ControlButtonString");

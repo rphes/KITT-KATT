@@ -1,7 +1,7 @@
 addpath(genpath('./tdoa-toolkit'));
 global RecordData
 
-if ~exist('DeconvolutionMatrix')
+if exist('DeconvolutionMatrix') ~= 1
     global DeconvolutionMatrix
     Generation;
 end

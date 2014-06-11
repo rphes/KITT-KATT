@@ -13,6 +13,11 @@ function y = pa_wavrecord(FirstChannel, LastChannel, NumberSamples, Fs)
     IntervalBegin = SampleDelay;
     IntervalEnd = IntervalBegin + NumberSamples;
     
+    if IntervalEnd > length(Data)
+        IntervalEnd = length(Data);
+        IntervalBegin = IntervalEnd - NumberSamples;
+    end
+    
     y = Data(IntervalBegin:IntervalEnd, :);
     
     % Sleep (+ processing time) to make it realistic

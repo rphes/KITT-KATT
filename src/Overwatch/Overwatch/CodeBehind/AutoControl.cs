@@ -1,6 +1,7 @@
 ﻿using Overwatch.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Timers;
 
 namespace Overwatch
 {
@@ -30,6 +31,12 @@ namespace Overwatch
 		public bool ObservationEnabled { get; set; }
 		public bool ControlEnabled { get; set; }
 		public string Mode { get; set; }
+
+		// State variables
+		bool localiseFinished = false;
+		bool statusReceived = false;
+
+		Timer simTimer;
 		#endregion
 
 		#region Construction
@@ -68,7 +75,16 @@ namespace Overwatch
 				InitMatlabScripts();
 			}
 			else
+			{
 				Matlab.Hide();
+
+				if (Mode == "Simulation")
+				{
+					Matlab.PutVariable("PaWavSim", 0);
+					Matlab.PutVariable("TDOASim", 0);
+					simTimer.Stop();
+				}
+			}
 
 			return ObservationEnabled;
 		}
@@ -102,11 +118,20 @@ namespace Overwatch
 				System.Diagnostics.Debug.WriteLine(exc.ToString());
 			}
 
-			o = null; // Has to be reset for some reason
+			if (Mode == "Simulation")
+			{
+				Matlab.PutVariable("PaWavSim", 0);
+				Matlab.PutVariable("TDOASim", 1);
+				Vehicle.SensorDistanceLeft = 3;
+				Vehicle.SensorDistanceRight = 3;
+			}
 
 			// Run the init.m script
+			o = null; // Has to be reset for some reason
 			try
-			{		
+			{
+				Matlab.Instance.Feval("generate", 0, out o);
+				o = null;
 				Matlab.Instance.Feval("init", 0, out o);
 			}
 			catch (Exception exc)
@@ -116,44 +141,70 @@ namespace Overwatch
 
 			if (Mode == "Simulation")
 			{
-				// Try to start simulation
-				try
-				{
-					Matlab.Instance.Feval("simulate", 0, out o);
-				}
-				catch (Exception exc)
-				{
-					System.Diagnostics.Debug.WriteLine(exc.ToString());
-				}
+				simTimer = new Timer();
+				simTimer.Interval = 100;
+				simTimer.Elapsed += simTimer_Elapsed;
+				MatlabDoSimulate();	
 			}
+			else
+				MatlabDoLocalise();
 		}
 
-		public double[] IterateMatlabScripts()
+		void simTimer_Elapsed(object sender, ElapsedEventArgs e)
 		{
-			if (!ObservationEnabled) return null;
+			simTimer.Stop();
+			MatlabDoSimulate();
+		}
+
+		public void MatlabDoLocalise()
+		{
+			if (Mode == "Reality")
+				Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
+			else
+				statusReceived = true;
+
+			// Perform localisation in MATLAB
+			object o; // Useless, but required
+			try
+			{
+				Matlab.Instance.Feval("loopLocalize", 0, out o);
+			}
+			catch (Exception exc)
+			{
+				System.Diagnostics.Debug.WriteLine(exc.ToString());
+			}
+
+			// If status is received, do control, else, set flag and pause execution
+			if (statusReceived)
+				MatlabDoControl();
+			else
+				localiseFinished = true;
+		}
+
+		public void MatlabDoControl()
+		{
+			// Stop control and observation if no more waypoints in queue
 			if (CurrentWayPoint == null)
 			{
 				Data.MainViewModel.AutoControlViewModel.Toggle();
-				return null;
+				return;
 			}
 
-			// Push relevant newly received data to MATLAB
-			if (Mode == "Reality")
-			{
-				Matlab.PutVariable("sensor_l", "global", Vehicle.SensorDistanceLeft);
-				Matlab.PutVariable("sensor_r", "global", Vehicle.SensorDistanceRight);
-			}
+			// Reset states
+			localiseFinished = false;
+			statusReceived = false;
+
+			// Feed MATLAB our new data
+			Matlab.PutVariable("sensor_l", "global", Vehicle.SensorDistanceLeft);
+			Matlab.PutVariable("sensor_r", "global", Vehicle.SensorDistanceRight);
 			Matlab.PutVariable("battery", "global", Vehicle.BatteryVoltage);
 			Matlab.PutVariable("waypoint", "global", CurrentWayPoint != null ? new double[] { CurrentWayPoint.X * Data.FieldSize, CurrentWayPoint.Y * Data.FieldSize } : new double[] { });
 
-			// Run the iterative function in MATLAB
+			// Run control function in MATLAB
+			object o;
 			try
 			{
-				object success = null;
-				if (Mode == "Reality")
-					Matlab.Instance.Feval("loop", 0, out success);
-				else if (Mode == "Simulation")
-					Matlab.Instance.Feval("loop_sim", 0, out success);
+				Matlab.Instance.Feval("loopControl", 0, out o);
 			}
 			catch (Exception exc)
 			{
@@ -161,20 +212,63 @@ namespace Overwatch
 			}
 
 			// Get relevant newly calculated data from MATLAB
-			object o = Matlab.GetVariable("loc_x");
 			VehicleViewModel.X = (double)Matlab.GetVariable("loc_x", "global") / Data.FieldSize;
 			VehicleViewModel.Y = (double)Matlab.GetVariable("loc_y", "global") / Data.FieldSize;
 			VehicleViewModel.Angle = (double)Matlab.GetVariable("angle", "global") / Math.PI * 180;
 			Vehicle.Velocity = (double)Matlab.GetVariable("speed", "global");
-			double PWMSteer = (double)Matlab.GetVariable("pwm_steer", "global");
-			double PWMDrive = (double)Matlab.GetVariable("pwm_drive", "global");
+			int PWMSteer = (int)((double)Matlab.GetVariable("pwm_steer", "global"));
+			int PWMDrive = (int)((double)Matlab.GetVariable("pwm_drive", "global"));
 
-			// Check if we should advance to the next waypoint
+			// Command KITT if necessary
+			if (Mode == "Reality" && ControlEnabled)
+				Data.MainViewModel.CommunicationViewModel.Communication.DoDrive(PWMSteer, PWMDrive);
+
+			// Advance to the next waypoint if current is reached
 			double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
 			if (d * Data.FieldSize < 0.2)
 				Data.MainViewModel.VisualisationViewModel.FinishWaypointViewModel();
 
-			return new double[] { PWMSteer, PWMDrive };
+			if (Mode == "Simulation")
+				MatlabDoLocalise();
+		}
+
+		public void MatlabDoSimulate()
+		{
+			// Stop control and observation if no more waypoints in queue
+			if (CurrentWayPoint == null)
+			{
+				Data.MainViewModel.AutoControlViewModel.Toggle();
+				return;
+			}
+
+			// Feed MATLAB relevant data
+			Matlab.PutVariable("battery", "global", Vehicle.BatteryVoltage);
+			Matlab.PutVariable("waypoint", "global", CurrentWayPoint != null ? new double[] { CurrentWayPoint.X * Data.FieldSize, CurrentWayPoint.Y * Data.FieldSize } : new double[] { });
+
+			// Run control function in MATLAB
+			object o;
+			try
+			{
+				Matlab.Instance.Feval("loopSimulate", 0, out o);
+			}
+			catch (Exception exc)
+			{
+				System.Diagnostics.Debug.WriteLine(exc.ToString());
+			}
+
+			// Get relevant newly calculated data from MATLAB
+			VehicleViewModel.X = (double)Matlab.GetVariable("loc_x", "global") / Data.FieldSize;
+			VehicleViewModel.Y = (double)Matlab.GetVariable("loc_y", "global") / Data.FieldSize;
+			VehicleViewModel.Angle = (double)Matlab.GetVariable("angle", "global") / Math.PI * 180;
+			Vehicle.Velocity = (double)Matlab.GetVariable("speed", "global");
+
+			// Advance to the next waypoint if current is reached
+			double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
+			if (d * Data.FieldSize < 0.2)
+				Data.MainViewModel.VisualisationViewModel.FinishWaypointViewModel();
+
+			// Advance to next iteration
+			simTimer.Start();
 		}
 
 		/// <summary>
@@ -243,13 +337,11 @@ namespace Overwatch
 		/// <param name="e"></param>
 		void Communication_StatusReceived(object sender, EventArgs e)
 		{
-			double[] PWM = IterateMatlabScripts();
-
-			// Control KITT and request new status
-			if (ControlEnabled)
-				Data.MainViewModel.CommunicationViewModel.Communication.DoDrive((int)PWM[0], (int)PWM[1]);
-
-			Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
+			// If localisation is already finished, do control, else, set flag and pause execution
+			if (localiseFinished)
+				MatlabDoControl();
+			else
+				statusReceived = true;
 		}
 		#endregion
 	}

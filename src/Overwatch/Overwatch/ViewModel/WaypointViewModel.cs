@@ -98,7 +98,7 @@ namespace Overwatch.ViewModel
 		public WaypointViewModel()
 		{
 			Visited = false;
-			PathData = "m 0 0 v -100 L 30 -80 L 0 -60";
+			PathData = "m 0 0 v -50 L 15 -40 L 0 -30";
 		}
 
 		/// <summary>
