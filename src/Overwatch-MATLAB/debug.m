@@ -34,13 +34,13 @@ CarReference = [cos(debugReferenceAngle); sin(debugReferenceAngle)];
 % % global obstacles
 % % obstacles.Draw();
 % hold off;
-
-xlabel 'x (m)';
-ylabel 'y (m)';
-xlim([-1 8]);
-ylim([-1 8]);
-title 'Field';
-grid on;
+% 
+% xlabel 'x (m)';
+% ylabel 'y (m)';
+% xlim([-1 8]);
+% ylim([-1 8]);
+% title 'Field';
+% grid on;
 
 clc;
 display 'DEBUG INFO';
