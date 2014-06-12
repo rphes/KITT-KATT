@@ -16,7 +16,7 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<GroupBox Name="GroupBox_Visualisation" Header="Visualisation" Grid.Column="0" Grid.RowSpan="999" HorizontalAlignment="Stretch" Margin="5,5,0,5" Padding="5" VerticalAlignment="Stretch" DataContext="{Binding Path=VisualisationViewModel}">
+		<GroupBox Name="GroupBox_Visualization" Header="Visualization" Grid.Column="0" Grid.RowSpan="999" HorizontalAlignment="Stretch" Margin="5,5,0,5" Padding="5" VerticalAlignment="Stretch" DataContext="{Binding Path=VisualizationViewModel}">
 
 			<Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Stretch="Uniform" StretchDirection="Both">
 				<Border BorderBrush="Gray" BorderThickness="1">

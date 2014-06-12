@@ -5,7 +5,7 @@ using System.Timers;
 
 namespace Overwatch
 {
-	public enum AutoControlMode{Reality, SystemSimulation, LocalisationSimulation};
+	public enum AutoControlMode{Reality, SystemSimulation, LocalizationSimulation};
 
 	/// <summary>
 	/// Holds all required data and methods to enable autonomous control of the vehicle via MATLAB.
@@ -36,7 +36,7 @@ namespace Overwatch
 		public AutoControlMode Mode { get; set; }
 
 		// State variables
-		bool localiseFinished = false;
+		bool localizeFinished = false;
 		bool statusReceived = false;
 		bool driving = false;
 
@@ -51,10 +51,10 @@ namespace Overwatch
 		{
 			// Disable by default
 			ObservationEnabled = false;
-			// Initialise MATLAB
+			// Initialize MATLAB
 			Matlab = new Matlab();
 			Matlab.Hide();
-			// Initialise some other stuff
+			// Initialize some other stuff
 			QueuedWaypoints = new List<Waypoint>();
 			VisitedWaypoints = new List<Waypoint>();
 			// Subscribe to status updates
@@ -76,8 +76,8 @@ namespace Overwatch
 			if (ObservationEnabled)
 			{
 				Matlab.Show();
-				MatlabDoInitialise();
-				Data.MainViewModel.VisualisationViewModel.Trace = null;
+				MatlabDoInitialize();
+				Data.MainViewModel.VisualizationViewModel.Trace = null;
 			}
 			else
 			{
@@ -85,7 +85,7 @@ namespace Overwatch
 
 				if (simTimer != null)
 					simTimer.Stop();
-				Data.MainViewModel.VisualisationViewModel.Trace = null;
+				Data.MainViewModel.VisualizationViewModel.Trace = null;
 				driving = false;
 			}
 			return ObservationEnabled;
@@ -102,9 +102,9 @@ namespace Overwatch
 		}
 
 		/// <summary>
-		/// Initialise MATLAB to the correct directory and run the initialisation script.
+		/// Initialize MATLAB to the correct directory and run the initialization script.
 		/// </summary>
-		public void MatlabDoInitialise()
+		public void MatlabDoInitialize()
 		{
 			object o;
 
@@ -119,7 +119,7 @@ namespace Overwatch
 				System.Diagnostics.Debug.WriteLine(exc.ToString());
 			}
 
-			// Initialise some variables for simulation
+			// Initialize some variables for simulation
 			if (Mode == AutoControlMode.SystemSimulation)
 			{
 				Matlab.PutVariable("PaWavSim", 0);
@@ -127,7 +127,7 @@ namespace Overwatch
 				Vehicle.SensorDistanceLeft = 3;
 				Vehicle.SensorDistanceRight = 3;
 			}
-			else if (Mode == AutoControlMode.LocalisationSimulation)
+			else if (Mode == AutoControlMode.LocalizationSimulation)
 			{
 				Matlab.PutVariable("PaWavSim", 1);
 				Matlab.PutVariable("TDOASim", 0);
@@ -148,7 +148,7 @@ namespace Overwatch
 				System.Diagnostics.Debug.WriteLine(exc.ToString());
 			}
 
-			// Initialise delay timer to allow gui to update
+			// Initialize delay timer to allow gui to update
 			simTimer = new Timer();
 			simTimer.Interval = 10;
 			simTimer.Elapsed += simTimer_Elapsed;
@@ -156,13 +156,13 @@ namespace Overwatch
 			if (Mode == AutoControlMode.SystemSimulation)
 				MatlabDoSimulate();
 			else
-				MatlabDoLocalise();	
+				MatlabDoLocalize();	
 		}
 
 		/// <summary>
-		/// Runs one iteration of the localisation process.
+		/// Runs one iteration of the localization process.
 		/// </summary>
-		public void MatlabDoLocalise()
+		public void MatlabDoLocalize()
 		{
 			// Request status if not simulating
 			if (Mode == AutoControlMode.Reality)
@@ -170,7 +170,7 @@ namespace Overwatch
 			else
 				statusReceived = true;
 
-			// Perform localisation in MATLAB
+			// Perform localization in MATLAB
 			object o; // Useless, but required
 			try
 			{
@@ -185,7 +185,7 @@ namespace Overwatch
 			if (statusReceived)
 				MatlabDoControl();
 			else
-				localiseFinished = true;
+				localizeFinished = true;
 		}
 
 		/// <summary>
@@ -201,7 +201,7 @@ namespace Overwatch
 			}
 
 			// Reset states
-			localiseFinished = false;
+			localizeFinished = false;
 			statusReceived = false;
 
 			// Feed MATLAB our new data
@@ -230,7 +230,7 @@ namespace Overwatch
 			int PWMDrive = (int)((double)Matlab.GetVariable("pwm_drive", "global"));
 
 			// Update trace
-			Data.MainViewModel.VisualisationViewModel.UpdateTrace();
+			Data.MainViewModel.VisualizationViewModel.UpdateTrace();
 
 			// Command KITT if necessary
 			if (Mode == AutoControlMode.Reality && ControlEnabled && (Vehicle.BatteryVoltage > 19 || driving))
@@ -244,7 +244,7 @@ namespace Overwatch
 				// Advance to the next waypoint if current is reached
 				double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
 				if (d * Data.FieldSize < 0.5)
-					Data.MainViewModel.VisualisationViewModel.FinishWaypointViewModel();
+					Data.MainViewModel.VisualizationViewModel.FinishWaypointViewModel();
 			}
 
 			if (ObservationEnabled) simTimer.Start();
@@ -289,13 +289,13 @@ namespace Overwatch
 			VehicleViewModel.Angle = (double)Matlab.GetVariable("angle", "global") / Math.PI * 180;
 			Vehicle.Velocity = (double)Matlab.GetVariable("speed", "global");
 
-			// Create trace in visualisation canvas if needed
-			Data.MainViewModel.VisualisationViewModel.UpdateTrace();
+			// Create trace in visualization canvas if needed
+			Data.MainViewModel.VisualizationViewModel.UpdateTrace();
 
 			// Advance to the next waypoint if current is reached
 			double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
 			if (d * Data.FieldSize < 0.2)
-				Data.MainViewModel.VisualisationViewModel.FinishWaypointViewModel();
+				Data.MainViewModel.VisualizationViewModel.FinishWaypointViewModel();
 
 			// Advance to next iteration
 			simTimer.Start();
@@ -367,8 +367,8 @@ namespace Overwatch
 		/// <param name="e"></param>
 		void Communication_StatusReceived(object sender, EventArgs e)
 		{
-			// If localisation is already finished, do control, else, set flag and pause execution
-			if (localiseFinished)
+			// If localization is already finished, do control, else, set flag and pause execution
+			if (localizeFinished)
 				MatlabDoControl();
 			else
 				statusReceived = true;
@@ -385,7 +385,7 @@ namespace Overwatch
 			if (Mode == AutoControlMode.SystemSimulation)
 				MatlabDoSimulate();
 			else 
-				MatlabDoLocalise();
+				MatlabDoLocalize();
 		}
 		#endregion
 	}

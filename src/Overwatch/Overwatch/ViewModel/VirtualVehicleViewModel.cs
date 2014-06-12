@@ -5,9 +5,9 @@ using System.Windows.Media.Imaging;
 namespace Overwatch.ViewModel
 {
 	/// <summary>
-	/// Provides binding data for displaying a miniature vehicle in the visualisation canvas, using data from an instance of the Vehicle class.
+	/// Provides binding data for displaying a miniature vehicle in the visualization canvas, using data from an instance of the Vehicle class.
 	/// </summary>
-	public class VirtualVehicleViewModel : ObservableObject, IVisualisationObject
+	public class VirtualVehicleViewModel : ObservableObject, IVisualizationObject
 	{
 		#region Data members
 		// Base vehicle
@@ -33,7 +33,7 @@ namespace Overwatch.ViewModel
 		/// Constructs an instance of the VirtualVehicleViewModel class, requiring a base vehicle and vehicle image.
 		/// </summary>
 		/// <param name="vehicle">The base vehicle.</param>
-		/// <param name="bitmap">The bitmap image to display in the visualisation canvas.</param>
+		/// <param name="bitmap">The bitmap image to display in the visualization canvas.</param>
 		public VirtualVehicleViewModel(Vehicle vehicle, Uri bitmap)
 		{
 			Data.MainViewModel.VehicleViewModel.PropertyChanged += VehicleViewModel_PropertyChanged;

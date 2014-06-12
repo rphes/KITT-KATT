@@ -8,7 +8,8 @@
 \begin{document}
 
 \chapter{System overview}
-Since our design has resulted in quite an extensive system, it would seem fitting to first consider it as a whole, beforing diving into the individual components themselves. To this end, an overview of the system, including the various data flows between its components and sub-components, is given in \ref{fig:system-overview}.
+\label{ch:system-overview}
+Since our design has resulted in quite an extensive system, it would seem fitting to first consider it as a whole, beforing diving into the individual components themselves. To this end, an overview of the system, including the various data flows between its components and sub-components, is given in Figure~\ref{fig:system-overview}.
 
 \begin{figure}[H]
 	\centering
@@ -28,8 +29,8 @@ Since KITT does not house the computation power to localize itself and we need t
 	\label{fig:system-overview-process}
 \end{figure}
 
-Overwatch-MATLAB (or \texttt{MATLAB}), being the third and last component of this overview, is a collection of \texttt{MATLAB} classes, functions and scripts, which is used by the GUI to perform localization and control of KITT. The GUI will first have \texttt{MATLAB} perform localization (using KITT's audio beacon and a series of microphones as the second means of communication), after which it will update certain state variables (like sensor data) retrieved from KITT over Bluetooth, that shall then be used in conjunction with the computed location to determine the route KITT will have to drive to get to the designated waypoint. This route information is finally mapped to two PWM values, the steering and drive excitation, which are sent to KITT by the GUI.
-This process will run indefinitely while KITT is being controlled and is schematically depicted by figure \ref{fig:system-overview-process}.
+Overwatch-MATLAB (or \texttt{MATLAB}), being the third and last component of this overview, is a collection of \texttt{MATLAB} classes, functions and scripts, which is used by the GUI to perform localization and control of KITT. The GUI will first have \texttt{MATLAB} perform localization (using KITT's audio beacon and a series of microphones as the second means of communication), after which it will update certain state variables (like sensor data) retrieved from KITT over Bluetooth, that shall then be used in conjunction with the computed location to determine the route KITT will have to drive to get to the designated waypoint. This can happen only after the status variables are received from KITT \emph{and} the localization is finished. This route information is finally mapped to two PWM values, the steering and drive excitation, which are sent to KITT by the GUI.
+This process will run indefinitely while KITT is being controlled and is schematically depicted by Figure~\ref{fig:system-overview-process}.
 
 In the next chapters, each of the previously described subsystems will be considered individually.
 

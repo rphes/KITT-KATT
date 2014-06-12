@@ -1,9 +1,9 @@
 ﻿namespace Overwatch
 {
 	/// <summary>
-	/// Provides a bare minimum to which objects to be placed in the visualisation canvas should comply.
+	/// Provides a bare minimum to which objects to be placed in the visualization canvas should comply.
 	/// </summary>
-	public interface IVisualisationObject
+	public interface IVisualizationObject
 	{
 		#region Data members
 		/// <summary>
