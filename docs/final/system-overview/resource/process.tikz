@@ -1,9 +1,10 @@
 \begin{tikzpicture}[node distance = 5cm, auto]
 	% Nodes
 	\node [rectangle] (control) {Calculate route and control vehicle};
+	\node [above= 0.5cm of control, myblue] {Synchronize};
 	\node [rectangle, above left of=control, xshift=1cm] (loc) {Perform localization};
 	\node [rectangle, above right of=control, xshift=-1cm] (status) {Request status};	
-	\coordinate [above= 0.75cm of control] (c1);
+	\coordinate [above= 0.5cm of control] (c1);
 	\coordinate [below= 0.75cm of control] (c2);
 	\coordinate [left= 0.75cm of loc] (c3);
 	\coordinate [right= 0.75cm of status] (c4);
