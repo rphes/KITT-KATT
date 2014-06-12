@@ -92,7 +92,7 @@ classdef Wrapper < handle
             CurrentAngle = Self.ang.DetermineAngle(Self.currentLocation);
             
             % Process route
-            [CurrentDistance, ReferenceAngle] = Self.route.DetermineRoute(Self.currentLocation, CurrentAngle, waypoint, [sensor_r sensor_r]);
+            [CurrentDistance, ReferenceAngle] = Self.route.DetermineRoute(Self.currentLocation, CurrentAngle, waypoint, [sensor_l sensor_r]);
             
             % Call controllers
             ReferenceDistance = 0;

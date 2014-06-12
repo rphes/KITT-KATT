@@ -28,9 +28,11 @@ global tdoaSimLocation
 tdoaSimLocation = [0; 0];
 
 % Obstacles
+global obstacles
 obstacles = Obstacles([
-    3 3 1
+    3 3.5 1
 ]);
+obstacles.PrepareDraw();
 
 % Waypoints
 Waypoints = [[5; 7] [1; 3] [6; 6]];

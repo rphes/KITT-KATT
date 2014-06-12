@@ -7,7 +7,7 @@ function y = pa_wavrecord(FirstChannel, LastChannel, NumberSamples, Fs, UselessA
     % Get random piece of data
     global paWavSimTic
     global RecordData
-    Measurement = 5;
+    Measurement = 10;
     Data = RecordData{Measurement};    
     SampleDelay = round(Fs*toc(paWavSimTic));
     

@@ -31,14 +31,16 @@ CarReference = [cos(debugReferenceAngle); sin(debugReferenceAngle)];
 % plot([loc_x loc_x+CarDirection(1)],[loc_y loc_y+CarDirection(2)],'-r');
 % plot([loc_x loc_x+CarReference(1)],[loc_y loc_y+CarReference(2)],'-b');
 % plot(waypoint(1), waypoint(2), 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'blue', 'MarkerEdgeColor', 'blue');
+% % global obstacles
+% % obstacles.Draw();
 % hold off;
 
-% xlabel 'x (m)';
-% ylabel 'y (m)';
-% xlim([-1 8]);
-% ylim([-1 8]);
-% title 'Field';
-% grid on;
+xlabel 'x (m)';
+ylabel 'y (m)';
+xlim([-1 8]);
+ylim([-1 8]);
+title 'Field';
+grid on;
 
 clc;
 display 'DEBUG INFO';

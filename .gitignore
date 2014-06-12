@@ -254,3 +254,6 @@ pip-log.txt
 #Matlab shit
 *.asv
 src/Overwatch-MATLAB/dmatrix.mat
+
+# Merge original files
+*.orig
