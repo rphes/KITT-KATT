@@ -53,7 +53,7 @@
 \section{Introduction}
 At this point we assume certain things to be known; the current distance to the next waypoint, KITT's current angle and KITT's ideal angle. A system must be designed which controls KITT in a way that the distance to the next waypoint reduces to zero. In other words, KITT needs to be controlled to the next waypoint.
 
-To achieve this seemingly easy task, we invented a method which we call \textit{reduction of dimensionality}. Controlling KITT to a given position can be seen as a two-dimensional problem. Consider KITT a black box, then the inputs are given by the driving and steering excitation, and the output by the current position. One could create a model of the whole system. However, this model would be non-linear and therefore hard to handle. A better approach seemed to divide the complex two-dimensional problem into two less complicated one-dimensional problems; \textbf{(1)}, controlling KITT's angle in a way that KITT drives a specified trajectory and \textbf{(2)}, controller KITT's speed in a way that KITT stops at the specified target. This concept is shown in Figure~\ref{fig:ctrl-reduction}.
+To achieve this seemingly easy task, we invented a method which we call \textit{reduction of dimensionality}. Controlling KITT to a given position can be seen as a two-dimensional problem. Consider KITT a black box, then the inputs are given by the driving and steering excitation, and the output by the current position. One could create a model of the whole system. However, this model would be non-linear and therefore hard to handle. A better approach seemed to divide the complex two-dimensional problem into two less complicated one-dimensional problems; \textbf{(1)}, controller KITT's speed in a way that KITT stops at the specified target and \textbf{(2)}, controlling KITT's angle in a way that KITT drives a specified trajectory. This concept is shown in Figure~\ref{fig:ctrl-reduction}.
 
 \begin{figure}
 	\centering
@@ -98,6 +98,8 @@ To achieve this seemingly easy task, we invented a method which we call \textit{
 	\caption{Reduction of dimensionality}
 	\label{fig:ctrl-reduction}
 \end{figure}
+
+This chapter will discuss the implementation of our so-called \textit{reduction of dimensionality}. First, the distance controller
 
 
 % One of the two mid-term challenges was for KITT to drive autonomously at a wall and stop as close as possible in front of that wall. We designed a controller to accomplish this seemingly easy task. The controller consists of two components; the \textit{observer} and the \textit{compensator}. We will explain both of these in further detail.
