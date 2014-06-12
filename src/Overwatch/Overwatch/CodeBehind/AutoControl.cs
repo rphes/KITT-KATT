@@ -38,6 +38,7 @@ namespace Overwatch
 		// State variables
 		bool localiseFinished = false;
 		bool statusReceived = false;
+		bool driving = false;
 
 		Timer simTimer;
 		#endregion
@@ -85,8 +86,8 @@ namespace Overwatch
 				if (simTimer != null && simTimer.Enabled)
 					simTimer.Stop();
 				Data.MainViewModel.VisualisationViewModel.Trace = null;
+				driving = false;
 			}
-
 			return ObservationEnabled;
 		}
 
@@ -234,8 +235,11 @@ namespace Overwatch
 			Data.MainViewModel.VisualisationViewModel.UpdateTrace();
 
 			// Command KITT if necessary
-			if (Mode == AutoControlMode.Reality && ControlEnabled)
+			if (Mode == AutoControlMode.Reality && ControlEnabled && (Vehicle.BatteryVoltage > 19 || driving))
+			{
 				Data.MainViewModel.CommunicationViewModel.Communication.DoDrive(PWMSteer, PWMDrive);
+				driving = true;
+			}
 
 			if (Mode == AutoControlMode.Reality)
 			{

@@ -54,6 +54,11 @@
 									<Path Stroke="{Binding Path=Stroke}" Data="{Binding Path=PathData}" StrokeThickness="2" Canvas.ZIndex="0"/>
 								</Grid>
 							</DataTemplate>
+							<DataTemplate DataType="{x:Type vm:MicrophoneViewModel}">
+								<Grid>
+									<Ellipse Fill="{Binding Path=Stroke}" Width="20" Height="20"/>
+								</Grid>
+							</DataTemplate>
 						</ItemsControl.Resources>
 						<ItemsControl.ItemContainerStyle>
 							<Style>

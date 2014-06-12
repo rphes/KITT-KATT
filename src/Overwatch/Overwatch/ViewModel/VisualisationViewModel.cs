@@ -41,6 +41,8 @@ namespace Overwatch.ViewModel
 
 		public TraceViewModel Trace;
 
+		public List<MicrophoneViewModel> Microphones;
+
 		public List<IVisualisationObject> Objects
 		{
 			get
@@ -51,6 +53,7 @@ namespace Overwatch.ViewModel
 				List<IVisualisationObject> l = new List<IVisualisationObject>(WaypointViewModels);
 				l.Add(KITT);
 				if (Trace != null) l.Add(Trace);
+				if (Microphones != null) l.AddRange(Microphones);
 				return l;
 			}
 		}
@@ -71,6 +74,14 @@ namespace Overwatch.ViewModel
 
 			PlaceObject((double)2 / 7 * Data.CanvasWidth, (1 - (double)5 / 7) * Data.CanvasHeight);
 			PlaceObject((double)6 / 7 * Data.CanvasWidth, (1 - (double)6 / 7) * Data.CanvasHeight);
+
+			Microphones = new List<MicrophoneViewModel>();
+			Microphones.Add(new MicrophoneViewModel() { X = 0 * Data.CanvasWidth - 10, Y = 1 * Data.CanvasHeight -10});
+			Microphones.Add(new MicrophoneViewModel() { X = 0 * Data.CanvasWidth - 10, Y = 0 -10 });
+			Microphones.Add(new MicrophoneViewModel() { X = 1 * Data.CanvasWidth - 10, Y = 1 * Data.CanvasHeight - 10 });
+			Microphones.Add(new MicrophoneViewModel() { X = 1 * Data.CanvasWidth - 10, Y = 0 * Data.CanvasHeight - 10 });
+			Microphones.Add(new MicrophoneViewModel() { X = 0.5 * Data.CanvasWidth - 10, Y = 1 * Data.CanvasHeight -10 });
+			RaisePropertyChanged("Objects");
 		}
 		#endregion
 
