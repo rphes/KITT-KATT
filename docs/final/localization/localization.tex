@@ -35,19 +35,37 @@ Code word & \texttt{4eeb428c} & \\
 
 \section{Channel estimation}
 \label{sec:loc_est_h}
-Channel estimation is done using matrix inversion as described in the manual \cite{epo4-manual}. The matched filter approach was also tested but proved to be less reliable because the obtained channel responses had no clear peak. Summarizing from \cite{epo4-manual} and \cite{epo4-del7}, a signal $y[n]=x[n]*h[n]$ is received at every microphone. The deconvolution method then approximates $h[n]$ as $\vec{\hat{h}}=(\mat{X}^T\mat{X})^{-1}\mat{X}^T\vec{y}$. Because the sent signal is known, the matrix $X^\dagger=(\mat{X}^T\mat{X})^{-1}\mat{X}^T$ can be calculated beforehand. In practical implementations, this matrix must be computed for every microphone because the response of each matrix will vary slightly. Therefore, the matrix was computed for every microphone using recordings of the training sequence which were recorded at \SI{1}{cm} distance from that microphone.
+Channel estimation is done using matrix inversion as described in the manual \cite{epo4-manual}. The matched filter approach was also tested but proved to be less reliable because the obtained channel responses had no clear peak. Summarizing from \cite{epo4-manual} and \cite{epo4-del7}, a signal $y[n]=x[n]*h[n]$ is received at every microphone. The deconvolution method then approximates $h[n]$ as $\vec{\hat{h}}=(\mat{X}^T\mat{X})^{-1}\mat{X}^T\vec{y}$, where $\mat{X}$ is a matrix in Toeplitz form as outlined in \cite{epo4-manual}. Because the sent signal is known, the matrix $\mat{X}^\dagger=(\mat{X}^T\mat{X})^{-1}\mat{X}^T$ can be calculated beforehand. In practical implementations, this matrix must be computed for every microphone because the response of each matrix will vary slightly. Therefore, the matrix was computed for every microphone using recordings of the training sequence which were recorded at \SI{1}{cm} distance from that microphone.
 
-The size of the resulting matrix $\mat{X}^\dagger$ is dependent on the amount of microphones used, the estimated length of the channel, $L$, and the length of the \SI{1}{cm} recordings, $N_x$. Because the number of microphones is fixed at \num{5}, the calculation of $\mat{X}^\dagger$ can only be sped up by reducing the size (and thus accuracy) of the deconvolution matrix and accuracy increased by increasing $L$ and $N_x$. This is a complicated trade-off that must be made and tailored to the hardware used. The used settings for KITT are $L=3500$ and $N_x=500$, which allow good deconvolution properties, but leaves $\mat{X}^\dagger$ to be calculated within a few minutes on the provided PC.
+The size of the resulting matrix $\mat{X}^\dagger$ is dependent on the amount of microphones used, the estimated length of the channel, $L$, and the length of the \SI{1}{cm} recordings, $N_x$. Because the number of microphones is fixed at \num{5}, the calculation of $\mat{X}^\dagger$ can only be sped up by reducing the size (and thus accuracy) of the deconvolution matrix and accuracy increased by increasing $L$ and $N_x$. This is a complicated trade-off that must be made and tailored to the hardware used. The used settings for KITT are $L=3500$ and $N_x=500$, which allow good deconvolution properties, but leaves $\mat{X}^\dagger$ to be calculated within a few minutes on modern computers.
 
-As an improvement to the inversion algorithm presented in \cite{epo4-manual}, an SVD filter was implemented to increase the accuracy of the deconvolution matrix. 
+A potential problem to the matrix inversion necessary for the calculation of $\mat{X}^\dagger$ is when the matrix $\mat{A}=\mat{X}^T\mat{X}$ is singular or ill-conditioned. When $\mat{A}$ is singular (one of the singular values $\sigma_i=0$), $\mat{X}^\dagger$ cannot be calculated and when $\mat{A}$ is ill-conditioned\footnote{A matrix is said to be ill-conditioned if the ratio of the largest singular value to the smallest singular value (the condition number) $c=\frac{\sigma_1}{\sigma_n}$ is `large'. Though `large' is not well-defined itself, it can be shown \cite{epo4-manual} that an error $\epsilon$ in the input to a linear system is potentially magnified by the condition number in the solution.} the resulting matrix is dominated by small singular values. In order to overcome this potential problem, a singular value filter was built into the matrix inversion algorithm. The filter works as follows:
+Let $\mat{A}=\mat{U}\mat{\Sigma}\mat{V}^T$ be the singular value decomposition of $\mat{A}=\mat{X}^T\mat{X}$ where $\mat{A}$ is of size $m\times n$. Then $\mat{\Sigma}$ is a diagonal matrix of size $m \times n$ containing the singular values $\sigma_1, \sigma_2, ..., \sigma_n$ of $\mat{A}$ on the diagonal in descending order. For any $\sigma_i<t$, where $t$ is some threshold, the left inverse of $\mat{A}$ is approximated by $\mat{\hat{A}}^\dagger=\mat{\hat{V}}\mat{\hat{\Sigma}}^{-1}\mat{\hat{U}}^T$ where $\mat{\hat{V}}$, $\mat{\hat{\Sigma}}$ and $\mat{\hat{U}}$ are their respective matrices as defined before with the $i^\text{th}$ columns removed. 
 
+The choice of threshold $t$ is non-trivial and was determined using trial and error on measurement data. We discovered that the `optimal' threshold was slightly different for each microphone and even each measurement. An important insight is that when the threshold is set too high, e.g. too large singular values are filtered, some calculated channel responses are no longer identifiable as such. Specifically, the result would be a modulated sine wave. In order to prevent this from happening during the demonstration, the thresholds for each microphone channel were chosen somewhat conservative, see table \ref{tab:loc_svd_value}. \textbf{CHECK THE VALUES IN THE TABLE!!}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ c | c}
+\hline \hline
+Microphone channel & Singular value threshold $t$ \\
+\hline
+1 & \num{0.1} \\ 
+2 & \num{0.2} \\
+3 & \num{0.5} \\
+4 & \num{0.2} \\
+5 & \num{0.015} \\
+\end{tabular}
+\caption{Singular value threshold for each microphone channel}
+\label{tab:loc_svd_value}
+\end{table}
 
 \section{Peak detection}
 \label{sec:loc_peak}
 
 \section{Localization algorithm}
 \label{sec:loc_alg}
-TDOA localization works by measuring the difference in arrival times of a transmitted signal to the different microphones. Because the propagation speed of sound is assumed to be known or can be approximated, these time differences can be converted to range differences. 
+TDOA localization works by measuring the difference in arrival times of a transmitted signal to the different microphones. Because the propagation speed of sound is assumed to be known or can be approximated, these time differences can be converted to range differences. Dit verhaal is te algemeen. We moeten meer specifiek zijn 
 
 \section{Future work}
 \label{sec:loc_future}
