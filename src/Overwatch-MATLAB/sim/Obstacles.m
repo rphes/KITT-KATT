@@ -74,8 +74,6 @@ classdef Obstacles < handle
             Resolution = 100;
             ThetaData = (2*pi/Resolution):(2*pi/Resolution):(2*pi);
             
-            hold on;
-            
             for i = 1:size(Self.obstacles, 1)
                 % Current obstacle
                 Obstacle = Self.obstacles(i, :);
@@ -105,6 +103,8 @@ classdef Obstacles < handle
         
         % Draw
         function Draw(Self)
+            hold on;
+            
             for i = 1:length(Self.XDatas)
                 plot(Self.XDatas{i}, Self.YDatas{i}, 'green');
             end

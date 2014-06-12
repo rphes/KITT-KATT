@@ -28,11 +28,11 @@ global tdoaSimLocation
 tdoaSimLocation = [0; 0];
 
 % Obstacles
-global obstacles
-obstacles = Obstacles([
+global obsts
+obsts = Obstacles([
     3 3.5 1
 ]);
-obstacles.PrepareDraw();
+obsts.PrepareDraw();
 
 % Waypoints
 Waypoints = [[5; 7] [1; 3] [6; 6]];
@@ -56,7 +56,7 @@ while toc(SimTimer) < SimTime
     waypoint = Waypoints(:,CurrentWaypoint);
     
     % Get sensor data
-    SensorData = Model.GenerateSensorData(obstacles);
+    SensorData = Model.GenerateSensorData(obsts);
     sensor_l = SensorData(1);
     sensor_r = SensorData(2);
     
