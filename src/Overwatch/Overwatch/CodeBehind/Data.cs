@@ -18,7 +18,7 @@ namespace Overwatch
 		// Field
 		public static int CanvasWidth { get { return 700; } }
 		public static int CanvasHeight { get { return 700; } }
-		public static int FieldSize { get { return 10; } } //10 meter
+		public static int FieldSize { get { return 7; } } //10 meter
 		#endregion
 
 		#region Global parameters

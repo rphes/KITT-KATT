@@ -1,5 +1,4 @@
 ﻿using Overwatch.Tools;
-using System.Windows;
 using System.Windows.Media;
 
 namespace Overwatch.ViewModel
@@ -19,45 +18,77 @@ namespace Overwatch.ViewModel
 		}
 
 		// Position
-		public double X 
+		public double X
 		{
-			get { return Waypoint.X; }
+			get { return Waypoint.X * Data.CanvasWidth; }
 			set
 			{
-				Waypoint.X = value;
+				Waypoint.X = value / Data.CanvasWidth;
 				RaisePropertyChanged("X");
 			}
 		}
 
 		public double Y
 		{
-			get { return Waypoint.Y; }
+			get { return (1 - Waypoint.Y) * Data.CanvasHeight; }
 			set
 			{
-				Waypoint.Y = value;
+				Waypoint.Y = 1 - (value / Data.CanvasHeight);
 				RaisePropertyChanged("Y");
 			}
 		}
 
-		// Appearance
-		private Brush _stroke;
-		public Brush Stroke
+		public bool Visited
 		{
-			get { return _stroke; }
+			get { return Waypoint.Visited; }
 			set
 			{
-				_stroke = value;
-				RaisePropertyChanged("Stroke");
+				Waypoint.Visited = value;
+				RaisePropertyChanged("Fill");
 			}
 		}
-		private Brush _fill;
-		public Brush Fill
+
+		public bool Current
 		{
-			get { return _fill; }
+			get { return Waypoint.Current; }
 			set
 			{
-				_fill = value;
+				Waypoint.Current = value;
 				RaisePropertyChanged("Fill");
+			}
+		}
+
+		public int Index { get; set; }
+
+		public string IndexString
+		{
+			get
+			{
+				if (Visited)
+				{
+					Index = -1;
+					return "";
+				}
+				else
+					return Index.ToString();
+			}
+		}
+
+		// Appearance
+		public Brush Stroke
+		{
+			get { return Brushes.Black; }
+		}
+		public Brush Fill
+		{
+			get
+			{
+				if (Current)
+					return Brushes.Yellow;
+				else if (!Visited)
+					return Brushes.Red;
+				else
+					return Brushes.LightGreen;
 			}
 		}
 		private string _pathData;
@@ -78,9 +109,8 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		public WaypointViewModel()
 		{
-			Stroke = Brushes.Black;
-			Fill = Brushes.Blue;
-			PathData = "m 0 0 v 100 L 30 80 L 0 60";
+			Visited = false;
+			PathData = "m 0 0 v -50 L 15 -40 L 0 -30";
 		}
 
 		/// <summary>
@@ -88,7 +118,8 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		/// <param name="x">The position of the waypoint on the X-axis</param>
 		/// <param name="y">The position of the waypoint on the Y-axis</param>
-		public WaypointViewModel(double x, double y) : this()
+		public WaypointViewModel(double x, double y)
+			: this()
 		{
 			X = x;
 			Y = y;

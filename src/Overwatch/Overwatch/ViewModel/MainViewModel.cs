@@ -22,10 +22,10 @@
 				VehicleViewModel = new VehicleViewModel();
 			if (CommunicationViewModel == null)
 				CommunicationViewModel = new CommunicationViewModel();
-			if (VisualisationViewModel == null)
-				VisualisationViewModel = new VisualisationViewModel();
 			if (AutoControlViewModel == null)
 				AutoControlViewModel = new AutoControlViewModel();
+			if (VisualisationViewModel == null)
+				VisualisationViewModel = new VisualisationViewModel();
 		}
 		#endregion
 	}

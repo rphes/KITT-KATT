@@ -18,15 +18,16 @@ namespace Overwatch
 		public event MatlabNotFoundEventHandler MatlabNotFound;
 
 		public bool Running { get { return Instance != null; } }
-		public bool Visible {
-			get 
+		public bool Visible
+		{
+			get
 			{
 				bool b = false;
 				try
 				{
 					b = Running && Instance.Visible == 1;
 				}
-				catch(Exception exc)
+				catch (Exception exc)
 				{
 					if ((exc as System.Reflection.TargetException) != null)
 					{
@@ -40,7 +41,7 @@ namespace Overwatch
 						System.Diagnostics.Debug.WriteLine(exc.ToString());
 				}
 				return b;
-			} 
+			}
 		}
 		#endregion
 
@@ -116,7 +117,7 @@ namespace Overwatch
 
 			try
 			{
-				Instance.PutWorkspaceData(name, "base", data);
+				Instance.PutWorkspaceData(name, workspace, data);
 			}
 			catch (Exception exc)
 			{
@@ -153,7 +154,6 @@ namespace Overwatch
 			try
 			{
 				Instance.GetWorkspaceData(name, workspace, out obj);
-				System.Diagnostics.Debug.WriteLine(obj.ToString());
 			}
 			catch (Exception exc)
 			{

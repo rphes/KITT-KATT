@@ -23,26 +23,41 @@
 					<ItemsControl ItemsSource="{Binding Path=Objects}">
 						<ItemsControl.ItemsPanel>
 							<ItemsPanelTemplate>
-								<Canvas Width="{Binding Path=CanvasWidth}" Height="{Binding Path=CanvasHeight}" tools:MouseBehaviour.MouseUpCommand="{Binding MouseUp}" Background="White">
-									<Canvas.LayoutTransform>
-										<ScaleTransform ScaleX="1" ScaleY="-1"/>
-									</Canvas.LayoutTransform>
+								<Canvas 
+									Width="{Binding Path=CanvasWidth}" 
+									Height="{Binding Path=CanvasHeight}" 
+									tools:MouseBehaviour.MouseLeftButtonUpCommand="{Binding MouseLeftButtonUp}" 
+									tools:MouseBehaviour.MouseRightButtonUpCommand="{Binding MouseRightButtonUp}" 
+									tools:MouseBehaviour.MouseWheelCommand="{Binding MouseWheel}" 
+									Background="White">
 								</Canvas>
 							</ItemsPanelTemplate>
 						</ItemsControl.ItemsPanel>
 						<ItemsControl.Resources>
 							<DataTemplate DataType="{x:Type vm:VirtualVehicleViewModel}">
-								<Image Source="{Binding Path=Bitmap}" Width="{Binding Path=Width}" Height="{Binding Path=Height}" IsHitTestVisible="False" RenderTransformOrigin="0.5,0.5">
+								<Image Source="{Binding Path=Bitmap}" Width="{Binding Path=Width}" Height="{Binding Path=Height}" IsHitTestVisible="False" RenderTransformOrigin="0.5,0.5" Canvas.ZIndex="2">
 									<Image.RenderTransform>
 										<TransformGroup>
 											<RotateTransform x:Name="r"  Angle="{Binding Path=Angle}"/>
-											<ScaleTransform x:Name="t" ScaleY="-1"/>
 										</TransformGroup>
 									</Image.RenderTransform>
 								</Image>
 							</DataTemplate>
 							<DataTemplate DataType="{x:Type vm:WaypointViewModel}">
-								<Path Stroke="{Binding Path=Stroke}" Fill="{Binding Path=Fill}" Data="{Binding Path=PathData}" StrokeThickness="4"/>
+								<Grid>
+									<Path Stroke="{Binding Path=Stroke}" Fill="{Binding Path=Fill}" Data="{Binding Path=PathData}" StrokeThickness="4" Canvas.ZIndex="1"/>
+									<Label Content="{Binding Path=IndexString}"/>
+								</Grid>
+							</DataTemplate>
+							<DataTemplate DataType="{x:Type vm:TraceViewModel}">
+								<Grid>
+									<Path Stroke="{Binding Path=Stroke}" Data="{Binding Path=PathData}" StrokeThickness="2" Canvas.ZIndex="0"/>
+								</Grid>
+							</DataTemplate>
+							<DataTemplate DataType="{x:Type vm:MicrophoneViewModel}">
+								<Grid>
+									<Ellipse Fill="{Binding Path=Stroke}" Width="20" Height="20"/>
+								</Grid>
 							</DataTemplate>
 						</ItemsControl.Resources>
 						<ItemsControl.ItemContainerStyle>
@@ -112,13 +127,17 @@
 					<RowDefinition />
 					<RowDefinition />
 					<RowDefinition />
+					<RowDefinition />
 				</Grid.RowDefinitions>
+					
+				<ComboBox Name="ComboBox_AutoControlMode" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" ItemsSource="{Binding Path=Modes}" SelectedIndex="{Binding Path=SelectedModeIndex}" IsEnabled="{Binding Path=CanSelectMode}"/>
+				<Label Content="Mode:" Grid.Row="0" HorizontalAlignment="Left" Target="{Binding ElementName=ComboBox_AutoControlMode}"/>
 				
-				<ComboBox Name="ComboBox_PlaceObject" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" ItemsSource="{Binding PlaceableObjects}" SelectedItem="{Binding SelectedObject}"/>
-				<Label Content="Place object:" Grid.Row="0" HorizontalAlignment="Left" Target="{Binding ElementName=ComboBox_PlaceObject}"/>
+				<ComboBox Name="ComboBox_PlaceObject" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" ItemsSource="{Binding Path=PlaceableObjects}" SelectedItem="{Binding Path=SelectedObject}"/>
+				<Label Content="Place object:" Grid.Row="1" HorizontalAlignment="Left" Target="{Binding ElementName=ComboBox_PlaceObject}"/>
 				
-				<Button Name="Button_Observation" Grid.Row="1" Content="{Binding Path=ObservationButtonString}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Height="22" Margin="10" Command="{Binding Path=ToggleObservation}"/>
-				<Button Name="Button_AutoControl" Grid.Row="2" Content="{Binding Path=ControlButtonString}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Height="22" Command="{Binding Path=ToggleControl}"/>
+				<Button Name="Button_Observation" Grid.Row="2" Content="{Binding Path=ObservationButtonString}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Height="22" Margin="10" Command="{Binding Path=ToggleObservation}"/>
+				<Button Name="Button_AutoControl" Grid.Row="3" Content="{Binding Path=ControlButtonString}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Height="22" Command="{Binding Path=ToggleControl}"/>
 			</Grid>
 		</GroupBox>
 	</Grid>

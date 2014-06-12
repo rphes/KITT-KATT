@@ -21,15 +21,25 @@ namespace Overwatch.ViewModel
 		{
 			get { return AutoControl.ObservationEnabled; }
 		}
-		
+
 		public string ObservationButtonString
 		{
 			get
 			{
-				if (ObservationEnabled)
-					return "Disable Observation";
+				if ((AutoControlMode)SelectedModeIndex == AutoControlMode.Reality)
+				{
+					if (ObservationEnabled)
+						return "Disable Observation";
+					else
+						return "Enable Observation";
+				}
 				else
-					return "Enable Observation";
+				{
+					if (ObservationEnabled)
+						return "Disable Simulation";
+					else
+						return "Enable Simulation";
+				}
 			}
 		}
 
@@ -49,8 +59,15 @@ namespace Overwatch.ViewModel
 			}
 		}
 
-		public string[] PlaceableObjects { get { return new string[] { "Waypoint", "Charger" }; } }
+		public string[] Modes { get { return new string[] { "Reality", "System Simulation", "Localisation Simulation" }; } }
+		public int SelectedModeIndex
+		{
+			get { return (int)AutoControl.Mode; }
+			set { AutoControl.Mode = (AutoControlMode)value; }
+		}
+		public bool CanSelectMode { get { return !ControlEnabled; } }
 
+		public string[] PlaceableObjects { get { return new string[] { "Waypoint" }; } }
 		public string SelectedObject { get; set; }
 		#endregion
 
@@ -60,6 +77,7 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		public AutoControlViewModel()
 		{
+			SelectedModeIndex = 0;
 			SelectedObject = "Waypoint";
 		}
 		#endregion
@@ -70,8 +88,10 @@ namespace Overwatch.ViewModel
 		/// </summary>
 		public void Toggle()
 		{
-			ToggleObservationExecute();
-			ToggleControlExecute();
+			if (CanToggleObservationExecute())
+				ToggleObservationExecute();
+			if (CanToggleControlExecute())
+				ToggleControlExecute();
 		}
 		#endregion
 
@@ -95,9 +115,12 @@ namespace Overwatch.ViewModel
 
 			RaisePropertyChanged("ObservationButtonString");
 
-			return Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen &&
+			return (Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen || 
+				(AutoControlMode)SelectedModeIndex == AutoControlMode.SystemSimulation ||
+				(AutoControlMode)SelectedModeIndex == AutoControlMode.LocalisationSimulation) &&
 				AutoControl.Matlab.Running &&
-				Data.SrcDirectory != null;
+				Data.SrcDirectory != null &&
+				!(AutoControl.QueuedWaypoints.Count == 0 && !AutoControl.ObservationEnabled);
 		}
 
 		public ICommand ToggleObservation { get { return new RelayCommand(ToggleObservationExecute, CanToggleObservationExecute); } }
@@ -112,16 +135,19 @@ namespace Overwatch.ViewModel
 			// Toggle autonomous control and send initial status request if enabled
 			AutoControl.ToggleControl();
 			RaisePropertyChanged("ControlButtonString");
+			RaisePropertyChanged("CanSelectMode");
 		}
 
 		bool CanToggleControlExecute()
 		{
-			if ((!AutoControl.Matlab.Visible || !ObservationEnabled) && ObservationEnabled)
+			if ((!AutoControl.Matlab.Visible || !ObservationEnabled) && ObservationEnabled && AutoControl.Mode == AutoControlMode.Reality)
+			{
 				AutoControl.ToggleControl();
+				RaisePropertyChanged("ControlButtonString");
+				RaisePropertyChanged("CanSelectMode");
+			}
 
-			RaisePropertyChanged("ControlButtonString");
-
-			return ObservationEnabled;
+			return ObservationEnabled && AutoControl.Mode == AutoControlMode.Reality;
 		}
 
 		public ICommand ToggleControl { get { return new RelayCommand(ToggleControlExecute, CanToggleControlExecute); } }

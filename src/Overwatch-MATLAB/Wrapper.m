@@ -1,4 +1,5 @@
-classdef Wrapper
+
+classdef Wrapper < handle
     properties (SetAccess = private)
         % TDOA determination
         tdoa
@@ -20,16 +21,16 @@ classdef Wrapper
         
         % Locations
         currentLocation
-        microphoneLocations
+        doObserve
     end
     
     methods
         % Constructor
-        function Self = Wrapper(InitialLocation, InitialAngle, MicrophoneLocations)
+        function Self = Wrapper(InitialLocation, InitialAngle)
             % Initialize all objects
             Self.tdoa = TDOA();
             Self.route = Route();
-            Self.loc = Loc();
+            Self.loc = Loc(InitialLocation);
             Self.ang = Angle(InitialLocation, InitialAngle);
             Self.ssSteer = SsSteer();
             Self.ssDrive = SsDrive();
@@ -37,52 +38,65 @@ classdef Wrapper
             Self.mapDrive = MapDrive();
             
             Self.currentLocation = InitialLocation;
-            Self.microphoneLocations = MicrophoneLocations;
+            
+            Self.tdoa.RetrieveDeconvolutionMatrix();
         end
         
         % Looping function
-        function Ret = Loop(Self)
+        function Ret = LoopLocalize(Self)
+            % Debug timing
+            global debugLocalizeTime
+            debugLocalizeTime = tic;
+        
+            % Global variables to set
+            global loc_x
+            global loc_y
+            
+            % Localization
+            [Self.currentLocation, Self.doObserve] = Self.loc.Localize(Self.tdoa.GetRangeDiffMatrix());
+            
+            % Set
+            loc_x = Self.currentLocation(1);
+            loc_y = Self.currentLocation(2);
+            
+            % Debug timing
+            debugLocalizeTime = toc(debugLocalizeTime);
+            
+            Ret = 1;
+        end
+        
+        % Looping function for control
+        function Ret = LoopControl(Self)
+            % Debug timing
+            global debugControlTime
+            debugControlTime = tic;
+        
             % Global variables set by C#
             global sensor_l
             global sensor_r
             global battery
-            global waypoints
+            global waypoint
             
             % Global variables to set
-            global loc_x
-            global loc_y
             global angle
             global speed
             global pwm_steer
             global pwm_drive
             
-            % Handle TDOA determination
-            DoObserve = 0;
-            
-            if ~Self.tdoa.IsBusy()
-                Self.tdoa.Start();
-            else
-                if Self.tdoa.IsReady()
-                    % Get new location
-                    Self.currentLocation = Self.loc.Localize(TDOA.GetRangeDiffMatrix());
-                    
-                    % A new location is determined, we can observe
-                    DoObserve = 1;
-                    
-                    % Start new TDOA determination
-                    Self.tdoa.Start();
-                end
+            % Fix waypoint orientation
+            if size(waypoint, 2) > 1
+                waypoint = waypoint';
             end
             
             % Determine current angle
             CurrentAngle = Self.ang.DetermineAngle(Self.currentLocation);
             
             % Process route
-            [CurrentDistance, ReferenceAngle] = Self.route.DetermineRoute(Self.currentLocation, CurrentAngle, waypoints, [sensor_l sensor_r]);
+            [CurrentDistance, ReferenceAngle] = Self.route.DetermineRoute(Self.currentLocation, CurrentAngle, waypoint, [sensor_r sensor_r]);
             
             % Call controllers
             ReferenceDistance = 0;
-            [DriveExcitation, ~, ~] = Self.ssDrive.Iterate(CurrentDistance, ReferenceDistance, battery, DoObserve);
+            [DriveExcitation, CurrentSpeed, ~] = Self.ssDrive.Iterate(CurrentDistance, ReferenceDistance, battery, Self.doObserve);
             [SteerExcitation] = Self.ssSteer.Iterate(CurrentAngle, ReferenceAngle, battery);
             
             % Excitation mapping
@@ -90,12 +104,15 @@ classdef Wrapper
             [PWMSteer] = Self.mapSteer.Map(SteerExcitation);
             
             % Set
-            loc_x = Self.currentLocation(1);
-            loc_y = Self.currentLocation(2);
             angle = CurrentAngle;
             speed = CurrentSpeed;
             pwm_steer = PWMSteer;
             pwm_drive = PWMDrive;
+            
+            % Debug timing
+            debugControlTime = toc(debugControlTime);
+            
+            debug;
             
             Ret = 1;
             

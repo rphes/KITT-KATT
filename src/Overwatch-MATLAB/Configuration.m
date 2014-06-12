@@ -1,36 +1,55 @@
 classdef Configuration
     properties (Constant = true)
+        SteeringFeedbackCoefficient = -.7;
+        % Note: combines with MapSteerFOC. -1 is the deepest pole!
         
-        % Field dimensions
-        XMax = 10;
-        YMax = 10;
-        
-        SteeringFeedbackCoefficient = -1;
-        
-        DriveCarWeight = 0.16;
-        DriveRollingCoefficient = 0.08;
+        FieldWidth = 7;
+        FieldHeight = 7;
+ 
+        DriveCalculatePoles = 0;
         DriveObserverPoles = -4.1;
-        DriveCompensatorPoles = -1.3;
+        DriveCompensatorPoles = -1; % -0.5
         
-        DriveMapBound = 0.02;
-        DriveMapFOC = 3.23;
-        DriveMapTOC = -0.0114;
-        DriveMapOffset = 6;
+        MapDriveBound = 0.02; % 0.01
+        MapDriveFOC = 3.2; % 3.25
+        MapDriveTOC = -0.015;
+        MapDriveOffset = 6;
         
         CarTurningRadius = 0.65;
         CarLength = 0.35;
+        CarWidth = 0.20;
         
-        % Measured turning radius: 0.65 m
-        % Measured length of car: 0.35 m
-        % PWM range: 100 (utmost left) - 150 (middle) - 200 (utmost right)
-        % PWM deviation: 50
+        MapSteerBound = 0;
+        MapSteerFOC = 50/asin(0.35/0.65);
+        MapSteerTOC = 0;
         
-        SteerMapBound = 0;
-        SteerMapFOC = 50/asin(0.35/0.65);
-        SteerMapTOC = 0;
+        RouteThreshold = 1.5;
+        RouteClearance = 1.5;
+        RouteOverflowTime = 2;
+        RouteOvershootThreshold = 0.2;
         
-        % Plot stuff
         PlotTimeFrame = 15;
+        
+        TDOARecordingTime = 1.5/8;
+        TDOAImpulsePeakThreshold = 0.99;
+        TDOASoundSpeed = 348;
+        TDOATrimPeakFrequency = 8;
+        TDOATrimSkipCoefficient = 0.85;
+        TDOATrimPeakThreshold = 0.7;
+        TDOATrimClearanceBefore = 500;
+        TDOATrimClearanceAfter = 2000; % 2000
+        
+        LocMics = [
+            0   0;
+            0   7;
+            7   7;
+            7   0;
+            3.5 0
+        ]
+        LocPredictionFilterOrder = 1
+        LocPredictionFilterMaximumDevitation = 1e99
+        
+        Fs = 48000;
     end
 end
 

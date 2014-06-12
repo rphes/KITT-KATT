@@ -1,0 +1,39 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+
+\chapter{Contactless Charging}
+In this chapter it will be brievely described how a contactless charging system was designed and built. The main idea to achieve this was by transmitting energy through space by using magnetic fields. In this system one coil is a transmittor of magnetic energy and the second coil a receiver. For this a fluctuating magnetic field had to be  created. Nevertheless, both the energy source and the capacitor bank of the car use direct current. This problems thus translates into designing a DC/DC converter. Furthermore, this problem can be dissected in designing a DC/AC-inverter, a transformer and a AC/DC-rectier. This charging system can be seen in Figure~\ref{fig:contactless_charging}. \\ 
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{resource/contactless_charging.png}
+	\end{center}
+	\caption{The wireless charging system with supercapacitors}
+	\label{fig:contactless_charging}
+\end{figure}
+
+
+The  DC/AC-inverter  was made by making use of power electronics. This  DC/AC-inverter converts a DC signal into a square wave signal. This signal had to be in solid resonance, for this we used a frequency of \SI{100}{kHz}. For optimal charging speed we used a duty cycle of 40\%. After this signal is transmitted to the secondary coil it is then converted to a DC signal by using diodes. The parameters of the coils are displayed in Table~\ref{tab:charing-coil-params-calc}.
+\begin{table}[H]
+	\centering
+	\caption{Calculated coil parameters}
+	\label{tab:charging-coil-params-calc}
+	\begin{tabular}{c c c c c}
+		\hline\hline
+		Coil & Windings & Inductance & Outer diameter & Total wire length \\
+		\hline
+		Primary & \num{30} & \SI{101.6}{\micro H} & \SI{188}{mm} & \SI{11.2}{m} \\
+		Secondary & \num{15} & \SI{22}{\micro H} & \SI{119}{mm} & \SI{4}{m} \\
+		\hline
+		\end{tabular}
+\end{table} 
+
+This system gave us a maximum charging speed of 3:45 minutes and met all the requirements.
+
+\end{document}
