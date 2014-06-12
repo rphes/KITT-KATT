@@ -53,9 +53,9 @@
 \section{Introduction}
 At this point we assume certain things to be known; the current distance to the next waypoint, KITT's current angle and KITT's ideal angle. A system must be designed which controls KITT in a way that the distance to the next waypoint reduces to zero. In other words, KITT needs to be controlled to the next waypoint.
 
-To achieve this seemingly easy task, we invented a method which we call \textit{reduction of dimensionality}. Controlling KITT to a given position can be seen as a two-dimensional problem. Consider KITT a black box, then the inputs are given by the driving and steering excitation, and the output by the current position. One could create a model of the whole system. However, this model would be non-linear and therefore hard to handle. A better approach seemed to divide the complex two-dimensional problem into two less complicated one-dimensional problems; \textbf{(1)}, controller KITT's speed in a way that KITT stops at the specified target and \textbf{(2)}, controlling KITT's angle in a way that KITT drives a specified trajectory. This concept is shown in Figure~\ref{fig:ctrl-reduction}.
+To achieve this seemingly easy task, we invented a method which we call \textit{reduction of dimensionality}. Controlling KITT to a given position can be seen as a two-dimensional problem. Consider KITT a black box, then the inputs are given by the driving and steering excitation, and the output by the current position. One could create a model of the whole system. However, this model would be non-linear and therefore hard to control. A better approach seemed to divide the complex two-dimensional problem into two less complicated one-dimensional problems; \textbf{(1)}, controlling KITT's speed in a way that KITT stops at the specified target and \textbf{(2)}, controlling KITT's angle in a way that KITT drives a specified trajectory. This concept is shown in Figure~\ref{fig:ctrl-reduction}. \textbf{(1)} and \textbf{(2)} are carried out by respectively the distance and angle controller. 
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[node distance=5cm, auto]
 		% Nodes
@@ -99,15 +99,17 @@ To achieve this seemingly easy task, we invented a method which we call \textit{
 	\label{fig:ctrl-reduction}
 \end{figure}
 
-This chapter will discuss the implementation of our so-called \textit{reduction of dimensionality}. First, the distance controller
+This chapter will discuss the implementation of our so-called \textit{reduction of dimensionality}. First, the design of the distance and angle controller will be discussed. Second, the mapping of the controllers' output to a by KITT understandable signal will be explained. At last, the actual implementation will be talked through.
 
 
-% One of the two mid-term challenges was for KITT to drive autonomously at a wall and stop as close as possible in front of that wall. We designed a controller to accomplish this seemingly easy task. The controller consists of two components; the \textit{observer} and the \textit{compensator}. We will explain both of these in further detail.
+\section{Distance controller}
+\subsection{Introduction}
+The distance controller takes care of KITT autonomously driving to and then stopping at a specified distance. Note that the distance controller does \textit{not} control the direction in which KITT is driving. The whole controller is based on the following assumption; speeding up KITT to a constant speed will cause the distance to its target to decrease linearly. The controller consists of two components; the \textit{observer} and the \textit{compensator}. We will explain both of these in further detail.
 
-\section{Observer design}
-The controller must have knowledge of the current position and velocity of the car to be able to successfully control KITT. Generalizing, we can say that the controller must have knowledge of the current \textit{state} of KITT. The observer's task is to keep track of the internal state of KITT. This internal state consists of a linear combination of all generalized positions and momenta of respectively all inductive and capacitive components of the system. If we consider KITT a state-space model, we can define inputs and an output. Figure~\ref{fig:ctrl-model} shows this line of thought.
+\subsection{Observer design}
+The distance controller must have knowledge of the current distance and speed of the car to be able to successfully control KITT. Generalizing, we can say that the controller must have knowledge of the current \textit{state} of KITT. The observer's task is to keep track of the internal state. This internal state consists of a linear combination of all generalized positions and momenta of respectively all inductive and capacitive components of the system. If we consider KITT a state-space model, we can define inputs and an output. Figure~\ref{fig:ctrl-model} shows this line of thought.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[node distance = 7cm, auto]
 		% Nodes
@@ -116,13 +118,17 @@ The controller must have knowledge of the current position and velocity of the c
 		\node [right of=kitt] (output) {};
 		% Edges
 		\path [line, ->] (input) -- node [anchor=center,fill=white] {$\vec{u}$ (drive excitation signal)} (kitt);
-		\path [line, ->] (kitt) -- node [anchor=center,fill=white] {$\vec{y}$ (position)} (output);
+		\path [line, ->] (kitt) -- node [anchor=center,fill=white] {$\vec{y}$ (distance)} (output);
 	\end{tikzpicture}
 	\caption{State-space based model of KITT}
 	\label{fig:ctrl-model}
 \end{figure}
 
-The observer observes the input $\vec{u}$ and output $\vec{y}$ and determines, by doing that, the internal state $\vec{x}$ of KITT. We modeled the observer by making also use of a state-space representation. Logically thinking, the observer must obey to two constraints; \textbf{(1)}, the internal state $\hat{\vec{x}}$ of the observer must converge to $\vec{x}$ if $t \to \infty$ and \textbf{(2)}, if $\hat{\vec{x}} = \vec{x}$, then the states should not diverge. To fulfill \textbf{(1)}, we introduce a feedback matrix $\mat{L}$ which will be discussed later, and to satisfy \textbf{(2)}, the system, input-, output- and feed-through matrix of the observer should match KITT's.
+The observer observes the input $\vec{u}$ and output $\vec{y}$ and determines, by doing that, the internal state $\vec{x}$ of KITT. We modeled the observer by making also use of a state-space representation. Figure~\ref{fig:ctrl-model-observer} shows the state-space model of the observer and its interconnection to KITT's state-space model. Logically thinking, the observer must obey two constraints; \textbf{(1)}, the internal state $\hat{\vec{x}}$ of the observer must converge to $\vec{x}$ if $t \to \infty$ and \textbf{(2)}, if $\hat{\vec{x}} = \vec{x}$, then the states should not diverge. To fulfill \textbf{(1)}, we introduce a feedback matrix $\mat{L}$, and to satisfy \textbf{(2)}, the system, input-, output- and feed-through matrix of the observer should match KITT's. We can show constraint \textbf{(1)} by evaluating the error $\vec{e}=\vec{x}-\hat{\vec{x}}$. Inspecting $\dot{\vec{e}}$ yields 
+\begin{equation} \label{eq:ctrl-err}
+	\dot{\vec{e}}=\dot{\vec{x}} - \dot{\hat{\vec{x}}} = \mat{A} (\vec{x} - \hat{\vec{x}}) - \mat{L} (\vec{y} - \hat{\vec{y}}) = (\mat{A} - \mat{L} \mat{C}) (\vec{x} - \hat{\vec{x}}) = (\mat{A} - \mat{L}\mat{C}) \vec{e}.
+\end{equation}
+Equation~\ref{eq:ctrl-err} tells us the the system is observable, if $\mat{A} - \mat{L}\mat{C}$ renders $\vec{e}$ asymptotically stable. This defines the observability of the pair $(\mat{C}, \mat{A})$. The duality between observability and controllability tells us that $(\mat{C},\mat{A})$ is observable if $(\tr{\mat{A}},\tr{\mat{C}})$ is controllable.
 
 \begin{figure}[H]
 	\centering
@@ -147,14 +153,6 @@ The observer observes the input $\vec{u}$ and output $\vec{y}$ and determines, b
 	\label{fig:ctrl-model-observer}
 \end{figure}
 
-We can show constraint \textbf{(1)} by evaluating the error $\vec{e}=\vec{x}-\hat{\vec{x}}$.
-
-\begin{equation} \label{eq:ctrl-err}
-	\dot{\vec{e}}=\dot{\vec{x}} - \dot{\hat{\vec{x}}} = \mat{A} (\vec{x} - \hat{\vec{x}}) - \mat{L} (\vec{y} - \hat{\vec{y}}) = (\mat{A} - \mat{L} \mat{C}) (\vec{x} - \hat{\vec{x}}) = (\mat{A} - \mat{L}\mat{C}) \vec{e}
-\end{equation}
-
-Equation~\ref{eq:ctrl-err} tells us the the system is observable, if $\mat{A} - \mat{L}\mat{C}$ renders $\vec{e}$ asymptotically stable. This defines the observability of the pair $(\mat{C}, \mat{A})$. The duality between observability and controllability tells us that $(\mat{C},\mat{A})$ is observable if $(\tr{\mat{A}},\tr{\mat{C}})$ is controllable. Therefore, we used the MATLAB command \texttt{place(A',C',poles)'} to calculate $\mat{L}$.
-
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[node distance=2cm]
@@ -177,7 +175,7 @@ Equation~\ref{eq:ctrl-err} tells us the the system is observable, if $\mat{A} - 
 	\label{fig:ctrl-bond}
 \end{figure}
 
-The only thing which remained was determining the system matrices $\mat{A}$, $\mat{B}$, $\mat{C}$ and $\mat{D}$ and  the feedback matrix $\mat{L}$. For the system matrices, we did two things; \textbf{(1)}, we used the \textit{System Identification Toolbox} of MATLAB in combination with experiments to fit a state-space model, and \textbf{(2)}, we used the bond graph depicted in Figure~\ref{fig:ctrl-bond} to derive the state-space model shown in Equation~\ref{eq:ctrl-bond-model}. Here the battery voltage is denoted by $v$, the inductance of the motor by $L$, the internal resistance of the motor by $R$, the motor constant by $k_t$, the gear constant by $k_g$, the radius of the wheels by $r_w$, the mass of KITT by $m$, the rolling resistance coefficient by $\rho$ and $k_t k_g/r_w$ by $r$ and a generalized notation of position and velocity is used. The observability matrix $\mathcal{O}$ and the controllability matrix $\mathcal{C}$ revealed that the system was both observable and controllable. Eventually we let $L \to 0$ to reduce the order of the model to two.
+The only thing which remains is determining the system matrices $\mat{A}$, $\mat{B}$, $\mat{C}$ and $\mat{D}$ and  the feedback matrix $\mat{L}$. For the system matrices, we use the bond graph depicted in Figure~\ref{fig:ctrl-bond} to derive the state-space model shown in Equation~\ref{eq:ctrl-bond-model}. Here the battery voltage is denoted by $v$, the inductance of the motor by $L$, the internal resistance of the motor by $R$, the motor constant by $k_t$, the gear constant by $k_g$, the radius of the wheels by $r_w$, the mass of KITT by $m$, the rolling resistance coefficient by $\rho$ and $k_t k_g/r_w$ by $r$. A generalized notation of the position and the velocity is used. The observability matrix $\mathcal{O}$ and the controllability matrix $\mathcal{C}$ revealed that the system is both observable and controllable.
 
 \begin{align} \label{eq:ctrl-bond-model}
 	\dot{\vec{x}} = \frac{d}{dt}
@@ -212,78 +210,41 @@ The only thing which remained was determining the system matrices $\mat{A}$, $\m
 	\end{bmatrix}
 \end{align}
 
-To determine the poles, we defined a measure of performance for each pair of poles. We let the observer track measurement data which consisted of the drive excitation $\vec{u}$ and distances measured $\vec{y}$. The observer produced the tracked distance $\mat{C} \hat{\vec{x}} = \hat{\vec{y}}$. If the time interval between $\vec{y}_n$ and $\vec{y}_{n+1}$ is $T$, then we defined the error $e_i$ of experiment $i$ to be
+To determine the poles introduced by the feedback matrix $\mat{L}$, denoted by $\lambda_1$ and $\lambda_2$, we defined a measure of performance for each pair of poles $(\lambda_1,\lambda_2)$. We let the observer track measurement data which consisted of the drive excitation $\vec{u}$ and distances measured $\vec{y}$. The observer produced the tracked distance $\mat{C} \hat{\vec{x}} = \hat{\vec{y}}$. Let the time interval between $\vec{y}_n$ and $\vec{y}_{n+1}$ is $\Delta T$. We defined the error $e_i$ of experiment $i$ to be
 
-\begin{equation}
-	e_i = \int_{0}^{t_f} || \vec{y}(t) - \hat{\vec{y}}(t) || dt = \sum_{0}^{N} ||\vec{y}_n - \hat{\vec{y}_n} ||.
-\end{equation}
+\begin{equation*} \label{ctrl:err}
+	e_i = \int_{0}^{t_f} || \vec{y}(t) - \hat{\vec{y}}(t) || dt = \sum_{0}^{N} ||\vec{y}_n - \hat{\vec{y}}_n || \Delta T.
+\end{equation*}
 
-Figure~\ref{fig:ctrl-poles} shows the error of many different pairs of poles. It is clear that there exists a maximum where $\lambda_1=\lambda_2$. This is obvious, because using Jordan's normal form, one can show that when $\lambda_1 = \lambda_2$, the response is critically damped. Also, $\lambda_1 = \lambda_2$ renders the system matrix non-diagonalizable, which explains the presence of the white line at every point where $\lambda_1=\lambda_2$. At last, the reason the maximum is not located at $(-\infty,-\infty)$, which corresponds with the highest convergence of the observer possible, is because we are also dealing with latency, meaning that $t_{n+1}-t_n>0$.  
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=.7\linewidth]{resource/pole-fitness.pdf}
+	\end{center}
+	\caption{Performance of different pairs of poles of the observer, lower is better}
+	\label{fig:ctrl-poles}
+\end{figure}
 
-\section{Compensator design}
-Lets go back to Figure~\ref{fig:ctrl-model} and say we actually know the internal state $\vec{x}$. System identification and modeling revealed that when $\vec{x}$ is of the form $\tr{(d,\dot{d})}$, where $d$ is the distance measured and $\dot{d}$ the velocity of KITT, $\mat{A}$, $\mat{B}$, $\mat{C}$ and $\mat{D}$ are of the form
+Figure~\ref{fig:ctrl-poles} shows the error of many different pairs of poles. It is clear that there exists a maximum where $\lambda_1=\lambda_2$. This is obvious, because using Jordan's normal form, one can show that when $\lambda_1 = \lambda_2>0$, 
+$\vec{e}$ is critically damped. Also, $\lambda_1 = \lambda_2$ renders the system matrix non-diagonalizable, which explains the presence of the white line at every point where $\lambda_1=\lambda_2$. At last, the reason the maximum is not located at $(-\infty,-\infty)$, which corresponds with the highest convergence of the observer possible, is because we are also dealing with latency, meaning that oscillations of $\vec{e}$ can be caused by poles too large.  
 
-\begin{equation}
-	\mat{A} = \begin{bmatrix}
-		0 & a_1 \\
-		0 & a_2
-	\end{bmatrix}, \mat{B} = \begin{bmatrix}
-		0 \\
-		b
-	\end{bmatrix}, \mat{C} = \begin{bmatrix}
-		1 & 0
-	\end{bmatrix}, \mat{D} = 0.
-\end{equation}
-
-Let us introduce the feedback law $\vec{u} = -\mat{K}(\vec{x}-\vec{x}_{ref})$. Rewriting the state-space model equations yields
+\subsection{Compensator design}
+Lets go back to Figure~\ref{fig:ctrl-model} and say we actually know the internal state $\vec{x}$. To derive a method to control our state-space model of KITT, we define a reference state $\vec{x}_{\text{ref}} = \tr{\left[ d_{\text{ref}},0,0 \right]}$. Let us now introduce the feedback law $\vec{u} = -\mat{K}(\vec{x}-\vec{x}_{\text{ref}})$. Rewriting the state-space model equations yields
 
 \begin{equation} \label{eq:ctrl-comp}
-	\dot{\vec{x}} = (\mat{A} - \mat{B} \mat{K}) \vec{x} + \mat{B} \mat{K} \vec{x}_{ref}.
+	\dot{\vec{x}} = (\mat{A} - \mat{B} \mat{K}) \vec{x} + \mat{B} \mat{K} \vec{x}_{\text{ref}}.
 \end{equation}
 
 
-Here $x_{ref}=\tr{(d_{ref},0)}$. If we argue that $\mat{A} - \mat{B} \mat{K}$ renders the system asymptotically stable, then rewriting Equation~\ref{eq:ctrl-comp} using $\dot{\vec{x}} \to 0$ when $t \to \infty$ yields
+If we argue that $\mat{A} - \mat{B} \mat{K}$ renders the system asymptotically stable, then rewriting Equation~\ref{eq:ctrl-comp} using $\dot{\vec{x}} \to 0$ when $t \to \infty$ yields
 
-\begin{equation} \label{eq:ctrl-comp-feedback}
-	(\mat{B} \mat{K} - \mat{A}) \vec{x} = \mat{B} \mat{K} \vec{x}_{ref} = 
-	\left( \begin{bmatrix}
-		0 \\
-		b
-	\end{bmatrix} \begin{bmatrix}
-		k_1 & k_2
-	\end{bmatrix} - \begin{bmatrix}
-		0 & a_1 \\
-		0 & a_2
-	\end{bmatrix} \right) \begin{bmatrix}
-		x_1 \\
-		x_2
-	\end{bmatrix} = \begin{bmatrix}
-		0 \\
-		b
-	\end{bmatrix} \begin{bmatrix}
-		k_1 & k_2
-	\end{bmatrix} \begin{bmatrix}
-		d_{ref} \\
-		0
-	\end{bmatrix}.
-\end{equation}
+\begin{align*}
+	(\mat{B} \mat{K} - \mat{A}) \vec{x} &= \mat{B} \mat{K} \vec{x}_{\text{ref}}.
+\end{align*}
 
-Further simplifying Equation~\ref{eq:ctrl-comp-feedback} yields
+Further simplifying using Equation~\ref{eq:ctrl-bond-model} yields $q_m = d_{\text{ref}}$ and $f_m = f_L = 0$. This means that the model shown in Figure~\ref{fig:ctrl-model} converges to a state where KITT is not moving at a specified distance $d_{\text{ref}}$. In other words, we specify the position at which KITT stops moving, which is exactly what we want. The only thing which remains, is determining the poles of $\mat{A} - \mat{B} \mat{K}$. We want KITT to stop at our specified position as fast as possible, without overshooting. Therefore, KITT must critically damped converge to a distance $d_{\text{ref}}$. If $\lambda_1$ and $\lambda_2$ are the eigenvalues of $\mat{A} - \mat{B} \mat{K}$, then $\lambda_1$ and $\lambda_2$ where $\lambda_1 = \lambda_2 = \lambda < 0$ must as negative as possible. The exact value of $\lambda$ depends on the latency we are dealing with. We adjusted these eigenvalues on-the-go to achieve an optimized result.
 
-\begin{equation} \label{eq:ctrl-comp-feedback2}
-	\begin{bmatrix}
-		 -x_2 a_1 \\
-		x_1 b k_1 + x_2 (b k_2 - a_2)
-	\end{bmatrix} = \begin{bmatrix}
-		0 \\
-		d_{ref} b k_1
-	\end{bmatrix}.
-\end{equation}
-
-Evaluating Equation~\ref{eq:ctrl-comp-feedback2} yields $x_1$ = $d_{ref}$ and $x_2=0$. This means that the model shown in Figure~\ref{fig:ctrl-model} converges to a state where KITT is not moving at a specified distance $d_{ref}$. In other words, we specify the position at which KITT stops moving. The only thing which remains, is determining the poles of $\mat{A} - \mat{B} \mat{K}$. We want KITT to stop at our specified position as fast as possible, without overshooting. Therefore, KITT must critically damped converge to a distance $d_{ref}$. If $\lambda_1$ and $\lambda_2$ are the eigenvalues of $\mat{A} - \mat{B} \mat{K}$, then $\lambda_1$ and $\lambda_2$ must be real and negative with $\lambda_1 - \lambda_2$ minimized. The exact value of $\lambda_1$ and $\lambda_2$ depends on the latency we are dealing with. We adjusted these eigenvalues on-the-go to achieve an optimized result.
-
-\section{Controller design}
-Putting together the observer and the compensator together yields the controller. This closed-loop system is depicted in Figure~\ref{fig:ctrl-controller}. Note that we discussed the design of the observer and compensator, as if they could be designed separately. This is exactly what the separation principle states. 
+\subsection{Distance controller design}
+Putting together the observer and the compensator together yields the whole distance controller which is able to control KITT to a specified distance $d_{\text{ref}}$. This closed-loop system is depicted in Figure~\ref{fig:ctrl-dist-controller}. Note that we discussed the design of the observer and compensator as if they could be designed separately. This is exactly what the separation principle states. 
 
 \begin{figure}[H]
 	\centering
@@ -297,26 +258,238 @@ Putting together the observer and the compensator together yields the controller
 		\path [line, ->] (kitt.east) -| node [anchor=center,fill=white,pos=1] {$\vec{y}$ (position)} (5,2) |- (controller.east);
 		\path [line, ->] (0,7) -- node [anchor=center,fill=white] {$\vec{x}_{ref}$ (reference state)} (controller.north);
 	\end{tikzpicture}
-	\caption{State-space based controller of KITT}
-	\label{fig:ctrl-controller}
+	\caption{State-space based distance controller of KITT}
+	\label{fig:ctrl-dist-controller}
 \end{figure}
 
-\section{Controller implementation}
-Now only three undiscussed aspects of the controller remain; correctly receiving the distance measured, converting the drive excitation signal to a PWM signal and solving the state-space model. We will briefly discuss these aspects in the following paragraphs.
+\section{Angle controller}
+\subsection{Introduction}
+The distance controller was based on the assumption that a constant speed of KITT causes a linearly decreasing distance. This can only be realized if KITT drives the predicted trajectory. It is the angle controller's reponsibility that KITT drives this trajectory by controlling the angle of the wheels. Before we can design an angle controller, we must find a relationship between the angle of the wheels and the rate at which KITT turns.
 
-The ultrasonic sensors we used, did not always output correct values. We therefore developed a discrete time finite impulse response low-pass filter and a so-called prediction filter to purify our signals. These filters are further discussed in Appendix~\ref{app:signal-filtering}. We also discussed a method to use the Doppler effect to increase measurement accuracy. This method is described in Appendix~\ref{app:doppler}.
+\subsection{Analysis}
+Let us consider a car with distance $L$ between both wheel axes. The rear axis of the car is located at $(0,0)$ and the front axis at $(L,0)$ in a way that they are parallel to each other. The front wheels are turned an angle $\phi$ relative to the positive $x$-axis. If the car drives at a speed $v$, then approximately, after a very small time $\Delta t$, the rear axis is located at $(v \cos{(\phi)}\Delta t,0)$ and the front axis at $(L+v \cos{(\phi)}\Delta t,v \sin{(\phi)}\Delta t)$. The situation is sketched in Figure~\ref{fig:ctrl-angle-sketch}.
 
-After some testing, we noticed that the motors did not do anything with a PWM signal ranging from $145$ to $155$. This motivated us to the following \textit{mapping}.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[node distance = 6.5cm, auto]
+		\draw [black] (0,-2) -- node [anchor=south, pos=0.52, rotate=90] {$y \rightarrow$} (0,3);
+		\draw [black] (-1.5,0) -- node [anchor=north, pos=0.15] {$x \rightarrow$} (5,0);
 
+		% Wheel axis
+		\draw [blue, line width=5pt, opacity=0.5] (0,-1) -- (0,1);
+		\draw [blue, line width=5pt, opacity=0.5] (3,-1) -- node [anchor=west,text=black,yshift=-0.25cm,opacity=1] {$L$} (3,1);
+
+		\draw [red] (3,0) -- node [anchor=north,pos=0.3,xshift=0.1cm] {$\phi$} (4,2);
+		\draw [red] (1,0) -- node [anchor=north,pos=0.3] {$\theta$} (4,2);
+
+		\draw [blue, line width=5pt] (0.45,0.83) -- (1.55,-0.83);
+		\draw [blue, line width=5pt] (3.45,2.83) -- (4.55,1.17);
+
+	\end{tikzpicture}
+	\caption{Approximation of KITT's movement}
+	\label{fig:ctrl-angle-sketch}
+\end{figure}
+
+The car was first parallel to the positive $x$-axis. Therefore, if $\theta$ denotes the angle of the car relative to the positive $x$-axis,
+\[
+	\theta(t) = 0
+\]
+and
+\[
+	\theta(t+\Delta t)=\arctan{\left(\frac{v \sin{(\phi)}\Delta t}{L}\right)}.
+\]
+We can now evaluate $\dot{\theta}(t)$ by evaluating the limit
+\begin{align}
+	\dot{\theta}(t) &= \lim_{\Delta t \rightarrow 0} \frac{\theta(t+\Delta t)-\theta(t)}{\Delta t} \nonumber \\
+	&= \lim_{\Delta t \rightarrow 0} \frac{\arctan{\left(\frac{v \sin{(\phi)}\Delta t}{L}\right)}}{\Delta t} \nonumber \\
+	&= \lim_{\Delta t \rightarrow 0} \left(1+\frac{v^2 \sin{(\phi)}\Delta t^2}{L^2}\right)^{-1}\frac{v \sin{(\phi)}}{L} \quad \quad \text{(L'H\^opital's rule)} \nonumber \\
+	&= \frac{v \sin{(\phi)}}{L}. \label{eq:steering-derivative}
+\end{align}
+Let us now consider a car whose trajectory is given by
+\begin{align*}
+	x(t) = R \cos{(\omega t)}, \\
+	y(t) = R \sin{(\omega t)}.
+\end{align*}
+Here $R$ denotes the turning radius of the car. Note that
+\[
+	x^2(t)+y^2(t)=R^2.
+\]
+Differentiating both sides yields
+\[
+	\frac{dy}{dx}=-\frac{x(t)}{y(t)}.
+\]
+The angle of the car is then given by
+\[
+	\theta(t) = \arctan{(dy/dx)} = -\arctan{(1/\tan{\omega t})}.
+\]
+Note that
+\[
+	\dot{\theta}(t) = \frac{-1}{1+1/\tan^2{(\omega t)}} \frac{-1}{\tan^2{(\omega t)}} \frac{\omega}{\cos^2{(\omega t)}} = \omega.
+\]
+The angle of the car relative to the positive $x$-axis in this trajectory is given by
+\[
+	\alpha(t) = \omega t.
+\]
+Note that
+\[
+	\dot{\alpha}(t) = \omega = \dot{\theta}(t).
+\]
+Let $s$ denote the distance moved by the car and $v$ the speed of the car. Then, for some $\Delta t$ and $\Delta \alpha$,
+\[
+	s = v \Delta t = R \Delta \alpha.
+\]
+Now note that
+\begin{align*}
+	\frac{\Delta \alpha}{\Delta t} &= \frac{v}{R} \\
+	&=\dot{\alpha}(t)=\dot{\theta}(t) = \frac{v \sin{(\phi)}}{L}.
+\end{align*}
+Therefore the relationship between the turning radius $R$, the length $L$ between KITT's wheel axes and the angle $\phi$ of KITT's wheels is given by
+\begin{equation} \label{eq:steering-radius}
+	R = \frac{L}{\sin{(\phi)}}.
+\end{equation}
+We used this relationship to define our space of possible trajectories.
+
+\subsection{Angle controller design}
+In the previous section we derived the relation
+\[
+	\dot{\theta}(\phi) = \frac{v \sin{(\phi)}}{L}
+\]
+which tells us how fast the angle of the car changes given an angle of its wheels. Let a feedback law be given by
+\[
+	\phi(\theta) = -k(\theta-\theta_{\text{ref}})
+\]
+where $k \in \mathbb{R}$, $k > 0$. Substituting yields the autonomous system
+\[
+	\dot{\theta}(\theta) = \frac{- v \sin{(k (\theta-\theta_{\text{ref}}))}}{L}.
+\]
+Solving $\dot{\theta}(\theta)=0$ yields for $v>0$ our critical point of interest $\theta=\theta_{\text{ref}}$. This means that we are able to control the angle in any direction, given the car is moving, which makes sense. To investigate the stability of this critical point, we consider the Lyapunov function
+\[
+	V(\theta) = \frac{1}{2}(\theta-\theta_{\text{ref}})^2
+\]
+which is positive definite for $\left\{\theta | -\frac{\pi}{k} < \theta-\theta_{\text{ref}} < \frac{\pi}{k}, \theta \neq \theta_{\text{ref}} \right\}$. Now,
+\begin{align*}
+	\dot{V}(\theta) = (\theta-\theta_{\text{ref}}) \frac{- v \sin{(k ({\theta-\theta_{\text{ref}}}))}}{L}
+\end{align*}
+which is negative semi-definite for $\left\{\theta | -\frac{\pi}{k} < \theta-\theta_{\text{ref}} < \frac{\pi}{k}\right\}$. Therefore, we can conclude our critical point of interest $\theta=\theta_{\text{ref}}$ is locally asymptotically stable. This means we can control KITT's angle to a given reference angle $\theta_{\text{ref}}$ within certain boundaries. This concludes our angle controller.
+
+\section{Mapping}
+Let us evaluate what we have now. We designed a controller, consisting of two sub controllers, which converts a distance to the current waypoint and a reference angle to a drive excitation and steering excitation. This is shown in Figure~\ref{fig:ctrl-chain}.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[node distance=5cm, auto]
+		% Nodes
+		\node [rectangle] (controller) {Controller} (0,0);
+
+		% Input edges
+		\path [line, ->, yshift=0.5cm] (-8,0) -- node [anchor=center,fill=white] {Current and reference distance} ([yshift=0.5cm]controller.west);
+		\path [line, ->, yshift=-0.5cm] (-8,0) -- node [anchor=center,fill=white] {Current and reference angle} ([yshift=-0.5cm]controller.west);
+
+		% Output edges
+		\path [line, ->, yshift=0.5cm] ([yshift=0.5cm]controller.east) -- node [anchor=center,fill=white] {Drive excitation} (8,0);
+		\path [line, ->, yshift=-0.5cm] ([yshift=-0.5cm]controller.east) -- node [anchor=center,fill=white] {Steering excitation} (8,0);
+	\end{tikzpicture}
+	\caption{Controller chain}
+	\label{fig:ctrl-chain}
+\end{figure}
+
+To control KITT, we have to translate these excitations to pulse width modulation (PWM) values. This translation is called \textit{mapping}. To create our mapping, we have to compare the meaning of the excitations to the meaning of the PWM values.
+
+The input of KITT's state-space model is the applied voltage. The voltage is directly proportional to the model's final speed. The drive PWM values also correspond to KITT's final speed. Therefore, we mapped the drive excitation proportional to the PWM drive value. The steering excitation is proportional to the angle of the wheels, which the steering PWM value is also proportional to. Consequently, we also mapping the steering excitation proportial to the steering PWM values. However, for KITT to do something, the PWM values must have an offset. Therefore, the generalized excitation mapping function is given by
 \begin{equation} \label{eq:ctrl-mapping}
-	\text{PWM}(u) = \left\{ \begin{array}{l l}
-		155 + a_1 u + a_2 u^3 & \quad \text{ if } u > u_t, \\
-		145 + a_1 u + a_2 u^3 & \quad \text{ if } u < -u_t.
+	\text{map}(u) = \left\{ \begin{array}{l l}
+		\mu + \alpha + \text{round}(c_1 u + c_2 u^3) & \quad \text{ if } u > \mu, \\
+		\mu - \alpha + \text{round}(c_1 u + c_2 u^3) & \quad \text{ if } u < \mu,
 	\end{array} \right.
 \end{equation}
+where the center PWM value is given by $\mu$, the offset by $\alpha$, the first-order coefficient (FOC) by $c_1$ and the third-order (TOC) coefficient by $c_2$. We introduced the TOC to keep control of unexpected large excitations. We would not want KITT to drive unexpectedly very fast. The controller chain with mapping is shown in Figure~\ref{fig:ctrl-chain-map}.
 
-Here the drive excitation is denoted by $u$, the first-order coefficient (FOC) by $a_1$, the third-order coefficient (TOC) by $a_2$ and the excitation threshold by $u_t$. The FOC mostly determines the relation between the excitation and PWM signal. To tweak for non-linear effects, we introduced the TOC. The combination of the latency and minimum driving speed of KITT determines the accuracy at which we can control KITT. Therefore, we can only correct for certain errors. This is the reason we introduced a excitation threshold; the threshold prevents oscillations due to latency.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[node distance=5cm, auto]
+		% Nodes
+		\node [rectangle] (controller) {Controller};
+		\draw (0,-3) node [rectangle] (map) {Mapping};
 
-Finally, we had to solve the designed state-space model. There are numerous numerical methods which are designed for solving differential equations. To improve the convergence of a numerical approximation, one can use two methods; \textbf{(1)}, use higher-order methods which inherently converge faster, or \textbf{(2)}, instead of evaluating one time step $T$, evaluate $N$ steps with time $T/N$. We used a fourth-order method of the Runge-Kutta family to approximate the state-space model. Appendix~\ref{app:num} gives a brief introduction to numerically solving KITT.
+		% Input edges
+		\path [line, ->, yshift=0.5cm] (-8,0) -- node [anchor=center,fill=white] {Current and reference distance} ([yshift=0.5cm]controller.west);
+		\path [line, ->, yshift=-0.5cm] (-8,0) -- node [anchor=center,fill=white] {Current and reference angle} ([yshift=-0.5cm]controller.west);
 
+		% Output edges
+		\path [line, yshift=0.5cm] ([yshift=0.5cm]controller.east) -- node [anchor=center,fill=white] {Drive excitation} (8,0);
+		\path [line, yshift=-0.5cm] ([yshift=-0.5cm]controller.east) -- node [anchor=center,fill=white,pos=0.6] {Steering excitation} (7,0);
+
+		% Input edges
+		\path [line, ->, yshift=0.5cm] (8,0) |- ([yshift=-0.5cm]map.east);
+		\path [line, ->, yshift=-0.5cm] (7,0) |- ([yshift=0.5cm]map.east);
+
+		% Output edges
+		\path [line, yshift=0.5cm, ->] ([yshift=0.5cm]map.west) -- node [anchor=center,fill=white] {Steering PWM value} (-8,-3);
+		\path [line, yshift=-0.5cm, ->] ([yshift=-0.5cm]map.west) -- node [anchor=center,fill=white] {Drive PWM value} (-8,-3);
+	\end{tikzpicture}
+	\caption{Controller chain with mapping}
+	\label{fig:ctrl-chain-map}
+\end{figure}
+
+\section{Implementation}
+We have now almost designed the complete controller chain. The only thing which remains is solving the distance controllers' state-space model. The solution of a state-space model is obtained by solving
+\begin{equation} \label{eq:ctrl-ext}
+	\dot{\vec{x}}=\mat{A}\vec{x}+\mat{B}\vec{u}.
+\end{equation}
+For now, we simplify this problem to
+\begin{equation*}
+	\dot{x}=f(x).
+\end{equation*}
+The solution of this simplified problem can easily be expanded to solve Equation~\ref{eq:ctrl-ext}. We can rewrite this equation using Taylor series expansion.
+\begin{align}
+\frac{dx}{dt} &= f(x), \nonumber \\
+x(t_0+\Delta t) &\approx
+x(t_0)+
+\left. \Delta t \frac{dx}{dt} \right|_{t=t_0}+
+\frac{\Delta t^2}{2}\left. \frac{d^2x}{dt^2} \right|_{t=t_0}+
+\dots, \nonumber \\
+x(t_0+\Delta t) &\approx
+x(t_0)+
+\Delta t \left(
+\left. \frac{dx}{dt} \right|_{t=t_0}+
+\frac{\Delta t}{2}\left. \frac{d^2x}{dt^2} \right|_{t=t_0}
+\right) + \dots \label{eq:ctrl-approx}
+\end{align}
+Evaluating the derivative at $t=t_0+\Delta t$ yields
+\begin{equation*}
+\left. \frac{dx}{dt} \right|_{t=t_0+\Delta t} =
+\left. \frac{dx}{dt} \right|_{t=t_0} +
+\Delta t \left. \frac{d^2x}{dt^2} \right|_{t=t_0} + \dots
+\end{equation*}
+One might notice that the second and third term of the right hand side of Equation~\ref{eq:ctrl-approx} can be written as a linear combination
+\begin{equation*}
+a \left. \frac{dx}{dt} \right|_{t=t_0} +
+b \left. \frac{dx}{dt} \right|_{t=t_0+\Delta t} =
+\left. \frac{dx}{dt} \right|_{t=t_0}+
+\frac{\Delta t}{2}\left. \frac{d^2x}{dt^2} \right|_{t=t_0},
+\end{equation*}
+\begin{equation*}
+\begin{bmatrix}
+1 & 1 \\
+0 & 1
+\end{bmatrix} \begin{bmatrix}
+a \\
+b
+\end{bmatrix} = \begin{bmatrix}
+1 \\
+1/2
+\end{bmatrix} \Leftrightarrow \begin{bmatrix}
+a \\
+b
+\end{bmatrix} = \begin{bmatrix}
+1/2 \\
+1/2
+\end{bmatrix}.
+\end{equation*}
+This indicates that the a second-order approximation is given by a linear combination of the slope at $t=t_0$ and $t=t_0+\Delta t$. However, there is one problem; $x(t_0 + \Delta t)$ is unknown, which makes it hard to evaluate the derivative at that point. This motivates us to do the following approximation to solve our controller's state-space models.
+\begin{align}
+\tilde{x} &= x(t_0)+ \Delta t \left. \frac{dx}{dt} \right|_{t=t_0}, \nonumber \\
+x(t_0+\Delta t) &\approx x(t_0) + \frac{\Delta t}{2}\left(\left. \frac{dx}{dt} \right|_{t=t_0} + f(\tilde{x})\right).\nonumber 
+\end{align}
+One can use the same reasoning to derive a fourth-order Runge-Kutta method, also known as \texttt{ode45}, which is commonly used technique to numerically solve differential equations.
 \end{document}
