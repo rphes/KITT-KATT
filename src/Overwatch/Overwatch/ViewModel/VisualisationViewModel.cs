@@ -72,9 +72,11 @@ namespace Overwatch.ViewModel
 			Data.MainViewModel.VehicleViewModel.Vehicle.Y = 0.3;
 			Data.MainViewModel.VehicleViewModel.Vehicle.Angle = 45;
 
+			// Add default waypoints
 			PlaceObject((double)2 / 7 * Data.CanvasWidth, (1 - (double)5 / 7) * Data.CanvasHeight);
 			PlaceObject((double)6 / 7 * Data.CanvasWidth, (1 - (double)6 / 7) * Data.CanvasHeight);
 
+			// Add microphones
 			Microphones = new List<MicrophoneViewModel>();
 			Microphones.Add(new MicrophoneViewModel() { X = 0 * Data.CanvasWidth - 10, Y = 1 * Data.CanvasHeight -10});
 			Microphones.Add(new MicrophoneViewModel() { X = 0 * Data.CanvasWidth - 10, Y = 0 -10 });

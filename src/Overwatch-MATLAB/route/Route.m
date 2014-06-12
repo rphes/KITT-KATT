@@ -11,7 +11,7 @@ classdef Route < handle
         end
         
         % Determine route
-        function [CurrentDistance, ReferenceAngle] = DetermineRoute(Self, CurrentLocation, CurrentAngle, Waypoint, SensorData)
+        function [CurrentDistance, ReferenceAngle] = DetermineRoute(Self, CurrentLocation, CurrentAngle, Waypoint, SensorData)            
             % If distance to target is greater than two times the turning
             % radius, use the fancy algorithm
             StraightDistance = norm(CurrentLocation - Waypoint);

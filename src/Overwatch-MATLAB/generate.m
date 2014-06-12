@@ -1,9 +1,8 @@
 addpath(genpath('./tdoa-toolkit'));
 global RecordData
+global DeconvolutionMatrix
 
-if exist('DeconvolutionMatrix') ~= 1
-	global DeconvolutionMatrix
-
+if (exist('DeconvolutionMatrix') ~= 1) || (isempty(DeconvolutionMatrix))
 	try
 		load('dmatrix.mat');   %I can't load this file
 	catch

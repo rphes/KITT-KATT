@@ -11,7 +11,7 @@ classdef TDOA < handle
         
         % Range difference matrix retrieval function
         function RangeDiffMatrix = GetRangeDiffMatrix(Self)
-            Data = pa_wavrecord(1, 5, Configuration.TDOARecordingTime*Configuration.Fs, Configuration.Fs);
+            Data = pa_wavrecord(1, 5, Configuration.TDOARecordingTime*Configuration.Fs, Configuration.Fs, 0, 'asio');
             
             TrimmedData = TrimData(Data,...
                 Configuration.Fs,...

@@ -1,4 +1,4 @@
-PaWavSim = 1;
+PaWavSim = 0;
 TDOASim = 0;
 generate;
 init;

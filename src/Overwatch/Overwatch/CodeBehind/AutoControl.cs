@@ -83,7 +83,7 @@ namespace Overwatch
 			{
 				Matlab.Hide();
 
-				if (simTimer != null && simTimer.Enabled)
+				if (simTimer != null)
 					simTimer.Stop();
 				Data.MainViewModel.VisualisationViewModel.Trace = null;
 				driving = false;
@@ -119,6 +119,7 @@ namespace Overwatch
 				System.Diagnostics.Debug.WriteLine(exc.ToString());
 			}
 
+			// Initialise some variables for simulation
 			if (Mode == AutoControlMode.SystemSimulation)
 			{
 				Matlab.PutVariable("PaWavSim", 0);
@@ -147,19 +148,21 @@ namespace Overwatch
 				System.Diagnostics.Debug.WriteLine(exc.ToString());
 			}
 
+			// Initialise delay timer to allow gui to update
+			simTimer = new Timer();
+			simTimer.Interval = 10;
+			simTimer.Elapsed += simTimer_Elapsed;
+
 			if (Mode == AutoControlMode.SystemSimulation || Mode == AutoControlMode.LocalisationSimulation)
 			{
-				simTimer = new Timer();
-				simTimer.Interval = 100;
-				simTimer.Elapsed += simTimer_Elapsed;
-
 				if (Mode == AutoControlMode.SystemSimulation)
 					MatlabDoSimulate();
 				else
 					MatlabDoLocalise();	
 			}
-			else
-				MatlabDoLocalise();
+			
+			// Perform localisation
+			MatlabDoLocalise();
 		}
 
 		/// <summary>
@@ -167,6 +170,7 @@ namespace Overwatch
 		/// </summary>
 		public void MatlabDoLocalise()
 		{
+			// Request status if not simulating
 			if (Mode == AutoControlMode.Reality)
 				Data.MainViewModel.CommunicationViewModel.Communication.RequestStatus();
 			else
@@ -245,14 +249,11 @@ namespace Overwatch
 			{
 				// Advance to the next waypoint if current is reached
 				double d = Math.Sqrt(Math.Pow(VehicleViewModel.X - CurrentWayPoint.X, 2) + Math.Pow(VehicleViewModel.Y - CurrentWayPoint.Y, 2));
-				if (d * Data.FieldSize < 0.2)
+				if (d * Data.FieldSize < 0.5)
 					Data.MainViewModel.VisualisationViewModel.FinishWaypointViewModel();
 			}
 
-			if (Mode == AutoControlMode.LocalisationSimulation)
-				simTimer.Start();
-			else
-				MatlabDoLocalise();
+			if (ObservationEnabled) simTimer.Start();
 		}
 
 		/// <summary>
@@ -389,7 +390,7 @@ namespace Overwatch
 			simTimer.Stop();
 			if (Mode == AutoControlMode.SystemSimulation)
 				MatlabDoSimulate();
-			else if (Mode == AutoControlMode.LocalisationSimulation)
+			else 
 				MatlabDoLocalise();
 		}
 		#endregion

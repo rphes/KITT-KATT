@@ -8,7 +8,7 @@ classdef Configuration
  
         DriveCalculatePoles = 0;
         DriveObserverPoles = -4.1;
-        DriveCompensatorPoles = -0.9; % -0.5
+        DriveCompensatorPoles = -1; % -0.5
         
         MapDriveBound = 0.02; % 0.01
         MapDriveFOC = 3.2; % 3.25
@@ -31,13 +31,13 @@ classdef Configuration
         PlotTimeFrame = 15;
         
         TDOARecordingTime = 1.5/8;
-        TDOAImpulsePeakThreshold = 0.85;
+        TDOAImpulsePeakThreshold = 0.99;
         TDOASoundSpeed = 348;
         TDOATrimPeakFrequency = 8;
         TDOATrimSkipCoefficient = 0.85;
         TDOATrimPeakThreshold = 0.7;
-        TDOATrimClearanceBefore = 1000;
-        TDOATrimClearanceAfter = 1500; % 2000
+        TDOATrimClearanceBefore = 500;
+        TDOATrimClearanceAfter = 2000; % 2000
         
         LocMics = [
             0   0;
@@ -47,7 +47,7 @@ classdef Configuration
             3.5 0
         ]
         LocPredictionFilterOrder = 1
-        LocPredictionFilterMaximumDevitation = 1
+        LocPredictionFilterMaximumDevitation = 1e99
         
         Fs = 48000;
     end

@@ -1,4 +1,4 @@
-function y = pa_wavrecord(FirstChannel, LastChannel, NumberSamples, Fs)
+function y = pa_wavrecord(FirstChannel, LastChannel, NumberSamples, Fs, UselessArgument1, UselessArgument2)
     % Assertions
     assert(FirstChannel == 1);
     assert(LastChannel == 5);
@@ -7,7 +7,8 @@ function y = pa_wavrecord(FirstChannel, LastChannel, NumberSamples, Fs)
     % Get random piece of data
     global paWavSimTic
     global RecordData
-    Data = RecordData{10};    
+    Measurement = 5;
+    Data = RecordData{Measurement};    
     SampleDelay = round(Fs*toc(paWavSimTic));
     
     IntervalBegin = SampleDelay;
