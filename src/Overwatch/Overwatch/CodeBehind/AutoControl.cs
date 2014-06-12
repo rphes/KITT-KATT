@@ -153,16 +153,10 @@ namespace Overwatch
 			simTimer.Interval = 10;
 			simTimer.Elapsed += simTimer_Elapsed;
 
-			if (Mode == AutoControlMode.SystemSimulation || Mode == AutoControlMode.LocalisationSimulation)
-			{
-				if (Mode == AutoControlMode.SystemSimulation)
-					MatlabDoSimulate();
-				else
-					MatlabDoLocalise();	
-			}
-			
-			// Perform localisation
-			MatlabDoLocalise();
+			if (Mode == AutoControlMode.SystemSimulation)
+				MatlabDoSimulate();
+			else
+				MatlabDoLocalise();	
 		}
 
 		/// <summary>
