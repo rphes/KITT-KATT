@@ -1,0 +1,12 @@
+\begin{tikzpicture}[node distance = 5cm, auto]
+	% Nodes
+	\node [rectangle] (control) {Calculate route and control vehicle};
+	\node [rectangle, above left of=control, xshift=1cm] (loc) {Perform localization};
+	\node [rectangle, above right of=control, xshift=-1cm] (status) {Request status};	
+	\coordinate [above= 0.75cm of control] (join1);
+	% Edges
+	\path [line, ->] (join1) -- node {} (control);
+	\path [line] (loc) |- node {} (join1);
+	\path [line] (status) |- node {} (join1);
+
+\end{tikzpicture}
