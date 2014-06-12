@@ -68,6 +68,9 @@ namespace Overwatch.ViewModel
 			Data.MainViewModel.VehicleViewModel.Vehicle.X = 0.7;
 			Data.MainViewModel.VehicleViewModel.Vehicle.Y = 0.3;
 			Data.MainViewModel.VehicleViewModel.Vehicle.Angle = 45;
+
+			PlaceObject((double)2 / 7 * Data.CanvasWidth, (1 - (double)5 / 7) * Data.CanvasHeight);
+			PlaceObject((double)6 / 7 * Data.CanvasWidth, (1 - (double)6 / 7) * Data.CanvasHeight);
 		}
 		#endregion
 
