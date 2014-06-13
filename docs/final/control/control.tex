@@ -38,22 +38,13 @@
 	>=triangle 90
 ]
 
-% Opbouw:
-% - Inleiding: weten afstand, gewenste afstand, hoek, gewenste hoek, hoe PWM waardes bepalen zodat bereikt wordt
-% reductie dimensionaliteit, twee onafhankelijk werkende systemen
-% - Controllers:
-% * Distance controller
-% * Angle controller
-% - Excitation mapping
-% - Solving the models
+
 \begin{document}
 
-\chapter{Controller}
+\chapter{Control}
 \label{ch:control}
 \section{Introduction}
-At this point we assume certain things to be known; the current distance to the next waypoint, KITT's current angle and KITT's ideal angle. A system must be designed which controls KITT in a way that the distance to the next waypoint reduces to zero. In other words, KITT needs to be controlled to the next waypoint.
-
-To achieve this seemingly easy task, we invented a method which we call \textit{reduction of dimensionality}. Controlling KITT to a given position can be seen as a two-dimensional problem. Consider KITT a black box, then the inputs are given by the driving and steering excitation, and the output by the current position. One could create a model of the whole system. However, this model would be non-linear and therefore hard to control. A better approach seemed to divide the complex two-dimensional problem into two less complicated one-dimensional problems; \textbf{(1)}, controlling KITT's speed in a way that KITT stops at the specified target and \textbf{(2)}, controlling KITT's angle in a way that KITT drives a specified trajectory. This concept is shown in Figure~\ref{fig:ctrl-reduction}. \textbf{(1)} and \textbf{(2)} are carried out by respectively the distance and angle controller. 
+This chapter will describe the methodology we used to control KITT's position, to drive KITT to a certain location on the playing field, also known as a waypoint. To achieve this seemingly easy task, we invented a method which we call \textit{reduction of dimensionality}. Controlling KITT to a given position can be seen as a two-dimensional problem. Consider KITT a black box, then the inputs are given by the driving and steering excitation, and the output by the current position. One could create a model of the whole system. However, this model would be non-linear and therefore hard to control. A better approach seemed to divide the complex two-dimensional problem into two less complicated one-dimensional problems; \textbf{(1)}, controlling KITT's speed in a way that KITT stops at the specified target and \textbf{(2)}, controlling KITT's angle in a way that KITT drives a specified trajectory. This concept is shown in Figure~\ref{fig:ctrl-reduction}. \textbf{(1)} and \textbf{(2)} are carried out by respectively the distance and angle controller. 
 
 \begin{figure}[H]
 	\centering
@@ -99,14 +90,178 @@ To achieve this seemingly easy task, we invented a method which we call \textit{
 	\label{fig:ctrl-reduction}
 \end{figure}
 
-This chapter will discuss the implementation of our so-called \textit{reduction of dimensionality}. First, the design of the distance and angle controller will be discussed. Second, the mapping of the controllers' output to a by KITT understandable signal will be explained. At last, the actual implementation will be talked through.
 
+ The whole methodology can be divided in two processes; \textit{routing} and \textit{controlling}. Routing takes care of planning the trajectory KITT is going to drive, and controlling manages KITT to drive, following the trajectory, to the waypoint. Figure~\ref{fig:ctrl-overview} shows a complete overview. This overview makes clear that the whole controller determines KITT's actuator excitation data given a current location, angle, which is the direction in which KITT drives, waypoint and sensor data.
 
-\section{Distance controller}
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=\linewidth]{resource/control-overview.pdf}
+	\end{center}
+	\caption{Overview of the control}
+	\label{fig:ctrl-overview}
+\end{figure}
+
+First, we will describe the way routing is done. Second, controlling will be given some thought. This chapter will be concluded with some final thoughts.
+
+\section{Routing}
 \subsection{Introduction}
+The \textit{router}, the submodule of control which takes care of the routing process, plans the trajectory KITT is going to drive. Essentially, the router determines in which direction KITT should drive, expressed as a reference angle, and the distance KITT still has to drive to the current waypoint, given the current waypoint, angle, location and sensor data. KITT should also not collide with obstacles. Therefore, the router must consider the sensor data when determining the reference angle and distance. A schematic representation is given in Figure~\ref{fig:ctrl-router}.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[node distance=5cm, auto]
+		% Nodes
+		\node [rectangle] (router) {Router} (0,0);
+
+		% Input edges
+		\path [line, ->, yshift=0.75cm] (-8,0) -- node [anchor=center,fill=white] {Sensor data} ([yshift=0.75cm]router.west);
+		\path [line, ->] (-8, 0) -- node [anchor=center,fill=white] {Current waypoint} (router.west);
+		\path [line, ->, yshift=-0.75cm] (-8,0) -- node [anchor=center,fill=white] {Current angle and location} ([yshift=-0.75cm]router.west);
+
+		% Output edges
+		\path [line, ->, yshift=0.5cm] ([yshift=0.5cm]router.east) -- node [anchor=center,fill=white] {Current distance} (8,0);
+		\path [line, ->, yshift=-0.5cm] ([yshift=-0.5cm]router.east) -- node [anchor=center,fill=white] {Reference angle} (8,0);
+	\end{tikzpicture}
+	\caption{Router}
+	\label{fig:ctrl-router}
+\end{figure}
+
+The router operates in two different modes; \textit{trajectory planning} and \textit{obstacle avoidance}. When the sensor data indicates that the path is clear, the router plans the trajectory to reach the current waypoint as fast as possible. However, when an obstacle is detected, the router fully focuses on avoiding that obstacle. This section will describe trajectory planning and obstacle avoidance seperately.
+
+\subsubsection{Trajectory planning}
+Let KITT's current location be denoted by $\vec{x}$, the current waypoint by $\vec{w}$ and KITT's current angle by $\theta$. The goal is to determine the angle $\theta_{\text{ref}}$ which KITT should have to drive as fast as possible to the current waypoint, and the distance $d$ left to this waypoint. The ideal direction in which KITT should drive, expressed as an unit direction vector $\vec{v}$, is given by
+\[
+	\vec{v} = \frac{\vec{w} - \vec{x}}{||\vec{w} - \vec{x}||}.
+\]
+The absolute angle difference between KITT's ideal angle and KITT's current angle $\theta_{\text{diff}}$ is then given by
+\[
+	\theta_{\text{diff}} = ||\theta_{\text{ref}} - \theta|| = \operatorname{arccos}\left( \tr{\begin{bmatrix}
+		\cos{(\theta)} & \sin{(\theta)}
+	\end{bmatrix}} \ast \vec{v} \right).
+\]
+To determine whether $\theta_{\text{ref}}$ has to be substracted or added to $\theta$ to determine the ideal reference angle, the sign of inner product of a vector orthogonal to the ideal direction vector of KITT and the actual direction vector of KITT is evaluated. Therefore, $\theta_{\text{ref}}$ is given by
+\[
+	\theta_{\text{ref}} = \theta + \operatorname{sign}\left(\left( \begin{bmatrix}
+		0 & 1 \\
+		-1 & 0
+	\end{bmatrix} \vec{v} \right) \ast \begin{bmatrix}
+		\cos{(\theta)} \\
+		\sin{(\theta)}
+	\end{bmatrix}\right) \theta_{\text{diff}}.
+\]
+The reason we try to express $\theta_{\text{ref}}$ as function of $\theta$ and $\theta_{\text{diff}}$ and not simply of $\vec{v}$, is that this expression easily translates to a steering angle. Finally, we limit $\theta_{\text{ref}}$ to account for the maximum angle at which KITT can turn. The way the controlling process works, is that KITT first turns, which means following its turning circle, until its direction vector is tangent with $\vec{v}$ -- this location is called the tangent point $\vec{p}$ -- and then drives in a straight line to the current waypoint. This situation is depicted in Figure~\ref{fig:ctrl-route-trajectory}.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[node distance = 6.5cm, auto]
+		\draw [black] (0,-1) -- node [anchor=south, pos=0.3, rotate=90] {$y \rightarrow$} (0,5);
+		\draw [black] (-1,0) -- node [anchor=north, pos=0.2] {$x \rightarrow$} (8,0);
+
+		\begin{scope}[yshift=-1cm]
+			\draw [red, fill=red] (3,3) circle [radius=0.1] node [black,xshift=0.3cm] {$\vec{x}$};
+			
+			\draw [red, line width=1pt] (2,3) circle [radius=1];
+			\draw [black, fill=black] (2,3) circle [radius=0.05] node [black,xshift=-0.3cm] {$\vec{t}_1$};
+			\draw [line, <->, black] (2,3) -- node [black] {$R$} (3,3);
+			\draw [red, line width=1pt] (4,3) circle [radius=1];
+			\draw [black, fill=black] (4,3) circle [radius=0.05] node [black,xshift=0.3cm] {$\vec{t}_2$};
+			\draw [line, ->, >=triangle 45, black, thick, line width=1pt] (3,3) -- (3,4);
+			\draw [line, ->, line width=1pt, red] (4,4) -- (7,4);
+			\draw [black, fill=black] (7,4) circle [radius=0.05] node [black,xshift=0.3cm] {$\vec{w}$};
+			\draw [black, fill=black] (4,4) circle [radius=0.05] node [black,yshift=0.3cm] {$\vec{p}$};
+			\draw [black, <->, >=latex] (3.7,3) arc [radius=0.3, start angle=180, end angle=90] node [xshift=-0.4cm,yshift=0.2cm] {$\Delta \alpha$};
+		\end{scope}
+	\end{tikzpicture}
+	\caption{Depiction of KITT's trajectory}
+	\label{fig:ctrl-route-trajectory}
+\end{figure}
+
+The turning point $\vec{t}$ around which KITT turns until it is tangent with $\vec{v}$ is given by
+\[
+	\vec{t}_{1,2} = \vec{x} \pm R \begin{bmatrix}
+		0 & -1 \\
+		1 & 0
+	\end{bmatrix} \begin{bmatrix}
+		\cos{(\theta)} \\ \sin{(\theta)}
+	\end{bmatrix},
+\]
+\[
+	\vec{t} = \underset{\vec{t}_i, i \in \{1,2\}}{\operatorname{min}} ||\vec{t}_i - \vec{w} ||,
+\]
+where $R$ denotes the turning radius. The distance $d$ now consists of two parts; the distance $d_1$ KITT turns from $\vec{x}$ to $\vec{p}$, and the distance $d_2$ from $\vec{p}$ to $\vec{w}$. $d_2$ is simply given by
+\[
+	d_2 = ||\vec{p}-\vec{w}|| = \sqrt{R^2 + ||\vec{t} - \vec{w}||^2}.
+\]
+To determine $d_1$, we have to know the position $\vec{p}$. Logically thinking, two possible, approximate -- let us not overcomplicate the problem -- locations of $\vec{p}$ are given by
+\[
+	\vec{p}_{1,2} = \vec{t} \pm R \begin{bmatrix}
+		0 & -1 \\
+		1 & 0
+	\end{bmatrix} \vec{v}.
+\]
+Determining whether $\vec{p} = \vec{p}_1$ or $\vec{p} = \vec{p}_2$ requires to know if KITT turns towards $\vec{p}_1$ or $\vec{p}_2$. First, the direction in which KITT drives, relative to the orientation of its turning cicle, can be checked by evaluating the sign of
+\[
+	\left( \begin{bmatrix}
+		0 & -1 \\
+		1 & 0
+	\end{bmatrix} \left( \vec{t} - \vec{x} \right) \right) \ast \begin{bmatrix}
+		\cos{(\theta)} \\
+		\sin{(\theta)}
+	\end{bmatrix}.
+\]
+Then, doing a coordinate transformation by letting $\vec{t}$ to be $(0,0)$ and comparing the angles of $\vec{p}_1$ and $\vec{p}_2$ relative to the positive x-axis allow us to determine $\vec{p}$. With these angles, the angle $\Delta \alpha$ of its turning circle which KITT has to drive to reach $\vec{p}$ can be calculated. $d_1$ is then given by
+\[
+	d_1 = \Delta \alpha R.
+\]
+This concludes calculating the reference angle $\theta_{\text{ref}}$ KITT should have to drive as fast as possible to the current waypoint the distance $d$ left to this waypoint.
+
+\subsection{Obstacle avoidance}
+When KITT comes across an obstacle, the sensors detect to frontal distances to this object. Obstacle avoidance is based on the follow rule; go the easiest way around the object while keeping a certain clearance $c$. Let the left sensor distance be given by $s_l$ and the right sensor distance by $s_r$. Figure~\ref{fig:ctrl-route-obstacle} depicts a situation in which KITT comes across an obstacle.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[node distance = 6.5cm, auto]
+		\draw [black] (0,-1) -- node [anchor=south, pos=0.2, rotate=90] {$y \rightarrow$} (0,8);
+		\draw [black] (-1,0) -- node [anchor=north, pos=0.2] {$x \rightarrow$} (8,0);
+
+		\draw [black] (2,1) rectangle node [anchor=center] {KITT} (3,2);
+		\draw [line width=5pt] (1,4) -- (4,7);
+		\draw [line, <->, black] (2.2,2) -- node [anchor=center,fill=white] {$s_l$} (2.2,5.2);
+		\draw [line, <->, black] (2.8,2) -- node [anchor=center,fill=white,pos=0.42] {$s_r$} (2.8,5.8);
+		\draw [line, red] (2.5,2) -- (2.5,5.5);
+		\draw [line, <->, red] (2.8,5.8) -- node [anchor=center,fill=white] {$c$} (5.8,5.8); 
+		\draw [line, red] (2.8,2) -- (5.8,5.8);
+		\draw [red, <->, >=latex] (2.5,4.62) arc [radius=3, start angle=90, end angle=51.7] node [red, yshift=0.8cm, xshift=-.8cm] {$\phi$};
+	\end{tikzpicture}
+	\caption{Depiction of KITT avoiding an obstacle}
+	\label{fig:ctrl-route-obstacle}
+\end{figure}
+
+Let the distance between both sensors on KITT be given by $L$, then $\phi$ is given by
+\[
+	\phi = \operatorname{arctan}\left(\frac{c}{L/2+\operatorname{max}(s_{r,l})}\right).
+\]
+Using the information which sensor's value is maximal, and then accordingly adding or substracting $\phi$ to or from $\theta$ yields $\theta_{\text{ref}}$.
+% Opbouw:
+% - Inleiding: weten afstand, gewenste afstand, hoek, gewenste hoek, hoe PWM waardes bepalen zodat bereikt wordt
+% reductie dimensionaliteit, twee onafhankelijk werkende systemen
+% - Controllers:
+% * Distance controller
+% * Angle controller
+% - Excitation mapping
+% - Solving the models
+\section{Controlling}
+\subsection{Introduction}
+At this point we assume certain things to be known; the current distance to the next waypoint, KITT's current angle and KITT's ideal angle, expressed as a reference angle. A system must be designed which controls KITT in a way that the distance to the next waypoint reduces to zero. In other words, KITT needs to be controlled to the next waypoint.
+
+This section will discuss the implementation of our so-called reduction of dimensionality. First, the design of the distance and angle controller will be discussed. Second, the mapping of the controllers' output to a by KITT understandable signal will be explained. At last, the actual implementation will be talked through.
+
+
+\subsection{Distance controller}
+\subsubsection{Introduction}
 The distance controller takes care of KITT autonomously driving to and then stopping at a specified distance. Note that the distance controller does \textit{not} control the direction in which KITT is driving. The whole controller is based on the following assumption; speeding up KITT to a constant speed will cause the distance to its target to decrease linearly. The controller consists of two components; the \textit{observer} and the \textit{compensator}. We will explain both of these in further detail.
 
-\subsection{Observer design}
+\subsubsection{Observer design}
 The distance controller must have knowledge of the current distance and speed of the car to be able to successfully control KITT. Generalizing, we can say that the controller must have knowledge of the current \textit{state} of KITT. The observer's task is to keep track of the internal state. This internal state consists of a linear combination of all generalized positions and momenta of respectively all inductive and capacitive components of the system. If we consider KITT a state-space model, we can define inputs and an output. Figure~\ref{fig:ctrl-model} shows this line of thought.
 
 \begin{figure}[H]
@@ -227,8 +382,10 @@ To determine the poles introduced by the feedback matrix $\mat{L}$, denoted by $
 Figure~\ref{fig:ctrl-poles} shows the error of many different pairs of poles. It is clear that there exists a maximum where $\lambda_1=\lambda_2$. This is obvious, because using Jordan's normal form, one can show that when $\lambda_1 = \lambda_2>0$, 
 $\vec{e}$ is critically damped. Also, $\lambda_1 = \lambda_2$ renders the system matrix non-diagonalizable, which explains the presence of the white line at every point where $\lambda_1=\lambda_2$. At last, the reason the maximum is not located at $(-\infty,-\infty)$, which corresponds with the highest convergence of the observer possible, is because we are also dealing with latency, meaning that oscillations of $\vec{e}$ can be caused by poles too large.  
 
-\subsection{Compensator design}
-Lets go back to Figure~\ref{fig:ctrl-model} and say we actually know the internal state $\vec{x}$. To derive a method to control our state-space model of KITT, we define a reference state $\vec{x}_{\text{ref}} = \tr{\left[ d_{\text{ref}},0,0 \right]}$. Let us now introduce the feedback law $\vec{u} = -\mat{K}(\vec{x}-\vec{x}_{\text{ref}})$. Rewriting the state-space model equations yields
+\subsubsection{Compensator design}
+Lets go back to Figure~\ref{fig:ctrl-model} and say we actually know the internal state $\vec{x}$. To derive a method to control our state-space model of KITT, we define a reference state $\vec{x}_{\text{ref}} = \tr{\begin{bmatrix*}
+	d_{\text{ref}} & 0 & 0 
+\end{bmatrix*}}$. Let us now introduce the feedback law $\vec{u} = -\mat{K}(\vec{x}-\vec{x}_{\text{ref}})$. Rewriting the state-space model equations yields
 
 \begin{equation} \label{eq:ctrl-comp}
 	\dot{\vec{x}} = (\mat{A} - \mat{B} \mat{K}) \vec{x} + \mat{B} \mat{K} \vec{x}_{\text{ref}}.
@@ -243,7 +400,7 @@ If we argue that $\mat{A} - \mat{B} \mat{K}$ renders the system asymptotically s
 
 Further simplifying using Equation~\ref{eq:ctrl-bond-model} yields $q_m = d_{\text{ref}}$ and $f_m = f_L = 0$. This means that the model shown in Figure~\ref{fig:ctrl-model} converges to a state where KITT is not moving at a specified distance $d_{\text{ref}}$. In other words, we specify the position at which KITT stops moving, which is exactly what we want. The only thing which remains, is determining the poles of $\mat{A} - \mat{B} \mat{K}$. We want KITT to stop at our specified position as fast as possible, without overshooting. Therefore, KITT must critically damped converge to a distance $d_{\text{ref}}$. If $\lambda_1$ and $\lambda_2$ are the eigenvalues of $\mat{A} - \mat{B} \mat{K}$, then $\lambda_1$ and $\lambda_2$ where $\lambda_1 = \lambda_2 = \lambda < 0$ must as negative as possible. The exact value of $\lambda$ depends on the latency we are dealing with. We adjusted these eigenvalues on-the-go to achieve an optimized result.
 
-\subsection{Distance controller design}
+\subsubsection{Distance controller design}
 Putting together the observer and the compensator together yields the whole distance controller which is able to control KITT to a specified distance $d_{\text{ref}}$. This closed-loop system is depicted in Figure~\ref{fig:ctrl-dist-controller}. Note that we discussed the design of the observer and compensator as if they could be designed separately. This is exactly what the separation principle states. 
 
 \begin{figure}[H]
@@ -262,11 +419,11 @@ Putting together the observer and the compensator together yields the whole dist
 	\label{fig:ctrl-dist-controller}
 \end{figure}
 
-\section{Angle controller}
-\subsection{Introduction}
+\subsection{Angle controller}
+\subsubsection{Introduction}
 The distance controller was based on the assumption that a constant speed of KITT causes a linearly decreasing distance. This can only be realized if KITT drives the predicted trajectory. It is the angle controller's reponsibility that KITT drives this trajectory by controlling the angle of the wheels. Before we can design an angle controller, we must find a relationship between the angle of the wheels and the rate at which KITT turns.
 
-\subsection{Analysis}
+\subsubsection{Analysis}
 Let us consider a car with distance $L$ between both wheel axes. The rear axis of the car is located at $(0,0)$ and the front axis at $(L,0)$ in a way that they are parallel to each other. The front wheels are turned an angle $\phi$ relative to the positive $x$-axis. If the car drives at a speed $v$, then approximately, after a very small time $\Delta t$, the rear axis is located at $(v \cos{(\phi)}\Delta t,0)$ and the front axis at $(L+v \cos{(\phi)}\Delta t,v \sin{(\phi)}\Delta t)$. The situation is sketched in Figure~\ref{fig:ctrl-angle-sketch}.
 
 \begin{figure}[H]
@@ -349,7 +506,7 @@ Therefore the relationship between the turning radius $R$, the length $L$ betwee
 \end{equation}
 We used this relationship to define our space of possible trajectories.
 
-\subsection{Angle controller design}
+\subsubsection{Angle controller design}
 In the previous section we derived the relation
 \[
 	\dot{\theta}(\phi) = \frac{v \sin{(\phi)}}{L}
@@ -372,7 +529,7 @@ which is positive definite for $\left\{\theta | -\frac{\pi}{k} < \theta-\theta_{
 \end{align*}
 which is negative semi-definite for $\left\{\theta | -\frac{\pi}{k} < \theta-\theta_{\text{ref}} < \frac{\pi}{k}\right\}$. Therefore, we can conclude our critical point of interest $\theta=\theta_{\text{ref}}$ is locally asymptotically stable. This means we can control KITT's angle to a given reference angle $\theta_{\text{ref}}$ within certain boundaries. This concludes our angle controller.
 
-\section{Mapping}
+\subsection{Mapping}
 Let us evaluate what we have now. We designed a controller, consisting of two sub controllers, which converts a distance to the current waypoint and a reference angle to a drive excitation and steering excitation. This is shown in Figure~\ref{fig:ctrl-chain}.
 
 \begin{figure}[H]
@@ -431,7 +588,7 @@ where the center PWM value is given by $\mu$, the offset by $\alpha$, the first-
 	\label{fig:ctrl-chain-map}
 \end{figure}
 
-\section{Implementation}
+\subsection{Implementation}
 We have now almost designed the complete controller chain. The only thing which remains is solving the distance controllers' state-space model. The solution of a state-space model is obtained by solving
 \begin{equation} \label{eq:ctrl-ext}
 	\dot{\vec{x}}=\mat{A}\vec{x}+\mat{B}\vec{u}.
