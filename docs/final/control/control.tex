@@ -105,7 +105,7 @@ First, we will describe the way routing is done. Second, controlling will be giv
 
 \section{Routing}
 \subsection{Introduction}
-The \textit{router}, the submodule of control which takes care of the routing process, plans the trajectory KITT is going to drive. Essentially, the router determines in which direction KITT should drive, expressed as a reference angle, and the distance KITT still has to drive to the current waypoint, given the current waypoint, angle, location and sensor data. KITT should also not collide with obstacles. Therefore, the router must consider the sensor data when determining the reference angle and distance. A schematic representation is given in Figure~\ref{fig:ctrl-router}.
+The \textit{router}, the submodule of control that takes care of the routing process, plans the trajectory KITT is going to drive. Essentially, the router determines in what direction KITT should drive, expressed as a reference angle, and the distance KITT still has to drive to the current waypoint, given the current waypoint, angle, location and sensor data. KITT should also not collide with obstacles. Therefore, the router must consider the sensor data when determining the reference angle and distance. A schematic representation is given in Figure~\ref{fig:ctrl-router}.
 
 \begin{figure}[H]
 	\centering
@@ -126,10 +126,10 @@ The \textit{router}, the submodule of control which takes care of the routing pr
 	\label{fig:ctrl-router}
 \end{figure}
 
-The router operates in two different modes; \textit{trajectory planning} and \textit{obstacle avoidance}. When the sensor data indicates that the path is clear, the router plans the trajectory to reach the current waypoint as fast as possible. However, when an obstacle is detected, the router fully focuses on avoiding that obstacle. This section will describe trajectory planning and obstacle avoidance seperately.
+The router operates in two different modes; \textit{trajectory planning} and \textit{obstacle avoidance}. When the sensor data indicates that the path is clear, the router plans the trajectory to reach the current waypoint as fast as possible. However, when an obstacle is detected, the router fully focuses on avoiding that obstacle. This section will describe trajectory planning and obstacle avoidance separately.
 
 \subsubsection{Trajectory planning}
-Let KITT's current location be denoted by $\vec{x}$, the current waypoint by $\vec{w}$ and KITT's current angle by $\theta$. The goal is to determine the angle $\theta_{\text{ref}}$ which KITT should have to drive as fast as possible to the current waypoint, and the distance $d$ left to this waypoint. The ideal direction in which KITT should drive, expressed as an unit direction vector $\vec{v}$, is given by
+Let KITT's current location be denoted by $\vec{x}$, the current waypoint by $\vec{w}$ and KITT's current angle by $\theta$. The goal is to determine the angle $\theta_{\text{ref}}$ which KITT should reach, to drive as fast as possible to the current waypoint, and the distance left to this waypoint $d$. The ideal direction in which KITT should drive, expressed as an unit direction vector $\vec{v}$, is given by
 \[
 	\vec{v} = \frac{\vec{w} - \vec{x}}{||\vec{w} - \vec{x}||}.
 \]
@@ -137,14 +137,14 @@ The absolute angle difference between KITT's ideal angle and KITT's current angl
 \[
 	\theta_{\text{diff}} = ||\theta_{\text{ref}} - \theta|| = \operatorname{arccos}\left( \tr{\begin{bmatrix}
 		\cos{(\theta)} & \sin{(\theta)}
-	\end{bmatrix}} \ast \vec{v} \right).
+	\end{bmatrix}} \cdot \vec{v} \right).
 \]
 To determine whether $\theta_{\text{ref}}$ has to be substracted or added to $\theta$ to determine the ideal reference angle, the sign of inner product of a vector orthogonal to the ideal direction vector of KITT and the actual direction vector of KITT is evaluated. Therefore, $\theta_{\text{ref}}$ is given by
 \[
 	\theta_{\text{ref}} = \theta + \operatorname{sign}\left(\left( \begin{bmatrix}
 		0 & 1 \\
 		-1 & 0
-	\end{bmatrix} \vec{v} \right) \ast \begin{bmatrix}
+	\end{bmatrix} \vec{v} \right) \cdot \begin{bmatrix}
 		\cos{(\theta)} \\
 		\sin{(\theta)}
 	\end{bmatrix}\right) \theta_{\text{diff}}.
@@ -199,21 +199,21 @@ To determine $d_1$, we have to know the position $\vec{p}$. Logically thinking, 
 		1 & 0
 	\end{bmatrix} \vec{v}.
 \]
-Determining whether $\vec{p} = \vec{p}_1$ or $\vec{p} = \vec{p}_2$ requires to know if KITT turns towards $\vec{p}_1$ or $\vec{p}_2$. First, the direction in which KITT drives, relative to the orientation of its turning cicle, can be checked by evaluating the sign of
+Determining whether $\vec{p} = \vec{p}_1$ or $\vec{p} = \vec{p}_2$ requires to know if KITT turns towards $\vec{p}_1$ or $\vec{p}_2$. First, the direction in which KITT drives, relative to the orientation of its turning circle, can be checked by evaluating the sign of
 \[
 	\left( \begin{bmatrix}
 		0 & -1 \\
 		1 & 0
-	\end{bmatrix} \left( \vec{t} - \vec{x} \right) \right) \ast \begin{bmatrix}
+	\end{bmatrix} \left( \vec{t} - \vec{x} \right) \right) \cdot \begin{bmatrix}
 		\cos{(\theta)} \\
 		\sin{(\theta)}
 	\end{bmatrix}.
 \]
-Then, doing a coordinate transformation by letting $\vec{t}$ to be $(0,0)$ and comparing the angles of $\vec{p}_1$ and $\vec{p}_2$ relative to the positive x-axis allow us to determine $\vec{p}$. With these angles, the angle $\Delta \alpha$ of its turning circle which KITT has to drive to reach $\vec{p}$ can be calculated. $d_1$ is then given by
+Then, doing a coordinate transformation by letting $\vec{t}$ be $(0,0)$ and comparing the angles of $\vec{p}_1$ and $\vec{p}_2$ relative to the positive x-axis allow us to determine $\vec{p}$. With these angles, the angle $\Delta \alpha$ of its turning circle which KITT has to drive to reach $\vec{p}$ can be calculated. $d_1$ is then given by
 \[
 	d_1 = \Delta \alpha R.
 \]
-This concludes calculating the reference angle $\theta_{\text{ref}}$ KITT should have to drive as fast as possible to the current waypoint the distance $d$ left to this waypoint.
+This concludes calculating the reference angle $\theta_{\text{ref}}$ KITT should reach, to drive as fast as possible to the current waypoint the distance $d$ left to this waypoint.
 
 \subsection{Obstacle avoidance}
 When KITT comes across an obstacle, the sensors detect the frontal distances to this object. Obstacle avoidance is based on the follow rule; go the easiest way around the object while keeping a certain clearance $c$. Let the left sensor distance be given by $s_l$ and the right sensor distance by $s_r$. Figure~\ref{fig:ctrl-route-obstacle} depicts a situation in which KITT comes across an obstacle.
@@ -262,7 +262,7 @@ This section will discuss the implementation of our so-called reduction of dimen
 The distance controller takes care of KITT autonomously driving to and then stopping at a specified distance. Note that the distance controller does \textit{not} control the direction in which KITT is driving. The whole controller is based on the following assumption; speeding up KITT to a constant speed will cause the distance to its target to decrease linearly. The controller consists of two components; the \textit{observer} and the \textit{compensator}. We will explain both of these in further detail.
 
 \subsubsection{Observer design}
-The distance controller must have knowledge of the current distance and speed of the car to be able to successfully control KITT. Generalizing, we can say that the controller must have knowledge of the current \textit{state} of KITT. The observer's task is to keep track of the internal state. This internal state consists of a linear combination of all generalized positions and momenta of respectively all inductive and capacitive components of the system. If we consider KITT a state-space model, we can define inputs and an output. Figure~\ref{fig:ctrl-model} shows this line of thought.
+The distance controller must have knowledge of the current distance and speed of the car to be able to successfully control KITT. Generalizing, we can say that the controller must have knowledge of the current \textit{state} of KITT. The observer's task is to keep track of the internal state. This internal state consists of a linear combination of all generalized positions and momenta of respectively all inductive and capacitive components of the system. If we consider KITT a state-space model, we can define its inputs and an output. Figure~\ref{fig:ctrl-model} represents this line of thought schematically.
 
 \begin{figure}[H]
 	\centering
@@ -279,7 +279,7 @@ The distance controller must have knowledge of the current distance and speed of
 	\label{fig:ctrl-model}
 \end{figure}
 
-The observer observes the input $\vec{u}$ and output $\vec{y}$ and determines, by doing that, the internal state $\vec{x}$ of KITT. We modeled the observer by making also use of a state-space representation. Figure~\ref{fig:ctrl-model-observer} shows the state-space model of the observer and its interconnection to KITT's state-space model. Logically thinking, the observer must obey two constraints; \textbf{(1)}, the internal state $\hat{\vec{x}}$ of the observer must converge to $\vec{x}$ if $t \to \infty$ and \textbf{(2)}, if $\hat{\vec{x}} = \vec{x}$, then the states should not diverge. To fulfill \textbf{(1)}, we introduce a feedback matrix $\mat{L}$, and to satisfy \textbf{(2)}, the system, input-, output- and feed-through matrix of the observer should match KITT's. We can show constraint \textbf{(1)} by evaluating the error $\vec{e}=\vec{x}-\hat{\vec{x}}$. Inspecting $\dot{\vec{e}}$ yields 
+The observer observes the input $\vec{u}$ and output $\vec{y}$ and determines, by doing that, the internal state $\vec{x}$ of KITT. We modelled the observer by making also use of a state-space representation. Figure~\ref{fig:ctrl-model-observer} shows the state-space model of the observer and its interconnection to KITT's state-space model. Logically thinking, the observer must obey two constraints; \textbf{(1)}, the internal state $\hat{\vec{x}}$ of the observer must converge to $\vec{x}$ if $t \to \infty$ and \textbf{(2)}, if $\hat{\vec{x}} = \vec{x}$, then the states should not diverge. To fulfil \textbf{(1)}, we introduce a feedback matrix $\mat{L}$, and to satisfy \textbf{(2)}, the system, input-, output- and feed-through matrix of the observer should match KITT's. We can show constraint \textbf{(1)} by evaluating the error $\vec{e}=\vec{x}-\hat{\vec{x}}$. Inspecting $\dot{\vec{e}}$ yields 
 \begin{equation} \label{eq:ctrl-err}
 	\dot{\vec{e}}=\dot{\vec{x}} - \dot{\hat{\vec{x}}} = \mat{A} (\vec{x} - \hat{\vec{x}}) - \mat{L} (\vec{y} - \hat{\vec{y}}) = (\mat{A} - \mat{L} \mat{C}) (\vec{x} - \hat{\vec{x}}) = (\mat{A} - \mat{L}\mat{C}) \vec{e}.
 \end{equation}
@@ -330,7 +330,7 @@ Equation~\ref{eq:ctrl-err} tells us the the system is observable, if $\mat{A} - 
 	\label{fig:ctrl-bond}
 \end{figure}
 
-The only thing which remains is determining the system matrices $\mat{A}$, $\mat{B}$, $\mat{C}$ and $\mat{D}$ and  the feedback matrix $\mat{L}$. For the system matrices, we use the bond graph depicted in Figure~\ref{fig:ctrl-bond} to derive the state-space model shown in Equation~\ref{eq:ctrl-bond-model}. Here the battery voltage is denoted by $v$, the inductance of the motor by $L$, the internal resistance of the motor by $R$, the motor constant by $k_t$, the gear constant by $k_g$, the radius of the wheels by $r_w$, the mass of KITT by $m$, the rolling resistance coefficient by $\rho$ and $k_t k_g/r_w$ by $r$. A generalized notation of the position and the velocity is used. The observability matrix $\mathcal{O}$ and the controllability matrix $\mathcal{C}$ revealed that the system is both observable and controllable.
+The only thing which remains is determining the system matrices $\mat{A}$, $\mat{B}$, $\mat{C}$ and $\mat{D}$ and  the feedback matrix $\mat{L}$. For the system matrices, we use the bond graph depicted in Figure~\ref{fig:ctrl-bond} to derive the state-space model shown in Equation~\ref{eq:ctrl-bond-model}. Here the battery voltage is denoted by $v$, the inductance of the motor by $L$, the internal resistance of the motor by $R$, the motor constant by $k_t$, the gear constant by $k_g$, the radius of the wheels by $r_w$, the mass of KITT by $m$, the rolling resistance coefficient by $\rho$ and $k_t k_g/r_w$ by $r$. A generalized notation of the position and the velocity is used. The observability matrix $\mathcal{O}$ and the controllability matrix $\mathcal{C}$ reveal that the system is both observable and controllable.
 
 \begin{align} \label{eq:ctrl-bond-model}
 	\dot{\vec{x}} = \frac{d}{dt}
@@ -365,7 +365,7 @@ The only thing which remains is determining the system matrices $\mat{A}$, $\mat
 	\end{bmatrix}
 \end{align}
 
-To determine the poles introduced by the feedback matrix $\mat{L}$, denoted by $\lambda_1$ and $\lambda_2$, we defined a measure of performance for each pair of poles $(\lambda_1,\lambda_2)$. We let the observer track measurement data which consisted of the drive excitation $\vec{u}$ and distances measured $\vec{y}$. The observer produced the tracked distance $\mat{C} \hat{\vec{x}} = \hat{\vec{y}}$. Let the time interval between $\vec{y}_n$ and $\vec{y}_{n+1}$ is $\Delta T$. We defined the error $e_i$ of experiment $i$ to be
+To determine the poles introduced by the feedback matrix $\mat{L}$, denoted by $\lambda_1$ and $\lambda_2$, we define a measure of performance for each pair of poles $(\lambda_1,\lambda_2)$. We let the observer track measurement data which consisted of the drive excitation $\vec{u}$ and distances measured $\vec{y}$. The observer then produces the tracked distance $\mat{C} \hat{\vec{x}} = \hat{\vec{y}}$. Let the time interval between $\vec{y}_n$ and $\vec{y}_{n+1}$ is $\Delta T$. We define the error $e_i$ of experiment $i$ to be
 
 \begin{equation*} \label{ctrl:err}
 	e_i = \int_{0}^{t_f} || \vec{y}(t) - \hat{\vec{y}}(t) || dt = \sum_{0}^{N} ||\vec{y}_n - \hat{\vec{y}}_n || \Delta T.
@@ -379,7 +379,7 @@ To determine the poles introduced by the feedback matrix $\mat{L}$, denoted by $
 	\label{fig:ctrl-poles}
 \end{figure}
 
-Figure~\ref{fig:ctrl-poles} shows the error of many different pairs of poles. It is clear that there exists a maximum where $\lambda_1=\lambda_2$. This is obvious, because using Jordan's normal form, one can show that when $\lambda_1 = \lambda_2>0$, 
+Figure~\ref{fig:ctrl-poles} shows the error of many different pairs of poles. It is clear that there exists a maximum at $\lambda_1=\lambda_2$. This is obvious, because using Jordan's normal form, one can show that when $\lambda_1 = \lambda_2>0$, 
 $\vec{e}$ is critically damped. Also, $\lambda_1 = \lambda_2$ renders the system matrix non-diagonalizable, which explains the presence of the white line at every point where $\lambda_1=\lambda_2$. At last, the reason the maximum is not located at $(-\infty,-\infty)$, which corresponds with the highest convergence of the observer possible, is because we are also dealing with latency, meaning that oscillations of $\vec{e}$ can be caused by poles too large.  
 
 \subsubsection{Compensator design}
@@ -391,7 +391,6 @@ Lets go back to Figure~\ref{fig:ctrl-model} and say we actually know the interna
 	\dot{\vec{x}} = (\mat{A} - \mat{B} \mat{K}) \vec{x} + \mat{B} \mat{K} \vec{x}_{\text{ref}}.
 \end{equation}
 
-
 If we argue that $\mat{A} - \mat{B} \mat{K}$ renders the system asymptotically stable, then rewriting Equation~\ref{eq:ctrl-comp} using $\dot{\vec{x}} \to 0$ when $t \to \infty$ yields
 
 \begin{align*}
@@ -401,7 +400,7 @@ If we argue that $\mat{A} - \mat{B} \mat{K}$ renders the system asymptotically s
 Further simplifying using Equation~\ref{eq:ctrl-bond-model} yields $q_m = d_{\text{ref}}$ and $f_m = f_L = 0$. This means that the model shown in Figure~\ref{fig:ctrl-model} converges to a state where KITT is not moving at a specified distance $d_{\text{ref}}$. In other words, we specify the position at which KITT stops moving, which is exactly what we want. The only thing which remains, is determining the poles of $\mat{A} - \mat{B} \mat{K}$. We want KITT to stop at our specified position as fast as possible, without overshooting. Therefore, KITT must critically damped converge to a distance $d_{\text{ref}}$. If $\lambda_1$ and $\lambda_2$ are the eigenvalues of $\mat{A} - \mat{B} \mat{K}$, then $\lambda_1$ and $\lambda_2$ where $\lambda_1 = \lambda_2 = \lambda < 0$ must as negative as possible. The exact value of $\lambda$ depends on the latency we are dealing with. We adjusted these eigenvalues on-the-go to achieve an optimized result.
 
 \subsubsection{Distance controller design}
-Putting together the observer and the compensator together yields the whole distance controller which is able to control KITT to a specified distance $d_{\text{ref}}$. This closed-loop system is depicted in Figure~\ref{fig:ctrl-dist-controller}. Note that we discussed the design of the observer and compensator as if they could be designed separately. This is exactly what the separation principle states. 
+Putting together the observer and the compensator together yields the whole distance controller, that is able to control KITT to a specified distance $d_{\text{ref}}$. This closed-loop system is depicted in Figure~\ref{fig:ctrl-dist-controller}. Note that we discussed the design of the observer and compensator as if they could be designed separately. This is exactly what the separation principle states. 
 
 \begin{figure}[H]
 	\centering
@@ -421,7 +420,7 @@ Putting together the observer and the compensator together yields the whole dist
 
 \subsection{Angle controller}
 \subsubsection{Introduction}
-The distance controller was based on the assumption that a constant speed of KITT causes a linearly decreasing distance. This can only be realized if KITT drives the predicted trajectory. It is the angle controller's reponsibility that KITT drives this trajectory by controlling the angle of the wheels. Before we can design an angle controller, we must find a relationship between the angle of the wheels and the rate at which KITT turns.
+The distance controller was based on the assumption that a constant speed of KITT causes a linearly decreasing distance. This can only be realized if KITT drives the predicted trajectory. It is the angle controller's responsibility that KITT drives this trajectory by controlling the angle of the wheels. Before we can design an angle controller, we must find a relationship between the angle of the wheels and the rate at which KITT turns.
 
 \subsubsection{Analysis}
 Let us consider a car with distance $L$ between both wheel axes. The rear axis of the car is located at $(0,0)$ and the front axis at $(L,0)$ in a way that they are parallel to each other. The front wheels are turned an angle $\phi$ relative to the positive $x$-axis. If the car drives at a speed $v$, then approximately, after a very small time $\Delta t$, the rear axis is located at $(v \cos{(\phi)}\Delta t,0)$ and the front axis at $(L+v \cos{(\phi)}\Delta t,v \sin{(\phi)}\Delta t)$. The situation is sketched in Figure~\ref{fig:ctrl-angle-sketch}.
@@ -552,14 +551,14 @@ Let us evaluate what we have now. We designed a controller, consisting of two su
 
 To control KITT, we have to translate these excitations to pulse width modulation (PWM) values. This translation is called \textit{mapping}. To create our mapping, we have to compare the meaning of the excitations to the meaning of the PWM values.
 
-The input of KITT's state-space model is the applied voltage. The voltage is directly proportional to the model's final speed. The drive PWM values also correspond to KITT's final speed. Therefore, we mapped the drive excitation proportional to the PWM drive value. The steering excitation is proportional to the angle of the wheels, which the steering PWM value is also proportional to. Consequently, we also mapping the steering excitation proportial to the steering PWM values. However, for KITT to do something, the PWM values must have an offset. Therefore, the generalized excitation mapping function is given by
+The input of KITT's state-space model is the applied voltage. The voltage is directly proportional to the model's final speed. The drive PWM values also correspond to KITT's final speed. Therefore, we mapped the drive excitation proportional to the PWM drive value. The steering excitation is proportional to the angle of the wheels, which the steering PWM value is also proportional to. Consequently, we also map the steering excitation proportional to the steering PWM values. However, for KITT to do something, the PWM values must have an offset. Therefore, the generalized excitation mapping function is given by
 \begin{equation} \label{eq:ctrl-mapping}
 	\text{map}(u) = \left\{ \begin{array}{l l}
 		\mu + \alpha + \text{round}(c_1 u + c_2 u^3) & \quad \text{ if } u > \mu, \\
 		\mu - \alpha + \text{round}(c_1 u + c_2 u^3) & \quad \text{ if } u < \mu,
 	\end{array} \right.
 \end{equation}
-where the center PWM value is given by $\mu$, the offset by $\alpha$, the first-order coefficient (FOC) by $c_1$ and the third-order (TOC) coefficient by $c_2$. We introduced the TOC to keep control of unexpected large excitations. We would not want KITT to drive unexpectedly very fast. The controller chain with mapping is shown in Figure~\ref{fig:ctrl-chain-map}.
+where the central PWM value is given by $\mu$, the offset by $\alpha$, the first-order coefficient (FOC) by $c_1$ and the third-order (TOC) coefficient by $c_2$. We introduced the TOC to keep control of unexpected large excitations. We would not want KITT to drive unexpectedly very fast. The controller chain with mapping is shown in Figure~\ref{fig:ctrl-chain-map}.
 
 \begin{figure}[H]
 	\centering
@@ -651,7 +650,7 @@ x(t_0+\Delta t) &\approx x(t_0) + \frac{\Delta t}{2}\left(\left. \frac{dx}{dt} \
 One can use the same reasoning to derive a fourth-order Runge-Kutta method, also known as \texttt{ode45}, which is commonly used technique to numerically solve differential equations.
 
 \section{Final thoughts}
-Our method \textit{reduction of dimensionality} is a simplification of how one should design a controller for driving in a plane. The correct way to design such a controller, is by modeling the system by making use of Lagrangion formulation and nonholonomic contraints, and then minimizing by making use of the Lagrange multiplier. However, this is very complicated. Our time-frame did not allow such a realization. \cite{epo4-manual}.
+Our method \textit{reduction of dimensionality} is a simplification of how one should design a controller for driving in a plane. The correct way to design such a controller, is by modelling the system by making use of Lagrangian formulation and non-holonomic constraints, and then minimizing by making use of the Lagrange multiplier. However, this is very complicated. Our time-frame did not allow such a realization. \cite{epo4-manual}.
 
 We made numerous approximations and simplifications in the design of our controller. We wanted to eventually deliver a robust, simple as possible, working system. These approximations and simplifications were necessary to deliver such a system.
 \end{document}
