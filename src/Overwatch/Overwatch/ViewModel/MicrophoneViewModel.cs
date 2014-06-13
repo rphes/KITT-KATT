@@ -7,7 +7,7 @@ using System.Windows.Media.Imaging;
 
 namespace Overwatch.ViewModel
 {
-	public class MicrophoneViewModel : IVisualisationObject
+	public class MicrophoneViewModel : IVisualizationObject
 	{
 		// Position
 		public double X { get; set; }

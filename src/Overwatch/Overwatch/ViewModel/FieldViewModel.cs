@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Overwatch.ViewModel
 {
-	public class FieldViewModel : IVisualisationObject
+	public class FieldViewModel : IVisualizationObject
 	{
 		public double X { get; set; }
 		public double Y { get; set; }

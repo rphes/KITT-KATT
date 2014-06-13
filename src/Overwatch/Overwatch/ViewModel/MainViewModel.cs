@@ -8,7 +8,7 @@
 		#region Data members
 		public VehicleViewModel VehicleViewModel { get; set; }
 		public CommunicationViewModel CommunicationViewModel { get; set; }
-		public VisualisationViewModel VisualisationViewModel { get; set; }
+		public VisualizationViewModel VisualizationViewModel { get; set; }
 		public AutoControlViewModel AutoControlViewModel { get; set; }
 		#endregion
 
@@ -24,8 +24,8 @@
 				CommunicationViewModel = new CommunicationViewModel();
 			if (AutoControlViewModel == null)
 				AutoControlViewModel = new AutoControlViewModel();
-			if (VisualisationViewModel == null)
-				VisualisationViewModel = new VisualisationViewModel();
+			if (VisualizationViewModel == null)
+				VisualizationViewModel = new VisualizationViewModel();
 		}
 		#endregion
 	}

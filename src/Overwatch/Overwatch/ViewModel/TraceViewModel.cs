@@ -8,7 +8,7 @@ using Overwatch.Tools;
 
 namespace Overwatch.ViewModel
 {
-	public class TraceViewModel : ObservableObject, IVisualisationObject
+	public class TraceViewModel : ObservableObject, IVisualizationObject
 	{
 		#region Data members
 		// Position

@@ -59,7 +59,7 @@ namespace Overwatch.ViewModel
 			}
 		}
 
-		public string[] Modes { get { return new string[] { "Reality", "System Simulation", "Localisation Simulation" }; } }
+		public string[] Modes { get { return new string[] { "Reality", "System Simulation", "Localization Simulation" }; } }
 		public int SelectedModeIndex
 		{
 			get { return (int)AutoControl.Mode; }
@@ -117,7 +117,7 @@ namespace Overwatch.ViewModel
 
 			return (Data.MainViewModel.CommunicationViewModel.Communication.SerialPort.IsOpen || 
 				(AutoControlMode)SelectedModeIndex == AutoControlMode.SystemSimulation ||
-				(AutoControlMode)SelectedModeIndex == AutoControlMode.LocalisationSimulation) &&
+				(AutoControlMode)SelectedModeIndex == AutoControlMode.LocalizationSimulation) &&
 				AutoControl.Matlab.Running &&
 				Data.SrcDirectory != null &&
 				!(AutoControl.QueuedWaypoints.Count == 0 && !AutoControl.ObservationEnabled);

@@ -8,9 +8,9 @@ using System.Windows.Input;
 namespace Overwatch.ViewModel
 {
 	/// <summary>
-	/// Provides general binding data and commands for the visualisation canvas.
+	/// Provides general binding data and commands for the visualization canvas.
 	/// </summary>
-	public class VisualisationViewModel : ObservableObject
+	public class VisualizationViewModel : ObservableObject
 	{
 		#region Data members
 		public int CanvasWidth { get { return Data.CanvasWidth; } }
@@ -43,14 +43,14 @@ namespace Overwatch.ViewModel
 
 		public List<MicrophoneViewModel> Microphones;
 
-		public List<IVisualisationObject> Objects
+		public List<IVisualizationObject> Objects
 		{
 			get
 			{
 				if (WaypointViewModels == null || KITT == null)
 					return null;
 
-				List<IVisualisationObject> l = new List<IVisualisationObject>(WaypointViewModels);
+				List<IVisualizationObject> l = new List<IVisualizationObject>(WaypointViewModels);
 				l.Add(KITT);
 				if (Trace != null) l.Add(Trace);
 				if (Microphones != null) l.AddRange(Microphones);
@@ -61,11 +61,11 @@ namespace Overwatch.ViewModel
 
 		#region Construction
 		/// <summary>
-		/// Constructs a default instance of the VisualisationViewModel class.
+		/// Constructs a default instance of the VisualizationViewModel class.
 		/// </summary>
-		public VisualisationViewModel()
+		public VisualizationViewModel()
 		{
-			// Add KITT to our visualisation canvas
+			// Add KITT to our visualization canvas
 			KITT = new VirtualVehicleViewModel(Data.MainViewModel.VehicleViewModel.Vehicle, new Uri(Directory.GetCurrentDirectory() + @"\Content\KITT.png"));
 
 			Data.MainViewModel.VehicleViewModel.Vehicle.X = 0.7;
@@ -89,7 +89,7 @@ namespace Overwatch.ViewModel
 
 		#region Methods
 		/// <summary>
-		/// Adds an object, of the type as selected in the gui, to the visualisation canvas, on the given location.
+		/// Adds an object, of the type as selected in the gui, to the visualization canvas, on the given location.
 		/// </summary>
 		/// <param name="x">The object's location on the X-axis.</param>
 		/// <param name="y">The object's location on the Y-axis.</param>
@@ -110,10 +110,10 @@ namespace Overwatch.ViewModel
 		}
 
 		/// <summary>
-		/// Remove an object from the visualisation canvas.
+		/// Remove an object from the visualization canvas.
 		/// </summary>
 		/// <param name="o">The object to remove.</param>
-		public void RemoveObject(IVisualisationObject o)
+		public void RemoveObject(IVisualizationObject o)
 		{
 			if ((o as WaypointViewModel) != null)
 			{
@@ -179,7 +179,7 @@ namespace Overwatch.ViewModel
 		}
 
 		/// <summary>
-		/// Update the index stored in a WayPointViewModel for correct display in the visualisation canvas.
+		/// Update the index stored in a WayPointViewModel for correct display in the visualization canvas.
 		/// </summary>
 		public void UpdateWaypointViewModels()
 		{
@@ -201,7 +201,7 @@ namespace Overwatch.ViewModel
 		}
 
 		/// <summary>
-		/// Adds the current vehicle position to the trace for drawing in the visualisation canvas.
+		/// Adds the current vehicle position to the trace for drawing in the visualization canvas.
 		/// </summary>
 		public void UpdateTrace()
 		{
@@ -216,7 +216,7 @@ namespace Overwatch.ViewModel
 
 		#region Event handling
 		/// <summary>
-		/// Notifies the gui that the objects in the visualisation canvas have changed. 
+		/// Notifies the gui that the objects in the visualization canvas have changed. 
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -241,7 +241,7 @@ namespace Overwatch.ViewModel
 			if (e.OriginalSource.GetType().FullName != "System.Windows.Controls.Canvas")
 			{
 				// Remove an existing object
-				IVisualisationObject o = (IVisualisationObject)(src as FrameworkElement).DataContext;
+				IVisualizationObject o = (IVisualizationObject)(src as FrameworkElement).DataContext;
 				RemoveObject(o);
 			}
 			else
@@ -286,7 +286,7 @@ namespace Overwatch.ViewModel
 
 		#region MouseWheel
 		/// <summary>
-		/// Reorders the waypoints in the visualisation canvas on scroll events.
+		/// Reorders the waypoints in the visualization canvas on scroll events.
 		/// </summary>
 		/// <param name="e"></param>
 		void MouseWheelExecute(MouseWheelEventArgs e)

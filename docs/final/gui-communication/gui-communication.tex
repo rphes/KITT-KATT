@@ -1,0 +1,37 @@
+%!TEX program = xelatex
+
+\documentclass[11pt,titlepage]{report}
+\input{../../library/import}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\begin{document}
+
+\chapter{GUI \& Communication}
+\section{Introduction}
+Although KITT is supposed to be able to drive autonomously from an arbitrary initial location within the field to a designated waypoint, some form of user interaction is required for controlling KITT. Since KITT is controlled wirelessly, also a component that handles all (serial) communication with the vehicle has to be implemented. Moreover, we are required to be able to show a plot or something similar, showing KITT's current and previous locations, as well as the location of the five microphones and the location of the set waypoint(s) \cite[114]{epo4-manual}. Lastly, some form of visualization is desirable to be able to observe KITT and examine the localization/control results obtained from \texttt{MATLAB}. Every one of these requirements calls for a so-called \emph{Graphical User Interface} or GUI (this term will hereby encapsulate the serial communication, user control and visualization subcomponents of the design, itself being one of the three main components as discussed in the system overview (Chapter~\ref{ch:system-overview})).
+
+\section{Design considerations}
+Because our control and localization logic is implemented using \texttt{MATLAB}, utilizing the program's vast mathematical toolbox, it would seem sensible to implement the visualization, user interaction and communication subcomponents in \texttt{MATLAB} as well. After all, \texttt{MATLAB} offers a GUI-toolbox of its own and serial handling is possible as well. However, after some time handling communication using \texttt{MATLAB}, we noticed that the program introduces a delay between sending a status request and receiving a response of around \SI{250}{ms}, which is quite high, and would certainly decrease our control accuracy. Furthermore, developing a GUI in \texttt{MATLAB} turned out to be quite cumbersome and the resulting GUI not very aesthetically pleasing.
+
+These two reasons have led to an exploration of possibilities other than \texttt{MATLAB} for handling serial and displaying a nice user interface. Since one of the team members had sufficient previous experience with Microsoft's .NET Framework using the C\# language for designing a GUI (using the \emph{Windows Presentation Foundation} or WPF), and a serial interface in C\# fulfilling most of the requirements had already been written during EPO2 (EE1810 Project: ``Smart Robot Challenge''), that yielded delays of around \SI{125}{ms}, C\# was deemed a viable candidate for our design. Since .NET's main flaw, only being usable on the Windows operating system, was deemed to be surmountable, development of the GUI was continued using C\#.
+
+\section{Design overview}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{resource/overwatch-overview.pdf}
+	\caption{An overview of \emph{Overwatch}, our GUI}
+	\label{fig:system-overview}
+\end{figure}
+
+\section{User control}
+
+\section{Visualization}
+
+\section{Communication}
+
+\section{Future work}
+
+
+\end{document}

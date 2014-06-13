@@ -4,9 +4,9 @@ using System.Windows.Media;
 namespace Overwatch.ViewModel
 {
 	/// <summary>
-	/// Provides binding data for a waypoint in the visualisation canvas, based on an instance of the Waypoint class.
+	/// Provides binding data for a waypoint in the visualization canvas, based on an instance of the Waypoint class.
 	/// </summary>
-	public class WaypointViewModel : ObservableObject, IVisualisationObject
+	public class WaypointViewModel : ObservableObject, IVisualizationObject
 	{
 		#region Data members
 		private Waypoint _waypoint = new Waypoint();

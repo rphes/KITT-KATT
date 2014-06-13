@@ -79,7 +79,7 @@
     </ApplicationDefinition>
     <Compile Include="CodeBehind\AutoControl.cs" />
     <Compile Include="CodeBehind\Communication.cs" />
-    <Compile Include="CodeBehind\IVisualisationObject.cs" />
+    <Compile Include="CodeBehind\IVisualizationObject.cs" />
     <Compile Include="CodeBehind\Matlab.cs" />
     <Compile Include="CodeBehind\Waypoint.cs" />
     <Compile Include="ViewModel\FieldViewModel.cs" />
@@ -95,7 +95,7 @@
     <Compile Include="ViewModel\CommunicationViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\VehicleViewModel.cs" />
-    <Compile Include="ViewModel\VisualisationViewModel.cs" />
+    <Compile Include="ViewModel\VisualizationViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
