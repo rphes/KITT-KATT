@@ -8,6 +8,7 @@
 \begin{document}
 
 \chapter{System verification}
+\label{ch:simulation}
 \section{Introduction}
 When one designs a complex system, unit tests are indispensable. For every subsystem, we designed thorough simulations and verifications. We will not discuss all of these; that would be excessive. This chapter will describe the way we made sure that our system had a \num{99}\% chance of working, dispite the numerous factors which had to be taken account of. The way we achieved this, was through thorough full system simulation. When one designs a full system simulation, synthetic signals have to be generated for every interface which interfaces with systems outside the system boundaries. This way, the tested system does not know if it is operating in real life, or is being simulated. This concept is illustrated in Figure~\ref{fig:sim-concept}.
 

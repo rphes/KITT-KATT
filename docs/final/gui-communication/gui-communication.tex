@@ -8,6 +8,7 @@
 \begin{document}
 
 \chapter{GUI \& Communication}
+\label{ch:gui-communication}
 \section{Introduction}
 Although KITT is supposed to be able to drive autonomously from an arbitrary initial location within the field to a designated waypoint, some form of user interaction is required for controlling KITT. Since KITT is controlled wirelessly, also a component that handles all (serial) communication with the vehicle has to be implemented. Moreover, we are required to be able to show a plot or something similar, showing KITT's current and previous locations, as well as the location of the five microphones and the location of the set waypoint(s) \cite[114]{epo4-manual}. Lastly, some form of visualization is desirable to be able to observe KITT and examine the localization/control results obtained from \texttt{MATLAB}. Every one of these requirements calls for a so-called \emph{Graphical User Interface} or GUI (this term will hereby encapsulate the serial communication, user control and visualization subcomponents of the design, itself being one of the three main components as discussed in the system overview (Chapter~\ref{ch:system-overview})).
 
