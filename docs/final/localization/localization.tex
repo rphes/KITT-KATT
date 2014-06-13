@@ -115,9 +115,11 @@ Once the peaks have been detected in all five microphone channels, a range diffe
 Using the range difference matrix $\mat{R}$ we can construct a matrix $\mat{A}$, a vector $\vec{x}$ and a vector $\vec{b}$ as explained in \cite{epo4-manual}, $\mat{A}\vec{x}=\vec{b}$ rows of $\mat{A}$ are constructed for each microphone pair $(i,j)$ as
 \begin{equation}
 \begin{bmatrix}
-2(\vec{x}_j-\vec{x}_i)^T & -2r_{i,j}
+2(\vec{x}_j-\vec{x}_i)^T & 0 & 0 & 0 & 0
 \end{bmatrix}
 \end{equation}
+Then, entry $a_{i+2,j+1}$ is set to $-2r_{i,j}$.
+
 
 The entries of vector $\vec{b}$ are also constructed for each microphone pair as
 \begin{equation}
