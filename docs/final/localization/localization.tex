@@ -109,7 +109,7 @@ A plot of an arbitrary recovered impulse response is shown in Figure \ref{fig:lo
 
 \section{Localization algorithm}
 \label{sec:loc_alg}
-Once the peaks have been detected in all five microphone channels, a range difference matrix can be constructed consisting of entries $r(i,j)$ corresponding to the range difference between microphones $i$~and~$j$. Obviously, the diagonal is zero. 
+Once the peaks have been detected in all five microphone channels, a range difference matrix can be constructed consisting of entries $r(i,j)$ corresponding to the range difference between microphones $i$~and~$j$, leaving the diagonal zero. 
 % TODO: add reference to getrangematrix.m
 Using the range difference matrix $\mat{R}$ we can construct a matrix $\mat{A}$, a vector $\vec{x}$ and a vector $\vec{b}$ as explained in \cite{epo4-manual}, $\mat{A}\vec{x}=\vec{b}$ rows of $\mat{A}$ are constructed for each microphone pair $(i,j)$ as
 \begin{equation}
