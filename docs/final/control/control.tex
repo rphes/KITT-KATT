@@ -427,7 +427,7 @@ We can now evaluate $\dot{\theta}(t)$ by evaluating the limit
 	&= \lim_{\Delta t \rightarrow 0} \left(1+\frac{v^2 \sin{(\phi)}\Delta t^2}{L^2}\right)^{-1}\frac{v \sin{(\phi)}}{L} \quad \quad \text{(L'H\^opital's rule)} \nonumber \\
 	&= \frac{v \sin{(\phi)}}{L}. \label{eq:steering-derivative}
 \end{align}
-Let us now consider a car whose trajectory is given by
+We have now found a relation between rate at which KITT turns and the angle of KITT's wheels. The other thing which remains is finding a relationship between the angle of KITT's wheels and its turning radius. To do that, we now consider a car whose trajectory is given by
 \begin{align*}
 	x(t) = R \cos{(\omega t)}, \\
 	y(t) = R \sin{(\omega t)}.
@@ -465,7 +465,7 @@ Now note that
 	\frac{\Delta \alpha}{\Delta t} &= \frac{v}{R} \\
 	&=\dot{\alpha}(t)=\dot{\theta}(t) = \frac{v \sin{(\phi)}}{L}.
 \end{align*}
-Therefore the relationship between the turning radius $R$, the length $L$ between KITT's wheel axes and the angle $\phi$ of KITT's wheels is given by
+Therefore, the relationship between the turning radius $R$, the length $L$ between KITT's wheel axes and the angle $\phi$ of KITT's wheels is given by
 \begin{equation} \label{eq:steering-radius}
 	R = \frac{L}{\sin{(\phi)}}.
 \end{equation}
@@ -554,7 +554,10 @@ where the central PWM value is given by $\mu$, the offset by $\alpha$, the first
 \end{figure}
 
 \subsection{Implementation}
-We have now almost designed the complete controller chain. The only thing which remains is solving the distance controllers' state-space model. The solution of a state-space model is obtained by solving
+We have now almost designed the complete controller chain. What remains, is solving the distance controllers' state-space model and implementing the controller. We will first go into the former before discussing the implementational details.
+
+\subsubsection{Numerically solving a state-space model}
+The solution of a state-space model is obtained by solving
 \begin{equation} \label{eq:ctrl-ext}
 	\dot{\vec{x}}=\mat{A}\vec{x}+\mat{B}\vec{u}.
 \end{equation}
@@ -614,6 +617,9 @@ This indicates that the a second-order approximation is given by a linear combin
 x(t_0+\Delta t) &\approx x(t_0) + \frac{\Delta t}{2}\left(\left. \frac{dx}{dt} \right|_{t=t_0} + f(\tilde{x})\right).\nonumber 
 \end{align}
 One can use the same reasoning to derive a fourth-order Runge-Kutta method, also known as \texttt{ode45}, which is commonly used technique to numerically solve differential equations.
+
+\subsubsection{Implementing the system}
+We implemented the controller using the \texttt{MATLAB} language. \texttt{MATLAB} provides tools which make the implementation of the controller somewhat easier compared to other languages. We chose for a object-oriented approach. The program consists of a class called \texttt{Wrapper} which takes inputs and outputs as shown in Figure~\ref{fig:ctrl-overview}. Each of the in this chapter discussed modules are implemented in different subclasses. These classes are used in \texttt{Wrapper} to create a high level of abstraction. \texttt{Wrapper} can be used to iteratively localize and control KITT.
 
 \section{Final thoughts}
 Our method \textit{reduction of dimensionality} is a simplification of how one should design a controller for driving in a plane. The correct way to design such a controller, is by modelling the system by making use of Lagrangian formulation and non-holonomic constraints, and then minimizing by making use of the Lagrange multiplier. However, this is very complicated. Our time-frame did not allow such a realization. \cite{epo4-manual}.
