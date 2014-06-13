@@ -125,13 +125,7 @@ r_{i,j}^2-||\vec{x}_i||^2+||\vec{x}_j||^2
 \end{bmatrix}.
 \end{equation}
 
-<<<<<<< HEAD
-The vector $\vec{x}$ that solves these equations may not exist because the system is overdetermined: there are \num{5} microphones (so $\mat{A}$ has \num{10} rows) and we limit ourself to two coordinates yielding \num{6} columns in $\mat{A}$. Therefore, the solution $\vec{x}$ is calculated (much in the same way as in section \ref{sec:loc_est_h}) as the solution of the matrix equation $\mat{A}\vec{x}=\vec{b}$ in an ordinary least squares way: $\vec{x}=(\mat{A}^T\mat{A})^{-1}\mat{A}^T\vec{b}$. This method yields an exact solution if it exists and otherwise produces the $\vec{x}$ with the least squares error. The first two entries of $\vec{x}$ are the resulting position of KITT. 
-The \texttt{MATLAB} implementation of the range difference matrix generation and localization algorithm can be found in appendix \ref{appsubsec:overwatch-matlab-tdoa-toolkit}.
-=======
-The vector $\vec{x}$ that solves these equations may not exist because the system is overdetermined. Therefore, the solution $\vec{x}$ is calculated (much in the same way as in section \ref{sec:loc_est_h}) as the solution of the matrix equation $\mat{A}\vec{x}=\vec{b}$ in an ordinary least squares way by $\vec{x}=(\mat{A}^T\mat{A})^{-1}\mat{A}^T\vec{b}$. This method yields an exact solution if it exists and otherwise produces the $\vec{x}$ with the least squares error. The first two entries of $\vec{x}$ are the resulting position of KITT.
-% TODO: include reference to localize.m
->>>>>>> origin/master
+The vector $\vec{x}$ that solves these equations may not exist because the system is overdetermined. Therefore, the solution $\vec{x}$ is calculated (much in the same way as in section \ref{sec:loc_est_h}) as the solution of the matrix equation $\mat{A}\vec{x}=\vec{b}$ in an ordinary least squares way by $\vec{x}=(\mat{A}^T\mat{A})^{-1}\mat{A}^T\vec{b}$. This method yields an exact solution if it exists and otherwise produces the $\vec{x}$ with the least squares error. The first two entries of $\vec{x}$ are the resulting position of KITT. The \texttt{MATLAB} implementation of the range difference matrix generation and localization algorithm can be found in Appendix \ref{appsubsec:overwatch-matlab-tdoa-toolkit}.
 
 \section{Angle determination}
 Now that we have localized KITT, we can determine its angle.
