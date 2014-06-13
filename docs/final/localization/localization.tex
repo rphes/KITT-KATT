@@ -27,37 +27,28 @@ As reported in \cite{epo4-del7} the main goal of the transmitted sequence is to 
 
 Using the given microcontroller programmer, the thus defined reference signal was programmed onto KITT.
 
+% TODO fix this table!
 \begin{table}[H]
 \centering
 \begin{tabular}{c | c | c}
 \hline \hline
 Parameter & Choice & Reasoning \\
 \hline
-Carrier frequency & \SI{15}{khz} & \\
-Code frequency & \SI{5}{khz} & \\
-Repeat frequency & \SI{8}{hz} & \\
-Code word & \texttt{4eeb428c} & \\
+Carrier frequency & \SI{15}{khz} & 
+Chosen frequency is high enough to prevent most interference with human speech but low enough that the beacon can accurately represent it.\\
+Code frequency & \SI{5}{khz} & High code frequency may lead to inaccurate measurements. This setting proved to work in practice.\\
+Repeat frequency & \SI{8}{hz} & Higher repeat frequency guarantees more frequent localization but leaves less room between samples. In \cite{epo4-del7} it was shown that this setting is optimal.\\
+Code word & \texttt{4eeb428c} & A randomly generated hexadecimal string.\\
 \end{tabular}
-\caption{Summary of chosen audio beacon parameters.}
+\caption{Summary of chosen audio beacon parameters}
 \label{tab:loc_signal}
 \end{table}
 
 \section{Recording and data trimming}
 \label{sec:loc_data_trim}
-Explain the recording process, describe how many samples, sample rate etc.
+The recording stage is the gateway between the physical sound and the digital signal processing. Each microphone is recorded using an audio interface connected via USB to the computer at a sample rate of \SI{48}{\kilo\hertz}. Since the localization should be done as often as possible to get accurate results, the recording process should take as little time as possible yet still guarantee the presence of a complete response. Therefore, the recording time was set to two times the repeat time, e.g. \SI{250}{\milli\second}. If the recording would start exactly at the first received peak, no data trimming would be necessary. But because the recording is not synchronized to the emitted sound we have no method of verifying this. Therefore the data must first be trimmed.
 
-Before being able to deconvolve the recorded sound the recorded data must be trimmed. This has two reasons: \textbf{(1)}, the recorded data must not include sound sent by a previous pulse (ideally including reflections) and \textbf{(2)}, the signal we wish to deconvolve must be a causal response to the \SI{1}{\centi\meter} reference measurements. \textbf{(1)} was guaranteed by truncating the recording to a limited interval around the peak in the highest quality channel estimate. As a measure for channel quality $\frac{\text{max}(h[n])}{\text{std}(h[n])}$ was used since this gives a quick indication of the signal to noise ratio. Then, a similar peak detection algorithm as described in section \ref{sec:loc_peak} was used to find the peak value in the channel. The interval the signal was truncated to is given by the field dimensions: since the expectation is that KITT should not leave the field the maximum distance a sound pulse must travel is diagonally across the field. Since this distance is known (\SI{49}{\meter\squared}), the speed of sound is known (\SI{343}{\meter\per\second}) and the sample frequency of the audio interface is known (\SI{48}{\kilo\hertz}), the delay between peaks can be no more than \num{1400} samples. Further more, the highest quality signal is likely to be closer to a microphone so it makes sense not to \textit{center} the search interval around the peak sample, but to bias it more towards the samples following the peak. Therefore, calling the sample at which the highest quality peak is detected $t_0$ and allowing some headroom, the search interval was set to $[t_0 - 400, t_0 +1500]$.
-
-
-
-
-
-
-
-
-
-
-
+Data trimming is done for two reasons: \textbf{(1)}, the recorded data must not include sound sent by a previous pulse (ideally including reflections) and \textbf{(2)}, the signal we wish to deconvolve must be a causal response to the \SI{1}{\centi\meter} reference measurements. \textbf{(1)} was guaranteed by truncating the recording to a limited interval around the peak in the highest quality channel estimate. As a measure for channel quality $\frac{\text{max}(h[n])}{\text{std}(h[n])}$ was used since this gives a quick indication of the signal to noise ratio. Then, a similar peak detection algorithm as described in section \ref{sec:loc_peak} was used to find the peak value in the channel. The interval the signal was truncated to is given by the field dimensions: since the expectation is that KITT should not leave the field the maximum distance a sound pulse must travel is diagonally across the field. Since this distance is known (\SI{49}{\meter\squared}), the speed of sound is known (\SI{343}{\meter\per\second}) and the sample frequency of the audio interface is known (\SI{48}{\kilo\hertz}), the delay between peaks can be no more than \num{1400} samples. Further more, the highest quality signal is likely to be closer to a microphone so it makes sense not to \textit{center} the search interval around the peak sample, but to bias it more towards the samples following the peak. Therefore, calling the sample at which the highest quality peak is detected $t_0$ and allowing some headroom, the search interval was set to $[t_0 - 400, t_0 +1500]$.
 
 \section{Channel estimation}
 \label{sec:loc_est_h}
@@ -68,7 +59,10 @@ The size of the resulting matrix $\mat{X}^\dagger$ is dependent on the amount of
 A potential problem to the matrix inversion necessary for the calculation of $\mat{X}^\dagger$ is when the matrix $\mat{A}=\mat{X}^T\mat{X}$ is singular or ill-conditioned. When $\mat{A}$ is singular (the determinant of $\mat{A}$ is zero), $\mat{X}^\dagger$ cannot be calculated and when $\mat{A}$ is ill-conditioned\footnote{A matrix is said to be ill-conditioned if the ratio of the largest singular value to the smallest singular value (the condition number) $c=\frac{\sigma_1}{\sigma_n}$ is `large'. Though `large' is not well-defined itself, it can be shown \cite{epo4-manual} that an error $\epsilon$ in the input to a linear system is potentially magnified by the condition number in the solution.} the resulting matrix is dominated by small singular values. In order to overcome this potential problem, a singular value filter was built into the matrix inversion algorithm. The filter works as follows:
 Let $\mat{A}=\mat{U}\mat{\Sigma}\mat{V}^T$ be the singular value decomposition of $\mat{A}=\mat{X}^T\mat{X}$ where $\mat{A}$ is of size $m\times n$. Then $\mat{\Sigma}$ is a diagonal matrix of size $m \times n$ containing the singular values $\sigma_1, \sigma_2, ..., \sigma_n$ of $\mat{A}$ on the diagonal in descending order. For any $\sigma_i<t$, where $t$ is some threshold, the left inverse of $\mat{A}$ is approximated by $\mat{\hat{A}}^\dagger=\mat{\hat{V}}\mat{\hat{\Sigma}}^{-1}\mat{\hat{U}}^T$ where $\mat{\hat{V}}$, $\mat{\hat{\Sigma}}$ and $\mat{\hat{U}}$ are their respective matrices as defined before with the $i^\text{th}$ columns removed. 
 
-The choice of threshold $t$ is non-trivial and was determined using trial and error on measurement data. We discovered that the `optimal' threshold was slightly different for each microphone and even each measurement. An important insight is that when the threshold is set too high, e.g. too large singular values are filtered, some calculated channel responses are no longer identifiable as such. Specifically, the result would be a modulated sine wave. In order to prevent this from happening during the demonstration, the thresholds for each microphone channel were chosen somewhat conservative, see table \ref{tab:loc_svd_value}. \textbf{CHECK THE VALUES IN THE TABLE!!}.
+The choice of threshold $t$ is non-trivial and was determined using trial and error on measurement data. We discovered that the `optimal' threshold was slightly different for each microphone and even each measurement. An important insight is that when the threshold is set too high, e.g. too large singular values are filtered, some calculated channel responses are no longer identifiable as such. Specifically, the result would be a modulated sine wave. In order to prevent this from happening during the demonstration, the thresholds for each microphone channel were chosen somewhat conservative, see table \ref{tab:loc_svd_value}.
+
+% TODO: check values in table
+% TODO: include reference to channel estimation matlab
 
 \begin{table}[H]
 \centering
@@ -89,7 +83,7 @@ Microphone channel & Singular value threshold $t$ \\
 \section{Peak detection}
 \label{sec:loc_peak}
 The previous report \cite{epo4-del7} described two methods of localizing the peaks in the estimated channel, the first based on \texttt{MATLAB}'s \texttt{findpeaks} function and the second based on smart utilization of the standard deviation of the channel. However, after revising the code it seemed both these approaches were too time consuming. It was decided instead to implement a simpler detection algorithm which simply scans the estimated channel sample by sample and compares the amplitude to some threshold which is proportional to the maximum of all samples. After some simple testing on synthetic data this turned out to be up to a factor \num{40} faster than the \texttt{findpeaks} implementation. Since the standard deviation approach was already at least a factor \num{10} slower than the \texttt{findpeaks} algorithm, it was decided to use the threshold approach. 
-
+% TODO insert reference to find_start.m
 A plot of an arbitrary recovered impulse response is shown in figure \ref{fig:localization-typical-impulse}. In green the work of the peak detection algorithm is shown. 
 
 \begin{figure}[H]
@@ -101,7 +95,29 @@ A plot of an arbitrary recovered impulse response is shown in figure \ref{fig:lo
 
 \section{Localization algorithm}
 \label{sec:loc_alg}
-TDOA localization works by measuring the difference in arrival times of a transmitted signal to the different microphones. Because the propagation speed of sound is assumed to be known or can be approximated, these time differences can be converted to range differences. Dit verhaal is te algemeen. We moeten meer specifiek zijn 
+Once the peaks have been detected in all five microphone channels, a range difference matrix can be constructed consisting of entries $r(i,j)$ corresponding to the range difference between microphones $i$~and~$j$. Obviously, the diagonal is zero. 
+% TODO: add reference to getrangematrix.m
+Using the range difference matrix $\mat{R}$ we can construct a matrix $\mat{A}$, a vector $\vec{x}$ and a vector $\vec{b}$ as in \cite{epo4-manual}, $\mat{A}\vec{x}=\vec{b}$ rows of $\mat{A}$ are constructed for each microphone pair $(i,j)$ as
+\begin{equation}
+\begin{bmatrix}
+2(\vec{x}_j-\vec{x}_i)^T & -2r_{i,j}
+\end{bmatrix}
+\end{equation}
+
+The entries of vector $\vec{b}$ are also constructed for each microphone pair as
+\begin{equation}
+\begin{bmatrix}
+r_{i,j}^2-||\vec{x}_i||^2+||\vec{x}_j||^2
+\end{bmatrix}
+\end{equation}
+
+The vector $\vec{x}$ that solves these equations may not exist because the system is overdetermined: there are \num{5} microphones (so $\mat{A}$ has \num{10} rows) and we limit ourself to two coordinates yielding \num{6} columns in $\mat{A}$.
+
+Hier komt nog uitbreiding, I'm on it!
+
+
+
+
 
 \section{Future work}
 \label{sec:loc_future}
