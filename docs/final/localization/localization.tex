@@ -124,5 +124,7 @@ The angle at which KITT is driving through the field, $\theta$, can be calculate
 
 \section{Future work}
 \label{sec:loc_future}
-Explain other methods we tried, e.g. Bancroft, MDS etc.
+The subsections below explain some ideas we had floating in our head which did not make the final project due to time constraints, uncertainties about the implementation or superfluousness. 
+\subsection{QR decomposition}
+To improve numerical stability and accuracy, the least squares solutions presented in section \ref{sec:loc_est_h} and \ref{sec:loc_alg} can be performed using the QR decomposition. Generally, letting $\mat{A}\vec{x}=\vec{b}$ be the overdetermined system, trying to minimize $||\mat{A}\vec{\hat{x}}=\vec{b}||$ can be done using the QR factorization: $\mat{A}=\mat{Q}\mat{R}$. The least squares solution is then $\hat{\vec{x}}=\mat{R}_1^{-1}\mat{Q}_1^T\vec{b}$. In this, $\mat{Q_1}$ and $\mat{R_1}$ are the \textit{economy size} versions of $\mat{Q}$ and $\mat{R}$ given by the \texttt{MATLAB} command \texttt{[Q, R] = qr(A,0)}. Although it might seem ineffici\"ent to factorize $\mat{A}$ and then invert $\mat{R}_1$, it can be shown \cite{num-methods} that $\mat{R}_1^{-1}$ does not need to be explicitly calculated because back-substitution may be used. Thus, making use of QR factorization in both the channel estimation and localization algorithm could speed up these processes.
 \end{document}
