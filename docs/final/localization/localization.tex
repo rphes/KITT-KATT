@@ -63,7 +63,7 @@ Choosing the interval length $I$ twice the peak spacing $L$ makes sense, because
 \label{sec:loc_data_trim}
 If the recording would start exactly at the first received peak, no data trimming would be necessary. But because the recording is not synchronized to the emitted sound we have no method of verifying this. Therefore the data must first be trimmed.
 
-Data trimming is done for two reasons: \textbf{(1)}, the recorded data must not include sound sent by a previous pulse (possibly including reflections) and \textbf{(2)}, the signal we wish to deconvolve must be a causal response to the \SI{1}{\centi\meter} reference measurements. \textbf{(1)} was guaranteed by truncating the recording to a limited interval around the peak in the highest quality channel estimate. As a measure for channel quality $\frac{\text{max}(h[n])}{\text{std}(h[n])}$ was used since this gives a quick indication of the signal clearness. Then, a similar peak detection algorithm as described in Section \ref{sec:loc_peak} was used to find the peak value in the channel. The interval the signal was truncated to, is given by the field dimensions, since the expectation is that KITT should not leave the field the maximum distance a sound pulse must travel is diagonally across the field. Since this distance is known (\SI{9.90}{\meter}), the speed of sound is known (\SI{343}{\meter\per\second}) and the sample frequency of the audio interface is known (\SI{48}{\kilo\hertz}), the delay between peaks can be no more than \num{1400} samples. Further more, the highest quality signal is likely to be closer to a microphone so it makes sense not to \textit{center} the search interval around the peak sample, but to bias it more towards the samples following the peak. Therefore, denoting the sample at which the highest quality peak is detected by $n$ and allowing some headroom, the search interval was set to $[n - 400, n + 1500]$.
+Data trimming is done for two reasons: \textbf{(1)}, the recorded data must not include sound sent by a previous pulse (possibly including reflections) and \textbf{(2)}, the signal we wish to deconvolve must be a causal response to the \SI{1}{\centi\meter} reference measurements. \textbf{(1)} was guaranteed by truncating the recording to a limited interval around the peak in the highest quality channel estimate. As a measure for channel quality $\frac{\text{max}(h[n])}{\text{std}(h[n])}$ was used since this gives a quick indication of the signal clearness. Then, a similar peak detection algorithm as described in Section \ref{sec:loc_peak} was used to find the peak value in the channel. The interval the signal was truncated to, is given by the field dimensions, since the expectation is that KITT should not leave the field the maximum distance a sound pulse must travel is diagonally across the field. Since this distance is known (\SI{9.90}{\meter}), the speed of sound is known (\SI{343}{\meter\per\second}) and the sample frequency of the audio interface is known (\SI{48}{\kilo\hertz}), the delay between peaks can be no more than \num{1400} samples. Furthermore, the highest quality signal is likely to be closer to a microphone so it makes sense not to \textit{center} the search interval around the peak sample, but to bias it more towards the samples following the peak. Therefore, denoting the sample at which the highest quality peak is detected by $n$ and allowing some headroom, the search interval was set to $[n - 400, n + 1500]$.
 
 \section{Channel estimation}
 \label{sec:loc_est_h}
@@ -113,7 +113,7 @@ Using the range difference matrix $\mat{R}$ we can construct a matrix $\mat{A}$,
 \begin{equation}
 \begin{bmatrix}
 2(\vec{x}_j-\vec{x}_i)^T & 0 & 0 & 0 & 0
-\end{bmatrix}
+\end{bmatrix}.
 \end{equation}
 Then, entry $a_{i+2,j+1}$ is set to $-2r_{i,j}$.
 
@@ -122,11 +122,16 @@ The entries of vector $\vec{b}$ are also constructed for each microphone pair as
 \begin{equation}
 \begin{bmatrix}
 r_{i,j}^2-||\vec{x}_i||^2+||\vec{x}_j||^2
-\end{bmatrix}
+\end{bmatrix}.
 \end{equation}
 
+<<<<<<< HEAD
 The vector $\vec{x}$ that solves these equations may not exist because the system is overdetermined: there are \num{5} microphones (so $\mat{A}$ has \num{10} rows) and we limit ourself to two coordinates yielding \num{6} columns in $\mat{A}$. Therefore, the solution $\vec{x}$ is calculated (much in the same way as in section \ref{sec:loc_est_h}) as the solution of the matrix equation $\mat{A}\vec{x}=\vec{b}$ in an ordinary least squares way: $\vec{x}=(\mat{A}^T\mat{A})^{-1}\mat{A}^T\vec{b}$. This method yields an exact solution if it exists and otherwise produces the $\vec{x}$ with the least squares error. The first two entries of $\vec{x}$ are the resulting position of KITT. 
 The \texttt{MATLAB} implementation of the range difference matrix generation and localization algorithm can be found in appendix \ref{appsubsec:overwatch-matlab-tdoa-toolkit}.
+=======
+The vector $\vec{x}$ that solves these equations may not exist because the system is overdetermined. Therefore, the solution $\vec{x}$ is calculated (much in the same way as in section \ref{sec:loc_est_h}) as the solution of the matrix equation $\mat{A}\vec{x}=\vec{b}$ in an ordinary least squares way by $\vec{x}=(\mat{A}^T\mat{A})^{-1}\mat{A}^T\vec{b}$. This method yields an exact solution if it exists and otherwise produces the $\vec{x}$ with the least squares error. The first two entries of $\vec{x}$ are the resulting position of KITT.
+% TODO: include reference to localize.m
+>>>>>>> origin/master
 
 \section{Angle determination}
 Now that we have localized KITT, we can determine its angle.
@@ -183,7 +188,7 @@ The subsections below explain some ideas we had floating in our head which did n
 To improve numerical stability and accuracy, the least squares solutions presented in Section \ref{sec:loc_est_h} and \ref{sec:loc_alg} can be performed using the QR decomposition. Generally, letting $\mat{A}\vec{x}=\vec{b}$ be the overdetermined system, trying to minimize $||\mat{A}\vec{\hat{x}}=\vec{b}||$ can be done using the QR factorization: $\mat{A}=\mat{Q}\mat{R}$. The least squares solution is then $\hat{\vec{x}}=\mat{R}_1^{-1}\mat{Q}_1^T\vec{b}$. In this, $\mat{Q_1}$ and $\mat{R_1}$ are the \textit{economy size} versions of $\mat{Q}$ and $\mat{R}$ given by the \texttt{MATLAB} command \texttt{[Q, R] = qr(A,0)}. Although it might seem ineffici\"ent to factorize $\mat{A}$ and then invert $\mat{R}_1$, it can be shown \cite{num-methods} that $\mat{R}_1^{-1}$ does not need to be explicitly calculated because back-substitution may be used. Thus, making use of QR factorization in both the channel estimation and localization algorithm could speed up these processes.
 
 \subsection{Increasing localization accuracy}
-The accuracy of the localization algorithm is dependent on the speed of sound. We should be able to increase the localization accuracy by more accurately determining the speed of sound. The subsection gives a first shot at deriving an expression for the speed of sound with herein the dependency on environment temperature and humidity. From the Newton-Laplace equation for the speed of sound in a medium
+The accuracy of the localization algorithm is dependent on the speed of sound. We should be able to increase the localization accuracy by more accurately determining the speed of sound. This subsection gives a first shot at deriving an expression for the speed of sound with herein the dependency on environment temperature and humidity. From the Newton-Laplace equation for the speed of sound in a medium
 
 \begin{equation}
 	c = \sqrt{\frac{K}{\rho}},

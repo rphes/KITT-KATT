@@ -619,7 +619,7 @@ x(t_0+\Delta t) &\approx x(t_0) + \frac{\Delta t}{2}\left(\left. \frac{dx}{dt} \
 One can use the same reasoning to derive a fourth-order Runge-Kutta method, also known as \texttt{ode45}, which is commonly used technique to numerically solve differential equations.
 
 \subsubsection{Implementing the system}
-We implemented the controller using the \texttt{MATLAB} language. \texttt{MATLAB} provides tools which make the implementation of the controller somewhat easier compared to other languages. We chose for a object-oriented approach. The program consists of a class called \texttt{Wrapper} which takes inputs and outputs as shown in Figure~\ref{fig:ctrl-overview}. Each of the in this chapter discussed modules are implemented in different subclasses. These classes are used in \texttt{Wrapper} to create a high level of abstraction. \texttt{Wrapper} can be used to iteratively localize and control KITT.
+We implemented the controller using the \texttt{MATLAB} language. \texttt{MATLAB} provides tools which make the implementation of the controller somewhat easier compared to other languages. We chose for a object-oriented approach. The program consists of a class called \texttt{Wrapper} which takes inputs and outputs as shown in Figure~\ref{fig:ctrl-overview}. Each of the in this chapter discussed modules are implemented in different subclasses. These classes are used in \texttt{Wrapper} to create a high level of abstraction. \texttt{Wrapper} can be used to iteratively localize and control KITT. The source code can be found in Appendix \ref{appsec:overwatch-matlab}.
 
 \section{Final thoughts}
 Our method \textit{reduction of dimensionality} is a simplification of how one should design a controller for driving in a plane. The correct way to design such a controller, is by modelling the system by making use of Lagrangian formulation and non-holonomic constraints, and then minimizing by making use of the Lagrange multiplier. However, this is very complicated. Our time-frame did not allow such a realization. \cite{epo4-manual}.
@@ -628,6 +628,7 @@ We made numerous approximations and simplifications in the design of our control
 
 
 \subsection{Using the Doppler effect to increase measurement accuracy}
+\label{ssec:control-doppler}
 Let us consider KITT driving with velocity $v'$ at a non-moving object at distance $x$. One can use the classical Doppler effect to accurately determine the distance to this non-moving object. The wavelength $\lambda'$ of the wave, which will be sent out by KITT's ultrasonic sensor, is given by
 
 \begin{equation}
