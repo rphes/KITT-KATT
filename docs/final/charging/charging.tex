@@ -7,8 +7,9 @@
 
 \begin{document}
 
-\chapter{Contactless Charging}
-In this chapter it will be briefly described how a contactless charging system was designed and built. The main idea to achieve this was by transmitting energy through space by using magnetic fields. In this system one coil is a transmitter of magnetic energy and the second coil a receiver. For this a fluctuating magnetic field had to be created. Nevertheless, both the energy source and the capacitor bank of the car use direct current. This problems thus translates into designing a DC/DC converter. Furthermore, this problem can be dissected in designing a DC/AC-inverter, a transformer and a AC/DC-rectifier. This charging system can be seen in Figure~\ref{fig:contactless-charging}.
+\chapter{Contactless charging}
+\section{Introduction}
+In this chapter it will be briefly described how our contactless charging system was designed and built. The main idea to achieve this was by transmitting energy through space by using compensated coils. For this a fluctuating magnetic field had to be created. Nevertheless, both the energy source and the capacitor bank of the car use direct current. This problem can thus be dissected in designing a DC/AC-inverter, a transformer and a AC/DC-rectifier. A system overview is shown in Figure~\ref{fig:contactless-charging}.
 
 \begin{figure}[H]
 	\begin{center}
@@ -18,7 +19,71 @@ In this chapter it will be briefly described how a contactless charging system w
 	\label{fig:contactless-charging}
 \end{figure}
 
-The DC/AC-inverter was made by making use of power electronics. This DC/AC-inverter converts a DC signal into a square wave signal. This signal had to be in solid resonance, for this we used a frequency of \SI{100}{kHz}. For optimal charging speed we used a duty cycle of \SI{40}{\percent}. After this signal is transmitted to the secondary coil it is then converted to a DC signal by using diodes. The parameters of the coils are displayed in Table~\ref{tab:charging-coil-params-calc}.
+\section{Simulation}
+We modelled the system by the circuit shown in Figure~\ref{fig:charg-circ}. $V_s$ denotes the source voltage, $C_1$ and $C_2$ the compensating capacitors, $R_1$ and $R_2$ the coil resistances, $L_1$ and $L_2$ the coil inductances, $M$ the mutual inductance and $R_L$ the load resistance. The coupling factor is defined by $k$.
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{circuitikz}[scale=1.2]
+			 \draw (0,0) node[ground] {} to[american voltage source,l=$V_s$] (0,4)
+				to[C, l=$C_1$] (2,4)
+				to[european resistor, l=$R_1$] (4,4)
+				to[L, l=$L_1$] (4,2);
+
+			\draw (4,0) node[ground] {} to[american controlled voltage source, l=$j \omega M I_2$, i<=$I_1$] (4,2);
+
+			\draw (6,0) node[ground] {} to[american controlled voltage source, l_=$j \omega M I_1$, i<=$I_2$] (6,2)
+				to[L, l=$L_2$] (6,4)
+				to[european resistor, l=$R_2$] (8,4)
+				to[C, l=$C_2$] (10,4)
+				to[european resistor, l=$R_L$] (10,0) node[ground] {};
+		\end{circuitikz}
+	\end{center}
+	\caption{Equivalent circuit with compensation}
+	\label{fig:charg-circ}
+\end{figure}
+
+Using the shown circuit, we derived the model
+
+\begin{equation*}
+	\mathbf{\vec{I}} \mathbf{Z}=
+	\begin{bmatrix}
+		I_{source} \\
+		I_{load}
+	\end{bmatrix}
+	\begin{bmatrix}
+		R_1 + j \omega L_1 + (j \omega C_1)^{-1}  & j \omega M\\
+		j \omega M & R_2 + j \omega L_2 + (j \omega C_2)^{-1}  + R_L
+	\end{bmatrix}
+	= \mathbf{\vec{V}} =
+	\begin{bmatrix}
+		V_{source} \\
+		0
+	\end{bmatrix} .
+\end{equation*}
+
+This model translated to the transfer function
+
+\begin{equation*}
+	|H(s)| = \frac{s M Z_L}{(s M)^2 - (s L_2 + R_2 + (s C_2)^{-1} + Z_L) ( s L_1 + R1 + (s C_1)^{-1}))}
+\end{equation*}
+
+which is graphed in Figure~\ref{fig:charg-tf}.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{resource/transfer-function.pdf}
+	\end{center}
+	\caption{Transfer function with and without compensation}
+	\label{fig:charg-tf}
+\end{figure}
+
+We see that for a coupling factor of $k\approx0.1$ the power transferred is maximized. This corresponded with measurement results and a coil distance of approximately \SI{6}{cm}.
+
+\section{System analysis}
+To understand the way the power transfer is influenced by the distance between the coils, we have to go back to some elementary electromagnetics. When the distance increases, the coupling factor between both coils decreases. This causes the mutual inductance, and therefore the power transfer, to decrease. However, in the case of compensated coils, a decreased mutual inductance also causes an increased power drawn. There exists an optimal distance for which the resulting power transferred is maximized.
+
+The DC/AC-inverter was made by making use of power electronics. For the coils' compensation to work, the generated signal's frequency had to match the resonance frequency. For this we used a frequency of \SI{100}{kHz}. For by trial-and-error optimized charging speed, we used a duty cycle of \num{0.4}. The parameters of the coils we used are displayed in Table~\ref{tab:charging-coil-params-calc}. The primary coil corresponds with the coil on the transmitting side, and the secondary coil with the coil on the receiving side.
 
 \begin{table}[H]
 	\centering
@@ -34,6 +99,6 @@ The DC/AC-inverter was made by making use of power electronics. This DC/AC-inver
 		\end{tabular}
 \end{table} 
 
-This system gave us a maximum charging speed of 3:45 minutes and met all the requirements.
+This system gave us a maximum charging speed of \num{3} minutes and \num{45} seconds and met all specified requirements.
 
 \end{document}
