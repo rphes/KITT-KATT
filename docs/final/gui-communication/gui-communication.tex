@@ -14,24 +14,63 @@ Although KITT is supposed to be able to drive autonomously from an arbitrary ini
 \section{Design considerations}
 Because our control and localization logic is implemented using \texttt{MATLAB}, utilizing the program's vast mathematical toolbox, it would seem sensible to implement the visualization, user interaction and communication subcomponents in \texttt{MATLAB} as well. After all, \texttt{MATLAB} offers a GUI-toolbox of its own and serial handling is possible as well. However, after some time handling communication using \texttt{MATLAB}, we noticed that the program introduces a delay between sending a status request and receiving a response of around \SI{250}{ms}, which is quite high, and would certainly decrease our control accuracy. Furthermore, developing a GUI in \texttt{MATLAB} turned out to be quite cumbersome and the resulting GUI not very aesthetically pleasing.
 
-These two reasons have led to an exploration of possibilities other than \texttt{MATLAB} for handling serial and displaying a nice user interface. Since one of the team members had sufficient previous experience with Microsoft's .NET Framework using the C\# language for designing a GUI (using the \emph{Windows Presentation Foundation} or WPF), and a serial interface in C\# fulfilling most of the requirements had already been written during EPO2 (EE1810 Project: ``Smart Robot Challenge''), that yielded delays of around \SI{125}{ms}, C\# was deemed a viable candidate for our design. Since .NET's main flaw, only being usable on the Windows operating system, was deemed to be surmountable, development of the GUI was continued using C\#.
+These two reasons have led to an exploration of possibilities other than \texttt{MATLAB} for handling serial and displaying a nice user interface. Since one of the team members had sufficient previous experience with Microsoft's .NET Framework using the C\# language for designing a GUI (using the \emph{Windows Presentation Foundation} or WPF), and a serial interface in C\# fulfilling most of the requirements had already been written during EPO2 (EE1810 Project: ``Smart Robot Challenge''), that yielded delays of around \SI{125}{ms}, C\# was deemed a viable candidate for our design. Since .NET's main flaw, only being usable on the Windows operating system, was deemed to be surmountable, development of the GUI was continued using C\#, naming it \emph{Overwatch}.
 
 \section{Design overview}
+Now, we may split our design into three subcomponents. As discussed, we need a subcomponent that handles serial communication with KITT, one that handles user interaction and displays relevant information in a clear way (visualization), and, because our localization and control logic resides in \texttt{MATLAB}, a way to communicate with the \texttt{MATLAB} part of our system.
+A graphical overview of these three subcomponents along with the data exchange between each other is given in Figure~\ref{fig:overwatch-overview}.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{resource/overwatch-overview.pdf}
 	\caption{An overview of \emph{Overwatch}, our GUI}
-	\label{fig:system-overview}
+	\label{fig:overwatch-overview}
 \end{figure}
 
-\section{User control}
+Implementing this design in a structured way means structured programming is required, which is in our case achieved by making optimal use of the \emph{class}-structure. Also, since a lot of data needs to be accessible via the user interface, a tight link should exist between back-end (data models and processing) and front-end (the view, where data is presented to the user). In .NET, this can be achieved by making use of so-called data-bindings. These are a kind of constraints that notify the user interface when their value is being altered, so the interface is triggered to display this new data (semi-)automatically \cite{data-binding}.
+Finally, the program code is set up in a pattern that is called MVVM, or Model-View-ViewModel. This means that the previously mentioned data-bindings do not directly connect the raw data from the model to the view, but an extra layer, the \emph{ViewModel}, is introduced, that prepares model data (think integer to string conversion, real-world to visualization canvas coordinate transforms, etcetera) in such a way that it can be correctly displayed by the GUI \cite{mvvm}.
 
-\section{Visualization}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{resource/overwatch-screenshot.png}
+	\caption{A screenshot of Overwatch while idle}
+	\label{fig:overwatch-screenshot}
+\end{figure}
+
+Figure~\ref{fig:overwatch-screenshot} gives a preview the result of our efforts. We will now discuss each of the individual subcomponents.
+
+\section{User control}
+The user needs to be able to perform some actions for enabling KITT to drive as required:
+
+\begin{itemize}
+	\item Establish the correct serial connection for communication over Bluetooth
+	\item Toggle the audio beacon if needed
+	\item Manipulate waypoints
+	\item Toggle KITT (observation and control)
+\end{itemize}
+
+Each of these actions can be performed through Overwatch, as shown in Figure~\ref{fig:overwatch-screenshot}. Establishing a serial connection is done by selecting the correct port and clicking the button; simple toggle operations are also done via buttons; and waypoint manipulation is done on-the-fly via mouse gestures on the viewport (visualization canvas, the left part of the GUI) itself. Left clicking it creates a new waypoint on the clicked location, left clicking an existing waypoint will remove that waypoint; right clicking a waypoint will mark it as visited when not yet visited or vice-versa; and lastly, the order in which the waypoints are visited can be altered using the scroll-wheel on the waypoint that is to be reordered.
 
 \section{Communication}
+After enabling KITT, everything begins and ends with the serial interface. New data is retrieved from KITT over serial, processed and then KITT is given new commands over the same serial connection again. This process (Figure~\ref{fig:overwatch-process}) runs until KITT is disabled again.
+
+\begin{figure}[H]
+	\centering
+	\input{resource/overwatch-process.tikz}
+	\caption{The process for controlling KITT, for \emph{autocontrol}, see Section~\ref{sec:gui-autocontrol}}
+	\label{fig:overwatch-process}
+\end{figure}
+
+In C\#, the serial connection is handled completely asynchronously. An event is triggered as soon as data is received and other classes of the program may respond to this event, but this is not required. This asynchronous behavior means we do not have to wait for KITT to respond to any command we send it, so we can continue running the various processes in the mean time.
+
+\section{Visualization}
+Perhaps the most interesting part of Overwatch is the visualization canvas. This field is found in the left part of the GUI and occupies the majority of its space. It shows a real-time representation of the field KITT drives in, along with the placed microphones, KITT itself and all waypoints. Information about KITT's location and angle is obtained using the \texttt{MATLAB} logic previously discussed and the visualization canvas updated as soon as it becomes available. Being able to see where the localizer ``thinks'' KITT is, proved a to be a very useful feature while debugging the rest of our design and apart from that, it looks quite nice.
+
+\section{Autonomous control}
+\label{sec:gui-autocontrol}
+Since we use both \texttt{MATLAB} and C\#, we need to be able to exchange data between the two, to enable autonomous control of KITT. As shown in Figure~\ref{fig:overwatch-overview}, Overwatch will receive status information from KITT, which should then be sent to \texttt{MATLAB} for processing; after which the result of this processing (PWM excitation values for driving KITT), along with localization results (for visualization), should be retrieved back from \texttt{MATLAB} by the GUI. This task, linking \texttt{MATLAB} and C\#, is executed by another subcomponent as depicted by the previously given Figure~\ref{fig:system-overview-process}. As already pointed out, the visualization canvas is automatically updated upon each relevant data change due to the autonomous control process.
 
 \section{Future work}
-
+With Overwatch, we delivered a robust program that meets all given requirements and is certainly better looking than anything designed in \texttt{MATLAB}. An improvement that could be implemented, however, is asynchronous handling of the \texttt{MATLAB} interface. As previously discussed, we experienced a localization delay of around \SI{2}{seconds}, due to the used ASIO drivers. During this interval, the GUI would freeze, which is suboptimal. When moving all \texttt{MATLAB} operations to a separate \emph{thread} (make it a background task), this would not occur.
 
 \end{document}
