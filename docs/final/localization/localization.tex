@@ -111,10 +111,13 @@ r_{i,j}^2-||\vec{x}_i||^2+||\vec{x}_j||^2
 \end{bmatrix}
 \end{equation}
 
-The vector $\vec{x}$ that solves these equations may not exist because the system is overdetermined: there are \num{5} microphones (so $\mat{A}$ has \num{10} rows) and we limit ourself to two coordinates yielding \num{6} columns in $\mat{A}$.
+The vector $\vec{x}$ that solves these equations may not exist because the system is overdetermined: there are \num{5} microphones (so $\mat{A}$ has \num{10} rows) and we limit ourself to two coordinates yielding \num{6} columns in $\mat{A}$. Therefore, the solution $\vec{x}$ is calculated (much in the same way as in section \ref{sec:loc_est_h}) as the solution of the matrix equation $\mat{A}\vec{x}=\vec{b}$ in an ordinary least squares way: $\vec{x}=(\mat{A}^T\mat{A})^{-1}\mat{A}^T\vec{b}$. This method yields an exact solution if it exists and otherwise produces the $\vec{x}$ with the least squares error. The first two entries of $\vec{x}$ are the resulting position of KITT. 
+% TODO: include reference to localize.m
 
-Hier komt nog uitbreiding, I'm on it!
-
+The angle at which KITT is driving through the field, $\theta$, can be calculated from the current and previous location. Let $\vec{x}_n=\begin{bmatrix}x_n\\y_n\end{bmatrix}$ be the latest determined position and $\vec{x}_{n-1}=\begin{bmatrix}x_{n-1}\\y_{n-1}\end{bmatrix}$ the previous location, then $\theta$ is given by
+\begin{equation}
+\theta = \tan^{-1}\left(\frac{y_n-y_{n-1}}{x_n-x_{n-1}}\right)
+\end{equation}
 
 
 
