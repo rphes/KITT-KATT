@@ -12,7 +12,6 @@
 Looking back, we can say we have succeeded in designing a system that meets all set requirements. KITT has been found capable of reaching waypoints on its own, using TDOA localization and a dynamic controller. Furthermore, we built a GUI that displays all relevant and required data. Although we did not get the chance to test obstacle detection, assuming our simulation is a good one, we can be fairly certain KITT will not drive into objects but rather avoid them and still reach its destination, within certain boundaries. The main caveat that reduces the efficiency of the system is the latency introduced by ASIO drivers, which may or may not be our fault, that remains to be seen.
 
 \section{Future work}
-% control 
-
+The main improvement to the system would be a drastic reduction of the latency incurred by ASIO while performing localization. Only being able to control KITT once in \SI{2}{seconds} greatly reduces the accuracy with which KITT can be controlled. Furthermore, some small improvements in obstacle detections could be achieved by processing raw distance sensor data, making use of the Doppler-effect, as discussed in Section~\ref{ssec:control-doppler}. Lastly, an improvement in localization accuracy could be achieved by implementing the QR-Factorization and accurate speed of sound calculation techniques presented in Section~\ref{sec:loc_future}.
 
 \end{document}
