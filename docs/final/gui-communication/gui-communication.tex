@@ -17,8 +17,8 @@ Because our control and localization logic is implemented using \texttt{MATLAB},
 These two reasons have led to an exploration of possibilities other than \texttt{MATLAB} for handling serial and displaying a nice user interface. Since one of the team members had sufficient previous experience with Microsoft's .NET Framework using the C\# language for designing a GUI (using the \emph{Windows Presentation Foundation} or WPF), and a serial interface in C\# fulfilling most of the requirements had already been written during EPO2 (EE1810 Project: ``Smart Robot Challenge''), that yielded delays of around \SI{125}{ms}, C\# was deemed a viable candidate for our design. Since .NET's main flaw, only being usable on the Windows operating system, was deemed to be surmountable, development of the GUI was continued using C\#, naming it \emph{Overwatch}.
 
 \section{Design overview}
-Now, we may split our design into three subcomponents. As discussed, we need a subcomponent that handles serial communication with KITT, one that handles user interaction and displays relevant information in a clear way, and, because our localization and control logic resides in \texttt{MATLAB}, a way to communicate with the \texttt{MATLAB} part of our system.
-An overview of these three subcomponents along with the data exchange between each other is given in Figure~\ref{fig:overwatch-overview}.
+Now, we may split our design into three subcomponents. As discussed, we need a subcomponent that handles serial communication with KITT, one that handles user interaction and displays relevant information in a clear way (visualization), and, because our localization and control logic resides in \texttt{MATLAB}, a way to communicate with the \texttt{MATLAB} part of our system.
+A graphical overview of these three subcomponents along with the data exchange between each other is given in Figure~\ref{fig:overwatch-overview}.
 
 \begin{figure}[H]
 	\centering
@@ -27,8 +27,8 @@ An overview of these three subcomponents along with the data exchange between ea
 	\label{fig:overwatch-overview}
 \end{figure}
 
-Implementing this design in a structured way means structured programming, which is in our case achieved by making optimal use of the \emph{class}-structure. Also, since a lot of data needs to be accessible via the user interface, a tight link should exist between back-end (data models and processing) and front-end (the view, where data is presented to the user). In .NET, this can be achieved by making use of so-called data-bindings. These are a kind of constraints that notify the user interface when their value is being altered, so the interface is triggered to display this new data (semi-)automatically \cite{data-binding}.
-Finally, the program code is set up in a pattern that is called MVVM, or Model-View-ViewModel. This means that the previously data-bindings do not directly connect the raw data from the model to the view, but an extra layer, the \emph{ViewModel}, is introduced that prepares model data in such a way that it is correctly displayed by the GUI \cite{mvvm}.
+Implementing this design in a structured way means structured programming is required, which is in our case achieved by making optimal use of the \emph{class}-structure. Also, since a lot of data needs to be accessible via the user interface, a tight link should exist between back-end (data models and processing) and front-end (the view, where data is presented to the user). In .NET, this can be achieved by making use of so-called data-bindings. These are a kind of constraints that notify the user interface when their value is being altered, so the interface is triggered to display this new data (semi-)automatically \cite{data-binding}.
+Finally, the program code is set up in a pattern that is called MVVM, or Model-View-ViewModel. This means that the previously mentioned data-bindings do not directly connect the raw data from the model to the view, but an extra layer, the \emph{ViewModel}, is introduced, that prepares model data (think integer to string conversion, real-world to visualization canvas coordinate transforms, etcetera) in such a way that it can be correctly displayed by the GUI \cite{mvvm}.
 
 \begin{figure}[H]
 	\centering
@@ -64,7 +64,7 @@ After enabling KITT, everything begins and ends with the serial interface. New d
 In C\#, the serial connection is handled completely asynchronously. An event is triggered as soon as data is received and other classes of the program may respond to this event, but this is not required. This asynchronous behavior means we do not have to wait for KITT to respond to any command we send it, so we can continue running the various processes in the mean time.
 
 \section{Visualization}
-Perhaps the most interesting part of Overwatch is the visualization canvas. This field is found in the left part of the GUI and occupies the majority of its space. It shows a real-time representation of the field KITT drives in, along with the placed microphones, KITT itself and all waypoints. Information about KITT's location and angle is obtained using the \texttt{MATLAB} logic previously discussed.
+Perhaps the most interesting part of Overwatch is the visualization canvas. This field is found in the left part of the GUI and occupies the majority of its space. It shows a real-time representation of the field KITT drives in, along with the placed microphones, KITT itself and all waypoints. Information about KITT's location and angle is obtained using the \texttt{MATLAB} logic previously discussed and the visualization canvas updated as soon as it becomes available. Being able to see where the localizer ``thinks'' KITT is, proved a to be a very useful feature while debugging the rest of our design and apart from that, it looks quite nice.
 
 \section{Autonomous control}
 \label{sec:gui-autocontrol}
