@@ -116,7 +116,7 @@ Using the range difference matrix $\mat{R}$ we can construct a matrix $\mat{A}$,
 \begin{equation}
 \begin{bmatrix}
 2(\vec{x}_j-\vec{x}_i)^T & 0 & 0 & 0 & 0
-\end{bmatrix}
+\end{bmatrix}.
 \end{equation}
 Then, entry $a_{i+2,j+1}$ is set to $-2r_{i,j}$.
 
@@ -125,10 +125,10 @@ The entries of vector $\vec{b}$ are also constructed for each microphone pair as
 \begin{equation}
 \begin{bmatrix}
 r_{i,j}^2-||\vec{x}_i||^2+||\vec{x}_j||^2
-\end{bmatrix}
+\end{bmatrix}.
 \end{equation}
 
-The vector $\vec{x}$ that solves these equations may not exist because the system is overdetermined. Therefore, the solution $\vec{x}$ is calculated (much in the same way as in section \ref{sec:loc_est_h}) as the solution of the matrix equation $\mat{A}\vec{x}=\vec{b}$ in an ordinary least squares way: $\vec{x}=(\mat{A}^T\mat{A})^{-1}\mat{A}^T\vec{b}$. This method yields an exact solution if it exists and otherwise produces the $\vec{x}$ with the least squares error. The first two entries of $\vec{x}$ are the resulting position of KITT.
+The vector $\vec{x}$ that solves these equations may not exist because the system is overdetermined. Therefore, the solution $\vec{x}$ is calculated (much in the same way as in section \ref{sec:loc_est_h}) as the solution of the matrix equation $\mat{A}\vec{x}=\vec{b}$ in an ordinary least squares way by $\vec{x}=(\mat{A}^T\mat{A})^{-1}\mat{A}^T\vec{b}$. This method yields an exact solution if it exists and otherwise produces the $\vec{x}$ with the least squares error. The first two entries of $\vec{x}$ are the resulting position of KITT.
 % TODO: include reference to localize.m
 
 \section{Angle determination}
