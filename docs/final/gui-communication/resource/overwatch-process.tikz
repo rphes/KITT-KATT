@@ -1,0 +1,22 @@
+\begin{tikzpicture}[node distance = 2cm, auto]
+	% Nodes
+	\node [rectangle] (status) {Request status};
+	\node [rectangle, right= of status] (autocontrol) {Perform autocontrol process};
+	\node [rectangle, right= of autocontrol] (command) {Command KITT};
+	\node [rectangle, below= of autocontrol, yshift= 1cm] (update) {Update GUI};
+	\coordinate [left= 0.5cm of status] (c1);
+	\coordinate [above left = 0.75cm and 0.5cm of status] (c2);
+	\coordinate [above right= 0.75cm and 0.5 cm of command] (c3);
+	\coordinate [right= 0.5cm of command] (c4);
+	% Edges
+	\path [line, ->] (c1) -- node {} (status);
+	\path [line] (c2) -- node {} (c1);
+	\path [line] (c3) -- node {} (c2);
+	\path [line] (c4) -- node {} (c3);
+	\path [line] (command) -- node {} (c4);
+	\path [line, ->] (status) -- node {} (autocontrol);
+	\path [line, ->] (autocontrol) -- node {} (command);
+	\path [line, ->] (status) |- node {} (update.west);
+	\path [line, ->] (autocontrol) -- node {} (update);
+
+\end{tikzpicture}
