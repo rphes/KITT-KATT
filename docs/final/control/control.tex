@@ -216,7 +216,7 @@ Then, doing a coordinate transformation by letting $\vec{t}$ to be $(0,0)$ and c
 This concludes calculating the reference angle $\theta_{\text{ref}}$ KITT should have to drive as fast as possible to the current waypoint the distance $d$ left to this waypoint.
 
 \subsection{Obstacle avoidance}
-When KITT comes across an obstacle, the sensors detect to frontal distances to this object. Obstacle avoidance is based on the follow rule; go the easiest way around the object while keeping a certain clearance $c$. Let the left sensor distance be given by $s_l$ and the right sensor distance by $s_r$. Figure~\ref{fig:ctrl-route-obstacle} depicts a situation in which KITT comes across an obstacle.
+When KITT comes across an obstacle, the sensors detect the frontal distances to this object. Obstacle avoidance is based on the follow rule; go the easiest way around the object while keeping a certain clearance $c$. Let the left sensor distance be given by $s_l$ and the right sensor distance by $s_r$. Figure~\ref{fig:ctrl-route-obstacle} depicts a situation in which KITT comes across an obstacle.
 
 \begin{figure}[H]
 	\centering
@@ -241,7 +241,7 @@ Let the distance between both sensors on KITT be given by $L$, then $\phi$ is gi
 \[
 	\phi = \operatorname{arctan}\left(\frac{c}{L/2+\operatorname{max}(s_{r,l})}\right).
 \]
-Using the information which sensor's value is maximal, and then accordingly adding or substracting $\phi$ to or from $\theta$ yields $\theta_{\text{ref}}$.
+Using the information which sensor's value is maximal, and then accordingly adding or substracting $\phi$ to or from $\theta$ yields $\theta_{\text{ref}}$. Finally, we again limit $\theta_{\text{ref}}$ to account for the maximum angle at which KITT can turn. 
 % Opbouw:
 % - Inleiding: weten afstand, gewenste afstand, hoek, gewenste hoek, hoe PWM waardes bepalen zodat bereikt wordt
 % reductie dimensionaliteit, twee onafhankelijk werkende systemen
@@ -649,4 +649,9 @@ This indicates that the a second-order approximation is given by a linear combin
 x(t_0+\Delta t) &\approx x(t_0) + \frac{\Delta t}{2}\left(\left. \frac{dx}{dt} \right|_{t=t_0} + f(\tilde{x})\right).\nonumber 
 \end{align}
 One can use the same reasoning to derive a fourth-order Runge-Kutta method, also known as \texttt{ode45}, which is commonly used technique to numerically solve differential equations.
+
+\section{Final thoughts}
+Our method \textit{reduction of dimensionality} is a simplification of how one should design a controller for driving in a plane. The correct way to design such a controller, is by modeling the system by making use of Lagrangion formulation and nonholonomic contraints, and then minimizing by making use of the Lagrange multiplier. However, this is very complicated. Our time-frame did not allow such a realization. \cite{epo4-manual}.
+
+We made numerous approximations and simplifications in the design of our controller. We wanted to eventually deliver a robust, simple as possible, working system. These approximations and simplifications were necessary to deliver such a system.
 \end{document}
