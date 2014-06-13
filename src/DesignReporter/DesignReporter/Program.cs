@@ -14,6 +14,7 @@ namespace DesignReporter
 		static string docsPath;
 		static DirectoryInfo docs;
         static FileInfo outputPath;
+		static string nameCritera;
 		static String start =
 @"%!TEX program = xelatex
 \documentclass{report}
@@ -62,6 +63,9 @@ namespace DesignReporter
 
 			if (!docs.Exists)
 				docs.Create();
+
+			Console.WriteLine("Enter directory name criteria (keywords separated by spaces, if nothing entered all found folders will be added.)");
+			nameCritera = Console.ReadLine();
 
 			outputPath = new FileInfo(docs + "/sourcecode.tex");
 
@@ -157,7 +161,11 @@ namespace DesignReporter
 			}
 
 			//Enumerate directories
-			DirectoryInfo[] directories = d.GetDirectories();
+			DirectoryInfo[] directories;
+			if (d == src && !String.IsNullOrEmpty(nameCritera))
+				directories = d.GetDirectories(nameCritera);
+			else
+				directories = d.GetDirectories();
 
 			foreach (DirectoryInfo directory in directories)
 			{
