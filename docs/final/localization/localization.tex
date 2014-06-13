@@ -26,7 +26,6 @@ A general overview of the localization system is shown in Figure \ref{fig:locali
 \label{sec:loc_transmit}
 As reported in \cite{epo4-del7} the main goal of the transmitted sequence is to be able to perfectly identify it under every circumstance; even in the presence of noise or signals emitted by other beacons. Only some parameters of the transmitted signal can be changed; for example, it is already defined to be an OOK signal. The parameters we could tweak include the carrier frequency, the code frequency, the repetition frequency and the code word (and thus its length). More details on the choice of the sequence is given in \cite{epo4-del7} but the conclusions are summarized in table \ref{tab:loc_signal}.
 
-% TODO fix this table! done :)
 \begin{table}[H]
 \centering
 \begin{tabular}{ c | c | p{10cm}}
@@ -75,9 +74,7 @@ The size of the resulting matrix $\mat{X}^\dagger$ is dependent on the amount of
 A potential problem to the matrix inversion necessary for the calculation of $\mat{X}^\dagger$ is when the matrix $\mat{A}=\mat{X}^T\mat{X}$ is singular or ill-conditioned. When $\mat{A}$ is singular (the determinant of $\mat{A}$ is zero), $\mat{X}^\dagger$ cannot be calculated and when $\mat{A}$ is ill-conditioned\footnote{A matrix is said to be ill-conditioned if the ratio of the largest singular value to the smallest singular value (the condition number) $c=\frac{\sigma_1}{\sigma_n}$ is `large'. Though `large' is not well-defined itself, it can be shown \cite{epo4-manual} that an error $\epsilon$ in the input to a linear system is potentially magnified by the condition number in the solution.} the resulting matrix is dominated by small singular values. In order to overcome this potential problem, a singular value filter was built into the matrix inversion algorithm. The filter works as follows.
 Let $\mat{A}=\mat{U}\mat{\Sigma}\mat{V}^T$ be the singular value decomposition of $\mat{A}=\mat{X}^T\mat{X}$ where $\mat{A}$ is of size $m\times n$. Then $\mat{\Sigma}$ is a diagonal matrix of size $m \times n$ containing the singular values $\sigma_1, \sigma_2, ..., \sigma_n$ of $\mat{A}$ on the diagonal in descending order. For any $\sigma_i<t$, where $t$ is some threshold, the left inverse of $\mat{A}$ is approximated by $\mat{\hat{A}}^\dagger=\mat{\hat{V}}\mat{\hat{\Sigma}}^{-1}\mat{\hat{U}}^T$ where $\mat{\hat{V}}$, $\mat{\hat{\Sigma}}$ and $\mat{\hat{U}}$ are their respective matrices as defined before with the $i^\text{th}$ columns removed. 
 
-The choice of threshold $t$ is non-trivial and was determined using trial and error on measurement data. We discovered that the `optimal' threshold was slightly different for each microphone and even each measurement. An important insight is that when the threshold is set too high, e.g. too large singular values are filtered, some calculated channel responses are no longer identifiable as such. Specifically, the result would be a modulated sine wave. In order to prevent this from happening during the demonstration, the thresholds for each microphone channel were chosen somewhat conservative. The chosen threshold are shown in Table \ref{tab:loc_svd_value}.
-
-% TODO: include reference to channel estimation matlab 
+The choice of threshold $t$ is non-trivial and was determined using trial and error on measurement data. We discovered that the `optimal' threshold was slightly different for each microphone and even each measurement. An important insight is that when the threshold is set too high, e.g. too large singular values are filtered, some calculated channel responses are no longer identifiable as such. Specifically, the result would be a modulated sine wave. In order to prevent this from happening during the demonstration, the thresholds for each microphone channel were chosen somewhat conservative. The chosen threshold are shown in Table \ref{tab:loc_svd_value}. The \texttt{MATLAB} code for the channel estimation can be found in appendix \ref{appsubsec:overwatch-matlab-tdoa-toolkit}.
 
 \begin{table}[H]
 \centering
@@ -97,8 +94,8 @@ Microphone channel & Singular value threshold $t$ \\
 
 \section{Peak detection}
 \label{sec:loc_peak}
-Deliverable report 7 \cite{epo4-del7} described two methods of localizing the peaks in the estimated channel, the first based on \texttt{MATLAB}'s \texttt{findpeaks} function and the second based on smart utilization of the standard deviation of the channel. However, after revising the code it seemed both these approaches were too time consuming. It was decided instead to implement a simpler detection algorithm which simply scans the estimated channel sample by sample and compares the amplitude to some threshold which is proportional to the maximum of all samples. After some simple testing on synthetic data this turned out to be up to a factor \num{40} faster than the \texttt{findpeaks} implementation. Since the standard deviation approach was already at least a factor \num{10} slower than the \texttt{findpeaks} algorithm, it was decided to use the threshold approach. 
-% TODO insert reference to find_start.m
+Deliverable report 7 \cite{epo4-del7} described two methods of localizing the peaks in the estimated channel, the first based on \texttt{MATLAB}'s \texttt{findpeaks} function and the second based on smart utilization of the standard deviation of the channel. However, after revising the code it seemed both these approaches were too time consuming. It was decided instead to implement a simpler detection algorithm which simply scans the estimated channel sample by sample and compares the amplitude to some threshold which is proportional to the maximum of all samples. After some simple testing on synthetic data this turned out to be up to a factor \num{40} faster than the \texttt{findpeaks} implementation. Since the standard deviation approach was already at least a factor \num{10} slower than the \texttt{findpeaks} algorithm, it was decided to use the threshold approach for which the source code may be found in \ref{appsubsec:overwatch-matlab-tdoa-toolkit}.
+
 A plot of an arbitrary recovered impulse response is shown in Figure \ref{fig:localization-typical-impulse}. In green the work of the peak detection algorithm is shown. 
 
 \begin{figure}[H]
@@ -111,7 +108,7 @@ A plot of an arbitrary recovered impulse response is shown in Figure \ref{fig:lo
 \section{Localization algorithm}
 \label{sec:loc_alg}
 Once the peaks have been detected in all five microphone channels, a range difference matrix can be constructed consisting of entries $r(i,j)$ corresponding to the range difference between microphones $i$~and~$j$, leaving the diagonal zero. 
-% TODO: add reference to getrangematrix.m
+
 Using the range difference matrix $\mat{R}$ we can construct a matrix $\mat{A}$, a vector $\vec{x}$ and a vector $\vec{b}$ as explained in \cite{epo4-manual}, $\mat{A}\vec{x}=\vec{b}$ rows of $\mat{A}$ are constructed for each microphone pair $(i,j)$ as
 \begin{equation}
 \begin{bmatrix}
@@ -129,7 +126,7 @@ r_{i,j}^2-||\vec{x}_i||^2+||\vec{x}_j||^2
 \end{equation}
 
 The vector $\vec{x}$ that solves these equations may not exist because the system is overdetermined: there are \num{5} microphones (so $\mat{A}$ has \num{10} rows) and we limit ourself to two coordinates yielding \num{6} columns in $\mat{A}$. Therefore, the solution $\vec{x}$ is calculated (much in the same way as in section \ref{sec:loc_est_h}) as the solution of the matrix equation $\mat{A}\vec{x}=\vec{b}$ in an ordinary least squares way: $\vec{x}=(\mat{A}^T\mat{A})^{-1}\mat{A}^T\vec{b}$. This method yields an exact solution if it exists and otherwise produces the $\vec{x}$ with the least squares error. The first two entries of $\vec{x}$ are the resulting position of KITT. 
-% TODO: include reference to localize.m
+The \texttt{MATLAB} implementation of the range difference matrix generation and localization algorithm can be found in appendix \ref{appsubsec:overwatch-matlab-tdoa-toolkit}.
 
 \section{Angle determination}
 Now that we have localized KITT, we can determine its angle.
