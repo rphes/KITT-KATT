@@ -42,13 +42,13 @@ When one designs a complex system, unit tests are indispensable. For every subsy
 	\label{fig:sim-concept}
 \end{figure}
 
-\section{Design}
+\section{Design consideration}
 We decided to split up the full system simulation in two parts; \textbf{(1)}, localization simulation and \textbf{(2)}, system simulation with synthetically generated TDOA's, from now on referred to as small system simulation. The reason we did this, is because the required audio signals for a full system simulation are hard to synthesize. This section will describe the localization and small system simulation seperately. Note that these simulations operate real-time, modelling the reality as accurately as possible.
 
-\subsection{Localization simulation}
+\section{Localization simulation}
 The way our system interfaces with the microphones, is through the given \texttt{pa\_wavrecord} function. Therefore, we decided to simulate this function. The way we did this way by altering MATLAB's path. We removed the original function from the path, and added our custom function. From now on, we will call this method \textit{code injection by path modification}. The way our custom \texttt{pa\_wavrecord} function works is as follows; when the function is called, it returns a piece of data of a pre-recorded recording, corresponding with the time that has passed since system initialization. Processing delays were taken into account.
 
-\subsection{Small system simulation}
+\section{Small system simulation}
 The small system simulation seemed somewhat more complex. We had to model KITT's behaviour to the actuator sensor signals, and generate the corresponding TDOA's. In Chapter~\ref{ch:control} we described a detailled model of KITT and it's mathematical description of movement. We made use of these results to construct a third-order state-space based model which should accurately describe KITT. For the localization, we made use of code injection by path modification to inject the synthesized TDOA's, taking into account processing delays and noise. By means of linear algebra, we modelled the sensor data by checking line of sight collision with pre-defined three-dimensional objects.
 
 \section{Results}

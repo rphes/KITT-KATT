@@ -9,6 +9,7 @@
 
 \chapter{Localization}
 \label{ch:localization}
+\section{Introduction}
 An important subsection of the complete system is the localization of KITT. Not only is it important to know whether a waypoint has been reached, the entire control strategy of the car relies on accurate location information. To achieve this, a time-difference of arrival (TDOA) method was employed using audio transmitted by the beacon mounted to the car and received by five microphones placed in the room.
 
 Before the actual localization can take place, several steps must be taken to obtain the TDOAs. First, the transmitted signal must be specified. This is not quite trivial and is explained in Section \ref{sec:loc_transmit}. Then, the difference in arrival times between the various microphones must be calculated. This is done by finding peaks (Section \ref{sec:loc_peak}) in the propagation channel (Section \ref{sec:loc_est_h}). Before the channel can be accurately estimated, it needs to be trimmed to meet specific criteria. These criteria are outlined in Section \ref{sec:loc_data_trim}. Finally, once the TDOAs are known, they can be used to calculate the position of the sound source. The algorithm behind this is detailed in Section \ref{sec:loc_alg}. Some future considerations which are not currently implemented are discussed in the last paragraph, section \ref{sec:loc_future}.
